@@ -1,22 +1,6 @@
 const { PowerShell } = require("node-powershell");
 const { quote } = require("shell-quote");
 
-/*
-User:
-	Get-ADUser -Identity -Server -Properties
-	(Get-ADPrincipalGroupMembership) -Identity -Server
-
-Group:
-	Get-ADGroup -Identity -Server -Properties
-	Get-ADGroupMember -Identity -Server
-	(Get-ADPrincipalGroupMembership) -Identity -Server
-
-Computer:
-	Resolve-DnsName -Name -QuickTimeout
-	Get-ADComputer -Identity -Server -Properties
-	(Get-ADPrincipalGroupMembership) -Identity -Server
-*/
-
 const allowedCommands = [
   "Get-ADUser",
   "Get-ADGroup",
