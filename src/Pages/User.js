@@ -44,8 +44,8 @@ export default function UserPage() {
   const runQuery = async () => {
     setAttributes([]);
     setMemberOf([]);
-    attributesError({});
-    memberOfError({});
+    setAttributesError({});
+    setMemberOfError({});
     setIsLoading(true);
 
     await Promise.all([
