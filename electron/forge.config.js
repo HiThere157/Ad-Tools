@@ -19,4 +19,17 @@ module.exports = {
       config: {},
     },
   ],
+  publishers: [
+    {
+      name: "@electron-forge/publisher-github",
+      config: {
+        repository: {
+          owner: "HiThere157",
+          name: "Ad-Tools"
+        },
+        prerelease: false,
+        draft: true
+      }
+    }
+  ]
 };

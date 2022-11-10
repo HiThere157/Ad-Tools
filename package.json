@@ -9,7 +9,8 @@
     "postinstall": "cd ./electron && npm install",
     "dev": "react-scripts start",
     "start": "react-scripts build && cd ./electron && npm run start",
-    "build": "react-scripts build && cd ./electron && npm run build"
+    "build": "react-scripts build && cd ./electron && npm run build",
+    "publish": "react-scripts build && cd ./electron && npm run publish"
   },
   "eslintConfig": {
     "extends": [
