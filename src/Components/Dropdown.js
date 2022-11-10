@@ -8,7 +8,7 @@ export default function Dropdown({
   items,
   value = null,
   disabled = false,
-  onChange,
+  onChange = () => {},
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(value ?? items[0]);

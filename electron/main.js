@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { executeCommand } = require("./api/powershell");
 
+if (require("electron-squirrel-startup")) app.quit();
 require("update-electron-app")();
 
 function createWindow() {
@@ -12,9 +13,9 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
     },
   });
-  
+
   win.removeMenu();
-  win.webContents.openDevTools()
+  win.webContents.openDevTools();
   win.loadFile("./build/index.html");
 }
 

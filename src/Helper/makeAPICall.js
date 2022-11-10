@@ -4,11 +4,12 @@ async function makeAPICall(
   postProcessor = (AdObject) => {
     return AdObject;
   },
-  callback,
-  errorCallback
+  callback = () => {},
+  errorCallback = () => {}
 ) {
   try {
     const result = await window.electronAPI.executeCommand(command, args);
+
     if (result.error) {
       throw result.error;
     }
@@ -18,17 +19,17 @@ async function makeAPICall(
       output: result.output,
       command,
       args,
-    }
+    };
     callback(postProcessor(res.output));
     return res;
   } catch (error) {
     const res = {
       isOk: false,
-      error,
+      error: error.toString(),
       command,
       args,
-    }
-    // errorCallback(res);
+    };
+    errorCallback(res);
     return res;
   }
 }

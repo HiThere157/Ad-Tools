@@ -70,8 +70,8 @@ function NavItem({ to, icon, text, isOpen }) {
           : "dark:hover:bg-secondaryControlAccent dark:focus:bg-secondaryControlAccent dark:active:bg-secondaryControlActive")
       }
     >
-      <div className="flex flex-row items-center p-1 text-xl">
-        <div className="text-3xl">{icon}</div>
+      <div className="flex flex-row items-center p-1 text-lg">
+        <div className="text-2xl">{icon}</div>
         {isOpen ? <span className="ml-3 whitespace-nowrap">{text}</span> : ""}
       </div>
     </NavLink>

@@ -2,7 +2,7 @@ export default function Input({
   label = "",
   value = "",
   disabled = false,
-  onChange,
+  onChange = () => {},
   onEnter = () => {},
 }) {
   const onKeyDown = (event) => {

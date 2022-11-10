@@ -1,7 +1,8 @@
-import { useSessionStorage } from "../Helper/useLocalStorage";
+import { useSessionStorage } from "../Helper/useStorage";
 
 import Button from "../Components/Button";
 import Input from "../Components/Input";
+import Expandable from "../Components/Expandable";
 
 import {
   BsCaretDownFill,
@@ -11,7 +12,7 @@ import {
 } from "react-icons/bs";
 import { useEffect, useState } from "react";
 
-export default function Table({ name, columns, entries }) {
+export default function Table({ name, columns, entries, error }) {
   const [sortedColumn, setSortedColumn] = useSessionStorage(
     name + "_sortedColumn",
     ""
@@ -94,7 +95,8 @@ export default function Table({ name, columns, entries }) {
           filter={filter}
           onHeaderClick={updateSortArguments}
         />
-        <NoItems isOpen={entries.length === 0} />
+        <NoItems isOpen={entries.length === 0 && !error} />
+        <ErrorMessage isOpen={error} error={error} />
       </div>
     </div>
   );
@@ -125,7 +127,7 @@ function TableElement({
     return array.filter((entry) => {
       let isMatch = true;
       Object.entries(filter).forEach(([key, value]) => {
-        const wildcard = `*${value}*`.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+        const wildcard = value.replace(/[.+^${}()|[\]\\]/g, "\\$&");
         const regex = new RegExp(
           `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
           "i"
@@ -186,7 +188,7 @@ function TableElement({
                   <td
                     key={index}
                     className={
-                      "py-1 px-4 whitespace-nowrap dark:border-primaryBorder " +
+                      "px-2 whitespace-nowrap dark:border-primaryBorder " +
                       (index === 0 ? "border-y" : "border")
                     }
                   >
@@ -203,9 +205,17 @@ function TableElement({
 }
 
 function TableCell({ text }) {
+  const stringify = (object) => {
+    return JSON.stringify(object, null, 2);
+  };
+
   switch (typeof text) {
     case "object":
-      return <pre>{JSON.stringify(text, null, 2)}</pre>;
+      return (
+        <Expandable canExpand={stringify(text)?.split("\n").length !== 1}>
+          <pre>{stringify(text)}</pre>
+        </Expandable>
+      );
 
     case "boolean":
       return <>{text ? "True" : "False"}</>;
@@ -221,6 +231,20 @@ function NoItems({ isOpen }) {
       {isOpen ? (
         <div className="flex justify-center mt-5">
           <span>No Items.</span>
+        </div>
+      ) : (
+        ""
+      )}
+    </>
+  );
+}
+
+function ErrorMessage({ isOpen, error }) {
+  return (
+    <>
+      {isOpen ? (
+        <div className="flex justify-center mt-5">
+          <span>{error?.error}</span>
         </div>
       ) : (
         ""

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSessionStorage } from "../Helper/useLocalStorage";
+import { useSessionStorage } from "../Helper/useStorage";
 
 import {
   makeAPICall,
@@ -32,20 +32,20 @@ export default function UserPage() {
   const [attributes, setAttributes] = useSessionStorage("user_attributes", []);
   const [memberOf, setMemberOf] = useSessionStorage("user_memberof", []);
 
-  // const [attributesError, setAttributesError] = useSessionStorage(
-  //   "user_attributesError",
-  //   {}
-  // );
-  // const [memberOfError, setMemberOfError] = useSessionStorage(
-  //   "user_memberofError",
-  //   {}
-  // );
+  const [attributesError, setAttributesError] = useSessionStorage(
+    "user_attributesError",
+    {}
+  );
+  const [memberOfError, setMemberOfError] = useSessionStorage(
+    "user_memberofError",
+    {}
+  );
 
   const runQuery = async () => {
     setAttributes([]);
     setMemberOf([]);
-    // setAttributesError({});
-    // setMemberOfError({});
+    setAttributesError({});
+    setMemberOfError({});
     setIsLoading(true);
 
     await Promise.all([
@@ -57,7 +57,7 @@ export default function UserPage() {
         },
         getPropertiesWrapper,
         setAttributes,
-        // setAttributesError
+        setAttributesError
       ),
       makeAPICall(
         "Get-ADPrincipalGroupMembership",
@@ -67,23 +67,15 @@ export default function UserPage() {
         },
         makeToList,
         setMemberOf,
-        // setMemberOfError
+        setMemberOfError
       ),
     ]);
-
-    // setAttributes([
-    //   { key: 1, value: "b" },
-    //   { key: 2, value: "c" },
-    //   { key: 3, value: "aaaa" },
-    //   { key: 4, value: "aaaa" },
-    //   { key: 5, value: "abba" },
-    // ]);
 
     setIsLoading(false);
   };
 
   return (
-    <div className="text-xl">
+    <div className="text-lg">
       <div className="flex space-x-2 items-center mb-5">
         <Input
           label="User ID:"
@@ -108,12 +100,14 @@ export default function UserPage() {
           name="user_attributes"
           columns={attributeColumns}
           entries={attributes}
+          error={attributesError}
         />
         <br />
         <Table
           name="user_memberof"
           columns={memberofColumns}
           entries={memberOf}
+          error={memberOfError}
         />
       </div>
     </div>

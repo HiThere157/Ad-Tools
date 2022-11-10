@@ -3,7 +3,7 @@ export default function Button({
   classOverride = "",
   disabled = false,
   highlight = false,
-  onClick,
+  onClick = () => {},
 }) {
   return (
     <button
