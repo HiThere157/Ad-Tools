@@ -1,7 +1,7 @@
 {
   "name": "ad-tools",
   "version": "2.0.0",
-  "author": "kochda7",
+  "author": "HiThere157",
   "description": "This tool is a collection of useful commands for managing your Active Directory and Azure Active Directory environments in a user-friendly GUI.",
   "main": "main.js",
   "scripts": {
