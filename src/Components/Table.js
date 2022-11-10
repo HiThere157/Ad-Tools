@@ -97,7 +97,7 @@ export default function Table({ name, columns, entries, error }) {
           onHeaderClick={updateSortArguments}
         />
         <NoItems isOpen={entries.length === 0 && !error} />
-        <ErrorMessage isOpen={error} error={error} />
+        <ErrorMessage error={error} />
       </div>
     </div>
   );
@@ -230,7 +230,7 @@ function NoItems({ isOpen }) {
   return (
     <>
       {isOpen ? (
-        <div className="flex justify-center mt-5">
+        <div className="flex justify-center my-5">
           <span>No Items.</span>
         </div>
       ) : (
@@ -240,13 +240,13 @@ function NoItems({ isOpen }) {
   );
 }
 
-function ErrorMessage({ isOpen, error }) {
+function ErrorMessage({ error }) {
   return (
     <>
-      {isOpen ? (
-        <div className="flex justify-center items-center space-x-2 mt-5 text-foregroundError">
-          <BsExclamationOctagon className="text-2xl" />
-          <span>{error?.error}</span>
+      {error.error ? (
+        <div className="flex justify-center items-center space-x-2 my-5 mx-3 text-foregroundError">
+          <BsExclamationOctagon className="text-2xl flex-shrink-0" />
+          <span>{error.error}</span>
         </div>
       ) : (
         ""
