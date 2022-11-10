@@ -32,20 +32,20 @@ export default function UserPage() {
   const [attributes, setAttributes] = useSessionStorage("user_attributes", []);
   const [memberOf, setMemberOf] = useSessionStorage("user_memberof", []);
 
-  const [attributesError, setAttributesError] = useSessionStorage(
-    "user_attributesError",
-    {}
-  );
-  const [memberOfError, setMemberOfError] = useSessionStorage(
-    "user_memberofError",
-    {}
-  );
+  // const [attributesError, setAttributesError] = useSessionStorage(
+  //   "user_attributesError",
+  //   {}
+  // );
+  // const [memberOfError, setMemberOfError] = useSessionStorage(
+  //   "user_memberofError",
+  //   {}
+  // );
 
   const runQuery = async () => {
     setAttributes([]);
     setMemberOf([]);
-    setAttributesError({});
-    setMemberOfError({});
+    // setAttributesError({});
+    // setMemberOfError({});
     setIsLoading(true);
 
     await Promise.all([
@@ -57,7 +57,7 @@ export default function UserPage() {
         },
         getPropertiesWrapper,
         setAttributes,
-        setAttributesError
+        // setAttributesError
       ),
       makeAPICall(
         "Get-ADPrincipalGroupMembership",
@@ -67,7 +67,7 @@ export default function UserPage() {
         },
         makeToList,
         setMemberOf,
-        setMemberOfError
+        // setMemberOfError
       ),
     ]);
 

@@ -28,7 +28,7 @@ async function makeAPICall(
       command,
       args,
     }
-    errorCallback(res);
+    // errorCallback(res);
     return res;
   }
 }
