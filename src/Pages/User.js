@@ -12,7 +12,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 import Input from "../Components/Input";
 import Button from "../Components/Button";
 import Dropdown from "../Components/Dropdown";
-import Table from "../Components/Table";
+import Table from "../Components/Table/Table";
 
 export default function UserPage() {
   const domains = ["Alcon.net", "Alconnet.com", "Itlab.local"];
