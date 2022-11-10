@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "author": "HiThere157",
   "description": "This tool is a collection of useful commands for managing your Active Directory and Azure Active Directory environments in a user-friendly GUI.",
-  "private": true,
   "homepage": "./",
   "scripts": {
     "postinstall": "cd ./electron && npm install",

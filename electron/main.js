@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { executeCommand } = require("./api/powershell");
 
+require("update-electron-app")();
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
