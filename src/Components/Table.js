@@ -9,6 +9,7 @@ import {
   BsFunnel,
   BsArrowCounterclockwise,
   BsClipboard,
+  BsExclamationOctagon,
 } from "react-icons/bs";
 import { useEffect, useState } from "react";
 
@@ -243,7 +244,8 @@ function ErrorMessage({ isOpen, error }) {
   return (
     <>
       {isOpen ? (
-        <div className="flex justify-center mt-5">
+        <div className="flex justify-center items-center space-x-2 mt-5 text-foregroundError">
+          <BsExclamationOctagon className="text-2xl" />
           <span>{error?.error}</span>
         </div>
       ) : (

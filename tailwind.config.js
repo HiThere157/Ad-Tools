@@ -10,6 +10,7 @@ module.exports = {
       secondaryBg: "#272727",
       foreground: "#EBEBEB",
       foregroundAccent: "#A0A0A0",
+      foregroundError: "#B92828",
 
       primaryControl: "#2D2D2D",
       primaryBorder: "#323232",
