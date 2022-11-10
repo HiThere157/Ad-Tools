@@ -1,0 +1,25 @@
+{
+  "name": "ad-tools",
+  "version": "2.0.0",
+  "author": "kochda7",
+  "description": "This tool is a collection of useful commands for managing your Active Directory and Azure Active Directory environments in a user-friendly GUI.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-forge make"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "node-powershell": "^5.0.1",
+    "shell-quote": "^1.7.4"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0",
+    "@electron-forge/maker-deb": "^6.0.0",
+    "@electron-forge/maker-rpm": "^6.0.0",
+    "@electron-forge/maker-squirrel": "^6.0.0",
+    "@electron-forge/maker-zip": "^6.0.0",
+    "electron": "^21.2.3"
+  }
+}
