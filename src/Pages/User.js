@@ -65,7 +65,6 @@ export default function UserPage() {
 
   return (
     <>
-      <TableOfContents />
       <div className="input-bar">
         <Input
           label="User ID:"
@@ -97,6 +96,7 @@ export default function UserPage() {
           error={memberOfError}
         />
       </div>
+      <TableOfContents />
     </>
   );
 }

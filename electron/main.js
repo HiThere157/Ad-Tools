@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
-const { executeCommand } = require("./api/powershell");
+const { executeCommand, getExecutingUser } = require("./api/powershell");
 
 if (require("electron-squirrel-startup")) app.quit();
 require("update-electron-app")();
@@ -21,6 +21,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   ipcMain.handle("ps:executeCommand", executeCommand);
+  ipcMain.handle("ps:getExecutingUser", getExecutingUser);
   createWindow();
   app.on("activate", function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

@@ -42,7 +42,7 @@ const executeCommand = async (event, command, args) => {
       .flat(),
   ]);
 
-  fullCommand = fullCommand.replace("-Properties \\*", "-Properties *")
+  fullCommand = fullCommand.replace("-Properties \\*", "-Properties *");
 
   try {
     const output = await ps.invoke(fullCommand + " | ConvertTo-Json");
@@ -54,4 +54,22 @@ const executeCommand = async (event, command, args) => {
   }
 };
 
-module.exports = { executeCommand };
+const getExecutingUser = async () => {
+  const ps = new PowerShell({
+    executionPolicy: "Bypass",
+    noProfile: true,
+  });
+
+  try {
+    const output = await ps.invoke(
+      "[System.Security.Principal.WindowsIdentity]::GetCurrent().Name"
+    );
+    return { output: output.raw };
+  } catch (error) {
+    return { error: error.toString().split("At line:1")[0] };
+  } finally {
+    ps.dispose();
+  }
+};
+
+module.exports = { executeCommand, getExecutingUser };

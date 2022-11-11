@@ -14,12 +14,13 @@ export default function TableOfContents() {
   }, []);
 
   return (
-    <div className="container fixed right-10 top-15 p-2">
+    <div className="container fixed bottom-5 right-5 p-2">
       <span className="block text-xl mb-1">Table of Contents</span>
       <div className="flex flex-col">
         {headings.map((heading, index) => {
           return (
             <div
+              key={index}
               className={
                 "flex items-center space-x-1 cursor-pointer py-0.5 " +
                 (index === activeIndex
@@ -35,7 +36,6 @@ export default function TableOfContents() {
                 )}
               </span>
               <span
-                key={index}
                 onClick={() => {
                   heading.scrollIntoView();
                 }}
