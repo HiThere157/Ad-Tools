@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import useIntersectionObserver from "../Helper/useIntersectionObserver";
 
+import { BsFillCaretRightFill, BsFillCaretDownFill } from "react-icons/bs";
+
 export default function TableOfContents() {
   const [headings, setHeadings] = useState([]);
   const [activeIndex, setActiveindex] = useState(0);
@@ -17,20 +19,30 @@ export default function TableOfContents() {
       <div className="flex flex-col">
         {headings.map((heading, index) => {
           return (
-            <span
-              key={index}
+            <div
               className={
-                "cursor-pointer py-0.5 " +
+                "flex items-center space-x-1 cursor-pointer py-0.5 " +
                 (index === activeIndex
                   ? "dark:text-foreground"
                   : "dark:text-foregroundAccent")
               }
-              onClick={() => {
-                heading.scrollIntoView();
-              }}
             >
-              {heading.innerText}
-            </span>
+              <span>
+                {index === activeIndex ? (
+                  <BsFillCaretDownFill />
+                ) : (
+                  <BsFillCaretRightFill />
+                )}
+              </span>
+              <span
+                key={index}
+                onClick={() => {
+                  heading.scrollIntoView();
+                }}
+              >
+                {heading.innerText}
+              </span>
+            </div>
           );
         })}
       </div>
