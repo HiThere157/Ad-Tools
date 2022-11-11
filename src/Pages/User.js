@@ -54,6 +54,7 @@ export default function UserPage() {
         {
           Identity: userID,
           Server: domain,
+          Properties: "*"
         },
         getPropertiesWrapper,
         setAttributes,

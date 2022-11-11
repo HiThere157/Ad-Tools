@@ -42,6 +42,8 @@ const executeCommand = async (event, command, args) => {
       .flat(),
   ]);
 
+  fullCommand = fullCommand.replace("-Properties \\*", "-Properties *")
+
   try {
     const output = await ps.invoke(fullCommand + " | ConvertTo-Json");
     return { output: JSON.parse(output.raw) };

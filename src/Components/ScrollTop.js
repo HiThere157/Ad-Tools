@@ -29,11 +29,11 @@ export default function ScrollTop() {
     <>
       {scrolled ? (
         <Button
-          classOverride="fixed bottom-0 right-0 p-2 px-3 m-3"
+          classOverride="fixed bottom-0 right-0 p-2 px-2 m-3"
           highlight={true}
           onClick={scrollTop}
         >
-          <div className="flex items-center space-x-3 text-2xl">
+          <div className="flex items-center space-x-2 text-xl">
             <BsArrowUpCircleFill />
             <span>Scroll to Top</span>
           </div>
