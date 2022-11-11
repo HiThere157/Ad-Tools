@@ -76,8 +76,8 @@ export default function UserPage() {
   };
 
   return (
-    <div className="text-lg">
-      <div className="flex space-x-2 items-center mb-5">
+    <div>
+      <div className="flex space-x-2 items-center mb-3">
         <Input
           label="User ID:"
           value={userID}

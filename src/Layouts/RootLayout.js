@@ -29,10 +29,10 @@ export default function RootLayout({ children }) {
 function Header({ onNavOpen }) {
   return (
     <div className="flex space-x-4 top-0 w-full p-2 border-b-2 dark:bg-secondaryBg dark:border-secondaryBorderAccent">
-      <Button classOverride="text-2xl mx-1 px-3 border-0" onClick={onNavOpen}>
+      <Button classOverride="text-xl mx-1 px-3 border-0" onClick={onNavOpen}>
         <BsListUl />
       </Button>
-      <span className="font-bold text-3xl whitespace-nowrap">Ad Tools</span>
+      <span className="font-bold text-2xl whitespace-nowrap">Ad Tools</span>
     </div>
   );
 }

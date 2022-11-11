@@ -1,6 +1,6 @@
 {
   "name": "ad-tools",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "HiThere157",
   "description": "This tool is a collection of useful commands for managing your Active Directory and Azure Active Directory environments in a user-friendly GUI.",
   "repository": "HiThere157/Ad-Tools",
