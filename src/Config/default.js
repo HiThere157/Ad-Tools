@@ -4,7 +4,7 @@ const columns = {
     { title: "Key", key: "key", sortable: true },
     { title: "Value", key: "value", sortable: true },
   ],
-  memberof: [
+  memberOf: [
     { title: "Name", key: "name", sortable: true },
     { title: "Distinguished Name", key: "distinguishedName", sortable: true },
   ],

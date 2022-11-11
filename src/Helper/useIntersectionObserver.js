@@ -1,0 +1,39 @@
+import { useEffect, useRef } from "react";
+
+export default function useIntersectionObserver(setActive) {
+  const elements = useRef({});
+  useEffect(() => {
+    const callback = (headings) => {
+      headings.forEach((heading) => {
+        elements.current[heading.target.getAttribute("data-section-index")] =
+          heading;
+      });
+
+      const visible = Object.values(elements.current)
+        .filter(({ isIntersecting }) => isIntersecting)
+        .sort((a, b) => {
+          return b.intersectionRect.height - a.intersectionRect.height;
+        });
+
+      setActive(Number(visible[0].target.getAttribute("data-section-index")));
+    };
+
+    const range = (from, to, step) =>
+      [...Array(Math.floor((to - from) / step) + 1)].map(
+        (_, i) => from + i * step
+      );
+
+    const observer = new IntersectionObserver(callback, {
+      threshold: range(0, 1, 0.01),
+    });
+
+    [...document.querySelectorAll("section")].forEach((element, index) => {
+      element.setAttribute("data-section-index", index);
+      observer.observe(element);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [setActive]);
+}

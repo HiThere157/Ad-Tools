@@ -14,7 +14,7 @@ export default function Expandable({ children, canExpand = true }) {
   return (
     <>
       {canExpand ? (
-        <div className="flex space-x-3">
+        <div className="flex space-x-2">
           <div className="flex flex-col space-y-1 items-center my-1">
             <Button classOverride="p-1" onClick={toggleOpen}>
               {isOpen ? <BsArrowsAngleContract /> : <BsArrowsAngleExpand />}

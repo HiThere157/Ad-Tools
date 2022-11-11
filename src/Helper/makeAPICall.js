@@ -17,23 +17,16 @@ async function makeAPICall(
       throw result.error;
     }
 
-    const res = {
-      isOk: true,
-      output: result.output,
-      command,
-      args,
-    };
-    callback(postProcessor(res.output));
-    return res;
+    callback(postProcessor(result.output));
+    return true;
   } catch (error) {
-    const res = {
+    errorCallback({
       isOk: false,
       error: error.toString(),
       command,
       args,
-    };
-    errorCallback(res);
-    return res;
+    });
+    return false;
   }
 }
 
@@ -43,7 +36,7 @@ function getPropertiesWrapper(AdObject) {
     return { key: property, value: AdObject[property] };
   });
 }
- 
+
 function makeToList(AdObject) {
   if (!Array.isArray(AdObject)) {
     return [AdObject];

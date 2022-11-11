@@ -41,7 +41,7 @@ function FilterMenu({ isOpen, columns, filter, onFilterChange }) {
   return (
     <>
       {isOpen ? (
-        <div className="px-1 border-2 outline-none rounded-md dark:bg-primaryControl dark:border-primaryBorder h-fit">
+        <div className="container">
           {columns.map((column) => {
             return (
               <div className="mb-1" key={column.key}>

@@ -63,7 +63,7 @@ export default function Table({ title, name, columns, entries, error }) {
   };
 
   return (
-    <>
+    <section>
       <Title title={title} results={entries} />
       <div className="flex space-x-1">
         <ActionMenu
@@ -94,6 +94,6 @@ export default function Table({ title, name, columns, entries, error }) {
           <ErrorMessage error={error} />
         </div>
       </div>
-    </>
+    </section>
   );
 }

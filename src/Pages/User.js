@@ -8,6 +8,7 @@ import {
 } from "../Helper/makeAPICall";
 
 import Loader from "../Components/PulseLoader";
+import TableOfContents from "../Components/TableOfContents";
 import Input from "../Components/Input";
 import Button from "../Components/Button";
 import Dropdown from "../Components/Dropdown";
@@ -64,6 +65,7 @@ export default function UserPage() {
 
   return (
     <>
+      <TableOfContents />
       <div className="input-bar">
         <Input
           label="User ID:"
@@ -90,7 +92,7 @@ export default function UserPage() {
         <Table
           title="User Memberships"
           name="user_memberof"
-          columns={columns.memberof}
+          columns={columns.memberOf}
           entries={memberOf}
           error={memberOfError}
         />
