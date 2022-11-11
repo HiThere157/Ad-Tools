@@ -10,7 +10,7 @@ import {
 
 export default function NavBar({ isOpen }) {
   return (
-    <nav className="flex flex-col p-3 dark:bg-secondaryBg">
+    <nav className="flex flex-col p-2 dark:bg-secondaryBg">
       <NavItem
         to="/user"
         icon={<BsFillPersonLinesFill />}
@@ -29,7 +29,7 @@ export default function NavBar({ isOpen }) {
         text="Computer"
         isOpen={isOpen}
       />
-      <hr className="my-4" />
+      <hr className="my-2 dark:border-secondaryBorderAccent" />
       <NavItem
         to="/aadUser"
         icon={<BsFillPersonLinesFill />}
@@ -42,7 +42,7 @@ export default function NavBar({ isOpen }) {
         text="Azure Group"
         isOpen={isOpen}
       />
-      <hr className="my-4" />
+      <hr className="my-2 dark:border-secondaryBorderAccent" />
       <NavItem
         to="/history"
         icon={<BsClockHistory />}
@@ -72,7 +72,7 @@ function NavItem({ to, icon, text, isOpen }) {
     >
       <div className="flex flex-row items-center p-1">
         <div className="text-xl">{icon}</div>
-        {isOpen ? <span className="ml-3 whitespace-nowrap">{text}</span> : ""}
+        {isOpen ? <span className="ml-2 whitespace-nowrap">{text}</span> : ""}
       </div>
     </NavLink>
   );

@@ -3,8 +3,9 @@ import { useSessionStorage } from "../../Helper/useStorage";
 
 import { TableElement, NoItems, ErrorMessage } from "./TableElement";
 import { ActionMenu, FilterMenu } from "./ActionMenu";
+import Title from "./Title";
 
-export default function Table({ name, columns, entries, error }) {
+export default function Table({ title, name, columns, entries, error }) {
   const [sortedColumn, setSortedColumn] = useSessionStorage(
     name + "_sortedColumn",
     ""
@@ -62,34 +63,37 @@ export default function Table({ name, columns, entries, error }) {
   };
 
   return (
-    <div className="flex space-x-1">
-      <ActionMenu
-        onResetTable={resetTable}
-        onCopy={copyToClip}
-        onFilter={() => {
-          setIsFilterOpen(!isFilterOpen);
-        }}
-        isCopyHighlighted={isCopyHighlighted}
-        isFilterHighlighted={isFilterHighlighted}
-      />
-      <FilterMenu
-        isOpen={isFilterOpen}
-        columns={columns}
-        filter={filter}
-        onFilterChange={updateFilter}
-      />
-      <div className="border-2 border-primaryBorder rounded-md overflow-hidden w-full">
-        <TableElement
-          entries={entries}
-          columns={columns}
-          sortDesc={sortDesc}
-          sortedColumn={sortedColumn}
-          filter={filter}
-          onHeaderClick={updateSortArguments}
+    <>
+      <Title title={title} results={entries} />
+      <div className="flex space-x-1">
+        <ActionMenu
+          onResetTable={resetTable}
+          onCopy={copyToClip}
+          onFilter={() => {
+            setIsFilterOpen(!isFilterOpen);
+          }}
+          isCopyHighlighted={isCopyHighlighted}
+          isFilterHighlighted={isFilterHighlighted}
         />
-        <NoItems isOpen={entries.length === 0 && !error.error} />
-        <ErrorMessage error={error} />
+        <FilterMenu
+          isOpen={isFilterOpen}
+          columns={columns}
+          filter={filter}
+          onFilterChange={updateFilter}
+        />
+        <div className="border-2 border-primaryBorder rounded-md overflow-auto">
+          <TableElement
+            entries={entries}
+            columns={columns}
+            sortDesc={sortDesc}
+            sortedColumn={sortedColumn}
+            filter={filter}
+            onHeaderClick={updateSortArguments}
+          />
+          <NoItems isOpen={entries.length === 0 && !error.error} />
+          <ErrorMessage error={error} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -11,6 +11,14 @@ function TableElement({
   filter,
   onHeaderClick,
 }) {
+  const stringify = (anything) => {
+    if (typeof anything === "object") {
+      return JSON.stringify(anything);
+    }
+
+    return anything;
+  };
+
   const sortArray = (array) => {
     return array.slice().sort((a, b) => {
       if (!sortDesc) {
@@ -33,7 +41,7 @@ function TableElement({
           `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
           "i"
         );
-        if (!regex.test(entry[key])) {
+        if (!regex.test(stringify(entry[key]))) {
           isMatch = false;
         }
       });

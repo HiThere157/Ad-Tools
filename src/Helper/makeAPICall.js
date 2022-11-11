@@ -7,6 +7,9 @@ async function makeAPICall(
   callback = () => {},
   errorCallback = () => {}
 ) {
+  callback([]);
+  errorCallback({});
+
   try {
     const result = await window.electronAPI.executeCommand(command, args);
 
@@ -34,12 +37,13 @@ async function makeAPICall(
   }
 }
 
+// Wrap all Properties in {key: [key], value: [value]} objects (attributes table)
 function getPropertiesWrapper(AdObject) {
   return AdObject.PropertyNames.map((property) => {
     return { key: property, value: AdObject[property] };
   });
 }
-
+ 
 function makeToList(AdObject) {
   if (!Array.isArray(AdObject)) {
     return [AdObject];

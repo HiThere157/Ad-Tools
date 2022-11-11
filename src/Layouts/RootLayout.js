@@ -3,7 +3,6 @@ import { useLocalStorage } from "../Helper/useStorage";
 
 import Button from "../Components/Button";
 import NavBar from "../Components/NavBar";
-import ScrollTop from "../Components/ScrollTop";
 
 import { BsListUl } from "react-icons/bs";
 
@@ -11,24 +10,25 @@ export default function RootLayout({ children }) {
   const [isNavOpen, setIsNavOpen] = useLocalStorage("main_isNavOpen", true);
 
   return (
-    <main className="flex flex-col dark:text-foreground dark:bg-primaryBg min-h-screen">
+    <main className="flex flex-col dark:text-foreground dark:bg-primaryBg h-screen">
       <Header
         onNavOpen={() => {
           setIsNavOpen(!isNavOpen);
         }}
       />
-      <div className="flex flex-grow">
+      <div className="flex flex-grow min-h-0">
         <NavBar isOpen={isNavOpen} />
-        <article className="p-4 w-full">{children}</article>
+        <article className="flex-grow p-4 min-w-0 overflow-auto">
+          {children}
+        </article>
       </div>
-      <ScrollTop />
     </main>
   );
 }
 
 function Header({ onNavOpen }) {
   return (
-    <div className="flex space-x-4 top-0 w-full p-2 border-b-2 dark:bg-secondaryBg dark:border-secondaryBorderAccent">
+    <div className="flex space-x-3 top-0 w-full p-1 border-b-2 dark:bg-secondaryBg dark:border-secondaryBorderAccent">
       <Button classOverride="text-xl mx-1 px-3 border-0" onClick={onNavOpen}>
         <BsListUl />
       </Button>

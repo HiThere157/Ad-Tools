@@ -3,13 +3,16 @@
 @tailwind utilities;
 
 html {
-  width: fit-content;
-  min-width: 100%;
+  width: 100%;
 }
 
 @layer components {
   .control {
     @apply border-2 outline-none rounded-md px-2
     disabled:opacity-50 disabled:cursor-not-allowed
+  }
+
+  .input-bar {
+    @apply flex space-x-2 items-center mb-3
   }
 }
