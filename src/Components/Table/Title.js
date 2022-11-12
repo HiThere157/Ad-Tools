@@ -4,7 +4,9 @@ export default function Title({ title, n }) {
       <h2 className="text-2xl font-bold" style={{ scrollMarginTop: "60px" }}>
         {title}
       </h2>
-      <span className="dark:text-foregroundAccent">{n} Results</span>
+      <span className="dark:text-foregroundAccent">
+        {n} {n === 1 ? "Result" : "Results"}
+      </span>
     </div>
   );
 }

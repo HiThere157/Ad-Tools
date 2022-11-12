@@ -40,11 +40,11 @@ function useStorage(storage, key, initialValue) {
 }
 
 function useSessionStorage(key, initialValue) {
-  return useStorage(window.sessionStorage, key, initialValue);
+  return [...useStorage(window.sessionStorage, key, initialValue), key];
 }
 
 function useLocalStorage(key, initialValue) {
-  return useStorage(window.localStorage, key, initialValue);
+  return [...useStorage(window.localStorage, key, initialValue), key];
 }
 
 export { useSessionStorage, useLocalStorage };
