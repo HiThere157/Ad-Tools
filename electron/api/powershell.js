@@ -4,6 +4,7 @@ const { quote } = require("shell-quote");
 const allowedCommands = [
   "Get-ADUser",
   "Get-ADGroup",
+  "Get-ADGroupMember",
   "Get-ADComputer",
   "Get-ADPrincipalGroupMembership",
   "Resolve-DnsName",

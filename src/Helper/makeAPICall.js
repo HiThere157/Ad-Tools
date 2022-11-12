@@ -7,8 +7,16 @@ async function makeAPICall(
   callback = () => {},
   errorCallback = () => {}
 ) {
-  callback([]);
-  errorCallback({});
+  const postProcessorList = makeToList(postProcessor);
+  const callBackList = makeToList(callback);
+  const errorCallBackList = makeToList(errorCallback);
+
+  callBackList.forEach((callback) => {
+    callback([]);
+  });
+  errorCallBackList.forEach((errorCallback) => {
+    errorCallback([]);
+  });
 
   try {
     const result = await window.electronAPI.executeCommand(command, args);
@@ -17,14 +25,19 @@ async function makeAPICall(
       throw result.error;
     }
 
-    callback(postProcessor(result.output));
+    callBackList.forEach((callback, index) => {
+      callback(postProcessorList[index](result.output));
+    });
+
     return true;
   } catch (error) {
-    errorCallback({
-      isOk: false,
-      error: error.toString(),
-      command,
-      args,
+    errorCallBackList.forEach((errorCallback) => {
+      errorCallback({
+        isOk: false,
+        error: error.toString(),
+        command,
+        args,
+      });
     });
     return false;
   }
@@ -37,6 +50,18 @@ function getPropertiesWrapper(AdObject) {
   });
 }
 
+// Get Memberof Property from Get-AdUser Output and extract information
+function getMembershipFromAdUser(AdObject) {
+  const getCN = (dn) => {
+    const cn = dn.split(",").filter((unit) => unit.startsWith("CN="))[0];
+    return cn?.split("=")[1] ?? "";
+  };
+
+  return AdObject.MemberOf.map((group) => {
+    return { Name: getCN(group), DistinguishedName: group };
+  });
+}
+
 function makeToList(AdObject) {
   if (!Array.isArray(AdObject)) {
     return [AdObject];
@@ -44,4 +69,9 @@ function makeToList(AdObject) {
   return AdObject;
 }
 
-export { makeAPICall, getPropertiesWrapper, makeToList };
+export {
+  makeAPICall,
+  getPropertiesWrapper,
+  getMembershipFromAdUser,
+  makeToList,
+};

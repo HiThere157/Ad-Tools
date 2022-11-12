@@ -4,7 +4,7 @@ import { useSessionStorage } from "../Helper/useStorage";
 import {
   makeAPICall,
   getPropertiesWrapper,
-  makeToList,
+  getMembershipFromAdUser,
 } from "../Helper/makeAPICall";
 
 import Loader from "../Components/PulseLoader";
@@ -18,7 +18,7 @@ import { domains, columns } from "../Config/default";
 
 export default function UserPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const [userID, setUserID] = useSessionStorage("user_userid", "");
+  const [userID, setUserID] = useSessionStorage("user_id", "");
   const [domain, setDomain] = useSessionStorage("user_domain", domains[0]);
 
   const [attributes, setAttributes] = useSessionStorage("user_attributes", []);
@@ -36,29 +36,17 @@ export default function UserPage() {
   const runQuery = async () => {
     setIsLoading(true);
 
-    await Promise.all([
-      makeAPICall(
-        "Get-ADUser",
-        {
-          Identity: userID,
-          Server: domain,
-          Properties: "*",
-        },
-        getPropertiesWrapper,
-        setAttributes,
-        setAttributesError
-      ),
-      makeAPICall(
-        "Get-ADPrincipalGroupMembership",
-        {
-          Identity: userID,
-          Server: domain,
-        },
-        makeToList,
-        setMemberOf,
-        setMemberOfError
-      ),
-    ]);
+    await makeAPICall(
+      "Get-ADUser",
+      {
+        Identity: userID,
+        Server: domain,
+        Properties: "*",
+      },
+      [getPropertiesWrapper, getMembershipFromAdUser],
+      [setAttributes, setMemberOf],
+      [setAttributesError, setMemberOfError]
+    );
 
     setIsLoading(false);
   };
