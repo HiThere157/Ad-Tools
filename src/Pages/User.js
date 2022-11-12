@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Helper/useStorage";
 
 import {
@@ -7,17 +7,17 @@ import {
   getPropertiesWrapper,
   getMembershipFromAdUser,
 } from "../Helper/makeAPICall";
+import { redirectToGroup } from "../Helper/redirects";
 
 import InputBar from "../Components/InputBar";
-import TableOfContents from "../Components/TableOfContents";
-import ScrollPosition from "../Components/ScrollPosition";
+import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
+import ScrollPosition from "../Components/ScrollPosition";
 
 import { columns } from "../Config/default";
 
 export default function UserPage() {
   const p = useLocation().pathname.substring(1);
-  // const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
@@ -25,7 +25,14 @@ export default function UserPage() {
   const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_a`, {});
   const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_mo`, {});
 
+  const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
+  useEffect(() => {
+    if (reQuery) runQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reQuery]);
+
   const runQuery = async () => {
+    setReQuery(false);
     setIsLoading(true);
     await makeAPICall(
       "Get-ADUser",
@@ -40,12 +47,6 @@ export default function UserPage() {
     setIsLoading(false);
   };
 
-  // const memberOfRedirect = (entry) => {
-  //   window.sessionStorage.setItem("group_id", JSON.stringify(entry.Name));
-  //   window.sessionStorage.setItem("group_domain", JSON.stringify(domain));
-  //   navigate("/group");
-  // };
-
   return (
     <article>
       <InputBar
@@ -54,21 +55,23 @@ export default function UserPage() {
         onChange={setQuery}
         onSubmit={runQuery}
       />
-      <Table
-        title="User Attributes"
-        name={attribsKey}
-        columns={columns.attribute}
-        data={attribs}
-      />
-      <br />
-      <Table
-        title="User Memberships"
-        name={memberOfKey}
-        columns={columns.memberOf}
-        data={memberOf}
-        // onRedirect={memberOfRedirect}
-      />
-      <TableOfContents />
+      <TableLayout>
+        <Table
+          title="User Attributes"
+          name={attribsKey}
+          columns={columns.attribute}
+          data={attribs}
+        />
+        <Table
+          title="User Memberships"
+          name={memberOfKey}
+          columns={columns.memberOf}
+          data={memberOf}
+          onRedirect={(entry) => {
+            redirectToGroup(entry, query.domain);
+          }}
+        />
+      </TableLayout>
       <ScrollPosition name={p} />
     </article>
   );

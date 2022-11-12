@@ -13,13 +13,15 @@ export default function InputBar({ isLoading, query, onChange, onSubmit }) {
 
   useEffect(() => {
     onChange({ input, domain });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input, domain]);
 
   return (
-    <div className="input-bar">
+    <div className="flex flex-wrap items-center [&>*]:m-1 mb-2">
       <Input
         label="User ID:"
         value={input}
+        classOverride="w-64"
         onChange={setInput}
         onEnter={onSubmit}
       />

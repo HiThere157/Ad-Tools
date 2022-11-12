@@ -15,7 +15,9 @@ export default function useIntersectionObserver(headings, setActive) {
           return b.intersectionRect.height - a.intersectionRect.height;
         });
 
-      setActive(Number(visible[0].target.getAttribute("data-section-index")));
+      if(visible.length !== 0){
+        setActive(Number(visible[0].target.getAttribute("data-section-index")));
+      }
     };
 
     const range = (from, to, step) =>

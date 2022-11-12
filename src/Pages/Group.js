@@ -1,5 +1,5 @@
-import { useState, createRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Helper/useStorage";
 
 import {
@@ -10,9 +10,9 @@ import {
 } from "../Helper/makeAPICall";
 
 import InputBar from "../Components/InputBar";
-import TableOfContents from "../Components/TableOfContents";
-import ScrollPosition from "../Components/ScrollPosition";
+import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
+import ScrollPosition from "../Components/ScrollPosition";
 
 import { columns } from "../Config/default";
 
@@ -26,7 +26,14 @@ export default function GroupPage() {
   const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_mo`, {});
   const [members, setMembers, membersKey] = useSessionStorage(`${p}_m`, {});
 
+  const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
+  useEffect(() => {
+    if (reQuery) runQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reQuery]);
+
   const runQuery = async () => {
+    setReQuery(false);
     setIsLoading(true);
     await Promise.all([
       makeAPICall(
@@ -57,27 +64,26 @@ export default function GroupPage() {
         onChange={setQuery}
         onSubmit={runQuery}
       />
-      <Table
-        title="Group Attributes"
-        name={attribsKey}
-        columns={columns.attribute}
-        data={attribs}
-      />
-      <br />
-      <Table
-        title="Group Members"
-        name={membersKey}
-        columns={columns.members}
-        data={members}
-      />
-      <br />
-      <Table
-        title="Group Memberships"
-        name={memberOfKey}
-        columns={columns.memberOf}
-        data={memberOf}
-      />
-      <TableOfContents />
+      <TableLayout>
+        <Table
+          title="Group Attributes"
+          name={attribsKey}
+          columns={columns.attribute}
+          data={attribs}
+        />
+        <Table
+          title="Group Members"
+          name={membersKey}
+          columns={columns.members}
+          data={members}
+        />
+        <Table
+          title="Group Memberships"
+          name={memberOfKey}
+          columns={columns.memberOf}
+          data={memberOf}
+        />
+      </TableLayout>
       <ScrollPosition name={p} />
     </article>
   );

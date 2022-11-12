@@ -12,10 +12,6 @@ html {
     disabled:opacity-50 disabled:cursor-not-allowed
   }
 
-  .input-bar {
-    @apply flex space-x-2 items-center mb-3
-  }
-
   .container {
     @apply px-1 border-2 outline-none rounded-md dark:bg-primaryControl dark:border-primaryBorder h-fit w-fit
   }

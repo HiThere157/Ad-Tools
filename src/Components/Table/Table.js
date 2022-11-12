@@ -10,7 +10,7 @@ export default function Table({
   name,
   columns,
   data,
-  onRedirect = () => {},
+  onRedirect,
 }) {
   const [sortedColumn, setSortedColumn] = useSessionStorage(
     name + "_sortedColumn",

@@ -1,7 +1,11 @@
 import Button from "../Button";
 import Expandable from "../Expandable";
 
-import { BsCaretDownFill, BsExclamationOctagon } from "react-icons/bs";
+import {
+  BsCaretDownFill,
+  BsExclamationOctagon,
+  BsSearch,
+} from "react-icons/bs";
 
 function TableElement({
   entries = [],
@@ -92,23 +96,23 @@ function TableElement({
       <tbody>
         {filterArray(sortArray(entries)).map((entry, index) => {
           return (
-            <tr
-              key={index}
-              onClick={() => {
-                onRedirect(entry);
-              }}
-              className="dark:hover:bg-secondaryBg"
-            >
+            <tr key={index} className="dark:hover:bg-secondaryBg">
               {columns.map((column, index) => {
                 return (
                   <td
                     key={index}
                     className={
-                      "px-2 whitespace-nowrap dark:border-primaryBorder " +
+                      "relative group px-2 whitespace-nowrap dark:border-primaryBorder " +
                       (index === 0 ? "border-y" : "border")
                     }
                   >
                     <TableCell text={entry[column.key]} />
+                    <RedirectButton
+                      isVisible={!!onRedirect}
+                      onClick={() => {
+                        if (onRedirect) onRedirect(entry);
+                      }}
+                    />
                   </td>
                 );
               })}
@@ -139,6 +143,23 @@ function TableCell({ text }) {
     default:
       return text;
   }
+}
+
+function RedirectButton({ isVisible, onClick }) {
+  return (
+    <>
+      {isVisible ? (
+        <Button
+          onClick={onClick}
+          classOverride="absolute right-2 top-1/2 translate-y-[-50%] p-1 scale-0 group-hover:scale-100"
+        >
+          <BsSearch />
+        </Button>
+      ) : (
+        ""
+      )}
+    </>
+  );
 }
 
 function ErrorMessage({ error }) {
