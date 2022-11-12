@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, createRef } from "react";
 import { useSessionStorage } from "../Helper/useStorage";
+import useScrollPos from "../Helper/useScrollPos";
 
 import {
   makeAPICall,
@@ -18,30 +19,19 @@ import Table from "../Components/Table/Table";
 import { domains, columns } from "../Config/default";
 
 export default function GroupPage() {
+  const articeRef = createRef();
+  useScrollPos(articeRef, "group_scroll");
+
   const [isLoading, setIsLoading] = useState(false);
   const [groupID, setGroupID] = useSessionStorage("group_id", "");
   const [domain, setDomain] = useSessionStorage("group_domain", domains[0]);
 
-  const [attributes, setAttributes] = useSessionStorage("group_attributes", []);
-  const [memberOf, setMemberOf] = useSessionStorage("group_memberof", []);
-  const [members, setMembers] = useSessionStorage("group_members", []);
-
-  const [attributesError, setAttributesError] = useSessionStorage(
-    "group_attributesError",
-    {}
-  );
-  const [memberOfError, setMemberOfError] = useSessionStorage(
-    "group_memberofError",
-    {}
-  );
-  const [membersError, setMembersError] = useSessionStorage(
-    "group_membersError",
-    {}
-  );
+  const [attributes, setAttributes] = useSessionStorage("group_attributes", {});
+  const [memberOf, setMemberOf] = useSessionStorage("group_memberof", {});
+  const [members, setMembers] = useSessionStorage("group_members", {});
 
   const runQuery = async () => {
     setIsLoading(true);
-
     await Promise.all([
       makeAPICall(
         "Get-ADGroup",
@@ -51,34 +41,29 @@ export default function GroupPage() {
           Properties: "*",
         },
         [getPropertiesWrapper, getMembershipFromAdUser],
-        [setAttributes, setMemberOf],
-        [setAttributesError, setMemberOfError]
+        [setAttributes, setMemberOf]
       ),
       makeAPICall(
         "Get-ADGroupMember",
         { Identity: groupID, Server: domain },
         makeToList,
-        setMembers,
-        setMembersError
+        setMembers
       ),
     ]);
-
     setIsLoading(false);
   };
 
   return (
-    <>
+    <article ref={articeRef}>
       <div className="input-bar">
         <Input
-          label="User ID:"
+          label="Group ID:"
           value={groupID}
           onChange={setGroupID}
           onEnter={runQuery}
         />
         <Dropdown items={domains} value={domain} onChange={setDomain} />
-        <Button onClick={runQuery} disabled={isLoading}>
-          Run
-        </Button>
+        <Button onClick={runQuery} disabled={isLoading} children="Run" />
         <Loader isVisible={isLoading} />
       </div>
 
@@ -87,27 +72,24 @@ export default function GroupPage() {
           title="Group Attributes"
           name="group_attributes"
           columns={columns.attribute}
-          entries={attributes}
-          error={attributesError}
-        />
-        <br />
-        <Table
-          title="Group Memberships"
-          name="group_memberof"
-          columns={columns.memberOf}
-          entries={memberOf}
-          error={memberOfError}
+          data={attributes}
         />
         <br />
         <Table
           title="Group Members"
           name="group_members"
           columns={columns.members}
-          entries={members}
-          error={membersError}
+          data={members}
+        />
+        <br />
+        <Table
+          title="Group Memberships"
+          name="group_memberof"
+          columns={columns.memberOf}
+          data={memberOf}
         />
       </div>
       <TableOfContents />
-    </>
+    </article>
   );
 }

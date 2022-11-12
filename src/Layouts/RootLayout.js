@@ -18,9 +18,7 @@ export default function RootLayout({ children }) {
       />
       <div className="flex flex-grow min-h-0">
         <NavBar isOpen={isNavOpen} />
-        <article className="flex-grow p-4 min-w-0 overflow-auto">
-          {children}
-        </article>
+        <div className="flex-grow p-4 min-w-0 overflow-auto">{children}</div>
       </div>
     </main>
   );

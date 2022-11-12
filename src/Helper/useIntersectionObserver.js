@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export default function useIntersectionObserver(setActive) {
+export default function useIntersectionObserver(headings, setActive) {
   const elements = useRef({});
   useEffect(() => {
     const callback = (headings) => {
@@ -27,13 +27,15 @@ export default function useIntersectionObserver(setActive) {
       threshold: range(0, 1, 0.01),
     });
 
-    [...document.querySelectorAll("section")].forEach((element, index) => {
-      element.setAttribute("data-section-index", index);
-      observer.observe(element);
-    });
+    headings
+      .map((heading) => heading.parentElement.parentElement)
+      .forEach((element, index) => {
+        element.setAttribute("data-section-index", index);
+        observer.observe(element);
+      });
 
     return () => {
       observer.disconnect();
     };
-  }, [setActive]);
+  }, [headings, setActive]);
 }

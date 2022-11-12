@@ -4,12 +4,13 @@ import Expandable from "../Expandable";
 import { BsCaretDownFill, BsExclamationOctagon } from "react-icons/bs";
 
 function TableElement({
-  entries,
+  entries = [],
   columns,
   sortDesc,
   sortedColumn,
   filter,
   onHeaderClick,
+  onRedirect,
 }) {
   const stringify = (anything) => {
     if (typeof anything === "object") {
@@ -91,7 +92,13 @@ function TableElement({
       <tbody>
         {filterArray(sortArray(entries)).map((entry, index) => {
           return (
-            <tr key={index} className="dark:hover:bg-secondaryBg">
+            <tr
+              key={index}
+              onClick={() => {
+                onRedirect(entry);
+              }}
+              className="dark:hover:bg-secondaryBg"
+            >
               {columns.map((column, index) => {
                 return (
                   <td
@@ -134,27 +141,13 @@ function TableCell({ text }) {
   }
 }
 
-function NoItems({ isOpen }) {
-  return (
-    <>
-      {isOpen ? (
-        <div className="flex justify-center my-5">
-          <span>No Items.</span>
-        </div>
-      ) : (
-        ""
-      )}
-    </>
-  );
-}
-
 function ErrorMessage({ error }) {
   return (
     <>
-      {error.error ? (
+      {error ? (
         <div className="flex justify-center items-center space-x-2 my-5 mx-3 text-foregroundError">
           <BsExclamationOctagon className="text-2xl flex-shrink-0" />
-          <span>{error.error}</span>
+          <span>{error}</span>
         </div>
       ) : (
         ""
@@ -163,4 +156,4 @@ function ErrorMessage({ error }) {
   );
 }
 
-export { TableElement, NoItems, ErrorMessage };
+export { TableElement, ErrorMessage };

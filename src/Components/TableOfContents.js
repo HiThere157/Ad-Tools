@@ -8,7 +8,7 @@ export default function TableOfContents() {
   const [headings, setHeadings] = useState([]);
   const [activeIndex, setActiveindex] = useState(0);
 
-  useIntersectionObserver(setActiveindex);
+  useIntersectionObserver(headings, setActiveindex);
   useEffect(() => {
     setHeadings([...document.querySelectorAll("h2")]);
   }, []);

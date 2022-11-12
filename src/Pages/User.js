@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, createRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSessionStorage } from "../Helper/useStorage";
+import useScrollPos from "../Helper/useScrollPos";
 
 import {
   makeAPICall,
@@ -17,25 +19,19 @@ import Table from "../Components/Table/Table";
 import { domains, columns } from "../Config/default";
 
 export default function UserPage() {
+  const navigate = useNavigate();
+  const articeRef = createRef();
+  useScrollPos(articeRef, "user_scroll");
+
   const [isLoading, setIsLoading] = useState(false);
   const [userID, setUserID] = useSessionStorage("user_id", "");
   const [domain, setDomain] = useSessionStorage("user_domain", domains[0]);
 
-  const [attributes, setAttributes] = useSessionStorage("user_attributes", []);
-  const [memberOf, setMemberOf] = useSessionStorage("user_memberof", []);
-
-  const [attributesError, setAttributesError] = useSessionStorage(
-    "user_attributesError",
-    {}
-  );
-  const [memberOfError, setMemberOfError] = useSessionStorage(
-    "user_memberofError",
-    {}
-  );
+  const [attributes, setAttributes] = useSessionStorage("user_attributes", {});
+  const [memberOf, setMemberOf] = useSessionStorage("user_memberof", {});
 
   const runQuery = async () => {
     setIsLoading(true);
-
     await makeAPICall(
       "Get-ADUser",
       {
@@ -44,15 +40,19 @@ export default function UserPage() {
         Properties: "*",
       },
       [getPropertiesWrapper, getMembershipFromAdUser],
-      [setAttributes, setMemberOf],
-      [setAttributesError, setMemberOfError]
+      [setAttributes, setMemberOf]
     );
-
     setIsLoading(false);
   };
 
+  const memberOfRedirect = (entry) => {
+    window.sessionStorage.setItem("group_id", JSON.stringify(entry.Name));
+    window.sessionStorage.setItem("group_domain", JSON.stringify(domain));
+    navigate("/group");
+  };
+
   return (
-    <>
+    <article ref={articeRef}>
       <div className="input-bar">
         <Input
           label="User ID:"
@@ -61,9 +61,7 @@ export default function UserPage() {
           onEnter={runQuery}
         />
         <Dropdown items={domains} value={domain} onChange={setDomain} />
-        <Button onClick={runQuery} disabled={isLoading}>
-          Run
-        </Button>
+        <Button onClick={runQuery} disabled={isLoading} children="Run" />
         <Loader isVisible={isLoading} />
       </div>
 
@@ -72,19 +70,18 @@ export default function UserPage() {
           title="User Attributes"
           name="user_attributes"
           columns={columns.attribute}
-          entries={attributes}
-          error={attributesError}
+          data={attributes}
         />
         <br />
         <Table
           title="User Memberships"
           name="user_memberof"
           columns={columns.memberOf}
-          entries={memberOf}
-          error={memberOfError}
+          data={memberOf}
+          onRedirect={memberOfRedirect}
         />
       </div>
       <TableOfContents />
-    </>
+    </article>
   );
 }

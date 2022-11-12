@@ -4,18 +4,15 @@ async function makeAPICall(
   postProcessor = (AdObject) => {
     return AdObject;
   },
-  callback = () => {},
-  errorCallback = () => {}
+  callback = () => {}
 ) {
   const postProcessorList = makeToList(postProcessor);
   const callBackList = makeToList(callback);
-  const errorCallBackList = makeToList(errorCallback);
 
   callBackList.forEach((callback) => {
-    callback([]);
-  });
-  errorCallBackList.forEach((errorCallback) => {
-    errorCallback([]);
+    callback({
+      output: [],
+    });
   });
 
   try {
@@ -26,17 +23,17 @@ async function makeAPICall(
     }
 
     callBackList.forEach((callback, index) => {
-      callback(postProcessorList[index](result.output));
+      callback({
+        output: postProcessorList[index](result.output),
+      });
     });
 
     return true;
   } catch (error) {
-    errorCallBackList.forEach((errorCallback) => {
-      errorCallback({
-        isOk: false,
+    callBackList.forEach((callback) => {
+      callback({
+        output: [],
         error: error.toString(),
-        command,
-        args,
       });
     });
     return false;

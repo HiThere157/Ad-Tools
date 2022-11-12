@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { useSessionStorage } from "../../Helper/useStorage";
 
-import { TableElement, NoItems, ErrorMessage } from "./TableElement";
+import { TableElement, ErrorMessage } from "./TableElement";
 import { ActionMenu, FilterMenu } from "./ActionMenu";
 import Title from "./Title";
 
-export default function Table({ title, name, columns, entries, error }) {
+export default function Table({
+  title,
+  name,
+  columns,
+  data,
+  onRedirect = () => {},
+}) {
   const [sortedColumn, setSortedColumn] = useSessionStorage(
     name + "_sortedColumn",
     ""
@@ -50,7 +56,7 @@ export default function Table({ title, name, columns, entries, error }) {
 
   const copyToClip = () => {
     let ret = "";
-    entries.forEach((entry) => {
+    data.output?.forEach((entry) => {
       ret += columns.map((column) => entry[column.key]).join("\u{9}") + "\n";
     });
     navigator.clipboard.writeText(ret);
@@ -64,7 +70,7 @@ export default function Table({ title, name, columns, entries, error }) {
 
   return (
     <section>
-      <Title title={title} results={entries} />
+      <Title title={title} n={data.output?.length ?? 0} />
       <div className="flex space-x-1">
         <ActionMenu
           onResetTable={resetTable}
@@ -83,15 +89,15 @@ export default function Table({ title, name, columns, entries, error }) {
         />
         <div className="border-2 border-primaryBorder rounded-md overflow-auto">
           <TableElement
-            entries={entries}
+            entries={data.output}
             columns={columns}
             sortDesc={sortDesc}
             sortedColumn={sortedColumn}
             filter={filter}
             onHeaderClick={updateSortArguments}
+            onRedirect={onRedirect}
           />
-          <NoItems isOpen={entries.length === 0 && !error.error} />
-          <ErrorMessage error={error} />
+          <ErrorMessage error={data.error} />
         </div>
       </div>
     </section>
