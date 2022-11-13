@@ -21,6 +21,7 @@ export default function ScrollPosition({ name }: ScrollPositionProps) {
     return () => {
       containerRef?.removeEventListener("scroll", callback);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, name]);
 
   useEffect(() => {
