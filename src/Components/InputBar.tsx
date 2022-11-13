@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import Input from "./Input";
 import Dropdown from "./Dropdown";
 import Button from "./Button";
-import Loader from "./PulseLoader";
+
+import PulseLoader from "react-spinners/PulseLoader";
 
 import { domains } from "../Config/default";
 type InputBarProps = {
@@ -32,7 +33,12 @@ export default function InputBar({ isLoading, query, onChange, onSubmit }: Input
       />
       <Dropdown items={domains} value={domain} onChange={setDomain} />
       <Button onClick={onSubmit} disabled={isLoading} children="Run" />
-      <Loader isVisible={isLoading} />
+      <PulseLoader
+        size="12px"
+        color="#208CF0"
+        loading={isLoading}
+        speedMultiplier={0.75}
+      />
     </div>
   );
 }

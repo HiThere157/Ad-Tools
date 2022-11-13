@@ -121,8 +121,10 @@ export default function TableElement({
     <table className="w-full">
       <thead>
         <tr>
-          <th className="p-0 whitespace-nowrap dark:bg-primaryControl dark:border-primaryBorder">
-            <Checkbox checked={getMainCheckStatus()} onChange={onMainCheck} />
+          <th className="px-2 whitespace-nowrap dark:bg-primaryControl dark:border-primaryBorder">
+            <div className="flex justify-center">
+              <Checkbox checked={getMainCheckStatus()} onChange={onMainCheck} />
+            </div>
           </th>
           {columns.map((column, index) => {
             return (

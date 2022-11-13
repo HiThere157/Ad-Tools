@@ -13,7 +13,7 @@ export default function FilterMenu({ isOpen, columns, filter, onFilterChange }: 
     <>
       {isOpen ? (
         <div className="container">
-          <div className="mb-1">
+          <div className="mb-1 flex items-center">
             <span className="mr-2">Selected: </span>
             <Checkbox
               checked={filter.__selected__ === "true"}

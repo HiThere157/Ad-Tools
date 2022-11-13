@@ -1,21 +1,48 @@
+import { useState } from "react";
+
 import Button from "../Button";
 
-import { BsFunnel, BsArrowCounterclockwise, BsClipboard } from "react-icons/bs";
+import { BsFunnel, BsArrowCounterclockwise, BsClipboard, BsClipboardCheck } from "react-icons/bs";
 
 type ActionMenuProps = {
   onResetTable: Function,
   onCopy: Function,
+  onCopySelection: Function,
   onFilter: Function,
-  isCopyHighlighted: boolean,
   isFilterHighlighted: boolean,
 };
 export default function ActionMenu({
   onResetTable,
   onCopy,
+  onCopySelection,
   onFilter,
-  isCopyHighlighted,
   isFilterHighlighted,
 }: ActionMenuProps) {
+  const [isCopyHighlighted, setIsCopyHighlighted] = useState(false)
+  const [isCopySelectionHighlighted, setIsCopySelectionHighlighted] = useState(false)
+
+  const onCopyClick = () => {
+    onCopy()
+
+    setIsCopySelectionHighlighted(false)
+    if (isCopyHighlighted) return;
+    setIsCopyHighlighted(true);
+    setTimeout(() => {
+      setIsCopyHighlighted(false);
+    }, 5000);
+  }
+
+  const onCopySelectionClick = () => {
+    onCopySelection()
+
+    setIsCopyHighlighted(false)
+    if (isCopySelectionHighlighted) return;
+    setIsCopySelectionHighlighted(true);
+    setTimeout(() => {
+      setIsCopySelectionHighlighted(false);
+    }, 5000);
+  }
+
   return (
     <div className="flex flex-col space-y-1">
       <Button
@@ -30,10 +57,17 @@ export default function ActionMenu({
       </Button>
       <Button
         classOverride="p-2"
-        onClick={onCopy}
+        onClick={onCopyClick}
         highlight={isCopyHighlighted}
       >
         <BsClipboard />
+      </Button>
+      <Button
+        classOverride="p-2"
+        onClick={onCopySelectionClick}
+        highlight={isCopySelectionHighlighted}
+      >
+        <BsClipboardCheck />
       </Button>
     </div>
   );

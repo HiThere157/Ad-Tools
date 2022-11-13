@@ -30,7 +30,6 @@ export default function Table({ title, name, columns, data, onRedirect }: TableP
     false
   );
 
-  const [isCopyHighlighted, setIsCopyHighlighted] = useState(false);
   const [isFilterHighlighted, setIsFilterHighlighted] = useState(false);
 
   useEffect(() => {
@@ -61,31 +60,26 @@ export default function Table({ title, name, columns, data, onRedirect }: TableP
     setSelected([])
   };
 
-  const copyToClip = () => {
+  const copyToClip = (onlySelected: boolean) => {
     let ret = "";
-    data.output?.forEach((entry) => {
+    data.output?.forEach((entry, index) => {
+      if (onlySelected && !selected.includes(index)) return;
       ret += columns.map((column) => entry[column.key]).join("\u{9}") + "\n";
     });
     navigator.clipboard.writeText(ret);
-
-    if (isCopyHighlighted) return;
-    setIsCopyHighlighted(true);
-    setTimeout(() => {
-      setIsCopyHighlighted(false);
-    }, 5000);
   };
 
   return (
     <section>
-      <Title title={title} n={data.output?.length ?? 0} />
+      <Title title={title} n={data.output?.length ?? 0} nSelected={selected.length} />
       <div className="flex space-x-1">
         <ActionMenu
           onResetTable={resetTable}
           onCopy={copyToClip}
+          onCopySelection={() => { copyToClip(true) }}
           onFilter={() => {
             setIsFilterOpen(!isFilterOpen);
           }}
-          isCopyHighlighted={isCopyHighlighted}
           isFilterHighlighted={isFilterHighlighted}
         />
         <FilterMenu
@@ -94,7 +88,7 @@ export default function Table({ title, name, columns, data, onRedirect }: TableP
           filter={filter}
           onFilterChange={updateFilter}
         />
-        <div className="border-2 border-primaryBorder rounded-md overflow-auto">
+        <div className="border-2 border-primaryBorder rounded-md h-fit min-h-[4.5rem] overflow-auto">
           <TableElement
             entries={data.output}
             columns={columns}
