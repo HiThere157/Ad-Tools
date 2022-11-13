@@ -23,6 +23,7 @@ export default function Table({ title, name, columns, data, onRedirect }: TableP
   );
   const [sortDesc, setSortDesc] = useSessionStorage(name + "_sortDesc", true);
   const [filter, setFilter] = useSessionStorage(name + "_filter", {});
+  const [selected, setSelected] = useSessionStorage(name + "_selected", []);
 
   const [isFilterOpen, setIsFilterOpen] = useSessionStorage(
     name + "_isFilterOpen",
@@ -57,6 +58,7 @@ export default function Table({ title, name, columns, data, onRedirect }: TableP
     setSortedColumn("");
     setSortDesc(true);
     setFilter({});
+    setSelected([])
   };
 
   const copyToClip = () => {
@@ -99,6 +101,8 @@ export default function Table({ title, name, columns, data, onRedirect }: TableP
             sortDesc={sortDesc}
             sortedColumn={sortedColumn}
             filter={filter}
+            selected={selected}
+            onSelectedChange={setSelected}
             onHeaderClick={updateSortArguments}
             onRedirect={onRedirect}
           />

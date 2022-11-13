@@ -1,5 +1,6 @@
 import { ColumnDefinition } from "../../Config/default";
 import Button from "../Button";
+import Checkbox from "../Checkbox";
 import TableCell from "./TableCell";
 import RedirectButton from "./RedirectButton";
 
@@ -11,6 +12,8 @@ type TableElementProps = {
   sortDesc: boolean,
   sortedColumn: string,
   filter: { [key: string]: string },
+  selected: number[],
+  onSelectedChange: Function
   onHeaderClick: Function,
   onRedirect?: Function
 }
@@ -20,16 +23,37 @@ export default function TableElement({
   sortDesc,
   sortedColumn,
   filter,
+  selected,
+  onSelectedChange,
   onHeaderClick,
   onRedirect,
 }: TableElementProps) {
+  const toggleSelected = (id: number) => {
+    const newSelected = [...selected];
+    // check if the entry id is already present the selected entries
+    // if yes remove it, otherwise add it
+    const index = selected.indexOf(id);
+    if (index !== -1) {
+      newSelected.splice(index, 1);
+    } else {
+      newSelected.push(id)
+    }
+    onSelectedChange(newSelected)
+  }
+
   const stringify = (anything: any) => {
     if (typeof anything === "object") {
       return JSON.stringify(anything);
     }
-
     return anything;
   };
+
+  const tagArray = (array: { [key: string]: any }[]) => {
+    // add a unique __id__ field to every entry. used to track selected entries
+    return array.map((entry, index) => {
+      return { __id__: index, ...entry }
+    })
+  }
 
   const sortArray = (array: { [key: string]: any }[]) => {
     return array.slice().sort((a, b) => {
@@ -39,15 +63,23 @@ export default function TableElement({
       if (typeof a === "number" && typeof b === "number") {
         return a[sortedColumn] - b[sortedColumn];
       } else {
-        return b[sortedColumn]?.toString().localeCompare(a[sortedColumn].toString());
+        return b[sortedColumn]?.toString().localeCompare(a[sortedColumn]?.toString());
       }
     });
   };
 
-  const filterArray = (array: { [key: string]: number | string | object }[]) => {
+  const filterArray = (array: { [key: string]: any }[]) => {
     return array.filter((entry) => {
       let isMatch = true;
       Object.entries(filter).forEach(([key, value]) => {
+        // if __selected__ key is present in filter, check selected values
+        // prevent  regex check after
+        if (key === "__selected__") {
+          isMatch = selected.includes(entry.__id__);
+          return;
+        }
+
+        // every other filter value is checked with the entry properties
         const wildcard = value.replace(/[.+^${}()|[\]\\]/g, "\\$&");
         const regex = new RegExp(
           `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
@@ -62,18 +94,41 @@ export default function TableElement({
     });
   };
 
+  const getMainCheckStatus = () => {
+    if (selected.length === 0) {
+      return false;
+    }
+    if (selected.length === entries.length) {
+      return true;
+    }
+    return undefined
+  }
+
+  const onMainCheck = () => {
+    const current = getMainCheckStatus();
+    if (!current) {
+      const newSelected = []
+      for (let i = 0; i < entries.length; i++) {
+        newSelected.push(i)
+      }
+      onSelectedChange(newSelected)
+    } else {
+      onSelectedChange([])
+    }
+  }
+
   return (
     <table className="w-full">
       <thead>
         <tr>
+          <th className="p-0 whitespace-nowrap dark:bg-primaryControl dark:border-primaryBorder">
+            <Checkbox checked={getMainCheckStatus()} onChange={onMainCheck} />
+          </th>
           {columns.map((column, index) => {
             return (
               <th
                 key={index}
-                className={
-                  "p-0 whitespace-nowrap border-primaryBorder " +
-                  (index === 0 ? "" : "border-l")
-                }
+                className="p-0 whitespace-nowrap dark:border-primaryBorder border-l"
               >
                 <Button
                   classOverride="
@@ -101,17 +156,17 @@ export default function TableElement({
       </thead>
 
       <tbody>
-        {filterArray(sortArray(entries)).map((entry, index) => {
+        {filterArray(sortArray(tagArray(entries))).map((entry) => {
           return (
-            <tr key={index} className="dark:hover:bg-secondaryBg">
+            <tr key={entry.__id__} className="dark:hover:bg-secondaryBg">
+              <td className="relative group px-2 whitespace-nowrap dark:border-primaryBorder border-y">
+                <Checkbox checked={selected.includes(entry.__id__)} onChange={() => { toggleSelected(entry.__id__) }} />
+              </td>
               {columns.map((column, index) => {
                 return (
                   <td
                     key={index}
-                    className={
-                      "relative group px-2 whitespace-nowrap dark:border-primaryBorder " +
-                      (index === 0 ? "border-y" : "border")
-                    }
+                    className="relative group px-2 whitespace-nowrap dark:border-primaryBorder border"
                   >
                     <TableCell text={entry[column.key]} />
                     <RedirectButton
