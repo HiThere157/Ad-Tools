@@ -1,12 +1,15 @@
 import { useEffect, useRef } from "react";
 
-export default function useIntersectionObserver(headings, setActive) {
-  const elements = useRef({});
+export default function useIntersectionObserver(
+  headings: HTMLHeadElement[],
+  setActive: Function
+) {
+  const elements = useRef<{ [key: number]: IntersectionObserverEntry }>({});
   useEffect(() => {
-    const callback = (headings) => {
+    const callback = (headings: IntersectionObserverEntry[]) => {
       headings.forEach((heading) => {
-        elements.current[heading.target.getAttribute("data-section-index")] =
-          heading;
+        const index = Number(heading.target.getAttribute("data-section-index"));
+        if (index) elements.current[index] = heading;
       });
 
       const visible = Object.values(elements.current)
@@ -15,12 +18,12 @@ export default function useIntersectionObserver(headings, setActive) {
           return b.intersectionRect.height - a.intersectionRect.height;
         });
 
-      if(visible.length !== 0){
+      if (visible.length !== 0) {
         setActive(Number(visible[0].target.getAttribute("data-section-index")));
       }
     };
 
-    const range = (from, to, step) =>
+    const range = (from: number, to: number, step: number) =>
       [...Array(Math.floor((to - from) / step) + 1)].map(
         (_, i) => from + i * step
       );
@@ -30,10 +33,10 @@ export default function useIntersectionObserver(headings, setActive) {
     });
 
     headings
-      .map((heading) => heading.parentElement.parentElement)
+      .map((heading) => heading.parentElement?.parentElement)
       .forEach((element, index) => {
-        element.setAttribute("data-section-index", index);
-        observer.observe(element);
+        element?.setAttribute("data-section-index", index.toString());
+        if (element) observer.observe(element);
       });
 
     return () => {

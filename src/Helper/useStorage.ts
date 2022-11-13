@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-function useStorage(storage, key, initialValue) {
+function useStorage(
+  storage: { getItem: Function; setItem: Function },
+  key: string,
+  initialValue: any
+) {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
@@ -20,7 +24,7 @@ function useStorage(storage, key, initialValue) {
   });
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage/sessionStorage.
-  const setValue = (value) => {
+  const setValue = (value: any) => {
     try {
       // Allow value to be a function so we have same API as useState
       const valueToStore =
@@ -39,11 +43,11 @@ function useStorage(storage, key, initialValue) {
   return [storedValue, setValue];
 }
 
-function useSessionStorage(key, initialValue) {
+function useSessionStorage(key: string, initialValue: any) {
   return [...useStorage(window.sessionStorage, key, initialValue), key];
 }
 
-function useLocalStorage(key, initialValue) {
+function useLocalStorage(key: string, initialValue: any) {
   return [...useStorage(window.localStorage, key, initialValue), key];
 }
 

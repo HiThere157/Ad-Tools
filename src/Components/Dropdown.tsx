@@ -4,19 +4,25 @@ import Button from "./Button";
 
 import { BsCaretDownFill } from "react-icons/bs";
 
+type DropdownProps = {
+  items: string[],
+  value: string | undefined,
+  disabled?: boolean,
+  onChange: Function
+}
 export default function Dropdown({
   items,
-  value = null,
+  value,
   disabled = false,
-  onChange = () => {},
-}) {
+  onChange,
+}: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(value ?? items[0]);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    function handleClickOutside({ target }: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(target as Node)) {
         setIsOpen(false);
       }
     }
@@ -26,7 +32,7 @@ export default function Dropdown({
     };
   }, [dropdownRef]);
 
-  const changeSelectedItem = (item) => {
+  const changeSelectedItem = (item: string) => {
     setSelectedItem(item);
     onChange(item);
     setIsOpen(false);
@@ -49,7 +55,11 @@ export default function Dropdown({
   );
 }
 
-function DropdownBody({ items, onSelection }) {
+type DropdownBodyProps = {
+  items: string[],
+  onSelection: Function
+}
+function DropdownBody({ items, onSelection }: DropdownBodyProps) {
   return (
     <div className="absolute flex flex-col min-w-full rounded-md overflow-hidden mt-1">
       {items.map((item, index) => {

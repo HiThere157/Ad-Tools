@@ -1,13 +1,20 @@
+import { ColumnDefinition } from "../../Config/default";
 import Button from "../Button";
-import Expandable from "../Expandable";
+import TableCell from "./TableCell";
+import RedirectButton from "./RedirectButton";
 
-import {
-  BsCaretDownFill,
-  BsExclamationOctagon,
-  BsSearch,
-} from "react-icons/bs";
+import { BsCaretDownFill } from "react-icons/bs";
 
-function TableElement({
+type TableElementProps = {
+  entries?: { [key: string]: any }[],
+  columns: ColumnDefinition[],
+  sortDesc: boolean,
+  sortedColumn: string,
+  filter: { [key: string]: string },
+  onHeaderClick: Function,
+  onRedirect?: Function
+}
+export default function TableElement({
   entries = [],
   columns,
   sortDesc,
@@ -15,8 +22,8 @@ function TableElement({
   filter,
   onHeaderClick,
   onRedirect,
-}) {
-  const stringify = (anything) => {
+}: TableElementProps) {
+  const stringify = (anything: any) => {
     if (typeof anything === "object") {
       return JSON.stringify(anything);
     }
@@ -24,7 +31,7 @@ function TableElement({
     return anything;
   };
 
-  const sortArray = (array) => {
+  const sortArray = (array: { [key: string]: any }[]) => {
     return array.slice().sort((a, b) => {
       if (!sortDesc) {
         [a, b] = [b, a];
@@ -32,12 +39,12 @@ function TableElement({
       if (typeof a === "number" && typeof b === "number") {
         return a[sortedColumn] - b[sortedColumn];
       } else {
-        return b[sortedColumn]?.toString().localeCompare(a[sortedColumn]);
+        return b[sortedColumn]?.toString().localeCompare(a[sortedColumn].toString());
       }
     });
   };
 
-  const filterArray = (array) => {
+  const filterArray = (array: { [key: string]: number | string | object }[]) => {
     return array.filter((entry) => {
       let isMatch = true;
       Object.entries(filter).forEach(([key, value]) => {
@@ -123,58 +130,3 @@ function TableElement({
     </table>
   );
 }
-
-function TableCell({ text }) {
-  const stringify = (object) => {
-    return JSON.stringify(object, null, 2);
-  };
-
-  switch (typeof text) {
-    case "object":
-      return (
-        <Expandable canExpand={stringify(text)?.split("\n").length !== 1}>
-          <pre>{stringify(text)}</pre>
-        </Expandable>
-      );
-
-    case "boolean":
-      return <>{text ? "True" : "False"}</>;
-
-    default:
-      return text;
-  }
-}
-
-function RedirectButton({ isVisible, onClick }) {
-  return (
-    <>
-      {isVisible ? (
-        <Button
-          onClick={onClick}
-          classOverride="absolute right-2 top-1/2 translate-y-[-50%] p-1 scale-0 group-hover:scale-100"
-        >
-          <BsSearch />
-        </Button>
-      ) : (
-        ""
-      )}
-    </>
-  );
-}
-
-function ErrorMessage({ error }) {
-  return (
-    <>
-      {error ? (
-        <div className="flex justify-center items-center space-x-2 my-5 mx-3 text-foregroundError">
-          <BsExclamationOctagon className="text-2xl flex-shrink-0" />
-          <span>{error}</span>
-        </div>
-      ) : (
-        ""
-      )}
-    </>
-  );
-}
-
-export { TableElement, ErrorMessage };

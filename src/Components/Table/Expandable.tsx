@@ -1,10 +1,14 @@
 import { useState } from "react";
 
-import Button from "../Components/Button";
+import Button from "../Button";
 
 import { BsArrowsAngleContract, BsArrowsAngleExpand } from "react-icons/bs";
 
-export default function Expandable({ children, canExpand = true }) {
+type ExpandableProps = {
+  children: React.ReactNode,
+  canExpand?: boolean
+}
+export default function Expandable({ children, canExpand = true }: ExpandableProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => {

@@ -5,7 +5,7 @@ import useIntersectionObserver from "../Helper/useIntersectionObserver";
 import { BsFillCaretRightFill, BsFillCaretDownFill } from "react-icons/bs";
 
 export default function TableOfContents() {
-  const [headings, setHeadings] = useState([]);
+  const [headings, setHeadings] = useState<HTMLHeadElement[]>([]);
   const [activeIndex, setActiveindex] = useState(0);
 
   useIntersectionObserver(headings, setActiveindex);

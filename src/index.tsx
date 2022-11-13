@@ -11,7 +11,7 @@ import GroupPage from "./Pages/Group";
 import ComputerPage from "./Pages/Computer";
 import SettingsPage from "./Pages/Settings";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
     <HashRouter>

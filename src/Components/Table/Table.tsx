@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import { useSessionStorage } from "../../Helper/useStorage";
 
-import { TableElement, ErrorMessage } from "./TableElement";
-import { ActionMenu, FilterMenu } from "./ActionMenu";
+import { ColumnDefinition } from "../../Config/default";
+import { ResultData } from "../../Helper/makeAPICall";
+import TableElement from "./TableElement";
+import ActionMenu from "./ActionMenu";
+import FilterMenu from "./FilterMenu";
+import ErrorMessage from "./ErrorMessage";
 import Title from "./Title";
 
-export default function Table({
-  title,
-  name,
-  columns,
-  data,
-  onRedirect,
-}) {
+type TableProps = {
+  title: string,
+  name: string,
+  columns: ColumnDefinition[],
+  data: ResultData,
+  onRedirect?: Function
+}
+export default function Table({ title, name, columns, data, onRedirect }: TableProps) {
   const [sortedColumn, setSortedColumn] = useSessionStorage(
     name + "_sortedColumn",
     ""
@@ -31,7 +36,7 @@ export default function Table({
     setIsFilterHighlighted(Object.keys(filter).length !== 0);
   }, [filter]);
 
-  const updateSortArguments = (key) => {
+  const updateSortArguments = (key: string) => {
     if (sortedColumn === key) {
       setSortDesc(!sortDesc);
     } else {
@@ -40,7 +45,7 @@ export default function Table({
     }
   };
 
-  const updateFilter = (key, filterString) => {
+  const updateFilter = (key: string, filterString: string) => {
     const newFilter = { ...filter, [key]: filterString.trim() };
     Object.keys(newFilter).forEach(
       (key) => newFilter[key] === "" && delete newFilter[key]

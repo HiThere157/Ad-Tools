@@ -67,7 +67,7 @@ export default function UserPage() {
           name={memberOfKey}
           columns={columns.memberOf}
           data={memberOf}
-          onRedirect={(entry) => {
+          onRedirect={(entry: { Name: string }) => {
             redirectToGroup(entry, query.domain);
           }}
         />

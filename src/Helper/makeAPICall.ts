@@ -1,10 +1,28 @@
+type ElectronAPI = Window &
+  typeof globalThis & {
+    electronAPI: { getExecutingUser: Function; executeCommand: Function };
+  };
+
+type CommandArgs = {
+  Identity?: string;
+  Server?: string;
+  Properties?: string;
+  Name?: string;
+  QuickTimeout?: string;
+};
+
+type ResultData = {
+  output?: { [key: string]: any }[];
+  error: string;
+};
+
 async function makeAPICall(
-  command,
-  args,
-  postProcessor = (AdObject) => {
+  command: string,
+  args: CommandArgs,
+  postProcessor: Function | Function[] = (AdObject: object) => {
     return AdObject;
   },
-  callback = () => {}
+  callback: Function | Function[] = () => {}
 ) {
   const postProcessorList = makeToList(postProcessor);
   const callBackList = makeToList(callback);
@@ -16,7 +34,10 @@ async function makeAPICall(
   });
 
   try {
-    const result = await window.electronAPI.executeCommand(command, args);
+    const result = await (window as ElectronAPI).electronAPI.executeCommand(
+      command,
+      args
+    );
 
     if (result.error) {
       throw result.error;
@@ -29,7 +50,7 @@ async function makeAPICall(
     });
 
     return true;
-  } catch (error) {
+  } catch (error: any) {
     callBackList.forEach((callback) => {
       callback({
         output: [],
@@ -41,15 +62,18 @@ async function makeAPICall(
 }
 
 // Wrap all Properties in {key: [key], value: [value]} objects (attributes table)
-function getPropertiesWrapper(AdObject) {
+function getPropertiesWrapper(AdObject: {
+  PropertyNames: string[];
+  [key: string]: string[];
+}): { [key: string]: any } {
   return AdObject.PropertyNames.map((property) => {
     return { key: property, value: AdObject[property] };
   });
 }
 
 // Get Memberof Property from Get-AdUser Output and extract information
-function getMembershipFromAdUser(AdObject) {
-  const getCN = (dn) => {
+function getMembershipFromAdUser(AdObject: { MemberOf: string[] }): object[] {
+  const getCN = (dn: string) => {
     const cn = dn.split(",").filter((unit) => unit.startsWith("CN="))[0];
     return cn?.split("=")[1] ?? "";
   };
@@ -59,7 +83,7 @@ function getMembershipFromAdUser(AdObject) {
   });
 }
 
-function makeToList(AdObject) {
+function makeToList(AdObject: any[] | any): any[] {
   if (!Array.isArray(AdObject)) {
     return [AdObject];
   }
@@ -72,3 +96,4 @@ export {
   getMembershipFromAdUser,
   makeToList,
 };
+export type { ElectronAPI, ResultData };

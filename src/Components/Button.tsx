@@ -1,10 +1,17 @@
+type ButtonProps = {
+  children?: React.ReactNode,
+  classOverride?: string,
+  disabled?: boolean,
+  highlight?: boolean,
+  onClick: Function
+}
 export default function Button({
   children,
   classOverride = "",
   disabled = false,
   highlight = false,
-  onClick = () => {},
-}) {
+  onClick,
+}: ButtonProps) {
   return (
     <button
       className={
@@ -16,7 +23,7 @@ export default function Button({
           : "dark:enabled:focus-within:border-secondaryBorderAccent ") +
         classOverride
       }
-      onClick={onClick}
+      onClick={() => { onClick() }}
       disabled={disabled}
     >
       {children}

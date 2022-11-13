@@ -1,12 +1,15 @@
 import PulseLoader from "react-spinners/PulseLoader";
 
-export default function Loader({ isVisible }) {
+type LoaderProps = {
+  isVisible: boolean
+}
+export default function Loader({ isVisible }: LoaderProps) {
   return (
     <PulseLoader
       size="12px"
       color="#208CF0"
       loading={isVisible}
-      speedMultiplier="0.75"
+      speedMultiplier={0.75}
     />
   );
 }

@@ -8,7 +8,10 @@ import {
   BsGearFill,
 } from "react-icons/bs";
 
-export default function NavBar({ isOpen }) {
+type NavBarProps = {
+  isOpen: boolean
+}
+export default function NavBar({ isOpen }: NavBarProps) {
   return (
     <nav className="flex flex-col p-2 dark:bg-secondaryBg">
       <NavItem
@@ -59,7 +62,13 @@ export default function NavBar({ isOpen }) {
   );
 }
 
-function NavItem({ to, icon, text, isOpen }) {
+type NavItemProps = {
+  to: string,
+  icon: React.ReactNode,
+  text: string,
+  isOpen: boolean
+}
+function NavItem({ to, icon, text, isOpen }: NavItemProps) {
   return (
     <NavLink
       to={to}

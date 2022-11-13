@@ -6,8 +6,13 @@ import Button from "./Button";
 import Loader from "./PulseLoader";
 
 import { domains } from "../Config/default";
-
-export default function InputBar({ isLoading, query, onChange, onSubmit }) {
+type InputBarProps = {
+  isLoading: boolean,
+  query: { input: string | undefined, domain: string | undefined },
+  onChange: Function,
+  onSubmit: Function,
+}
+export default function InputBar({ isLoading, query, onChange, onSubmit }: InputBarProps) {
   const [input, setInput] = useState(query.input ?? "");
   const [domain, setDomain] = useState(query.domain ?? domains[0]);
 

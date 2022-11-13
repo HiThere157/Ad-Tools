@@ -1,12 +1,20 @@
+type InputProps = {
+  label?: string,
+  value: string,
+  classOverride?: string,
+  disabled?: boolean,
+  onChange: Function,
+  onEnter?: Function
+}
 export default function Input({
   label = "",
-  value = "",
+  value,
   classOverride = "",
   disabled = false,
-  onChange = () => {},
-  onEnter = () => {},
-}) {
-  const onKeyDown = (event) => {
+  onChange,
+  onEnter = () => { },
+}: InputProps) {
+  const onKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       onEnter();
     }
