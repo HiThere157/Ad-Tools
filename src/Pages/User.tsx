@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Helper/useStorage";
 
+import { columns } from "../Config/default";
 import {
   makeAPICall,
   getPropertiesWrapper,
@@ -14,11 +15,8 @@ import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
-import { columns } from "../Config/default";
-
 export default function UserPage() {
   const p = useLocation().pathname.substring(1);
-
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 

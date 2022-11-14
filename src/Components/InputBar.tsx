@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
+import { domains } from "../Config/default";
+
 import Input from "./Input";
 import Dropdown from "./Dropdown";
 import Button from "./Button";
 
 import PulseLoader from "react-spinners/PulseLoader";
 
-import { domains } from "../Config/default";
 type InputBarProps = {
   isLoading: boolean,
   query: { input: string | undefined, domain: string | undefined },

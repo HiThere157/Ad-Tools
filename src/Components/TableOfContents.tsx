@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 import useIntersectionObserver from "../Helper/useIntersectionObserver";
+
 import Button from "./Button";
 
 import { BsHash, BsReverseLayoutTextWindowReverse } from "react-icons/bs";

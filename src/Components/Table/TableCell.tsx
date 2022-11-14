@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-import stringify from "../../Helper/stringify"
+import stringify from "../../Helper/stringify";
+
 import Expandable from "./Expandable";
 
 type TableCellProps = {
