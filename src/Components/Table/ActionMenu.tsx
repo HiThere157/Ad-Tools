@@ -24,23 +24,21 @@ export default function ActionMenu({
   const onCopyClick = () => {
     onCopy()
 
-    setIsCopySelectionHighlighted(false)
     if (isCopyHighlighted) return;
     setIsCopyHighlighted(true);
     setTimeout(() => {
       setIsCopyHighlighted(false);
-    }, 5000);
+    }, 3000);
   }
 
   const onCopySelectionClick = () => {
     onCopySelection()
 
-    setIsCopyHighlighted(false)
     if (isCopySelectionHighlighted) return;
     setIsCopySelectionHighlighted(true);
     setTimeout(() => {
       setIsCopySelectionHighlighted(false);
-    }, 5000);
+    }, 3000);
   }
 
   return (

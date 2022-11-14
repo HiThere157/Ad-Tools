@@ -64,7 +64,7 @@ export default function Table({ title, name, columns, data, onRedirect }: TableP
     let ret = "";
     data.output?.forEach((entry, index) => {
       if (onlySelected && !selected.includes(index)) return;
-      ret += columns.map((column) => entry[column.key]).join("\u{9}") + "\n";
+      ret += columns.map((column) => entry[column.key].toString()).join("\u{9}") + "\n";
     });
     navigator.clipboard.writeText(ret);
   };

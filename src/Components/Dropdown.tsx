@@ -16,13 +16,13 @@ export default function Dropdown({
   disabled = false,
   onChange,
 }: DropdownProps) {
+  const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(value ?? items[0]);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside({ target }: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(target as Node)) {
+      if (ref.current && !ref.current.contains(target as Node)) {
         setIsOpen(false);
       }
     }
@@ -30,7 +30,7 @@ export default function Dropdown({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownRef]);
+  }, [ref]);
 
   const changeSelectedItem = (item: string) => {
     setSelectedItem(item);
@@ -39,7 +39,7 @@ export default function Dropdown({
   };
 
   return (
-    <div ref={dropdownRef} className="w-max">
+    <div ref={ref} className="w-max">
       <Button onClick={() => setIsOpen(!isOpen)} disabled={disabled}>
         <div className="flex items-center">
           {selectedItem}
