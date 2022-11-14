@@ -6,10 +6,10 @@ export default function useIntersectionObserver(
 ) {
   const elements = useRef<{ [key: number]: IntersectionObserverEntry }>({});
   useEffect(() => {
-    const callback = (headings: IntersectionObserverEntry[]) => {
-      headings.forEach((heading) => {
+    const callback = (sections: IntersectionObserverEntry[]) => {
+      sections.forEach((heading) => {
         const index = Number(heading.target.getAttribute("data-section-index"));
-        if (index) elements.current[index] = heading;
+        if (!isNaN(index)) elements.current[index] = heading;
       });
 
       const visible = Object.values(elements.current)
