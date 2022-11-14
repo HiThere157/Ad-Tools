@@ -3,6 +3,7 @@ import { useSessionStorage } from "../../Helper/useStorage";
 
 import { ColumnDefinition } from "../../Config/default";
 import { ResultData } from "../../Helper/makeAPICall";
+import stringify from "../../Helper/stringify";
 import TableElement from "./TableElement";
 import ActionMenu from "./ActionMenu";
 import FilterMenu from "./FilterMenu";
@@ -57,14 +58,13 @@ export default function Table({ title, name, columns, data, onRedirect }: TableP
     setSortedColumn("");
     setSortDesc(true);
     setFilter({});
-    setSelected([])
   };
 
   const copyToClip = (onlySelected: boolean) => {
     let ret = "";
     data.output?.forEach((entry, index) => {
       if (onlySelected && !selected.includes(index)) return;
-      ret += columns.map((column) => entry[column.key].toString()).join("\u{9}") + "\n";
+      ret += columns.map((column) => stringify(entry[column.key], false)).join("\u{9}") + "\n";
     });
     navigator.clipboard.writeText(ret);
   };

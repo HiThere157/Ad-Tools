@@ -1,4 +1,5 @@
 import { ColumnDefinition } from "../../Config/default";
+import stringify from "../../Helper/stringify";
 import Button from "../Button";
 import Checkbox from "../Checkbox";
 import TableCell from "./TableCell";
@@ -41,13 +42,6 @@ export default function TableElement({
     onSelectedChange(newSelected)
   }
 
-  const stringify = (anything: any) => {
-    if (typeof anything === "object") {
-      return JSON.stringify(anything);
-    }
-    return anything;
-  };
-
   const tagArray = (array: { [key: string]: any }[]) => {
     // add a unique __id__ field to every entry. used to track selected entries
     return array.map((entry, index) => {
@@ -60,11 +54,7 @@ export default function TableElement({
       if (!sortDesc) {
         [a, b] = [b, a];
       }
-      if (typeof a === "number" && typeof b === "number") {
-        return a[sortedColumn] - b[sortedColumn];
-      } else {
-        return b[sortedColumn]?.toString().localeCompare(a[sortedColumn]?.toString());
-      }
+      return stringify(b[sortedColumn]).localeCompare(stringify(a[sortedColumn]));
     });
   };
 
@@ -85,7 +75,7 @@ export default function TableElement({
           `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
           "i"
         );
-        if (!regex.test(stringify(entry[key]))) {
+        if (!regex.test(stringify(entry[key], false))) {
           isMatch = false;
         }
       });
