@@ -112,7 +112,7 @@ export default function TableElement({
     <table className="w-full">
       <thead>
         <tr>
-          <th className="px-2 whitespace-nowrap dark:bg-primaryControl dark:border-primaryBorder">
+          <th className="px-2 whitespace-nowrap dark:bg-primaryControl dark:border-primaryBorder border-r">
             <div className="flex justify-center">
               <Checkbox checked={getMainCheckStatus()} onChange={onMainCheck} />
             </div>
@@ -121,7 +121,7 @@ export default function TableElement({
             return (
               <th
                 key={index}
-                className="p-0 whitespace-nowrap dark:border-primaryBorder border-l"
+                className="p-0 whitespace-nowrap dark:border-primaryBorder border-r"
               >
                 <Button
                   classOverride="

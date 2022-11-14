@@ -2,15 +2,16 @@ const { PowerShell } = require("node-powershell");
 const { quote } = require("shell-quote");
 
 const allowedCommands = [
+  "Get-ADObject",
   "Get-ADUser",
   "Get-ADGroup",
   "Get-ADGroupMember",
   "Get-ADComputer",
-  "Get-ADPrincipalGroupMembership",
   "Resolve-DnsName",
 ];
 
 const allowedArguments = [
+  "Filter",
   "Identity",
   "Server",
   "Properties",
@@ -43,7 +44,7 @@ const executeCommand = async (event, command, args) => {
       .flat(),
   ]);
 
-  fullCommand = fullCommand.replace("-Properties \\*", "-Properties *");
+  fullCommand = fullCommand.replace("\\*", "*");
 
   try {
     const output = await ps.invoke(fullCommand + " | ConvertTo-Json");

@@ -33,7 +33,7 @@ export default function useIntersectionObserver(
     });
 
     headings
-      .map((heading) => heading.parentElement?.parentElement)
+      .map((heading) => heading.parentElement?.closest("section"))
       .forEach((element, index) => {
         element?.setAttribute("data-section-index", index.toString());
         if (element) observer.observe(element);

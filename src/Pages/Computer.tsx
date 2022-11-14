@@ -15,7 +15,7 @@ import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
-export default function UserPage() {
+export default function ComputerPage() {
   const p = useLocation().pathname.substring(1);
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
@@ -33,7 +33,7 @@ export default function UserPage() {
     setReQuery(false);
     setIsLoading(true);
     await makeAPICall(
-      "Get-ADUser",
+      "Get-ADComputer",
       {
         Identity: query.input,
         Server: query.domain,
@@ -48,7 +48,7 @@ export default function UserPage() {
   return (
     <article>
       <InputBar
-        label="User ID:"
+        label="Computer ID:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}
@@ -56,7 +56,7 @@ export default function UserPage() {
       />
       <TableLayout>
         <Table
-          title="User Attributes"
+          title="Computer Attributes"
           name={attribsKey}
           columns={columns.attribute}
           data={attribs}

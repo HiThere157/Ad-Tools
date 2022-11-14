@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 
 import {
+  BsSearch,
   BsFillPersonLinesFill,
   BsPeopleFill,
   BsDisplay,
@@ -14,6 +15,12 @@ type NavBarProps = {
 export default function NavBar({ isOpen }: NavBarProps) {
   return (
     <nav className="flex flex-col p-2 dark:bg-secondaryBg">
+      <NavItem
+        to="/search"
+        icon={<BsSearch />}
+        text="Search"
+        isOpen={isOpen}
+      />
       <NavItem
         to="/user"
         icon={<BsFillPersonLinesFill />}

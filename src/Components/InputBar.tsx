@@ -9,12 +9,13 @@ import Button from "./Button";
 import PulseLoader from "react-spinners/PulseLoader";
 
 type InputBarProps = {
+  label: string,
   isLoading: boolean,
   query: { input: string | undefined, domain: string | undefined },
   onChange: Function,
   onSubmit: Function,
 }
-export default function InputBar({ isLoading, query, onChange, onSubmit }: InputBarProps) {
+export default function InputBar({ label, isLoading, query, onChange, onSubmit }: InputBarProps) {
   const [input, setInput] = useState(query.input ?? "");
   const [domain, setDomain] = useState(query.domain ?? domains[0]);
 
@@ -26,7 +27,7 @@ export default function InputBar({ isLoading, query, onChange, onSubmit }: Input
   return (
     <div className="flex flex-wrap items-center [&>*]:m-1 mb-2">
       <Input
-        label="User ID:"
+        label={label}
         value={input}
         classOverride="w-64"
         onChange={setInput}

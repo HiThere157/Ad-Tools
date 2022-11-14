@@ -2,23 +2,22 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Helper/useStorage";
 
+import { columns } from "../Config/default";
 import {
   makeAPICall,
   getPropertiesWrapper,
   getMembershipFromAdUser,
   makeToList,
 } from "../Helper/makeAPICall";
+import { redirect } from "../Helper/redirects";
 
 import InputBar from "../Components/InputBar";
 import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
-import { columns } from "../Config/default";
-
 export default function GroupPage() {
   const p = useLocation().pathname.substring(1);
-
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
@@ -59,6 +58,7 @@ export default function GroupPage() {
   return (
     <article>
       <InputBar
+        label="Group ID:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}
@@ -74,14 +74,23 @@ export default function GroupPage() {
         <Table
           title="Group Members"
           name={membersKey}
-          columns={columns.members}
+          columns={columns.big}
           data={members}
+          onRedirect={(entry: { Name: string, ObjectClass: string }) => {
+            if (!["group", "user", "computer"].includes(entry.ObjectClass)) return;
+            redirect(entry.ObjectClass, entry.Name, query.domain)
+            window.location.reload()
+          }}
         />
         <Table
           title="Group Memberships"
           name={memberOfKey}
-          columns={columns.memberOf}
+          columns={columns.small}
           data={memberOf}
+          onRedirect={(entry: { Name: string }) => {
+            redirect("group", entry.Name, query.domain)
+            window.location.reload()
+          }}
         />
       </TableLayout>
       <ScrollPosition name={p} />

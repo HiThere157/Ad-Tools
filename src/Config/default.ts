@@ -10,11 +10,11 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Key", key: "key", sortable: true },
     { title: "Value", key: "value", sortable: true },
   ],
-  memberOf: [
+  small: [
     { title: "Name", key: "Name", sortable: true },
     { title: "Distinguished Name", key: "DistinguishedName", sortable: true },
   ],
-  members: [
+  big: [
     { title: "Name", key: "Name", sortable: true },
     { title: "Type", key: "ObjectClass", sortable: true },
     { title: "Distinguished Name", key: "DistinguishedName", sortable: true },

@@ -6,6 +6,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 import RootLayout from "./Layouts/RootLayout";
+import SearchPage from "./Pages/Search";
 import UserPage from "./Pages/User";
 import GroupPage from "./Pages/Group";
 import ComputerPage from "./Pages/Computer";
@@ -17,6 +18,7 @@ root.render(
     <HashRouter>
       <RootLayout>
         <Routes>
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/group" element={<GroupPage />} />
           <Route path="/computer" element={<ComputerPage />} />

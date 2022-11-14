@@ -1,11 +1,11 @@
-function redirectToGroup(entry: { Name: string }, domain: string) {
+function redirect(page: string, input: string, domain: string) {
   window.sessionStorage.setItem(
-    "group_query",
-    JSON.stringify({ input: entry.Name, domain: domain })
+    `${page}_query`,
+    JSON.stringify({ input, domain })
   );
-  window.sessionStorage.setItem("group_scroll", "0");
-  window.sessionStorage.setItem("group_reQuery", "true");
-  window.location.hash = "#/group";
+  window.sessionStorage.setItem(`${page}_scroll`, "0");
+  window.sessionStorage.setItem(`${page}_reQuery`, "true");
+  window.location.hash = `#/${page}`;
 }
 
-export { redirectToGroup };
+export { redirect };
