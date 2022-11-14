@@ -1,21 +1,11 @@
 module.exports = {
-  packagerConfig: {},
+  packagerConfig: {
+    icon: "./build/favicon.ico",
+  },
   rebuildConfig: {},
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
-      config: {},
-    },
-    {
-      name: "@electron-forge/maker-zip",
-      platforms: ["darwin"],
-    },
-    {
-      name: "@electron-forge/maker-deb",
-      config: {},
-    },
-    {
-      name: "@electron-forge/maker-rpm",
       config: {},
     },
   ],
@@ -25,11 +15,11 @@ module.exports = {
       config: {
         repository: {
           owner: "HiThere157",
-          name: "Ad-Tools"
+          name: "Ad-Tools",
         },
         prerelease: false,
-        draft: true
-      }
-    }
-  ]
+        draft: true,
+      },
+    },
+  ],
 };

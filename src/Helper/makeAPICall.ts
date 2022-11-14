@@ -4,6 +4,7 @@ type ElectronAPI = Window &
   };
 
 type CommandArgs = {
+  Filter?: string;
   Identity?: string;
   Server?: string;
   Properties?: string;
