@@ -72,13 +72,17 @@ function getPropertiesWrapper(AdObject: {
 }
 
 // Get Memberof Property from Get-AdUser Output and extract information
-function getMembershipFromAdUser(AdObject: { MemberOf: string[] }): object[] {
+function getMembershipFromAdUser(AdObject: {
+  MemberOf: string[];
+  PrimaryGroup: string;
+}): object[] {
   const getCN = (dn: string) => {
     const cn = dn.split(",").filter((unit) => unit.startsWith("CN="))[0];
     return cn?.split("=")[1] ?? "";
   };
 
-  return AdObject.MemberOf.map((group) => {
+  const MemberOf = [AdObject.PrimaryGroup, ...AdObject.MemberOf];
+  return MemberOf.map((group) => {
     return { Name: getCN(group), DistinguishedName: group };
   });
 }
