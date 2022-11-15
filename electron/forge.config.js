@@ -1,12 +1,15 @@
 module.exports = {
   packagerConfig: {
-    icon: "./build/favicon.ico",
+    icon: "./assets/icon64.ico",
+    name: "AD Tools",
   },
   rebuildConfig: {},
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
-      config: {},
+      config: {
+        "loadingGif": "./assets/loading.gif",
+      },
     },
   ],
   publishers: [

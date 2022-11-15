@@ -31,7 +31,7 @@ export default function Header({ onNavOpen }: HeaderProps) {
           <BsListUl />
         </Button>
         <div className="flex space-x-3 items-center ml-3">
-          <span className="font-bold text-2xl whitespace-nowrap">Ad Tools</span>
+          <span className="font-bold text-2xl whitespace-nowrap">AD Tools</span>
           <span className="dark:text-foregroundAccent">{user}</span>
         </div>
       </div>
