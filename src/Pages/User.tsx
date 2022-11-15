@@ -64,7 +64,7 @@ export default function UserPage() {
         <Table
           title="Group Memberships"
           name={memberOfKey}
-          columns={columns.small}
+          columns={columns.default}
           data={memberOf}
           onRedirect={(entry: { Name: string }) => {
             redirect("group", entry.Name, query.domain)

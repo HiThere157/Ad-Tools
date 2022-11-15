@@ -72,20 +72,20 @@ export default function GroupPage() {
           data={attribs}
         />
         <Table
-          title="Group Members"
+          title="Members"
           name={membersKey}
-          columns={columns.big}
+          columns={columns.extended}
           data={members}
           onRedirect={(entry: { Name: string, ObjectClass: string }) => {
             if (!["group", "user", "computer"].includes(entry.ObjectClass)) return;
             redirect(entry.ObjectClass, entry.Name, query.domain)
-            window.location.reload()
+            if (entry.ObjectClass === "group") window.location.reload()
           }}
         />
         <Table
           title="Group Memberships"
           name={memberOfKey}
-          columns={columns.small}
+          columns={columns.default}
           data={memberOf}
           onRedirect={(entry: { Name: string }) => {
             redirect("group", entry.Name, query.domain)

@@ -7,6 +7,7 @@ import {
   makeAPICall,
   getPropertiesWrapper,
   getMembershipFromAdUser,
+  replaceDNSTypes
 } from "../Helper/makeAPICall";
 import { redirect } from "../Helper/redirects";
 
@@ -20,6 +21,7 @@ export default function ComputerPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
+  const [dns, setDNS, dnsKey] = useSessionStorage(`${p}_d`, {});
   const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_a`, {});
   const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_mo`, {});
 
@@ -32,16 +34,28 @@ export default function ComputerPage() {
   const runQuery = async () => {
     setReQuery(false);
     setIsLoading(true);
-    await makeAPICall(
-      "Get-ADComputer",
-      {
-        Identity: query.input,
-        Server: query.domain,
-        Properties: "*",
-      },
-      [getPropertiesWrapper, getMembershipFromAdUser],
-      [setAttributes, setMemberOf]
-    );
+
+    await Promise.all([
+      makeAPICall(
+        "Resolve-DnsName",
+        {
+          Name: query.input
+        },
+        replaceDNSTypes,
+        setDNS
+      ),
+      makeAPICall(
+        "Get-ADComputer",
+        {
+          Identity: query.input,
+          Server: query.domain,
+          Properties: "*",
+        },
+        [getPropertiesWrapper, getMembershipFromAdUser],
+        [setAttributes, setMemberOf]
+      )
+    ])
+
     setIsLoading(false);
   };
 
@@ -56,6 +70,12 @@ export default function ComputerPage() {
       />
       <TableLayout>
         <Table
+          title="DNS"
+          name={dnsKey}
+          columns={columns.dns}
+          data={dns}
+        />
+        <Table
           title="Computer Attributes"
           name={attribsKey}
           columns={columns.attribute}
@@ -64,7 +84,7 @@ export default function ComputerPage() {
         <Table
           title="Group Memberships"
           name={memberOfKey}
-          columns={columns.small}
+          columns={columns.default}
           data={memberOf}
           onRedirect={(entry: { Name: string }) => {
             redirect("group", entry.Name, query.domain)

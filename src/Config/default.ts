@@ -10,14 +10,19 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Key", key: "key", sortable: true },
     { title: "Value", key: "value", sortable: true },
   ],
-  small: [
+  default: [
     { title: "Name", key: "Name", sortable: true },
     { title: "Distinguished Name", key: "DistinguishedName", sortable: true },
   ],
-  big: [
+  extended: [
     { title: "Name", key: "Name", sortable: true },
     { title: "Type", key: "ObjectClass", sortable: true },
     { title: "Distinguished Name", key: "DistinguishedName", sortable: true },
+  ],
+  dns: [
+    { title: "Name", key: "Name", sortable: true },
+    { title: "Type", key: "__friendlyType__", sortable: true },
+    { title: "Result", key: "__result__", sortable: true },
   ],
 };
 

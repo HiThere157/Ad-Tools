@@ -14,9 +14,6 @@ export default function useIntersectionObserver(
 
       const visible = Object.values(elements.current)
         .filter(({ isIntersecting }) => isIntersecting)
-        .sort((a, b) => {
-          return b.intersectionRect.height - a.intersectionRect.height;
-        });
 
       if (visible.length !== 0) {
         setActive(Number(visible[0].target.getAttribute("data-section-index")));
@@ -30,6 +27,7 @@ export default function useIntersectionObserver(
 
     const observer = new IntersectionObserver(callback, {
       threshold: range(0, 1, 0.01),
+      rootMargin: "-20% 0px 0px 0px"
     });
 
     headings

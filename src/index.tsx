@@ -29,6 +29,12 @@ root.render(
   </React.StrictMode>
 );
 
+// TODO:
+// - History Tab (command + args + result) 
+// - Settings (Set domain values / defaul to connected/trusted?)
+// - electron logger?
+// - web vitals?
+
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

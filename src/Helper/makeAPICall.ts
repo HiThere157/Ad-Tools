@@ -9,7 +9,6 @@ type CommandArgs = {
   Server?: string;
   Properties?: string;
   Name?: string;
-  QuickTimeout?: string;
 };
 
 type ResultData = {
@@ -88,6 +87,24 @@ function getMembershipFromAdUser(AdObject: {
   });
 }
 
+function replaceDNSTypes(
+  DNSObjects: { Type: number } | { Type: number }[]
+): { Type: number; __friendlyType__: string; __result__: string }[] {
+  const typeLookup: { [key: number]: { l: string; key: string } } = {
+    1: { l: "A", key: "IPAddress" },
+    28: { l: "AAAA", key: "IPAddress" },
+    12: { l: "PTR", key: "NameHost" },
+  };
+
+  return makeToList(DNSObjects).map((record: any) => {
+    return {
+      ...record,
+      __friendlyType__: typeLookup[record.Type].l ?? "Unknown",
+      __result__: record[typeLookup[record.Type].key] ?? "",
+    };
+  });
+}
+
 function makeToList(AdObject: any[] | any): any[] {
   if (!Array.isArray(AdObject)) {
     return [AdObject];
@@ -99,6 +116,7 @@ export {
   makeAPICall,
   getPropertiesWrapper,
   getMembershipFromAdUser,
+  replaceDNSTypes,
   makeToList,
 };
 export type { ElectronAPI, ResultData };

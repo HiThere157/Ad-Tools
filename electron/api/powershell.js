@@ -16,10 +16,9 @@ const allowedArguments = [
   "Server",
   "Properties",
   "Name",
-  "QuickTimeout",
 ];
 
-const executeCommand = async (event, command, args) => {
+const executeCommand = async (_event, command, args) => {
   if (!allowedCommands.includes(command)) {
     return { error: `Invalid Command "${command}"` };
   }

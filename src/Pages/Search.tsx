@@ -48,7 +48,7 @@ export default function SearchPage() {
         <Table
           title="Results"
           name={resultsKey}
-          columns={columns.big}
+          columns={columns.extended}
           data={results}
           onRedirect={(entry: { Name: string, ObjectClass: string }) => {
             if (!["group", "user", "computer"].includes(entry.ObjectClass)) return;
