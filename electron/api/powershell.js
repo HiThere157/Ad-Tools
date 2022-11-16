@@ -1,6 +1,5 @@
 const { PowerShell } = require("node-powershell");
 const { quote } = require("shell-quote");
-const ping = require("ping");
 
 const allowedCommands = [
   "Get-ADObject",
@@ -68,9 +67,4 @@ const getExecutingUser = async () => {
   }
 };
 
-const probeConnection = async (_event, target) => {
-  const result = await ping.promise.probe(target);
-  return { output: result.alive };
-};
-
-module.exports = { executeCommand, getExecutingUser, probeConnection };
+module.exports = { executeCommand, getExecutingUser };
