@@ -1,6 +1,10 @@
 type ElectronAPI = Window &
   typeof globalThis & {
-    electronAPI: { getExecutingUser: Function; executeCommand: Function };
+    electronAPI: {
+      getExecutingUser: Function;
+      executeCommand: Function;
+      probeConnection: Function;
+    };
   };
 
 type CommandArgs = {
@@ -75,7 +79,7 @@ function getPropertiesWrapper(AdObject: {
 function getMembershipFromAdUser(AdObject: {
   MemberOf: string[];
   PrimaryGroup: string;
-}): { Name: string, DistinguishedName: string }[] {
+}): { Name: string; DistinguishedName: string }[] {
   const getCN = (dn: string) => {
     const cn = dn.split(",").filter((unit) => unit.startsWith("CN="))[0];
     return cn?.split("=")[1] ?? "";
@@ -89,7 +93,7 @@ function getMembershipFromAdUser(AdObject: {
   });
 }
 
-function replaceDNSTypes(
+function prepareDNSResult(
   DNSObjects: { Type: number } | { Type: number }[]
 ): { Type: number; __friendlyType__: string; __result__: string }[] {
   const typeLookup: { [key: number]: { l: string; key: string } } = {
@@ -118,7 +122,7 @@ export {
   makeAPICall,
   getPropertiesWrapper,
   getMembershipFromAdUser,
-  replaceDNSTypes,
+  prepareDNSResult,
   makeToList,
 };
 export type { ElectronAPI, ResultData };

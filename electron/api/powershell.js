@@ -73,4 +73,8 @@ const getExecutingUser = async () => {
   }
 };
 
-module.exports = { executeCommand, getExecutingUser };
+const probeConnection = async (_event, target) => {
+  return { output: true };
+}
+
+module.exports = { executeCommand, getExecutingUser, probeConnection };

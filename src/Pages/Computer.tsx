@@ -7,7 +7,7 @@ import {
   makeAPICall,
   getPropertiesWrapper,
   getMembershipFromAdUser,
-  replaceDNSTypes
+  prepareDNSResult
 } from "../Helper/makeAPICall";
 import { redirect } from "../Helper/redirects";
 
@@ -41,7 +41,7 @@ export default function ComputerPage() {
         {
           Name: query.input
         },
-        replaceDNSTypes,
+        prepareDNSResult,
         setDNS
       ),
       makeAPICall(
