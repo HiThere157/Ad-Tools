@@ -75,13 +75,15 @@ function getPropertiesWrapper(AdObject: {
 function getMembershipFromAdUser(AdObject: {
   MemberOf: string[];
   PrimaryGroup: string;
-}): object[] {
+}): { Name: string, DistinguishedName: string }[] {
   const getCN = (dn: string) => {
     const cn = dn.split(",").filter((unit) => unit.startsWith("CN="))[0];
     return cn?.split("=")[1] ?? "";
   };
 
-  const MemberOf = [AdObject.PrimaryGroup, ...AdObject.MemberOf];
+  const MemberOf = [...AdObject.MemberOf];
+  if (AdObject.PrimaryGroup) MemberOf.push(AdObject.PrimaryGroup);
+
   return MemberOf.map((group) => {
     return { Name: getCN(group), DistinguishedName: group };
   });
