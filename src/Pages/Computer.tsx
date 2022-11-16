@@ -39,7 +39,7 @@ export default function ComputerPage() {
       makeAPICall(
         "Resolve-DnsName",
         {
-          Name: query.input
+          Name: `${query.input}.${query.domain}`
         },
         prepareDNSResult,
         setDNS

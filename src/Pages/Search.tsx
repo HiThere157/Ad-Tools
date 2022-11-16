@@ -26,7 +26,7 @@ export default function SearchPage() {
     await makeAPICall(
       "Get-ADObject",
       {
-        Filter: `Name -like "${query.input}"`,
+        Filter: `Name -like "${query.input}*"`,
         Server: query.domain,
       },
       [makeToList],
