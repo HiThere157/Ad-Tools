@@ -1,5 +1,6 @@
 const { PowerShell } = require("node-powershell");
 const { quote } = require("shell-quote");
+const ping = require("ping");
 
 const allowedCommands = [
   "Get-ADObject",
@@ -10,13 +11,7 @@ const allowedCommands = [
   "Resolve-DnsName",
 ];
 
-const allowedArguments = [
-  "Filter",
-  "Identity",
-  "Server",
-  "Properties",
-  "Name",
-];
+const allowedArguments = ["Filter", "Identity", "Server", "Properties", "Name"];
 
 const executeCommand = async (_event, command, args) => {
   if (!allowedCommands.includes(command)) {
@@ -67,14 +62,15 @@ const getExecutingUser = async () => {
     );
     return { output: output.raw };
   } catch (error) {
-    return { error: error.toString().split("At line:1")[0] };
+    return { output: "/", error: error.toString().split("At line:1")[0] };
   } finally {
     ps.dispose();
   }
 };
 
 const probeConnection = async (_event, target) => {
-  return { output: true };
-}
+  const result = await ping.promise.probe(target);
+  return { output: result.alive };
+};
 
 module.exports = { executeCommand, getExecutingUser, probeConnection };

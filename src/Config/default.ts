@@ -23,6 +23,7 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Name", key: "Name", sortable: true },
     { title: "Type", key: "__friendlyType__", sortable: true },
     { title: "Result", key: "__result__", sortable: true },
+    { title: "Connection", key: "__connection__", sortable: true },
   ],
 };
 

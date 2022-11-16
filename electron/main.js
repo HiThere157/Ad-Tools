@@ -1,6 +1,10 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
-const { executeCommand, getExecutingUser, probeConnection } = require("./api/powershell");
+const {
+  executeCommand,
+  getExecutingUser,
+  probeConnection,
+} = require("./api/powershell");
 
 if (require("electron-squirrel-startup")) app.quit();
 require("update-electron-app")();
@@ -13,6 +17,20 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
+  });
+
+  win.webContents.on("zoom-changed", (_event, zoomDirection) => {
+    const currentZoom = win.webContents.getZoomFactor();
+    let nextZoom = 1;
+
+    if (zoomDirection === "in") {
+      nextZoom = currentZoom + 0.1;
+    }
+    if (zoomDirection === "out") {
+      nextZoom = currentZoom - 0.1;
+    }
+
+    win.webContents.zoomFactor = Math.min(1.5, Math.max(0.5, nextZoom));
   });
 
   win.removeMenu();

@@ -47,9 +47,9 @@ async function makeAPICall(
       throw result.error;
     }
 
-    callBackList.forEach((callback, index) => {
+    callBackList.forEach(async (callback, index) => {
       callback({
-        output: postProcessorList[index](result.output),
+        output: await postProcessorList[index](result.output),
       });
     });
 
@@ -93,22 +93,37 @@ function getMembershipFromAdUser(AdObject: {
   });
 }
 
-function prepareDNSResult(
+async function prepareDNSResult(
   DNSObjects: { Type: number } | { Type: number }[]
-): { Type: number; __friendlyType__: string; __result__: string }[] {
+): Promise<
+  {
+    Type: number;
+    __friendlyType__: string;
+    __result__: string;
+    __connection__: string;
+  }[]
+> {
   const typeLookup: { [key: number]: { l: string; key: string } } = {
     1: { l: "A", key: "IPAddress" },
     28: { l: "AAAA", key: "IPAddress" },
     12: { l: "PTR", key: "NameHost" },
   };
 
-  return makeToList(DNSObjects).map((record: any) => {
-    return {
-      ...record,
-      __friendlyType__: typeLookup[record.Type].l ?? "Unknown",
-      __result__: record[typeLookup[record.Type].key] ?? "",
-    };
-  });
+  return Promise.all(
+    makeToList(DNSObjects).map(async (record: any) => {
+      const result = record[typeLookup[record.Type].key] ?? "";
+      const connection = (
+        await (window as ElectronAPI).electronAPI.probeConnection(result)
+      ).output;
+
+      return {
+        ...record,
+        __friendlyType__: typeLookup[record.Type].l ?? "Unknown",
+        __result__: result,
+        __connection__: connection ? "True" : "False",
+      };
+    })
+  );
 }
 
 function makeToList(AdObject: any[] | any): any[] {

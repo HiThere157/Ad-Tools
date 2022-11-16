@@ -30,8 +30,8 @@ export default function Header({ onNavOpen }: HeaderProps) {
         <Button classOverride="text-xl mx-1 px-3 border-0" onClick={onNavOpen}>
           <BsListUl />
         </Button>
-        <div className="flex space-x-3 items-center ml-3">
-          <span className="font-bold text-2xl whitespace-nowrap">AD Tools</span>
+        <div className="flex space-x-3 items-center ml-3 whitespace-nowrap">
+          <span className="font-bold text-2xl">AD Tools</span>
           <span className="dark:text-foregroundAccent">{user}</span>
         </div>
       </div>
