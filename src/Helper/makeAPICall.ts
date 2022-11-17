@@ -4,6 +4,8 @@ type ElectronAPI = Window &
       getExecutingUser: Function;
       executeCommand: Function;
       probeConnection: Function;
+      handleZoomUpdate: Function;
+      removeZoomListener: Function;
     };
   };
 

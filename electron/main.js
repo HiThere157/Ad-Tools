@@ -28,6 +28,7 @@ function createWindow() {
       nextZoom = currentZoom - 0.1;
     }
 
+    win.webContents.send("win:setZoom", nextZoom);
     win.webContents.zoomFactor = Math.min(1.5, Math.max(0.5, nextZoom));
   });
 

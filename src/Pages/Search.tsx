@@ -29,8 +29,8 @@ export default function SearchPage() {
         Filter: `Name -like "${query.input}"`,
         Server: query.domain,
       },
-      [makeToList],
-      [setResults]
+      makeToList,
+      setResults
     );
     setIsLoading(false);
   };
