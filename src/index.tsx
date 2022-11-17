@@ -30,6 +30,7 @@ root.render(
 );
 
 // TODO:
+// - Show current zoom level
 // - History Tab (command + args + result) 
 // - Settings (Set domain values / defaul to connected/trusted?)
 // - electron logger?
