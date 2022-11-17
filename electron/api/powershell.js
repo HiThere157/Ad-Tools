@@ -41,7 +41,7 @@ const executeCommand = async (_event, command, args) => {
 
   try {
     const output = await ps.invoke(fullCommand + " | ConvertTo-Json");
-    return { output: JSON.parse(output.raw) };
+    return { output: output.raw ? JSON.parse(output.raw) : [] };
   } catch (error) {
     return { error: error.toString().split("At line:1")[0] };
   } finally {
