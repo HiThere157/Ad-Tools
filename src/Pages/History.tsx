@@ -27,7 +27,7 @@ export default function SearchPage() {
     <article>
       <TableLayout>
         <Table
-          title="Command History"
+          title="Command History (last 500)"
           name={`${p}_h`}
           columns={columns.history}
           data={history}

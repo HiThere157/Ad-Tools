@@ -54,6 +54,7 @@ export default function SearchPage() {
             if (!["group", "user", "computer"].includes(entry.ObjectClass)) return;
             redirect(entry.ObjectClass, entry.Name, query.domain)
           }}
+          isLoading={isLoading}
         />
       </TableLayout>
       <ScrollPosition name={p} />

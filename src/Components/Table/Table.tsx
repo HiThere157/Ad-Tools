@@ -11,14 +11,17 @@ import FilterMenu from "./FilterMenu";
 import ErrorMessage from "./ErrorMessage";
 import Title from "./Title";
 
+import PulseLoader from "react-spinners/PulseLoader";
+
 type TableProps = {
   title: string,
   name: string,
   columns: ColumnDefinition[],
   data: ResultData,
   onRedirect?: Function
+  isLoading?: boolean,
 }
-export default function Table({ title, name, columns, data, onRedirect }: TableProps) {
+export default function Table({ title, name, columns, data, onRedirect, isLoading = false }: TableProps) {
   const [sortedColumn, setSortedColumn] = useSessionStorage(
     name + "_sortedColumn",
     ""
@@ -102,6 +105,15 @@ export default function Table({ title, name, columns, data, onRedirect }: TableP
             onRedirect={onRedirect}
           />
           <ErrorMessage error={data.error} />
+          <div
+            className="flex justify-center items-center my-3">
+            <PulseLoader
+              size="12px"
+              color="#208CF0"
+              loading={isLoading && data.output?.length === 0}
+              speedMultiplier={0.75}
+            />
+          </div>
         </div>
       </div>
     </section>

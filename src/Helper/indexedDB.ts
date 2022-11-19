@@ -62,12 +62,12 @@ class Store {
   async deleteOld(n: number) {
     return new Promise(async (resolve, reject) => {
       try {
-        const store = await this.getStore();
         const result = await this.getAll<{ id: number }>();
 
         const deleteCount = result.length - n;
         if (deleteCount <= 0) return;
 
+        const store = await this.getStore();
         this.handleRequest(
           store.delete(IDBKeyRange.bound(0, result[deleteCount - 1].id)),
           resolve,

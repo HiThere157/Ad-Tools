@@ -60,6 +60,7 @@ export default function UserPage() {
           name={attribsKey}
           columns={columns.attribute}
           data={attribs}
+          isLoading={isLoading}
         />
         <Table
           title="Group Memberships"
@@ -69,6 +70,7 @@ export default function UserPage() {
           onRedirect={(entry: { Name: string }) => {
             redirect("group", entry.Name, query.domain)
           }}
+          isLoading={isLoading}
         />
       </TableLayout>
       <ScrollPosition name={p} />

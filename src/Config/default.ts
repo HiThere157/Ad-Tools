@@ -29,7 +29,6 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Command", key: "command", sortable: true },
     { title: "Arguments", key: "args", sortable: true },
     { title: "Date", key: "date", sortable: true },
-    { title: "Result", key: "result", sortable: false },
   ],
 };
 

@@ -74,12 +74,14 @@ export default function ComputerPage() {
           name={dnsKey}
           columns={columns.dns}
           data={dns}
+          isLoading={isLoading}
         />
         <Table
           title="Computer Attributes"
           name={attribsKey}
           columns={columns.attribute}
           data={attribs}
+          isLoading={isLoading}
         />
         <Table
           title="Group Memberships"
@@ -89,6 +91,7 @@ export default function ComputerPage() {
           onRedirect={(entry: { Name: string }) => {
             redirect("group", entry.Name, query.domain)
           }}
+          isLoading={isLoading}
         />
       </TableLayout>
       <ScrollPosition name={p} />

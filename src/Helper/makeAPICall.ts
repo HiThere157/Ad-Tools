@@ -67,7 +67,6 @@ async function makeAPICall(
       command,
       args,
       date: new Date().toISOString().replace("T", " ").replace("Z", " UTC"),
-      result,
     });
 
     if (result.error) {
@@ -138,14 +137,14 @@ async function prepareDNSResult(
 
   return Promise.all(
     makeToList(DNSObjects).map(async (record: any) => {
-      const result = record[typeLookup[record.Type].key] ?? "";
+      const result = record[typeLookup[record.Type]?.key] ?? "";
       const connection = (
         await (window as ElectronAPI).electronAPI.probeConnection(result)
       ).output;
 
       return {
         ...record,
-        __friendlyType__: typeLookup[record.Type].l ?? "Unknown",
+        __friendlyType__: typeLookup[record.Type]?.l ?? "Unknown",
         __result__: result,
         __connection__: connection ? "True" : "False",
       };

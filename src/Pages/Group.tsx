@@ -70,6 +70,7 @@ export default function GroupPage() {
           name={attribsKey}
           columns={columns.attribute}
           data={attribs}
+          isLoading={isLoading}
         />
         <Table
           title="Members"
@@ -81,6 +82,7 @@ export default function GroupPage() {
             redirect(entry.ObjectClass, entry.Name, query.domain)
             if (entry.ObjectClass === "group") window.location.reload()
           }}
+          isLoading={isLoading}
         />
         <Table
           title="Group Memberships"
@@ -91,6 +93,7 @@ export default function GroupPage() {
             redirect("group", entry.Name, query.domain)
             window.location.reload()
           }}
+          isLoading={isLoading}
         />
       </TableLayout>
       <ScrollPosition name={p} />
