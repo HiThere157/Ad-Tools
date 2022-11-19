@@ -25,7 +25,27 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Result", key: "__result__", sortable: true },
     { title: "Connection", key: "__connection__", sortable: true },
   ],
+  history: [
+    { title: "Command", key: "command", sortable: true },
+    { title: "Arguments", key: "args", sortable: true },
+    { title: "Date", key: "date", sortable: true },
+    { title: "Result", key: "result", sortable: false },
+  ],
 };
 
-export { domains, columns };
+const commandDBConfig = {
+  database: "history",
+  version: 1,
+  stores: [
+    {
+      name: "commands",
+      id: {
+        keyPath: "id",
+        autoIncrement: true,
+      },
+    },
+  ],
+};
+
+export { domains, columns, commandDBConfig };
 export type { ColumnDefinition };

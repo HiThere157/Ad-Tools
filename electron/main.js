@@ -28,8 +28,10 @@ function createWindow() {
       nextZoom = currentZoom - 0.1;
     }
 
-    win.webContents.send("win:setZoom", nextZoom);
-    win.webContents.zoomFactor = Math.min(1.5, Math.max(0.5, nextZoom));
+    const clamped = Math.min(1.5, Math.max(0.5, nextZoom));
+
+    win.webContents.send("win:setZoom", clamped);
+    win.webContents.zoomFactor = clamped;
   });
 
   win.removeMenu();

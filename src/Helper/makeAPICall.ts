@@ -1,3 +1,6 @@
+import { commandDBConfig } from "../Config/default";
+import { setupIndexedDB, Store } from "./indexedDB";
+
 type ElectronAPI = Window &
   typeof globalThis & {
     electronAPI: {
@@ -17,13 +20,28 @@ type CommandArgs = {
   Name?: string;
 };
 
+type Commands =
+  | "Get-ADObject"
+  | "Get-ADUser"
+  | "Get-ADGroup"
+  | "Get-ADGroupMember"
+  | "Get-ADComputer"
+  | "Resolve-DnsName";
+
 type ResultData = {
   output?: { [key: string]: any }[];
-  error: string;
+  error?: string;
 };
 
+async function saveToDB(item: any) {
+  const db = setupIndexedDB(commandDBConfig);
+  const commandStore = new Store(db, "commands", "readwrite");
+  commandStore.add(item);
+  commandStore.deleteOld(500);
+}
+
 async function makeAPICall(
-  command: string,
+  command: Commands,
   args: CommandArgs,
   postProcessor: Function | Function[] = (AdObject: object) => {
     return AdObject;
@@ -44,6 +62,13 @@ async function makeAPICall(
       command,
       args
     );
+
+    saveToDB({
+      command,
+      args,
+      date: new Date().toISOString().replace("T", " ").replace("Z", " UTC"),
+      result,
+    });
 
     if (result.error) {
       throw result.error;
