@@ -6,6 +6,10 @@ html {
   width: 100%;
 }
 
+article {
+  padding-bottom: 75vh;
+}
+
 ::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5rem;

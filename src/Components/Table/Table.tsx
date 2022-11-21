@@ -10,8 +10,7 @@ import ActionMenu from "./ActionMenu";
 import FilterMenu from "./FilterMenu";
 import ErrorMessage from "./ErrorMessage";
 import Title from "./Title";
-
-import PulseLoader from "react-spinners/PulseLoader";
+import Loader from "./Loader";
 
 type TableProps = {
   title: string,
@@ -105,15 +104,7 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
             onRedirect={onRedirect}
           />
           <ErrorMessage error={data.error} />
-          <div
-            className="flex justify-center items-center my-3">
-            <PulseLoader
-              size="12px"
-              color="#208CF0"
-              loading={isLoading && data.output?.length === 0}
-              speedMultiplier={0.75}
-            />
-          </div>
+          <Loader isVisible={isLoading && data.output?.length === 0} />
         </div>
       </div>
     </section>

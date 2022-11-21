@@ -34,8 +34,14 @@ function createWindow() {
     win.webContents.zoomFactor = clamped;
   });
 
+  win.webContents.on("before-input-event", (event, input) => {
+    if (input.key === "F12") {
+      win.webContents.openDevTools();
+      event.preventDefault();
+    }
+  });
+
   win.removeMenu();
-  win.webContents.openDevTools();
   win.loadFile("./build/index.html");
 }
 
