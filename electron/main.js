@@ -1,6 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 
+const log = require("electron-log");
+Object.assign(console, log.functions);
+
 const { executeCommand, getExecutingUser } = require("./api/powershell");
 const { probeConnection } = require("./api/node");
 
