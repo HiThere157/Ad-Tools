@@ -4,7 +4,7 @@ import { setupIndexedDB, Store } from "./indexedDB";
 type ElectronAPI = Window &
   typeof globalThis & {
     electronAPI: {
-      getExecutingUser: () => ResultData;
+      getExecutingUser: () => { output: string };
       executeCommand: (
         command: Commands,
         args: CommandArgs,
