@@ -5,6 +5,7 @@ import {
   BsFillPersonLinesFill,
   BsPeopleFill,
   BsDisplay,
+  BsServer,
   BsClockHistory,
   BsGearFill,
 } from "react-icons/bs";
@@ -39,7 +40,7 @@ export default function NavBar({ isOpen }: NavBarProps) {
         text="Computer"
         isOpen={isOpen}
       />
-      <hr className="my-2 dark:border-secondaryBorderAccent" />
+      <hr className="my-2 dark:border-primaryBorder" />
       <NavItem
         to="/aadUser"
         icon={<BsFillPersonLinesFill />}
@@ -52,7 +53,14 @@ export default function NavBar({ isOpen }: NavBarProps) {
         text="Azure Group"
         isOpen={isOpen}
       />
-      <hr className="my-2 dark:border-secondaryBorderAccent" />
+      <hr className="my-2 dark:border-primaryBorder" />
+      <NavItem
+        to="/dns"
+        icon={<BsServer />}
+        text="DNS"
+        isOpen={isOpen}
+      />
+      <hr className="my-2 dark:border-primaryBorder" />
       <NavItem
         to="/history"
         icon={<BsClockHistory />}

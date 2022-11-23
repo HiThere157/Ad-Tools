@@ -11,7 +11,7 @@ import {
 } from "../Helper/makeAPICall";
 import { redirect } from "../Helper/redirects";
 
-import InputBar from "../Components/InputBar";
+import AdInputBar from "../Components/InputBars/InputAd";
 import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
@@ -57,7 +57,7 @@ export default function GroupPage() {
 
   return (
     <article>
-      <InputBar
+      <AdInputBar
         label="Group ID:"
         isLoading={isLoading}
         query={query}

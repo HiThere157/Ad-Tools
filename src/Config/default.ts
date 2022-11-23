@@ -5,6 +5,8 @@ type ColumnDefinition = {
 };
 
 const domains: string[] = ["Alcon.net", "Alconnet.com", "Itlab.local"];
+const dnsTypes: string[] = ["A_AAAA", "NS", "PTR", "MX", "ALL"];
+
 const columns: { [key: string]: ColumnDefinition[] } = {
   attribute: [
     { title: "Key", key: "key", sortable: true },
@@ -46,5 +48,5 @@ const commandDBConfig = {
   ],
 };
 
-export { domains, columns, commandDBConfig };
+export { domains, dnsTypes, columns, commandDBConfig };
 export type { ColumnDefinition };

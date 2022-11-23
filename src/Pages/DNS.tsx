@@ -5,16 +5,15 @@ import { useSessionStorage } from "../Helper/useStorage";
 import { columns } from "../Config/default";
 import {
   makeAPICall,
-  makeToList
+  prepareDNSResult,
 } from "../Helper/makeAPICall";
-import { redirect } from "../Helper/redirects";
 
-import AdInputBar from "../Components/InputBars/InputAd";
+import DnsInputBar from "../Components/InputBars/InputDns";
 import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
-export default function SearchPage() {
+export default function DnsPage() {
   const p = useLocation().pathname.substring(1);
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
@@ -24,12 +23,12 @@ export default function SearchPage() {
   const runQuery = async () => {
     setIsLoading(true);
     await makeAPICall(
-      "Get-ADObject",
+      "Resolve-DnsName",
       {
-        Filter: `Name -like "${query.input}"`,
-        Server: query.domain,
+        Name: query.input,
+        Type: query.type
       },
-      makeToList,
+      prepareDNSResult,
       setResults
     );
     setIsLoading(false);
@@ -37,8 +36,8 @@ export default function SearchPage() {
 
   return (
     <article>
-      <AdInputBar
-        label="Search:"
+      <DnsInputBar
+        label="Query:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}
@@ -48,12 +47,8 @@ export default function SearchPage() {
         <Table
           title="Results"
           name={resultsKey}
-          columns={columns.extended}
+          columns={columns.dns}
           data={results}
-          onRedirect={(entry: { Name: string, ObjectClass: string }) => {
-            if (!["group", "user", "computer"].includes(entry.ObjectClass)) return;
-            redirect(entry.ObjectClass, entry.Name, query.domain)
-          }}
           isLoading={isLoading}
         />
       </TableLayout>

@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
 
-import { domains } from "../Config/default";
+import { dnsTypes } from "../../Config/default";
 
-import Input from "./Input";
-import Dropdown from "./Dropdown";
-import Button from "./Button";
+import Input from "../Input";
+import Dropdown from "../Dropdown";
+import Button from "../Button";
 
-type InputBarProps = {
+type DnsInputBarProps = {
   label: string,
   isLoading: boolean,
-  query: { input: string | undefined, domain: string | undefined },
+  query: { input: string | undefined, type: string | undefined },
   onChange: Function,
   onSubmit: Function,
 }
-export default function InputBar({ label, isLoading, query, onChange, onSubmit }: InputBarProps) {
+export default function DnsInputBar({ label, isLoading, query, onChange, onSubmit }: DnsInputBarProps) {
   const [input, setInput] = useState(query.input ?? "");
-  const [domain, setDomain] = useState(query.domain ?? domains[0]);
+  const [type, setType] = useState(query.type ?? dnsTypes[0]);
 
   useEffect(() => {
-    onChange({ input, domain });
+    onChange({ input, type });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input, domain]);
+  }, [input, type]);
 
   return (
     <div className="flex flex-wrap items-center [&>*]:m-1 mb-2">
@@ -31,7 +31,7 @@ export default function InputBar({ label, isLoading, query, onChange, onSubmit }
         onChange={setInput}
         onEnter={onSubmit}
       />
-      <Dropdown items={domains} value={domain} onChange={setDomain} />
+      <Dropdown items={dnsTypes} value={type} onChange={setType} />
       <Button onClick={onSubmit} disabled={isLoading} children="Run" />
     </div>
   );

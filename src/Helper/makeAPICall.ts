@@ -22,6 +22,7 @@ type CommandArgs = {
   Server?: string;
   Properties?: string;
   Name?: string;
+  Type?: string;
 };
 
 type Commands =
@@ -133,24 +134,44 @@ async function prepareDNSResult(
     __connection__: string;
   }[]
 > {
-  const typeLookup: { [key: number]: { l: string; key: string } } = {
+  const typeLookup: { [key: number]: { l: string; key: string | string[] } } = {
     1: { l: "A", key: "IPAddress" },
-    28: { l: "AAAA", key: "IPAddress" },
+    2: { l: "NS", key: "NameHost" },
+    6: { l: "SOA", key: ["PrimaryServer", "Administrator", "Name"] },
     12: { l: "PTR", key: "NameHost" },
+    15: { l: "MX", key: "NameExchange" },
+    16: { l: "TXT", key: "Text" },
+    28: { l: "AAAA", key: "IPAddress" },
   };
 
   return Promise.all(
     makeToList(DNSObjects).map(async (record: any) => {
-      const result = record[typeLookup[record.Type]?.key] ?? "";
-      const connection = (
-        await (window as ElectronAPI).electronAPI.probeConnection(result)
-      ).output;
+      let result;
+      let connection = "";
+
+      const resultKey = typeLookup[record.Type]?.key;
+      if (!Array.isArray(resultKey)) {
+        result = record[resultKey] ?? "";
+      } else {
+        result = Object.fromEntries(
+          Object.entries(record).filter(([key]) => resultKey.includes(key))
+        );
+      }
+
+      if (["A", "NS", "AAAA", "PTR"].includes(typeLookup[record.Type]?.l)) {
+        connection = (
+          await (window as ElectronAPI).electronAPI.probeConnection(result)
+        ).output
+          ? "True"
+          : "False";
+      }
 
       return {
         ...record,
-        __friendlyType__: typeLookup[record.Type]?.l ?? "Unknown",
+        __friendlyType__:
+          typeLookup[record.Type]?.l ?? `Unknown (${record.Type})`,
         __result__: result,
-        __connection__: connection ? "True" : "False",
+        __connection__: connection,
       };
     })
   );

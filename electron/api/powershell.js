@@ -9,7 +9,7 @@ const allowedCommands = [
   "Get-ADComputer",
   "Resolve-DnsName",
 ];
-const allowedArguments = ["Filter", "Identity", "Server", "Properties", "Name"];
+const allowedArguments = ["Filter", "Identity", "Server", "Properties", "Name", "Type"];
 
 const getSession = () => {
   return new PowerShell({
@@ -70,23 +70,5 @@ const getExecutingUser = async () => {
     ps.dispose();
   }
 };
-
-(async () => {
-  const a = await executeCommand(
-    null,
-    "Resolve-DnsName",
-    { Name: "google.de" },
-    true
-  );
-
-  const b = await executeCommand(
-    null,
-    "Resolve-DnsName",
-    { Name: "google.de" },
-    true
-  );
-
-  console.log(a, b);
-})();
 
 module.exports = { executeCommand, getExecutingUser };
