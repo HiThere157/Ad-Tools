@@ -25,7 +25,7 @@ export default function Header({ onNavOpen }: HeaderProps) {
   }, []);
 
   return (
-    <div className="flex top-0 justify-between w-full p-1 border-b-2 dark:bg-secondaryBg dark:border-secondaryBorderAccent">
+    <div className="flex top-0 justify-between w-full p-1 border-b-2 dark:bg-secondaryBg dark:border-primaryBorder">
       <div className="flex">
         <Button classOverride="text-xl mx-1 px-3 border-0" onClick={onNavOpen}>
           <BsListUl />

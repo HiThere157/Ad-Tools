@@ -27,7 +27,7 @@ export default function ZoomLabel() {
 
   return (
     <>
-      {visible && zoom ? <div className="container absolute bottom-5 right-5 p-3">
+      {visible && zoom ? <div className="container absolute bottom-5 right-5 p-3 z-10">
         <span className="text-xl">{zoom}%</span>
       </div> : ""}
     </>
