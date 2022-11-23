@@ -1,8 +1,8 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  executeCommand: (command, args) =>
-    ipcRenderer.invoke("ps:executeCommand", command, args),
+  executeCommand: (command, args, useStaticSession = false) =>
+    ipcRenderer.invoke("ps:executeCommand", command, args, useStaticSession),
 
   getExecutingUser: () => ipcRenderer.invoke("ps:getExecutingUser"),
 

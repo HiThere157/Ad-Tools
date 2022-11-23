@@ -4,11 +4,15 @@ import { setupIndexedDB, Store } from "./indexedDB";
 type ElectronAPI = Window &
   typeof globalThis & {
     electronAPI: {
-      getExecutingUser: Function;
-      executeCommand: Function;
-      probeConnection: Function;
-      handleZoomUpdate: Function;
-      removeZoomListener: Function;
+      getExecutingUser: () => ResultData;
+      executeCommand: (
+        command: Commands,
+        args: CommandArgs,
+        useStaticSession?: boolean
+      ) => ResultData;
+      probeConnection: (target: string) => ResultData;
+      handleZoomUpdate: (callback: Function) => void;
+      removeZoomListener: () => void;
     };
   };
 
