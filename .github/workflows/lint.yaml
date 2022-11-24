@@ -13,6 +13,6 @@ jobs:
         with:
           node-version: 18.x
       - name: Install
-        run: npm install
+        run: npm ci --ignore-scripts
       - name: Build
         run: npx react-scripts build
