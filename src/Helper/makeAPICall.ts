@@ -51,7 +51,7 @@ async function makeAPICall(
   postProcessor: Function | Function[] = (AdObject: object) => {
     return AdObject;
   },
-  callback: Function | Function[] = () => {}
+  callback: Function | Function[] = () => { }
 ) {
   const postProcessorList = makeToList(postProcessor);
   const callBackList = makeToList(callback);
@@ -78,11 +78,15 @@ async function makeAPICall(
       throw result.error;
     }
 
+    const processed = postProcessorList.map(async (postProcessor) => {
+      return postProcessor(result.output)
+    });
     callBackList.forEach(async (callback, index) => {
       callback({
-        output: await postProcessorList[index](result.output),
+        output: await processed[index],
       });
     });
+    await Promise.all(processed);
 
     return true;
   } catch (error: any) {
