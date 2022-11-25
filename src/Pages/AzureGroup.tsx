@@ -32,6 +32,10 @@ export default function AzureGroupPage() {
   const runQuery = async () => {
     setReQuery(false);
     setIsLoading(true);
+
+    setAttributes({ output: [] });
+    setMembers({ output: [] });
+
     await authenticateAzure(query.tenant);
     const groups = await makeAPICall({
       command: "Get-AzureADGroup",
@@ -42,7 +46,7 @@ export default function AzureGroupPage() {
       useStaticSession: true
     });
 
-    const output = groups.output as Promise<{DisplayName: string | undefined, ObjectId: string | undefined}[]>[]
+    const output = groups.output as Promise<{ DisplayName: string | undefined, ObjectId: string | undefined }[]>[]
     const firstResult = (await output[0])[0]
 
     if (firstResult.DisplayName === query.input) {
@@ -63,6 +67,7 @@ export default function AzureGroupPage() {
         },
         postProcessor: makeToList,
         callback: setMembers,
+        excludeFields: ["AssignedLicenses", "AssignedPlans"],
         useStaticSession: true
       })
     } else {

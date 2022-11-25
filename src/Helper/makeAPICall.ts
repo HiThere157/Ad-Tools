@@ -6,12 +6,13 @@ type ElectronAPI = Window &
   typeof globalThis & {
     electronAPI: {
       getExecutingUser: () => { output: string };
-      executeCommand: (
-        command: Commands,
-        args: CommandArgs,
-        useStaticSession?: boolean,
-        json?: boolean
-      ) => ResultData;
+      executeCommand: (request: {
+        command: Commands;
+        args: CommandArgs;
+        excludeFields: string[];
+        useStaticSession: boolean;
+        json: boolean;
+      }) => Promise<ResultData>;
       probeConnection: (target: string) => ResultData;
       handleZoomUpdate: (callback: Function) => void;
       removeZoomListener: () => void;
@@ -51,13 +52,14 @@ type ResultData = {
 };
 
 type APICallParams = {
-  command: Commands,
-  args?: CommandArgs,
-  postProcessor?: Function | Function[]
-  callback?: Function | Function[],
-  useStaticSession?: boolean,
-  json?: boolean
-}
+  command: Commands;
+  args?: CommandArgs;
+  postProcessor?: Function | Function[];
+  callback?: Function | Function[];
+  excludeFields?: string[];
+  useStaticSession?: boolean;
+  json?: boolean;
+};
 
 async function saveToDB(item: any) {
   const db = setupIndexedDB(commandDBConfig);
@@ -72,9 +74,10 @@ export default async function makeAPICall({
   postProcessor = (AdObject: object) => {
     return AdObject;
   },
-  callback = () => { },
+  callback = () => {},
+  excludeFields = [],
   useStaticSession = false,
-  json = true
+  json = true,
 }: APICallParams): Promise<ResultData> {
   const postProcessorList = makeToList(postProcessor);
   const callBackList = makeToList(callback);
@@ -86,12 +89,13 @@ export default async function makeAPICall({
   });
 
   try {
-    const result = await (window as ElectronAPI).electronAPI.executeCommand(
+    const result = await (window as ElectronAPI).electronAPI.executeCommand({
       command,
       args,
+      excludeFields,
       useStaticSession,
-      json
-    );
+      json,
+    });
 
     saveToDB({
       command,
@@ -104,7 +108,7 @@ export default async function makeAPICall({
     }
 
     const processed = postProcessorList.map(async (postProcessor) => {
-      return postProcessor(result.output)
+      return postProcessor(result.output);
     });
     callBackList.forEach(async (callback, index) => {
       callback({

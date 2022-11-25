@@ -34,6 +34,11 @@ export default function AzureUserPage() {
   const runQuery = async () => {
     setReQuery(false);
     setIsLoading(true);
+
+    setAttributes({ output: [] });
+    setExt({ output: [] });
+    setMemberOf({ output: [] });
+
     await authenticateAzure(query.tenant);
     await makeAPICall({
       command: "Get-AzureADUser",
