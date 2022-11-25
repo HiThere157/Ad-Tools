@@ -42,13 +42,13 @@ export default function NavBar({ isOpen }: NavBarProps) {
       />
       <hr className="my-2 dark:border-primaryBorder" />
       <NavItem
-        to="/aadUser"
+        to="/azureUser"
         icon={<BsFillPersonLinesFill />}
         text="Azure User"
         isOpen={isOpen}
       />
       <NavItem
-        to="/aadGroup"
+        to="/azureGroup"
         icon={<BsPeopleFill />}
         text="Azure Group"
         isOpen={isOpen}

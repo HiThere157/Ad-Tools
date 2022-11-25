@@ -5,6 +5,7 @@ type ColumnDefinition = {
 };
 
 const domains: string[] = ["Alcon.net", "Alconnet.com", "Itlab.local"];
+const tenants: string[] = ["Alcon.net"];
 const dnsTypes: string[] = ["A_AAAA", "NS", "PTR", "MX", "ALL"];
 
 const columns: { [key: string]: ColumnDefinition[] } = {
@@ -20,6 +21,11 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Name", key: "Name", sortable: true },
     { title: "Type", key: "ObjectClass", sortable: true },
     { title: "Distinguished Name", key: "DistinguishedName", sortable: true },
+  ],
+  azureGroup: [
+    { title: "DisplayName", key: "DisplayName", sortable: true },
+    { title: "Description", key: "Description", sortable: true },
+    { title: "ObjectId", key: "ObjectId", sortable: true },
   ],
   dns: [
     { title: "Name", key: "Name", sortable: true },
@@ -48,5 +54,5 @@ const commandDBConfig = {
   ],
 };
 
-export { domains, dnsTypes, columns, commandDBConfig };
+export { domains, tenants, dnsTypes, columns, commandDBConfig };
 export type { ColumnDefinition };

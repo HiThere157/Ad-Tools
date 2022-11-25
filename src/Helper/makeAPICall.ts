@@ -8,7 +8,8 @@ type ElectronAPI = Window &
       executeCommand: (
         command: Commands,
         args: CommandArgs,
-        useStaticSession?: boolean
+        useStaticSession?: boolean,
+        json?: boolean
       ) => ResultData;
       probeConnection: (target: string) => ResultData;
       handleZoomUpdate: (callback: Function) => void;
@@ -23,6 +24,9 @@ type CommandArgs = {
   Properties?: string;
   Name?: string;
   Type?: string;
+  Tenant?: string;
+  ObjectId?: string;
+  All?: string;
 };
 
 type Commands =
@@ -31,12 +35,25 @@ type Commands =
   | "Get-ADGroup"
   | "Get-ADGroupMember"
   | "Get-ADComputer"
-  | "Resolve-DnsName";
+  | "Resolve-DnsName"
+  | "Connect-AzureAD"
+  | "Get-AzureADCurrentSessionInfo"
+  | "Get-AzureADUser"
+  | "Get-AzureADUserMembership";
 
 type ResultData = {
   output?: { [key: string]: any }[];
   error?: string;
 };
+
+type APICallParams = {
+  command: Commands,
+  args?: CommandArgs,
+  postProcessor?: Function | Function[]
+  callback?: Function | Function[],
+  useStaticSession?: boolean,
+  json?: boolean
+}
 
 async function saveToDB(item: any) {
   const db = setupIndexedDB(commandDBConfig);
@@ -45,14 +62,16 @@ async function saveToDB(item: any) {
   commandStore.deleteOld(500);
 }
 
-async function makeAPICall(
-  command: Commands,
-  args: CommandArgs,
-  postProcessor: Function | Function[] = (AdObject: object) => {
+async function makeAPICall({
+  command,
+  args = {},
+  postProcessor = (AdObject: object) => {
     return AdObject;
   },
-  callback: Function | Function[] = () => { }
-) {
+  callback = () => { },
+  useStaticSession = false,
+  json = true
+}: APICallParams) {
   const postProcessorList = makeToList(postProcessor);
   const callBackList = makeToList(callback);
 
@@ -65,7 +84,9 @@ async function makeAPICall(
   try {
     const result = await (window as ElectronAPI).electronAPI.executeCommand(
       command,
-      args
+      args,
+      useStaticSession,
+      json
     );
 
     saveToDB({
@@ -102,15 +123,22 @@ async function makeAPICall(
 
 // Wrap all Properties in {key: [key], value: [value]} objects (attributes table)
 function getPropertiesWrapper(AdObject: {
-  PropertyNames: string[];
-  [key: string]: string[];
+  PropertyNames?: string[];
+  [key: string]: any;
 }): { [key: string]: any } {
-  return AdObject.PropertyNames.map((property) => {
+  const properties = AdObject.PropertyNames ?? Object.keys(AdObject);
+
+  return properties.map((property) => {
     return { key: property, value: AdObject[property] };
   });
 }
 
-// Get Memberof Property from Get-AdUser Output and extract information
+function getExtensionsFromAadUser(Adbject: {
+  ExtensionProperty: { [key: string]: string }
+}): { [key: string]: any } {
+  return getPropertiesWrapper(Adbject.ExtensionProperty);
+}
+
 function getMembershipFromAdUser(AdObject: {
   MemberOf: string[];
   PrimaryGroup: string;
@@ -191,6 +219,7 @@ function makeToList(AdObject: any[] | any): any[] {
 export {
   makeAPICall,
   getPropertiesWrapper,
+  getExtensionsFromAadUser,
   getMembershipFromAdUser,
   prepareDNSResult,
   makeToList,

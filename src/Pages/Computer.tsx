@@ -36,24 +36,24 @@ export default function ComputerPage() {
     setIsLoading(true);
 
     await Promise.all([
-      makeAPICall(
-        "Resolve-DnsName",
-        {
+      makeAPICall({
+        command: "Resolve-DnsName",
+        args: {
           Name: `${query.input}.${query.domain}`
         },
-        prepareDNSResult,
-        setDNS
-      ),
-      makeAPICall(
-        "Get-ADComputer",
-        {
+        postProcessor: prepareDNSResult,
+        callback: setDNS
+      }),
+      makeAPICall({
+        command: "Get-ADComputer",
+        args: {
           Identity: query.input,
           Server: query.domain,
           Properties: "*",
         },
-        [getPropertiesWrapper, getMembershipFromAdUser],
-        [setAttributes, setMemberOf]
-      )
+        postProcessor: [getPropertiesWrapper, getMembershipFromAdUser],
+        callback: [setAttributes, setMemberOf]
+      })
     ])
 
     setIsLoading(false);

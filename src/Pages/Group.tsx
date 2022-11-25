@@ -35,22 +35,25 @@ export default function GroupPage() {
     setReQuery(false);
     setIsLoading(true);
     await Promise.all([
-      makeAPICall(
-        "Get-ADGroup",
-        {
+      makeAPICall({
+        command: "Get-ADGroup",
+        args: {
           Identity: query.input,
           Server: query.domain,
           Properties: "*",
         },
-        [getPropertiesWrapper, getMembershipFromAdUser],
-        [setAttributes, setMemberOf]
-      ),
-      makeAPICall(
-        "Get-ADGroupMember",
-        { Identity: query.input, Server: query.domain },
-        makeToList,
-        setMembers
-      ),
+        postProcessor: [getPropertiesWrapper, getMembershipFromAdUser],
+        callback: [setAttributes, setMemberOf]
+      }),
+      makeAPICall({
+        command: "Get-ADGroupMember",
+        args: {
+          Identity: query.input,
+          Server: query.domain
+        },
+        postProcessor: makeToList,
+        callback: setMembers
+      }),
     ]);
     setIsLoading(false);
   };

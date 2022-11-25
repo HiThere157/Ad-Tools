@@ -22,15 +22,15 @@ export default function DnsPage() {
 
   const runQuery = async () => {
     setIsLoading(true);
-    await makeAPICall(
-      "Resolve-DnsName",
-      {
+    await makeAPICall({
+      command: "Resolve-DnsName",
+      args: {
         Name: query.input,
         Type: query.type
       },
-      prepareDNSResult,
-      setResults
-    );
+      postProcessor: prepareDNSResult,
+      callback: setResults
+    });
     setIsLoading(false);
   };
 

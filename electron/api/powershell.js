@@ -8,8 +8,12 @@ const allowedCommands = [
   "Get-ADGroupMember",
   "Get-ADComputer",
   "Resolve-DnsName",
+  "Connect-AzureAD",
+  "Get-AzureADCurrentSessionInfo",
+  "Get-AzureADUser",
+  "Get-AzureADUserMembership"
 ];
-const allowedArguments = ["Filter", "Identity", "Server", "Properties", "Name", "Type"];
+const allowedArguments = ["Filter", "Identity", "Server", "Properties", "Name", "Type", "Tenant", "ObjectId", "All"];
 
 const getSession = () => {
   return new PowerShell({
@@ -23,7 +27,8 @@ const executeCommand = async (
   _event,
   command,
   args,
-  useStaticSession = false
+  useStaticSession,
+  json
 ) => {
   if (!allowedCommands.includes(command)) {
     return { error: `Invalid Command "${command}"` };
@@ -46,9 +51,11 @@ const executeCommand = async (
   ]);
 
   fullCommand = fullCommand.replace("\\*", "*");
+  fullCommand = fullCommand.replace("\\@", "@");
 
   try {
-    const output = await ps.invoke(fullCommand + " | ConvertTo-Json");
+    const output = await ps.invoke(fullCommand + (json ? " | ConvertTo-Json" : ""));
+    if (!json) return output.raw
     return { output: output.raw ? JSON.parse(output.raw) : [] };
   } catch (error) {
     return { error: error.toString().split("At line:1")[0] };

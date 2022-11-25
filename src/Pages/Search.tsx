@@ -23,15 +23,15 @@ export default function SearchPage() {
 
   const runQuery = async () => {
     setIsLoading(true);
-    await makeAPICall(
-      "Get-ADObject",
-      {
+    await makeAPICall({
+      command: "Get-ADObject",
+      args: {
         Filter: `Name -like "${query.input}"`,
         Server: query.domain,
       },
-      makeToList,
-      setResults
-    );
+      postProcessor: makeToList,
+      callback: setResults
+    });
     setIsLoading(false);
   };
 
