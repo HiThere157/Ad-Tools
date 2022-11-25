@@ -27,6 +27,7 @@ type CommandArgs = {
   Type?: string;
   Tenant?: string;
   ObjectId?: string;
+  SearchString?: string;
   All?: string;
 };
 
@@ -40,7 +41,9 @@ type Commands =
   | "Connect-AzureAD"
   | "Get-AzureADCurrentSessionInfo"
   | "Get-AzureADUser"
-  | "Get-AzureADUserMembership";
+  | "Get-AzureADUserMembership"
+  | "Get-AzureADGroup"
+  | "Get-AzureADGroupMember";
 
 type ResultData = {
   output?: { [key: string]: any }[];
@@ -72,7 +75,7 @@ export default async function makeAPICall({
   callback = () => { },
   useStaticSession = false,
   json = true
-}: APICallParams) {
+}: APICallParams): Promise<ResultData> {
   const postProcessorList = makeToList(postProcessor);
   const callBackList = makeToList(callback);
 
@@ -110,15 +113,17 @@ export default async function makeAPICall({
     });
     await Promise.all(processed);
 
-    return true;
+    return { output: processed };
   } catch (error: any) {
+    const result = {
+      output: [],
+      error: error.toString(),
+    };
+
     callBackList.forEach((callback) => {
-      callback({
-        output: [],
-        error: error.toString(),
-      });
+      callback(result);
     });
-    return false;
+    return result;
   }
 }
 

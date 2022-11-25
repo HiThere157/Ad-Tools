@@ -23,8 +23,14 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Distinguished Name", key: "DistinguishedName", sortable: true },
   ],
   azureGroup: [
-    { title: "DisplayName", key: "DisplayName", sortable: true },
+    { title: "Display Name", key: "DisplayName", sortable: true },
     { title: "Description", key: "Description", sortable: true },
+    { title: "ObjectId", key: "ObjectId", sortable: true },
+  ],
+  azureUser: [
+    { title: "User Principal Name", key: "UserPrincipalName", sortable: true },
+    { title: "Department", key: "Department", sortable: true },
+    { title: "Job Title", key: "JobTitle", sortable: true },
     { title: "ObjectId", key: "ObjectId", sortable: true },
   ],
   dns: [

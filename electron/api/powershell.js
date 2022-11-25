@@ -11,9 +11,11 @@ const allowedCommands = [
   "Connect-AzureAD",
   "Get-AzureADCurrentSessionInfo",
   "Get-AzureADUser",
-  "Get-AzureADUserMembership"
+  "Get-AzureADUserMembership",
+  "Get-AzureADGroup",
+  "Get-AzureADGroupMember"
 ];
-const allowedArguments = ["Filter", "Identity", "Server", "Properties", "Name", "Type", "Tenant", "ObjectId", "All"];
+const allowedArguments = ["Filter", "Identity", "Server", "Properties", "Name", "Type", "Tenant", "ObjectId", "SearchString", "All"];
 
 const getSession = () => {
   return new PowerShell({

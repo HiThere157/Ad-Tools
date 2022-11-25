@@ -7,13 +7,14 @@ export default async function authenticateAzure(tenant: string) {
     json: false
   });
 
-  if (connected) return false;
+  if (!connected.error) return false;
 
   return await makeAPICall({
     command: "Connect-AzureAD",
     args: {
       Tenant: tenant
     },
-    useStaticSession: true
+    useStaticSession: true,
+    json: false
   });
 }
