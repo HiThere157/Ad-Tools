@@ -3,11 +3,11 @@ import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Helper/useStorage";
 
 import { columns } from "../Config/default";
+import makeAPICall from "../Helper/makeAPICall";
 import {
-  makeAPICall,
   getPropertiesWrapper,
   getMembershipFromAdUser,
-} from "../Helper/makeAPICall";
+} from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
 import AdInputBar from "../Components/InputBars/InputAd";

@@ -1,4 +1,4 @@
-import { makeAPICall } from "./makeAPICall";
+import makeAPICall from "./makeAPICall";
 
 export default async function authenticateAzure(tenant: string) {
   const connected = await makeAPICall({
@@ -7,7 +7,7 @@ export default async function authenticateAzure(tenant: string) {
     json: false
   });
 
-  if (connected) return true;
+  if (connected) return false;
 
   return await makeAPICall({
     command: "Connect-AzureAD",

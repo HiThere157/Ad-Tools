@@ -3,12 +3,12 @@ import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Helper/useStorage";
 
 import { columns } from "../Config/default";
+import makeAPICall from "../Helper/makeAPICall";
 import {
-  makeAPICall,
   getPropertiesWrapper,
   getExtensionsFromAadUser,
   makeToList,
-} from "../Helper/makeAPICall";
+} from "../Helper/postProcessors";
 import authenticateAzure from "../Helper/azureAuth";
 
 import AadInputBar from "../Components/InputBars/InputAad";
