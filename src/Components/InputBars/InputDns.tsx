@@ -28,10 +28,11 @@ export default function DnsInputBar({ label, isLoading, query, onChange, onSubmi
         label={label}
         value={input}
         classOverride="w-64"
+        disabled={isLoading}
         onChange={setInput}
         onEnter={onSubmit}
       />
-      <Dropdown items={dnsTypes} value={type} onChange={setType} />
+      <Dropdown items={dnsTypes} value={type} disabled={isLoading} onChange={setType} />
       <Button onClick={onSubmit} disabled={isLoading} children="Run" />
     </div>
   );

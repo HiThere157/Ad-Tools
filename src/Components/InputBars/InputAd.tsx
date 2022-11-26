@@ -28,10 +28,11 @@ export default function AdInputBar({ label, isLoading, query, onChange, onSubmit
         label={label}
         value={input}
         classOverride="w-64"
+        disabled={isLoading}
         onChange={setInput}
         onEnter={onSubmit}
       />
-      <Dropdown items={domains} value={domain} onChange={setDomain} />
+      <Dropdown items={domains} value={domain} disabled={isLoading} onChange={setDomain} />
       <Button onClick={onSubmit} disabled={isLoading} children="Run" />
     </div>
   );
