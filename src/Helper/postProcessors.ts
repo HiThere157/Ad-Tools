@@ -1,4 +1,4 @@
-import { ElectronAPI } from "./makeAPICall";
+import { ElectronAPI } from "../Types/api";
 
 // Wrap all Properties in {key: [key], value: [value]} objects (attributes table)
 function getPropertiesWrapper(AdObject: {

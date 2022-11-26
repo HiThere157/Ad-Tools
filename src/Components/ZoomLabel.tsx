@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { ElectronAPI } from "../Helper/makeAPICall";
+import { ElectronAPI } from "../Types/api";
 
 export default function ZoomLabel() {
   const [visible, setVisibility] = useState(false);

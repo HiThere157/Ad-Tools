@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { ElectronAPI } from "../Helper/makeAPICall";
+import { ElectronAPI } from "../Types/api";
 
 import Button from "../Components/Button";
 import TableOfContents from "../Components/TableOfContents";

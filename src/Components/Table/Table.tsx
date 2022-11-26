@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSessionStorage } from "../../Hooks/useStorage";
 
 import { ColumnDefinition } from "../../Config/default";
-import { ResultData } from "../../Helper/makeAPICall";
+import { ResultData } from "../../Types/api";
 import stringify from "../../Helper/stringify";
 
 import TableElement from "./TableElement";

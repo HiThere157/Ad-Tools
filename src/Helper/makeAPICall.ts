@@ -2,64 +2,7 @@ import { commandDBConfig } from "../Config/default";
 import { setupIndexedDB, Store } from "./indexedDB";
 import { makeToList } from "./postProcessors";
 
-type ElectronAPI = Window &
-  typeof globalThis & {
-    electronAPI: {
-      getExecutingUser: () => { output: string };
-      executeCommand: (request: {
-        command: Commands;
-        args: CommandArgs;
-        selectFields: string[];
-        useStaticSession: boolean;
-        json: boolean;
-      }) => Promise<ResultData>;
-      probeConnection: (target: string) => ResultData;
-      handleZoomUpdate: (callback: Function) => void;
-      removeZoomListener: () => void;
-    };
-  };
-
-type CommandArgs = {
-  Filter?: string;
-  Identity?: string;
-  Server?: string;
-  Properties?: string;
-  Name?: string;
-  Type?: string;
-  Tenant?: string;
-  ObjectId?: string;
-  SearchString?: string;
-  All?: string;
-};
-
-type Commands =
-  | "Get-ADObject"
-  | "Get-ADUser"
-  | "Get-ADGroup"
-  | "Get-ADGroupMember"
-  | "Get-ADComputer"
-  | "Resolve-DnsName"
-  | "Connect-AzureAD"
-  | "Get-AzureADCurrentSessionInfo"
-  | "Get-AzureADUser"
-  | "Get-AzureADUserMembership"
-  | "Get-AzureADGroup"
-  | "Get-AzureADGroupMember";
-
-type ResultData = {
-  output?: { [key: string]: any }[];
-  error?: string;
-};
-
-type APICallParams = {
-  command: Commands;
-  args?: CommandArgs;
-  postProcessor?: Function | Function[];
-  callback?: Function | Function[];
-  selectFields?: string[];
-  useStaticSession?: boolean;
-  json?: boolean;
-};
+import { ElectronAPI, Command, CommandArgs, ResultData } from "../Types/api";
 
 async function saveToDB(item: any) {
   const db = setupIndexedDB(commandDBConfig);
@@ -68,6 +11,15 @@ async function saveToDB(item: any) {
   commandStore.deleteOld(500);
 }
 
+type makeAPICallParams = {
+  command: Command;
+  args?: CommandArgs;
+  postProcessor?: Function | Function[];
+  callback?: Function | Function[];
+  selectFields?: string[];
+  useStaticSession?: boolean;
+  json?: boolean;
+};
 export default async function makeAPICall({
   command,
   args = {},
@@ -76,7 +28,7 @@ export default async function makeAPICall({
   selectFields = [],
   useStaticSession = false,
   json = true,
-}: APICallParams): Promise<ResultData> {
+}: makeAPICallParams): Promise<ResultData> {
   const postProcessorList = makeToList(postProcessor);
   const callBackList = makeToList(callback);
 
@@ -126,5 +78,3 @@ export default async function makeAPICall({
     return result;
   }
 }
-
-export type { ElectronAPI, ResultData };
