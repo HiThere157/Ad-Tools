@@ -96,7 +96,7 @@ function NavItem({ to, icon, text, isOpen }: NavItemProps) {
     >
       <div className="flex flex-row items-center p-1">
         <div className="text-xl">{icon}</div>
-        {isOpen ? <span className="ml-2 whitespace-nowrap">{text}</span> : ""}
+        {isOpen && <span className="ml-2 whitespace-nowrap">{text}</span>}
       </div>
     </NavLink>
   );

@@ -12,7 +12,7 @@ type FilterMenuProps = {
 export default function FilterMenu({ isOpen, columns, filter, onFilterChange }: FilterMenuProps) {
   return (
     <>
-      {isOpen ? (
+      {isOpen && (
         <div className="container">
           <div className="mb-1 flex items-center">
             <span className="mr-2">Selected: </span>
@@ -37,8 +37,6 @@ export default function FilterMenu({ isOpen, columns, filter, onFilterChange }: 
             );
           })}
         </div>
-      ) : (
-        ""
       )}
     </>
   );

@@ -22,7 +22,7 @@ export default function Input({
 
   return (
     <div className="flex">
-      {label ? <span className={"mr-2 whitespace-nowrap"}>{label}</span> : ""}
+      {label && <span className={"mr-2 whitespace-nowrap"}>{label}</span>}
       <input
         className={
           "control dark:bg-secondaryBg dark:border-primaryBorder " +

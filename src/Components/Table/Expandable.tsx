@@ -24,13 +24,11 @@ export default function Expandable({ children, canExpand = true }: ExpandablePro
               {isOpen ? <BsArrowsAngleContract /> : <BsArrowsAngleExpand />}
             </Button>
 
-            {isOpen ? (
+            {isOpen && (
               <Button
                 classOverride="p-0 my-1 flex-grow"
                 onClick={toggleOpen}
               ></Button>
-            ) : (
-              ""
             )}
           </div>
           {isOpen ? (

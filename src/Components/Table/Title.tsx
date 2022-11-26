@@ -13,12 +13,10 @@ export default function Title({ title, n, nSelected }: TitleProps) {
         {n} {n === 1 ? "Result" : "Results"}
       </span>
 
-      {nSelected !== 0 ? (
+      {nSelected !== 0 && (
         <span className="dark:text-foregroundAccent">
           ({nSelected} Selected)
         </span>
-      ) : (
-        ""
       )}
     </div>
   );

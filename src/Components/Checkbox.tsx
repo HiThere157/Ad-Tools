@@ -29,8 +29,8 @@ export default function Checkbox({
       "dark:text-primaryControlAccent " +
       classOverride
     }>
-      {checked ? <BsCheckLg className="m-0 scale-150" /> : ""}
-      {checked === undefined ? <BsDashLg className="m-0 scale-150" /> : ""}
+      {checked && <BsCheckLg className="m-0 scale-150" />}
+      {checked === undefined && <BsDashLg className="m-0 scale-150" />}
       <input
         ref={ref}
         type="checkbox"
