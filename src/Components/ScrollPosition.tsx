@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { useSessionStorage } from "./Hooks/useStorage";
+import { useSessionStorage } from "../Hooks/useStorage";
 
 type ScrollPositionProps = {
   name: string

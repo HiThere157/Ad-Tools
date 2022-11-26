@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
-import useIntersectionObserver from "./Hooks/useIntersectionObserver";
+import useIntersectionObserver from "../Hooks/useIntersectionObserver";
 
 import Button from "./Button";
 
