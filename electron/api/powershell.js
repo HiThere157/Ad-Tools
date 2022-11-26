@@ -1,6 +1,5 @@
 const { PowerShell } = require("node-powershell");
 const { quote } = require("shell-quote");
-const { excludeFields } = require("../helpers/json");
 
 const allowedCommands = [
   "Get-ADObject",
@@ -39,7 +38,7 @@ const staticSession = getSession();
 
 const executeCommand = async (
   _event,
-  { command, args, excludeFields, useStaticSession, json }
+  { command, args, selectFields, useStaticSession, json }
 ) => {
   if (!allowedCommands.includes(command)) {
     return { error: `Invalid Command "${command}"` };
@@ -52,7 +51,7 @@ const executeCommand = async (
 
   const ps = useStaticSession ? staticSession : getSession();
 
-  fullCommand = quote([
+  let fullCommand = quote([
     command,
     ...Object.entries(args)
       .map(([key, value]) => {
@@ -61,18 +60,24 @@ const executeCommand = async (
       .flat(),
   ]);
 
+  if (selectFields.length > 0) {
+    fullCommand = `${fullCommand} | Select-Object ${quote([
+      selectFields.join(","),
+    ])}`;
+  }
+  if (json) {
+    fullCommand = `${fullCommand} | ConvertTo-Json -Compress`;
+  }
+
   fullCommand = fullCommand.replace("\\*", "*");
   fullCommand = fullCommand.replace("\\@", "@");
+  fullCommand = fullCommand.replace("\\,", ",");
 
   try {
-    const output = await ps.invoke(
-      fullCommand + (json ? " | ConvertTo-Json -Compress" : "")
-    );
+    const output = await ps.invoke(fullCommand);
     if (!json) return output.raw;
     return {
-      output: output.raw
-        ? JSON.parse(excludeFields(output.raw, excludeFields))
-        : [],
+      output: output.raw ? JSON.parse(output.raw) : [],
     };
   } catch (error) {
     return { error: error.toString().split("At line:1")[0] };

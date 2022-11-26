@@ -9,7 +9,7 @@ type ElectronAPI = Window &
       executeCommand: (request: {
         command: Commands;
         args: CommandArgs;
-        excludeFields: string[];
+        selectFields: string[];
         useStaticSession: boolean;
         json: boolean;
       }) => Promise<ResultData>;
@@ -56,7 +56,7 @@ type APICallParams = {
   args?: CommandArgs;
   postProcessor?: Function | Function[];
   callback?: Function | Function[];
-  excludeFields?: string[];
+  selectFields?: string[];
   useStaticSession?: boolean;
   json?: boolean;
 };
@@ -71,11 +71,9 @@ async function saveToDB(item: any) {
 export default async function makeAPICall({
   command,
   args = {},
-  postProcessor = (AdObject: object) => {
-    return AdObject;
-  },
+  postProcessor = (AdObject: object) => AdObject,
   callback = () => {},
-  excludeFields = [],
+  selectFields = [],
   useStaticSession = false,
   json = true,
 }: APICallParams): Promise<ResultData> {
@@ -92,7 +90,7 @@ export default async function makeAPICall({
     const result = await (window as ElectronAPI).electronAPI.executeCommand({
       command,
       args,
-      excludeFields,
+      selectFields,
       useStaticSession,
       json,
     });

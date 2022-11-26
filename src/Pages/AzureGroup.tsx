@@ -67,7 +67,6 @@ export default function AzureGroupPage() {
         },
         postProcessor: makeToList,
         callback: setMembers,
-        excludeFields: ["AssignedLicenses", "AssignedPlans"],
         useStaticSession: true
       })
     } else {
