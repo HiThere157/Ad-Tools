@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSessionStorage } from "../../Helper/useStorage";
+import { useSessionStorage } from "../Hooks/useStorage";
 
 import { ColumnDefinition } from "../../Config/default";
 import { ResultData } from "../../Helper/makeAPICall";

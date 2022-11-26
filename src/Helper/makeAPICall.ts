@@ -81,9 +81,7 @@ export default async function makeAPICall({
   const callBackList = makeToList(callback);
 
   callBackList.forEach((callback) => {
-    callback({
-      output: [],
-    });
+    callback({ output: [] });
   });
 
   try {

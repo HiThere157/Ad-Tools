@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useSessionStorage } from "../Helper/useStorage";
+import { useSessionStorage } from "../Components/Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import makeAPICall from "../Helper/makeAPICall";

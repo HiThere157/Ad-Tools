@@ -1,4 +1,4 @@
-import { useLocalStorage } from "../Helper/useStorage";
+import { useLocalStorage } from "../Components/Hooks/useStorage";
 
 import Header from "../Components/Header"
 import NavBar from "../Components/NavBar";
