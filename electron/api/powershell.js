@@ -1,5 +1,6 @@
 const { PowerShell } = require("node-powershell");
 const { quote } = require("shell-quote");
+const { excludeFields } = require("../helpers/json");
 
 const allowedCommands = [
   "Get-ADObject",
@@ -68,7 +69,11 @@ const executeCommand = async (
       fullCommand + (json ? " | ConvertTo-Json -Compress" : "")
     );
     if (!json) return output.raw;
-    return { output: output.raw ? JSON.parse(output.raw) : [] };
+    return {
+      output: output.raw
+        ? JSON.parse(excludeFields(output.raw, excludeFields))
+        : [],
+    };
   } catch (error) {
     return { error: error.toString().split("At line:1")[0] };
   } finally {
