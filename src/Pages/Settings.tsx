@@ -1,7 +1,7 @@
 import { commandDBConfig } from "../Config/default";
 import { setupIndexedDB, Store } from "../Helper/indexedDB";
 import { useGlobalState } from "../Hooks/useGlobalState";
-import addMessage from "../Helper/addMessage";
+import { addMessage } from "../Helper/handleMessage";
 
 import Button from "../Components/Button";
 
@@ -10,18 +10,18 @@ export default function GroupPage() {
 
   const clearSession = () => {
     window.sessionStorage.clear();
-    addMessage({ type: "info", message: "cleared session storage" }, setState);
+    addMessage({ type: "info", message: "cleared session storage", timer: 7 }, setState);
   }
   const clearLocal = () => {
     window.localStorage.clear();
-    addMessage({ type: "info", message: "cleared local storage" }, setState);
+    addMessage({ type: "info", message: "cleared local storage", timer: 7 }, setState);
   }
   const clearIndexedDB = async () => {
     try {
       const db = setupIndexedDB(commandDBConfig);
       const commandStore = new Store(db, "commands", "readwrite");
       commandStore.deleteAll();
-      addMessage({ type: "info", message: "cleared indexedDB" }, setState);
+      addMessage({ type: "info", message: "cleared indexedDB", timer: 7 }, setState);
     } catch {
       addMessage({ type: "error", message: "failed to clear indexedDB" }, setState);
     }

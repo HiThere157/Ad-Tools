@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { dnsTypes } from "../../Config/default";
 import makeAPICall from "../../Helper/makeAPICall";
 import { useGlobalState } from "../../Hooks/useGlobalState";
-import addMessage from "../../Helper/addMessage";
+import { addMessage } from "../../Helper/handleMessage";
 
 import Input from "../Input";
 import Dropdown from "../Dropdown";
@@ -32,10 +32,10 @@ export default function DnsInputBar({ label, isLoading, query, onChange, onSubmi
     })
 
     if (result.error) {
-      addMessage({ type: "error", message: "failed to clear DNS cache"}, setState);
+      addMessage({ type: "error", message: "failed to clear DNS cache" }, setState);
       return;
     }
-    addMessage({ type: "info", message: "cleared DNS cache" }, setState);
+    addMessage({ type: "info", message: "cleared DNS cache", timer: 7 }, setState);
   }
 
   return (

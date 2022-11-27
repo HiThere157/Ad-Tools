@@ -1,6 +1,8 @@
 import { createContext, useState, useContext, Dispatch, SetStateAction } from "react";
 
 type Message = {
+  timestamp?: number;
+  timeoutId?: NodeJS.Timeout;
   type: "info" | "error" | "warning";
   message: string;
   timer?: number;
