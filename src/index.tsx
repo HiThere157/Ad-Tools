@@ -5,6 +5,8 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
+import { GlobalStateProvider } from "./Hooks/useGlobalState";
+
 import RootLayout from "./Layouts/RootLayout";
 import SearchPage from "./Pages/Search";
 import UserPage from "./Pages/User";
@@ -19,21 +21,23 @@ import SettingsPage from "./Pages/Settings";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
-    <HashRouter>
-      <RootLayout>
-        <Routes>
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/user" element={<UserPage />} />
-          <Route path="/group" element={<GroupPage />} />
-          <Route path="/computer" element={<ComputerPage />} />
-          <Route path="/azureUser" element={<AzureUserPage />} />
-          <Route path="/azureGroup" element={<AzureGroupPage />} />
-          <Route path="/dns" element={<DnsPage />} />
-          <Route path="/history" element={<HistoryPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-        </Routes>
-      </RootLayout>
-    </HashRouter>
+    <GlobalStateProvider>
+      <HashRouter>
+        <RootLayout>
+          <Routes>
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/user" element={<UserPage />} />
+            <Route path="/group" element={<GroupPage />} />
+            <Route path="/computer" element={<ComputerPage />} />
+            <Route path="/azureUser" element={<AzureUserPage />} />
+            <Route path="/azureGroup" element={<AzureGroupPage />} />
+            <Route path="/dns" element={<DnsPage />} />
+            <Route path="/history" element={<HistoryPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Routes>
+        </RootLayout>
+      </HashRouter>
+    </GlobalStateProvider>
   </React.StrictMode>
 );
 

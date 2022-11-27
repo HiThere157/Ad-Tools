@@ -22,6 +22,7 @@ export type Command =
   | "Get-ADGroupMember"
   | "Get-ADComputer"
   | "Resolve-DnsName"
+  | "Clear-DnsClientCache"
   | "Connect-AzureAD"
   | "Get-AzureADCurrentSessionInfo"
   | "Get-AzureADUser"

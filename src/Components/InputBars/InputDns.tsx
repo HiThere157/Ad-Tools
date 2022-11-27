@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
 import { dnsTypes } from "../../Config/default";
+import makeAPICall from "../../Helper/makeAPICall";
+import { useGlobalState } from "../../Hooks/useGlobalState";
+import addMessage from "../../Helper/addMessage";
 
 import Input from "../Input";
 import Dropdown from "../Dropdown";
@@ -14,6 +17,7 @@ type DnsInputBarProps = {
   onSubmit: Function,
 }
 export default function DnsInputBar({ label, isLoading, query, onChange, onSubmit }: DnsInputBarProps) {
+  const { setState } = useGlobalState();
   const [input, setInput] = useState(query.input ?? "");
   const [type, setType] = useState(query.type ?? dnsTypes[0]);
 
@@ -21,6 +25,18 @@ export default function DnsInputBar({ label, isLoading, query, onChange, onSubmi
     onChange({ input, type });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input, type]);
+
+  const clearCache = async () => {
+    const result = await makeAPICall({
+      command: "Clear-DnsClientCache",
+    })
+
+    if (result.error) {
+      addMessage({ type: "error", message: "failed to clear DNS cache"}, setState);
+      return;
+    }
+    addMessage({ type: "info", message: "cleared DNS cache" }, setState);
+  }
 
   return (
     <div className="flex flex-wrap items-center [&>*]:m-1 mb-2">
@@ -33,6 +49,7 @@ export default function DnsInputBar({ label, isLoading, query, onChange, onSubmi
         onEnter={onSubmit}
       />
       <Dropdown items={dnsTypes} value={type} disabled={isLoading} onChange={setType} />
+      <Button onClick={clearCache} disabled={isLoading} children="Clear Cache" />
       <Button onClick={onSubmit} disabled={isLoading} children="Run" />
     </div>
   );
