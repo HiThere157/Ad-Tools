@@ -15,6 +15,7 @@ import ComputerPage from "./Pages/Computer";
 import AzureSearchPage from "./Pages/AzureSearch";
 import AzureUserPage from "./Pages/AzureUser";
 import AzureGroupPage from "./Pages/AzureGroup";
+import AzureDevicePage from "./Pages/AzureDevice";
 import DnsPage from "./Pages/DNS";
 import HistoryPage from "./Pages/History";
 import SettingsPage from "./Pages/Settings";
@@ -33,6 +34,7 @@ root.render(
             <Route path="/azureSearch" element={<AzureSearchPage />} />
             <Route path="/azureUser" element={<AzureUserPage />} />
             <Route path="/azureGroup" element={<AzureGroupPage />} />
+            <Route path="/azureDevice" element={<AzureDevicePage />} />
             <Route path="/dns" element={<DnsPage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/settings" element={<SettingsPage />} />

@@ -25,6 +25,7 @@ export default function AzureUserPage() {
   const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_a`, {});
   const [ext, setExt, extKey] = useSessionStorage(`${p}_e`, {});
   const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_mo`, {});
+  const [devices, setDevices, devicesKey] = useSessionStorage(`${p}_d`, {});
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function AzureUserPage() {
     setAttributes({ output: [] });
     setExt({ output: [] });
     setMemberOf({ output: [] });
+    setDevices({ output: [] });
 
     await authenticateAzure(query.tenant);
     await makeAPICall({
@@ -59,6 +61,17 @@ export default function AzureUserPage() {
       selectFields: columns.azureGroup.map(column => column.key),
       postProcessor: makeToList,
       callback: setMemberOf,
+      useStaticSession: true
+    });
+    await makeAPICall({
+      command: "Get-AzureADUserRegisteredDevice",
+      args: {
+        ObjectId: query.input,
+        All: "1"
+      },
+      selectFields: columns.azureDevice.map(column => column.key),
+      postProcessor: makeToList,
+      callback: setDevices,
       useStaticSession: true
     });
     setIsLoading(false);
@@ -95,6 +108,16 @@ export default function AzureUserPage() {
           data={memberOf}
           onRedirect={(entry: { DisplayName: string }) => {
             redirect("azureGroup", { input: entry.DisplayName, tenant: query.tenant })
+          }}
+          isLoading={isLoading}
+        />
+        <Table
+          title="Registered Devices"
+          name={devicesKey}
+          columns={columns.azureDevice}
+          data={devices}
+          onRedirect={(entry: { DisplayName: string }) => {
+            redirect("azureDevice", { input: entry.DisplayName, tenant: query.tenant })
           }}
           isLoading={isLoading}
         />

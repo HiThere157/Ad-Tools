@@ -22,12 +22,14 @@ export default function AzureSearchPage() {
 
   const [users, setUsers, usersKey] = useSessionStorage(`${p}_u`, {});
   const [groups, setGroups, groupsKey] = useSessionStorage(`${p}_g`, {});
+  const [devices, setDevices, devicesKey] = useSessionStorage(`${p}_d`, {});
 
   const runQuery = async () => {
     setIsLoading(true);
 
     setUsers({ output: [] });
     setGroups({ output: [] });
+    setDevices({ output: [] });
 
     await authenticateAzure(query.tenant);
     await makeAPICall({
@@ -50,6 +52,17 @@ export default function AzureSearchPage() {
       selectFields: columns.azureGroup.map(column => column.key),
       postProcessor: makeToList,
       callback: setGroups,
+      useStaticSession: true
+    });
+    await makeAPICall({
+      command: "Get-AzureADDevice",
+      args: {
+        SearchString: query.input,
+        All: "1"
+      },
+      selectFields: columns.azureDevice.map(column => column.key),
+      postProcessor: makeToList,
+      callback: setDevices,
       useStaticSession: true
     });
     setIsLoading(false);
@@ -82,6 +95,16 @@ export default function AzureSearchPage() {
           data={groups}
           onRedirect={(entry: { DisplayName: string }) => {
             redirect("azureGroup", { input: entry.DisplayName, tenant: query.tenant })
+          }}
+          isLoading={isLoading}
+        />
+        <Table
+          title="Devices"
+          name={devicesKey}
+          columns={columns.azureDevice}
+          data={devices}
+          onRedirect={(entry: { DisplayName: string }) => {
+            redirect("azureDevice", { input: entry.DisplayName, tenant: query.tenant })
           }}
           isLoading={isLoading}
         />

@@ -27,8 +27,10 @@ export type Command =
   | "Get-AzureADCurrentSessionInfo"
   | "Get-AzureADUser"
   | "Get-AzureADUserMembership"
+  | "Get-AzureADUserRegisteredDevice"
   | "Get-AzureADGroup"
-  | "Get-AzureADGroupMember";
+  | "Get-AzureADGroupMember"
+  | "Get-AzureADDevice";
 
 export type CommandArgs = {
   Filter?: string;

@@ -59,6 +59,12 @@ export default function NavBar({ isOpen }: NavBarProps) {
         text="Azure Group"
         isOpen={isOpen}
       />
+      <NavItem
+        to="/azureDevice"
+        icon={<BsDisplay />}
+        text="Azure Device"
+        isOpen={isOpen}
+      />
       <hr className="my-2 dark:border-primaryBorder" />
       <NavItem
         to="/dns"

@@ -24,7 +24,7 @@ export default async function makeAPICall({
   command,
   args = {},
   postProcessor = (AdObject: object) => AdObject,
-  callback = () => {},
+  callback = () => { },
   selectFields = [],
   useStaticSession = false,
   json = true,
@@ -49,6 +49,7 @@ export default async function makeAPICall({
       command,
       args,
       date: new Date().toISOString().replace("T", " ").replace("Z", " UTC"),
+      success: !result.error
     });
 
     if (result.error) {

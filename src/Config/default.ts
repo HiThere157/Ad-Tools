@@ -25,13 +25,18 @@ const columns: { [key: string]: ColumnDefinition[] } = {
   azureGroup: [
     { title: "Display Name", key: "DisplayName", sortable: true },
     { title: "Description", key: "Description", sortable: true },
-    { title: "ObjectId", key: "ObjectId", sortable: true },
   ],
   azureUser: [
     { title: "User Principal Name", key: "UserPrincipalName", sortable: true },
     { title: "Display Name", key: "DisplayName", sortable: true },
     { title: "Department", key: "Department", sortable: true },
-    { title: "ObjectId", key: "ObjectId", sortable: true },
+  ],
+  azureDevice: [
+    { title: "Display Name", key: "DisplayName", sortable: true },
+    { title: "Device OS", key: "DeviceOSType", sortable: true },
+    { title: "Enabled", key: "AccountEnabled", sortable: true },
+    { title: "MDM", key: "IsManaged", sortable: true },
+    { title: "Last Logon", key: "ApproximateLastLogonTimeStamp", sortable: true },
   ],
   dns: [
     { title: "Name", key: "Name", sortable: true },
@@ -43,6 +48,7 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Command", key: "command", sortable: true },
     { title: "Arguments", key: "args", sortable: true },
     { title: "Date", key: "date", sortable: true },
+    { title: "Success", key: "success", sortable: true },
   ],
 };
 

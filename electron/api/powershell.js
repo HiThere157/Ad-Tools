@@ -13,8 +13,10 @@ const allowedCommands = [
   "Get-AzureADCurrentSessionInfo",
   "Get-AzureADUser",
   "Get-AzureADUserMembership",
+  "Get-AzureADUserRegisteredDevice",
   "Get-AzureADGroup",
   "Get-AzureADGroupMember",
+  "Get-AzureADDevice",
 ];
 const allowedArguments = [
   "Filter",
