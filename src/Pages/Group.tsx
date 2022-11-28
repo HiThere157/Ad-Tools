@@ -82,7 +82,7 @@ export default function GroupPage() {
           data={members}
           onRedirect={(entry: { Name: string, ObjectClass: string }) => {
             if (!["group", "user", "computer"].includes(entry.ObjectClass)) return;
-            redirect(entry.ObjectClass, entry.Name, query.domain)
+            redirect(entry.ObjectClass, { input: entry.Name, domain: query.domain })
             if (entry.ObjectClass === "group") window.location.reload()
           }}
           isLoading={isLoading}
@@ -93,7 +93,7 @@ export default function GroupPage() {
           columns={columns.default}
           data={memberOf}
           onRedirect={(entry: { Name: string }) => {
-            redirect("group", entry.Name, query.domain)
+            redirect("group", { input: entry.Name, domain: query.domain })
             window.location.reload()
           }}
           isLoading={isLoading}

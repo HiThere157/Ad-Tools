@@ -52,7 +52,7 @@ export default function SearchPage() {
           data={results}
           onRedirect={(entry: { Name: string, ObjectClass: string }) => {
             if (!["group", "user", "computer"].includes(entry.ObjectClass)) return;
-            redirect(entry.ObjectClass, entry.Name, query.domain)
+            redirect(entry.ObjectClass, { input: entry.Name, domain: query.domain })
           }}
           isLoading={isLoading}
         />

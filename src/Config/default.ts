@@ -29,8 +29,8 @@ const columns: { [key: string]: ColumnDefinition[] } = {
   ],
   azureUser: [
     { title: "User Principal Name", key: "UserPrincipalName", sortable: true },
+    { title: "Display Name", key: "DisplayName", sortable: true },
     { title: "Department", key: "Department", sortable: true },
-    { title: "Job Title", key: "JobTitle", sortable: true },
     { title: "ObjectId", key: "ObjectId", sortable: true },
   ],
   dns: [

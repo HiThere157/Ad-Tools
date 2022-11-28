@@ -70,9 +70,9 @@ const executeCommand = async (
     fullCommand = `${fullCommand} | ConvertTo-Json -Compress`;
   }
 
-  fullCommand = fullCommand.replace("\\*", "*");
-  fullCommand = fullCommand.replace("\\@", "@");
-  fullCommand = fullCommand.replace("\\,", ",");
+  fullCommand = fullCommand.replace(/\\\*/g, "*");
+  fullCommand = fullCommand.replace(/\\@/g, "@");
+  fullCommand = fullCommand.replace(/\\,/g, ",");
 
   try {
     const output = await ps.invoke(fullCommand);

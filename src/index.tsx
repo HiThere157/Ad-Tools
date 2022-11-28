@@ -12,6 +12,7 @@ import SearchPage from "./Pages/Search";
 import UserPage from "./Pages/User";
 import GroupPage from "./Pages/Group";
 import ComputerPage from "./Pages/Computer";
+import AzureSearchPage from "./Pages/AzureSearch";
 import AzureUserPage from "./Pages/AzureUser";
 import AzureGroupPage from "./Pages/AzureGroup";
 import DnsPage from "./Pages/DNS";
@@ -29,6 +30,7 @@ root.render(
             <Route path="/user" element={<UserPage />} />
             <Route path="/group" element={<GroupPage />} />
             <Route path="/computer" element={<ComputerPage />} />
+            <Route path="/azureSearch" element={<AzureSearchPage />} />
             <Route path="/azureUser" element={<AzureUserPage />} />
             <Route path="/azureGroup" element={<AzureGroupPage />} />
             <Route path="/dns" element={<DnsPage />} />

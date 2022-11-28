@@ -68,7 +68,7 @@ export default function UserPage() {
           columns={columns.default}
           data={memberOf}
           onRedirect={(entry: { Name: string }) => {
-            redirect("group", entry.Name, query.domain)
+            redirect("group", { input: entry.Name, domain: query.domain })
           }}
           isLoading={isLoading}
         />

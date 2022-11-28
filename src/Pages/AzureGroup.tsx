@@ -9,6 +9,7 @@ import {
   makeToList,
 } from "../Helper/postProcessors";
 import authenticateAzure from "../Helper/azureAuth";
+import { redirect } from "../Helper/redirects";
 
 import AadInputBar from "../Components/InputBars/InputAad";
 import TableLayout from "../Layouts/TableLayout";
@@ -46,10 +47,10 @@ export default function AzureGroupPage() {
       useStaticSession: true
     });
 
-    const output = groups.output as Promise<{ DisplayName: string | undefined, ObjectId: string | undefined }[]>[]
-    const firstResult = (await output[0])[0]
+    const output = groups.output as Promise<{ DisplayName: string | undefined, ObjectId: string | undefined }[]>[];
+    const firstResult = (await output?.[0])?.[0];
 
-    if (firstResult.DisplayName === query.input) {
+    if (firstResult?.DisplayName === query.input) {
       await makeAPICall({
         command: "Get-AzureADGroup",
         args: {
@@ -65,15 +66,17 @@ export default function AzureGroupPage() {
           ObjectId: firstResult.ObjectId,
           All: "1"
         },
+        selectFields: columns.azureUser.map(column => column.key),
         postProcessor: makeToList,
         callback: setMembers,
         useStaticSession: true
       })
-    } else {
-      setAttributes({ output: [], error: `No Group found with Identifier "${query.input}"` })
-      setMembers({ output: [], error: `No Group found with Identifier "${query.input}"` })
+      setIsLoading(false);
+      return;
     }
 
+    setAttributes({ output: [], error: `No Group found with Identifier "${query.input}"` })
+    setMembers({ output: [], error: `No Group found with Identifier "${query.input}"` })
     setIsLoading(false);
   };
 
@@ -99,6 +102,9 @@ export default function AzureGroupPage() {
           name={membersKey}
           columns={columns.azureUser}
           data={members}
+          onRedirect={(entry: { UserPrincipalName: string }) => {
+            redirect("azureUser", { input: entry.UserPrincipalName, tenant: query.tenant })
+          }}
           isLoading={isLoading}
         />
       </TableLayout>
