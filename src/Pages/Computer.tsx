@@ -12,6 +12,7 @@ import {
 import { redirect } from "../Helper/redirects";
 
 import AdInputBar from "../Components/InputBars/InputAd";
+import ComputerActions from "../Components/ComputerActions";
 import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
@@ -68,6 +69,7 @@ export default function ComputerPage() {
         onChange={setQuery}
         onSubmit={runQuery}
       />
+      <ComputerActions fqdn={`${query.input}.${query.domain}`} />
       <TableLayout>
         <Table
           title="DNS"

@@ -30,6 +30,15 @@ const allowedArguments = [
   "SearchString",
   "All",
 ];
+const remoteActions = {
+  compmgmt: (target) =>
+    `Start-Process compmgmt.msc -ArgumentList "/computer:${target}"`,
+  mstsc: (target) => `Start-Process mstsc.exe -ArgumentList "/v:${target}"`,
+  mstsc_admin: (target) =>
+    `Start-Process mstsc.exe -ArgumentList "/admin /v:${target}"`,
+  powershell: (target) =>
+    `Start-Process powershell -ArgumentList '-NoExit -Command "Enter-PSSession ${target}"'`,
+};
 
 const getSession = () => {
   return new PowerShell({
@@ -83,6 +92,7 @@ const executeCommand = async (
       output: output.raw ? JSON.parse(output.raw) : [],
     };
   } catch (error) {
+    console.error(error);
     return { error: error.toString().split("At line:1")[0] };
   } finally {
     if (!useStaticSession) ps.dispose();
@@ -97,10 +107,31 @@ const getExecutingUser = async () => {
     );
     return { output: output.raw };
   } catch (error) {
+    console.error(error);
     return { output: "/", error: error.toString().split("At line:1")[0] };
   } finally {
     ps.dispose();
   }
 };
 
-module.exports = { executeCommand, getExecutingUser };
+const startComputerAction = async (_event, action, target) => {
+  if (!Object.keys(remoteActions).includes(action)) {
+    return { error: `Invalid Action "${command}"` };
+  }
+
+  const ps = getSession();
+
+  const command = remoteActions[action](quote([target]));
+
+  try {
+    const output = await ps.invoke(command);
+    return { output: output.raw };
+  } catch (error) {
+    console.error(error);
+    return { error: error.toString().split("At line:1")[0] };
+  } finally {
+    ps.dispose();
+  }
+};
+
+module.exports = { executeCommand, getExecutingUser, startComputerAction };

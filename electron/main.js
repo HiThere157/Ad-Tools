@@ -4,7 +4,11 @@ const path = require("path");
 const log = require("electron-log");
 Object.assign(console, log.functions);
 
-const { executeCommand, getExecutingUser } = require("./api/powershell");
+const {
+  executeCommand,
+  getExecutingUser,
+  startComputerAction,
+} = require("./api/powershell");
 const { probeConnection } = require("./api/node");
 
 if (require("electron-squirrel-startup")) app.quit();
@@ -51,6 +55,7 @@ function createWindow() {
 app.whenReady().then(() => {
   ipcMain.handle("ps:executeCommand", executeCommand);
   ipcMain.handle("ps:getExecutingUser", getExecutingUser);
+  ipcMain.handle("ps:startComputerAction", startComputerAction);
   ipcMain.handle("node:probeConnection", probeConnection);
   createWindow();
   app.on("activate", function () {

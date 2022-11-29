@@ -9,6 +9,10 @@ export type ElectronAPI = Window &
         useStaticSession: boolean;
         json: boolean;
       }) => Promise<ResultData>;
+      startComputerAction: (
+        action: ComputerAction,
+        target: string
+      ) => Promise<ResultData>;
       probeConnection: (target: string) => ResultData;
       handleZoomUpdate: (callback: Function) => void;
       removeZoomListener: () => void;
@@ -44,6 +48,8 @@ export type CommandArgs = {
   SearchString?: string;
   All?: string;
 };
+
+type ComputerAction = "compmgmt" | "mstsc" | "mstsc_admin" | "powershell";
 
 export type ResultData = {
   output?: { [key: string]: any }[];
