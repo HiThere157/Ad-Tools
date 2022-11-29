@@ -17,7 +17,7 @@ export default function ComputerActions({ fqdn }: ComputerActionsProps) {
 
   const run = async (action: ComputerAction, friendlyName: string) => {
     try {
-      const result = await (window as ElectronAPI).electronAPI.startComputerAction(action, fqdn);
+      const result = await (window as ElectronAPI).electronAPI.startComputerAction(action, fqdn, useCurrentUser);
 
       if (result.error) {
         throw result.error;

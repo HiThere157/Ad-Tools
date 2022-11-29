@@ -11,7 +11,8 @@ export type ElectronAPI = Window &
       }) => Promise<ResultData>;
       startComputerAction: (
         action: ComputerAction,
-        target: string
+        target: string,
+        useCurrentUser: boolean
       ) => Promise<ResultData>;
       probeConnection: (target: string) => ResultData;
       handleZoomUpdate: (callback: Function) => void;

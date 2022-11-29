@@ -5,8 +5,13 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
   getExecutingUser: () => ipcRenderer.invoke("ps:getExecutingUser"),
 
-  startComputerAction: (action, target) =>
-    ipcRenderer.invoke("ps:startComputerAction", action, target),
+  startComputerAction: (action, target, useCurrentUser) =>
+    ipcRenderer.invoke(
+      "ps:startComputerAction",
+      action,
+      target,
+      useCurrentUser
+    ),
 
   probeConnection: (target) =>
     ipcRenderer.invoke("node:probeConnection", target),

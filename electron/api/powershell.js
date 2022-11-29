@@ -116,17 +116,21 @@ const getExecutingUser = async () => {
   }
 };
 
-const startComputerAction = async (_event, action, target) => {
+const startComputerAction = async (_event, action, target, useCurrentUser) => {
   if (!Object.keys(remoteActions).includes(action)) {
-    return { error: `Invalid Action "${command}"` };
+    return { error: `Invalid Action "${action}"` };
   }
 
   const ps = getSession();
 
-  const command = remoteActions[action](quote([target]));
+  let fullCommand = remoteActions[action](quote([target]));
+
+  if (!useCurrentUser) {
+    fullCommand = `${fullCommand} -Verb RunAsUser`;
+  }
 
   try {
-    const output = await ps.invoke(command);
+    const output = await ps.invoke(fullCommand);
     return { output: output.raw };
   } catch (error) {
     return { error: error.toString().split("At line:1")[0] };
