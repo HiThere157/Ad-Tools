@@ -126,7 +126,7 @@ const startComputerAction = async (_event, action, target, useCurrentUser) => {
   let fullCommand = remoteActions[action](quote([target]));
 
   if (!useCurrentUser) {
-    fullCommand = `${fullCommand} -Verb RunAsUser`;
+    fullCommand = `${fullCommand} -Verb RunAsUser; Wait-Process -Name CredentialUIBroker`;
   }
 
   try {
