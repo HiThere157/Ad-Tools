@@ -25,20 +25,7 @@ function createWindow() {
   });
 
   win.webContents.on("zoom-changed", (_event, zoomDirection) => {
-    const currentZoom = win.webContents.getZoomFactor();
-    let nextZoom = 1;
-
-    if (zoomDirection === "in") {
-      nextZoom = currentZoom + 0.1;
-    }
-    if (zoomDirection === "out") {
-      nextZoom = currentZoom - 0.1;
-    }
-
-    const clamped = Math.min(1.5, Math.max(0.5, nextZoom));
-
-    win.webContents.send("win:setZoom", clamped);
-    win.webContents.zoomFactor = clamped;
+    handleZoom(win, zoomDirection);
   });
 
   win.webContents.on("before-input-event", (event, input) => {
@@ -46,10 +33,34 @@ function createWindow() {
       win.webContents.openDevTools();
       event.preventDefault();
     }
+
+    if (input.type === "keyDown" && input.key === "+" && input.control) {
+      handleZoom(win, "in");
+    }
+    if (input.type === "keyDown" && input.key === "-" && input.control) {
+      handleZoom(win, "out");
+    }
   });
 
   win.removeMenu();
   win.loadFile("./build/index.html");
+}
+
+function handleZoom(window, direction) {
+  const currentZoom = window.webContents.getZoomFactor();
+  let nextZoom = 1;
+
+  if (direction === "in") {
+    nextZoom = currentZoom + 0.1;
+  }
+  if (direction === "out") {
+    nextZoom = currentZoom - 0.1;
+  }
+
+  const clamped = Math.min(1.5, Math.max(0.5, nextZoom));
+
+  window.webContents.send("win:setZoom", clamped);
+  window.webContents.zoomFactor = clamped;
 }
 
 app.whenReady().then(() => {
