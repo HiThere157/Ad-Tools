@@ -18,9 +18,7 @@ export default function FilterMenu({ isOpen, columns, filter, onFilterChange }: 
             <span className="mr-2">Selected: </span>
             <Checkbox
               checked={filter.__selected__ === "true"}
-              onChange={() => {
-                onFilterChange("__selected__", filter.__selected__ !== "true" ? "true" : "")
-              }}
+              onChange={() => onFilterChange("__selected__", filter.__selected__ !== "true" ? "true" : "")}
             />
           </div>
           {columns.map((column) => {
@@ -29,9 +27,7 @@ export default function FilterMenu({ isOpen, columns, filter, onFilterChange }: 
                 <span className="mr-2">{column.title}:</span>
                 <Input
                   value={filter[column.key]}
-                  onChange={(filterString: string) => {
-                    onFilterChange(column.key, filterString);
-                  }}
+                  onChange={(filterString: string) => onFilterChange(column.key, filterString)}
                 />
               </div>
             );

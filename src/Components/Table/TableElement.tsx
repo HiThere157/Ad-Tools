@@ -128,9 +128,7 @@ export default function TableElement({
                     disabled:opacity-100 border-0 rounded-none
                     flex items-center justify-between py-1 px-4 w-full
                   "
-                  onClick={() => {
-                    onHeaderClick(column.key);
-                  }}
+                  onClick={() => onHeaderClick(column.key)}
                   disabled={!column.sortable}
                 >
                   <span>{column.title}</span>

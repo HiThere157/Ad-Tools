@@ -1,19 +1,21 @@
 import { ElectronAPI } from "../Types/api";
 
 // Wrap all Properties in {key: [key], value: [value]} objects (attributes table)
-function getPropertiesWrapper(AdObject: {
+function getPropertiesWrapper(Obj: {
   PropertyNames?: string[];
+  CimClassProperties?: string[];
   [key: string]: any;
 }): { [key: string]: any } {
-  const properties = AdObject.PropertyNames ?? Object.keys(AdObject);
+  const properties =
+    Obj.PropertyNames ?? Obj.CimClassProperties ?? Object.keys(Obj);
 
   return properties.map((property) => {
-    return { key: property, value: AdObject[property] };
+    return { key: property, value: Obj[property] };
   });
 }
 
 function getExtensionsFromAadUser(Adbject: {
-  ExtensionProperty: { [key: string]: string }
+  ExtensionProperty: { [key: string]: string };
 }): { [key: string]: any } {
   return getPropertiesWrapper(Adbject.ExtensionProperty);
 }

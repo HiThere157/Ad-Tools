@@ -18,9 +18,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <main className="flex flex-col dark:text-foreground dark:bg-primaryBg h-screen">
       <Header
-        onNavOpen={() => {
-          setIsNavOpen(!isNavOpen);
-        }}
+        onNavOpen={() => setIsNavOpen(!isNavOpen)}
       />
       <div className="flex flex-grow min-h-0">
         <NavBar isOpen={isNavOpen} />

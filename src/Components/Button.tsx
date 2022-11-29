@@ -23,7 +23,7 @@ export default function Button({
           : "dark:enabled:focus-within:border-secondaryBorderAccent ") +
         classOverride
       }
-      onClick={() => { onClick() }}
+      onClick={() => onClick()}
       disabled={disabled}
     >
       {children}

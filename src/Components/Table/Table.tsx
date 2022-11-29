@@ -79,10 +79,8 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
         <ActionMenu
           onResetTable={resetTable}
           onCopy={copyToClip}
-          onCopySelection={() => { copyToClip(true) }}
-          onFilter={() => {
-            setIsFilterOpen(!isFilterOpen);
-          }}
+          onCopySelection={() => copyToClip(true)}
+          onFilter={() => setIsFilterOpen(!isFilterOpen)}
           isFilterHighlighted={isFilterHighlighted}
         />
         <FilterMenu

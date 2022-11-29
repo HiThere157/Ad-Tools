@@ -25,6 +25,8 @@ export type Command =
   | "Get-ADGroup"
   | "Get-ADGroupMember"
   | "Get-ADComputer"
+  | "Get-CimInstance"
+  | "Get-WmiObject"
   | "Resolve-DnsName"
   | "Clear-DnsClientCache"
   | "Connect-AzureAD"
@@ -42,6 +44,9 @@ export type CommandArgs = {
   Server?: string;
   Properties?: string;
   Name?: string;
+  ClassName?: string;
+  Namespace?: string;
+  ComputerName?: string;
   Type?: string;
   Tenant?: string;
   ObjectId?: string;
@@ -49,7 +54,7 @@ export type CommandArgs = {
   All?: string;
 };
 
-type ComputerAction = "compmgmt" | "mstsc" | "mstsc_admin" | "powershell";
+type ComputerAction = "compmgmt" | "mstsc" | "powershell";
 
 export type ResultData = {
   output?: { [key: string]: any }[];

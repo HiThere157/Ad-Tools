@@ -67,14 +67,12 @@ function DropdownBody({ items, onSelection }: DropdownBodyProps) {
           <Button
             key={index}
             classOverride="rounded-none"
-            onClick={() => {
-              onSelection(item);
-            }}
+            onClick={() => onSelection(item)}
           >
             {item}
           </Button>
         );
       })}
-    </div>
+    </div >
   );
 }

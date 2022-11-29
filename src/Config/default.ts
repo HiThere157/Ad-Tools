@@ -17,6 +17,13 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Name", key: "Name", sortable: true },
     { title: "Distinguished Name", key: "DistinguishedName", sortable: true },
   ],
+  monitor: [
+    { title: "Name", key: "UserFriendlyName", sortable: true },
+    { title: "Manufacturer", key: "ManufacturerName", sortable: true },
+    { title: "Product Code", key: "ProductCodeID", sortable: true },
+    { title: "Serial Number", key: "SerialNumberID", sortable: true },
+    { title: "Production year", key: "YearOfManufacture", sortable: true },
+  ],
   extended: [
     { title: "Name", key: "Name", sortable: true },
     { title: "Type", key: "ObjectClass", sortable: true },

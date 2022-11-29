@@ -34,7 +34,7 @@ export default function TableOfContents() {
 
   return (
     <div ref={ref} className="z-10">
-      <Button classOverride="text-xl h-full mx-1 px-3 border-0" onClick={() => { setIsOpen(!isOpen) }}>
+      <Button classOverride="text-xl h-full mx-1 px-3 border-0" onClick={() => setIsOpen(!isOpen)}>
         <BsReverseLayoutTextWindowReverse />
       </Button>
       <div className={isOpen ? "scale-100" : "scale-0"}>
@@ -64,11 +64,9 @@ function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps
                   : "dark:text-foregroundAccent")
               }
             >
-              <span><BsHash className="scale-125"/></span>
+              <span><BsHash className="scale-125" /></span>
               <span
-                onClick={() => {
-                  heading.scrollIntoView();
-                }}
+                onClick={() => heading.scrollIntoView()}
               >
                 {heading.innerText}
               </span>

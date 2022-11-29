@@ -7,6 +7,8 @@ const allowedCommands = [
   "Get-ADGroup",
   "Get-ADGroupMember",
   "Get-ADComputer",
+  "Get-CimInstance",
+  "Get-WmiObject",
   "Resolve-DnsName",
   "Clear-DnsClientCache",
   "Connect-AzureAD",
@@ -24,6 +26,9 @@ const allowedArguments = [
   "Server",
   "Properties",
   "Name",
+  "ClassName",
+  "Namespace",
+  "ComputerName",
   "Type",
   "Tenant",
   "ObjectId",
@@ -34,8 +39,6 @@ const remoteActions = {
   compmgmt: (target) =>
     `Start-Process compmgmt.msc -ArgumentList "/computer:${target}"`,
   mstsc: (target) => `Start-Process mstsc.exe -ArgumentList "/v:${target}"`,
-  mstsc_admin: (target) =>
-    `Start-Process mstsc.exe -ArgumentList "/admin /v:${target}"`,
   powershell: (target) =>
     `Start-Process powershell -ArgumentList '-NoExit -Command "Enter-PSSession ${target}"'`,
 };
@@ -81,9 +84,10 @@ const executeCommand = async (
     fullCommand = `${fullCommand} | ConvertTo-Json -Compress`;
   }
 
-  fullCommand = fullCommand.replace(/\\\*/g, "*");
-  fullCommand = fullCommand.replace(/\\@/g, "@");
-  fullCommand = fullCommand.replace(/\\,/g, ",");
+  fullCommand = fullCommand.replace(/\\\*/g, "*"); // \* -> *
+  fullCommand = fullCommand.replace(/\\@/g, "@"); // \@ -> @
+  fullCommand = fullCommand.replace(/\\,/g, ","); // \, -> ,
+  fullCommand = fullCommand.replace(/\\\//g, "/"); // \/ -> /
 
   try {
     const output = await ps.invoke(fullCommand);
@@ -92,7 +96,6 @@ const executeCommand = async (
       output: output.raw ? JSON.parse(output.raw) : [],
     };
   } catch (error) {
-    console.error(error);
     return { error: error.toString().split("At line:1")[0] };
   } finally {
     if (!useStaticSession) ps.dispose();
@@ -107,7 +110,6 @@ const getExecutingUser = async () => {
     );
     return { output: output.raw };
   } catch (error) {
-    console.error(error);
     return { output: "/", error: error.toString().split("At line:1")[0] };
   } finally {
     ps.dispose();
@@ -127,7 +129,6 @@ const startComputerAction = async (_event, action, target) => {
     const output = await ps.invoke(command);
     return { output: output.raw };
   } catch (error) {
-    console.error(error);
     return { error: error.toString().split("At line:1")[0] };
   } finally {
     ps.dispose();

@@ -21,7 +21,7 @@ export default function Input({
   };
 
   return (
-    <div className="flex">
+    <div className="flex items-center">
       {label && <span className={"mr-2 whitespace-nowrap"}>{label}</span>}
       <input
         className={
