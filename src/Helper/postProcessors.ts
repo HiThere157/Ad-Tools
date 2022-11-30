@@ -42,7 +42,7 @@ function replaceASCIIArray(MonitorWMI: { [key: string]: string } | { [key: strin
 
   const asciiToString = (asciiArray: number[]) => {
     try {
-      return String.fromCharCode(...asciiArray);
+      return String.fromCharCode(...(asciiArray).filter(char => char !== 0));
     } catch {
       return null;
     }
