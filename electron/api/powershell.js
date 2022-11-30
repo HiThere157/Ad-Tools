@@ -42,7 +42,12 @@ const remoteActions = {
     `Start-Process powershell -ArgumentList '-NoExit -Command "Enter-PSSession ${target}"'`,
 };
 
-const invokeWrapper = async ({ ps, fullCommand, json = false, dispose = true }) => {
+const invokeWrapper = async ({
+  ps,
+  fullCommand,
+  json = false,
+  dispose = true,
+}) => {
   try {
     const output = await ps.invoke(fullCommand);
     if (!json) return { output: output.raw };
@@ -54,7 +59,7 @@ const invokeWrapper = async ({ ps, fullCommand, json = false, dispose = true }) 
   } finally {
     if (dispose) ps.dispose();
   }
-}
+};
 
 const getSession = () => {
   return new PowerShell({
@@ -103,12 +108,16 @@ const executeCommand = async (
     ps: useStaticSession ? staticSession : getSession(),
     fullCommand,
     json,
-    dispose: !useStaticSession
+    dispose: !useStaticSession,
   });
 };
 
 const getExecutingUser = async () => {
-  return await invokeWrapper({ ps: getSession(), fullCommand: "[System.Security.Principal.WindowsIdentity]::GetCurrent().Name" })
+  return await invokeWrapper({
+    ps: getSession(),
+    fullCommand:
+      "[System.Security.Principal.WindowsIdentity]::GetCurrent().Name",
+  });
 };
 
 const startComputerAction = async (_event, action, target, useCurrentUser) => {

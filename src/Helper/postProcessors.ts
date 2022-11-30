@@ -3,11 +3,10 @@ import { ElectronAPI } from "../Types/api";
 // Wrap all Properties in {key: [key], value: [value]} objects (attributes table)
 function getPropertiesWrapper(Obj: {
   PropertyNames?: string[];
-  CimClassProperties?: string[];
   [key: string]: any;
 }): { [key: string]: any } {
   const properties =
-    Obj.PropertyNames ?? Obj.CimClassProperties ?? Object.keys(Obj);
+    Obj.PropertyNames ?? Object.keys(Obj);
 
   return properties.map((property) => {
     return { key: property, value: Obj[property] };

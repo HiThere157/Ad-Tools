@@ -19,19 +19,41 @@ export default function SearchPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [results, setResults, resultsKey] = useSessionStorage(`${p}_r`, {});
+  const [users, setUsers, usersKey] = useSessionStorage(`${p}_u`, {});
+  const [groups, setGroups, groupsKey] = useSessionStorage(`${p}_g`, {});
+  const [computers, setComputers, computersKey] = useSessionStorage(`${p}_c`, {});
 
   const runQuery = async () => {
     setIsLoading(true);
-    await makeAPICall({
-      command: "Get-ADObject",
-      args: {
-        Filter: `Name -like "${query.input}"`,
-        Server: query.domain,
-      },
-      postProcessor: makeToList,
-      callback: setResults
-    });
+    await Promise.all([
+      await makeAPICall({
+        command: "Get-ADUser",
+        args: {
+          Filter: `Name -like "${query.input}"`,
+          Server: query.domain,
+        },
+        postProcessor: makeToList,
+        callback: setUsers
+      }),
+      await makeAPICall({
+        command: "Get-ADGroup",
+        args: {
+          Filter: `Name -like "${query.input}"`,
+          Server: query.domain,
+        },
+        postProcessor: makeToList,
+        callback: setGroups
+      }),
+      await makeAPICall({
+        command: "Get-ADComputer",
+        args: {
+          Filter: `Name -like "${query.input}"`,
+          Server: query.domain,
+        },
+        postProcessor: makeToList,
+        callback: setComputers
+      })
+    ]);
     setIsLoading(false);
   };
 
@@ -46,13 +68,32 @@ export default function SearchPage() {
       />
       <TableLayout>
         <Table
-          title="Results"
-          name={resultsKey}
-          columns={columns.extended}
-          data={results}
-          onRedirect={(entry: { Name: string, ObjectClass: string }) => {
-            if (!["group", "user", "computer"].includes(entry.ObjectClass)) return;
-            redirect(entry.ObjectClass, { input: entry.Name, domain: query.domain })
+          title="Users"
+          name={usersKey}
+          columns={columns.default}
+          data={users}
+          onRedirect={(entry: { Name: string }) => {
+            redirect("user", { input: entry.Name, domain: query.domain })
+          }}
+          isLoading={isLoading}
+        />
+        <Table
+          title="Groups"
+          name={groupsKey}
+          columns={columns.default}
+          data={groups}
+          onRedirect={(entry: { Name: string }) => {
+            redirect("group", { input: entry.Name, domain: query.domain })
+          }}
+          isLoading={isLoading}
+        />
+        <Table
+          title="Computers"
+          name={computersKey}
+          columns={columns.default}
+          data={computers}
+          onRedirect={(entry: { Name: string }) => {
+            redirect("computer", { input: entry.Name, domain: query.domain })
           }}
           isLoading={isLoading}
         />
