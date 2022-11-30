@@ -19,8 +19,6 @@ const columns: { [key: string]: ColumnDefinition[] } = {
   ],
   monitor: [
     { title: "Name", key: "UserFriendlyName", sortable: true },
-    { title: "Manufacturer", key: "ManufacturerName", sortable: true },
-    { title: "Product Code", key: "ProductCodeID", sortable: true },
     { title: "Serial Number", key: "SerialNumberID", sortable: true },
     { title: "Production year", key: "YearOfManufacture", sortable: true },
   ],

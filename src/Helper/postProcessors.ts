@@ -38,7 +38,7 @@ function getMembershipFromAdUser(AdObject: {
 }
 
 function replaceASCIIArray(MonitorWMI: { [key: string]: string } | { [key: string]: string }[]) {
-  const keysToReplace = ["UserFriendlyName", "ManufacturerName", "ProductCodeID", "SerialNumberID"];
+  const keysToReplace = ["UserFriendlyName", "SerialNumberID"];
 
   const asciiToString = (asciiArray: number[]) => {
     try {

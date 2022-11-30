@@ -42,6 +42,20 @@ const remoteActions = {
     `Start-Process powershell -ArgumentList '-NoExit -Command "Enter-PSSession ${target}"'`,
 };
 
+const invokeWrapper = async ({ ps, fullCommand, json = false, dispose = true }) => {
+  try {
+    const output = await ps.invoke(fullCommand);
+    if (!json) return { output: output.raw };
+    return {
+      output: output.raw ? JSON.parse(output.raw) : [],
+    };
+  } catch (error) {
+    return { error: error.toString().split("At line:1")[0] };
+  } finally {
+    if (dispose) ps.dispose();
+  }
+}
+
 const getSession = () => {
   return new PowerShell({
     executionPolicy: "Bypass",
@@ -63,8 +77,6 @@ const executeCommand = async (
     }
   }
 
-  const ps = useStaticSession ? staticSession : getSession();
-
   let fullCommand = quote([
     command,
     ...Object.entries(args)
@@ -73,7 +85,6 @@ const executeCommand = async (
       })
       .flat(),
   ]);
-
   if (selectFields.length > 0) {
     fullCommand = `${fullCommand} | Select-Object ${quote([
       selectFields.join(","),
@@ -88,31 +99,16 @@ const executeCommand = async (
   fullCommand = fullCommand.replace(/\\,/g, ","); // \, -> ,
   fullCommand = fullCommand.replace(/\\\//g, "/"); // \/ -> /
 
-  try {
-    const output = await ps.invoke(fullCommand);
-    if (!json) return output.raw;
-    return {
-      output: output.raw ? JSON.parse(output.raw) : [],
-    };
-  } catch (error) {
-    return { error: error.toString().split("At line:1")[0] };
-  } finally {
-    if (!useStaticSession) ps.dispose();
-  }
+  return await invokeWrapper({
+    ps: useStaticSession ? staticSession : getSession(),
+    fullCommand,
+    json,
+    dispose: !useStaticSession
+  });
 };
 
 const getExecutingUser = async () => {
-  const ps = getSession();
-  try {
-    const output = await ps.invoke(
-      "[System.Security.Principal.WindowsIdentity]::GetCurrent().Name"
-    );
-    return { output: output.raw };
-  } catch (error) {
-    return { output: "/", error: error.toString().split("At line:1")[0] };
-  } finally {
-    ps.dispose();
-  }
+  return await invokeWrapper({ ps: getSession(), fullCommand: "[System.Security.Principal.WindowsIdentity]::GetCurrent().Name" })
 };
 
 const startComputerAction = async (_event, action, target, useCurrentUser) => {
@@ -120,22 +116,12 @@ const startComputerAction = async (_event, action, target, useCurrentUser) => {
     return { error: `Invalid Action "${action}"` };
   }
 
-  const ps = getSession();
-
   let fullCommand = remoteActions[action](quote([target]));
-
   if (!useCurrentUser) {
     fullCommand = `${fullCommand} -Verb RunAsUser; Start-Sleep -Seconds 10; Wait-Process -Name CredentialUIBroker -ErrorAction SilentlyContinue`;
   }
 
-  try {
-    const output = await ps.invoke(fullCommand);
-    return { output: output.raw };
-  } catch (error) {
-    return { error: error.toString().split("At line:1")[0] };
-  } finally {
-    ps.dispose();
-  }
+  return await invokeWrapper({ ps: getSession(), fullCommand });
 };
 
 module.exports = { executeCommand, getExecutingUser, startComputerAction };
