@@ -7,7 +7,6 @@ const allowedCommands = [
   "Get-ADGroup",
   "Get-ADGroupMember",
   "Get-ADComputer",
-  "Get-CimInstance",
   "Get-WmiObject",
   "Resolve-DnsName",
   "Clear-DnsClientCache",
@@ -126,7 +125,7 @@ const startComputerAction = async (_event, action, target, useCurrentUser) => {
   let fullCommand = remoteActions[action](quote([target]));
 
   if (!useCurrentUser) {
-    fullCommand = `${fullCommand} -Verb RunAsUser; Wait-Process -Name CredentialUIBroker`;
+    fullCommand = `${fullCommand} -Verb RunAsUser; Start-Sleep -Seconds 10; Wait-Process -Name CredentialUIBroker -ErrorAction SilentlyContinue`;
   }
 
   try {

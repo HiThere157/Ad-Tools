@@ -37,6 +37,28 @@ function getMembershipFromAdUser(AdObject: {
   });
 }
 
+function replaceASCIIArray(MonitorWMI: { [key: string]: string } | { [key: string]: string }[]) {
+  const keysToReplace = ["UserFriendlyName", "ManufacturerName", "ProductCodeID", "SerialNumberID"];
+
+  const asciiToString = (asciiArray: number[]) => {
+    try {
+      return String.fromCharCode(...asciiArray);
+    } catch {
+      return null;
+    }
+  }
+
+  return makeToList(MonitorWMI).map((monitor) => {
+    const entries = Object.entries(monitor);
+    return Object.fromEntries(entries.map(([key, value]) => {
+      if (keysToReplace.includes(key)) {
+        return [key, asciiToString(value as number[])];
+      }
+      return [key, value];
+    }));
+  });
+}
+
 async function prepareDNSResult(
   DNSObjects: { Type: number } | { Type: number }[]
 ): Promise<
@@ -101,6 +123,7 @@ export {
   getPropertiesWrapper,
   getExtensionsFromAadUser,
   getMembershipFromAdUser,
+  replaceASCIIArray,
   prepareDNSResult,
   makeToList,
 };

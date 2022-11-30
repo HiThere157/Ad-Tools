@@ -26,7 +26,6 @@ export type Command =
   | "Get-ADGroup"
   | "Get-ADGroupMember"
   | "Get-ADComputer"
-  | "Get-CimInstance"
   | "Get-WmiObject"
   | "Resolve-DnsName"
   | "Clear-DnsClientCache"

@@ -8,7 +8,7 @@ import {
   getPropertiesWrapper,
   getMembershipFromAdUser,
   prepareDNSResult,
-  makeToList
+  replaceASCIIArray
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
@@ -60,7 +60,7 @@ export default function ComputerPage() {
         callback: [setAttributes, setMemberOf]
       }),
       makeAPICall({
-        command: "Get-CimInstance",
+        command: "Get-WmiObject",
         args: {
           ClassName: "Win32_ComputerSystem",
           ComputerName: `${query.input}.${query.domain}`
@@ -69,7 +69,7 @@ export default function ComputerPage() {
         callback: setSysinfo
       }),
       makeAPICall({
-        command: "Get-CimInstance",
+        command: "Get-WmiObject",
         args: {
           ClassName: "Win32_bios",
           ComputerName: `${query.input}.${query.domain}`
@@ -84,7 +84,7 @@ export default function ComputerPage() {
           Namespace: "root/wmi",
           ComputerName: `${query.input}.${query.domain}`
         },
-        postProcessor: makeToList,
+        postProcessor: replaceASCIIArray,
         callback: setMonitors
       })
     ])
@@ -130,14 +130,14 @@ export default function ComputerPage() {
           isLoading={isLoading}
         />
         <Table
-          title="System Info (CIM)"
+          title="System Info (WMI)"
           name={sysinfoKey}
           columns={columns.attribute}
           data={sysinfo}
           isLoading={isLoading}
         />
         <Table
-          title="Bios Info (CIM)"
+          title="Bios Info (WMI)"
           name={biosKey}
           columns={columns.attribute}
           data={bios}
