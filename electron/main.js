@@ -11,6 +11,8 @@ const {
 } = require("./api/powershell");
 const { probeConnection } = require("./api/node");
 
+require('update-electron-app')()
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
