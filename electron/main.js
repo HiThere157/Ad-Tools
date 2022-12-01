@@ -1,10 +1,13 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
-const { autoUpdater } = require("electron-updater")
+const { autoUpdater } = require("electron-updater");
 const path = require("path");
 
 const log = require("electron-log");
 Object.assign(console, log.functions);
 
+autoUpdater.channel = ["alpha", "beta"].includes(process.env.AD_TOOLS_CHANNEL)
+  ? process.env.AD_TOOLS_CHANNEL
+  : "latest";
 autoUpdater.checkForUpdatesAndNotify();
 
 const {
