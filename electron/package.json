@@ -22,8 +22,9 @@
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0",
-    "@electron-forge/maker-squirrel": "^6.0.0",
+    "@electron-forge/maker-wix": "^6.0.4",
     "@electron-forge/publisher-github": "^6.0.1",
-    "electron": "^21.2.3"
+    "electron": "^21.2.3",
+    "electron-wix-msi": "^5.0.0"
   }
 }

@@ -26,7 +26,7 @@ export default function SearchPage() {
   const runQuery = async () => {
     setIsLoading(true);
     await Promise.all([
-      await makeAPICall({
+      makeAPICall({
         command: "Get-ADUser",
         args: {
           Filter: `Name -like "${query.input}"`,
@@ -35,7 +35,7 @@ export default function SearchPage() {
         postProcessor: makeToList,
         callback: setUsers
       }),
-      await makeAPICall({
+      makeAPICall({
         command: "Get-ADGroup",
         args: {
           Filter: `Name -like "${query.input}"`,
@@ -44,7 +44,7 @@ export default function SearchPage() {
         postProcessor: makeToList,
         callback: setGroups
       }),
-      await makeAPICall({
+      makeAPICall({
         command: "Get-ADComputer",
         args: {
           Filter: `Name -like "${query.input}"`,
