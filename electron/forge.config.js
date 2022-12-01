@@ -8,12 +8,18 @@ module.exports = {
     {
       name: "@electron-forge/maker-wix",
       config: {
-        "features": {
+        features: {
           autoUpdate: true,
         },
-        "ui": {
+        ui: {
           chooseDirectory: true,
-        }
+        },
+      },
+    },
+    {
+      name: "@electron-forge/maker-squirrel",
+      config: {
+        loadingGif: "./assets/loading.gif",
       },
     },
   ],
