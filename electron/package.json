@@ -1,14 +1,32 @@
 {
   "name": "ad-tools",
-  "version": "1.0.30",
+  "productName": "AD Tools",
+  "version": "1.0.34",
   "author": "HiThere157",
   "description": "This tool is a collection of useful commands for managing your Active Directory and Azure Active Directory environments in a user-friendly GUI.",
   "repository": "HiThere157/Ad-Tools",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-forge make",
-    "publish": "electron-forge publish"
+    "build": "electron-builder build",
+    "publish": "electron-builder --publish always"
+  },
+  "build": {
+    "appId": "com.example.app",
+    "icon": "./assets/icon256.png",
+    "files": [
+      "**/*",
+      "./build/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "publish": ["github"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "./assets/icon64.ico"
+    }
   },
   "keywords": [],
   "license": "MIT",
@@ -16,15 +34,10 @@
     "electron-log": "^4.4.8",
     "node-powershell": "^5.0.1",
     "ping": "^0.4.2",
-    "shell-quote": "^1.7.4",
-    "update-electron-app": "^2.0.1"
+    "shell-quote": "^1.7.4"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0",
-    "@electron-forge/maker-squirrel": "^6.0.4",
-    "@electron-forge/maker-wix": "^6.0.4",
-    "@electron-forge/publisher-github": "^6.0.1",
     "electron": "^21.2.3",
-    "electron-wix-msi": "^5.0.0"
+    "electron-builder": "^23.6.0"
   }
 }

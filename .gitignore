@@ -11,7 +11,7 @@
 
 # production
 /electron/build
-/electron/out
+/electron/dist
 
 # misc
 /local
