@@ -16,7 +16,8 @@
     "electron-log": "^4.4.8",
     "node-powershell": "^5.0.1",
     "ping": "^0.4.2",
-    "shell-quote": "^1.7.4"
+    "shell-quote": "^1.7.4",
+    "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0",
