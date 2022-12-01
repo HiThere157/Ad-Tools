@@ -12,7 +12,6 @@
     "publish": "electron-builder --publish always"
   },
   "build": {
-    "appId": "com.example.app",
     "icon": "./assets/icon256.png",
     "files": [
       "**/*",
