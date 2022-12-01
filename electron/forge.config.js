@@ -6,6 +6,12 @@ module.exports = {
   rebuildConfig: {},
   makers: [
     {
+      name: "@electron-forge/maker-squirrel",
+      config: {
+        "loadingGif": "./assets/loading.gif",
+      },
+    },
+    {
       name: "@electron-forge/maker-wix",
       config: {
         "features": {
