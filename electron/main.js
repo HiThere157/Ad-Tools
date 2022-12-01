@@ -11,7 +11,6 @@ const {
 } = require("./api/powershell");
 const { probeConnection } = require("./api/node");
 
-if (require("electron-squirrel-startup")) app.quit();
 require("update-electron-app")();
 
 function createWindow() {

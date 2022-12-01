@@ -9,7 +9,10 @@ module.exports = {
       name: "@electron-forge/maker-wix",
       config: {
         "features": {
-          autoUpdate: true
+          autoUpdate: true,
+        },
+        "ui": {
+          chooseDirectory: true,
         }
       },
     },

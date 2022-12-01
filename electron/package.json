@@ -1,6 +1,6 @@
 {
   "name": "ad-tools",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "author": "HiThere157",
   "description": "This tool is a collection of useful commands for managing your Active Directory and Azure Active Directory environments in a user-friendly GUI.",
   "repository": "HiThere157/Ad-Tools",
@@ -14,7 +14,6 @@
   "license": "MIT",
   "dependencies": {
     "electron-log": "^4.4.8",
-    "electron-squirrel-startup": "^1.0.0",
     "node-powershell": "^5.0.1",
     "ping": "^0.4.2",
     "shell-quote": "^1.7.4",
