@@ -12,6 +12,7 @@
     "publish": "electron-builder --publish always"
   },
   "build": {
+    "appId": "ad-tools",
     "icon": "./assets/icon256.png",
     "files": [
       "**/*",
