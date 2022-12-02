@@ -33,7 +33,7 @@ export default function TableOfContents() {
   }, [pathname]);
 
   return (
-    <div ref={ref} className="z-10">
+    <div ref={ref} className="z-30">
       <Button classOverride="text-xl h-full mx-1 px-3 border-0" onClick={() => setIsOpen(!isOpen)}>
         <BsReverseLayoutTextWindowReverse />
       </Button>
