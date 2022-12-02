@@ -20,8 +20,8 @@ export default function UserPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_a`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_mo`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_memberOf`, {});
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {

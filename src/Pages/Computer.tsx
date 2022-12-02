@@ -8,7 +8,8 @@ import {
   getPropertiesWrapper,
   getMembershipFromAdUser,
   prepareDNSResult,
-  replaceASCIIArray
+  replaceASCIIArray,
+  getWMIPropertiesWrapper
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
@@ -23,12 +24,12 @@ export default function ComputerPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [dns, setDNS, dnsKey] = useSessionStorage(`${p}_d`, {});
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_a`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_mo`, {});
-  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage(`${p}_s`, {});
-  const [bios, setBios, biosKey] = useSessionStorage(`${p}_b`, {});
-  const [monitors, setMonitors, monitorsKey] = useSessionStorage(`${p}_mon`, {});
+  const [dns, setDNS, dnsKey] = useSessionStorage(`${p}_dns`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_memberOf`, {});
+  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage(`${p}_sysinfo`, {});
+  const [bios, setBios, biosKey] = useSessionStorage(`${p}_bios`, {});
+  const [monitors, setMonitors, monitorsKey] = useSessionStorage(`${p}_monitors`, {});
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {
@@ -65,7 +66,7 @@ export default function ComputerPage() {
           ClassName: "Win32_ComputerSystem",
           ComputerName: `${query.input}.${query.domain}`
         },
-        postProcessor: getPropertiesWrapper,
+        postProcessor: getWMIPropertiesWrapper,
         callback: setSysinfo
       }),
       makeAPICall({
@@ -74,7 +75,7 @@ export default function ComputerPage() {
           ClassName: "Win32_bios",
           ComputerName: `${query.input}.${query.domain}`
         },
-        postProcessor: getPropertiesWrapper,
+        postProcessor: getWMIPropertiesWrapper,
         callback: setBios
       }),
       makeAPICall({

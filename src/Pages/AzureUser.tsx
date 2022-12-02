@@ -22,10 +22,10 @@ export default function AzureUserPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_a`, {});
-  const [ext, setExt, extKey] = useSessionStorage(`${p}_e`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_mo`, {});
-  const [devices, setDevices, devicesKey] = useSessionStorage(`${p}_d`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
+  const [ext, setExt, extKey] = useSessionStorage(`${p}_ext`, {});
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_memberOf`, {});
+  const [devices, setDevices, devicesKey] = useSessionStorage(`${p}_devices`, {});
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {

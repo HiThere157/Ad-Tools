@@ -5,9 +5,16 @@ function getPropertiesWrapper(Obj: {
   PropertyNames?: string[];
   [key: string]: any;
 }): { [key: string]: any } {
-  const properties =
-    Obj.PropertyNames ?? Object.keys(Obj);
-
+  const properties = Obj.PropertyNames ?? Object.keys(Obj);
+  return properties.map((property) => {
+    return { key: property, value: Obj[property] };
+  });
+}
+function getWMIPropertiesWrapper(Obj: {
+  Properties: { Name: string }[];
+  [key: string]: any;
+}): { [key: string]: any } {
+  const properties = Obj.Properties.map((property) => property.Name);
   return properties.map((property) => {
     return { key: property, value: Obj[property] };
   });
@@ -36,25 +43,29 @@ function getMembershipFromAdUser(AdObject: {
   });
 }
 
-function replaceASCIIArray(MonitorWMI: { [key: string]: string } | { [key: string]: string }[]) {
+function replaceASCIIArray(
+  MonitorWMI: { [key: string]: string } | { [key: string]: string }[]
+) {
   const keysToReplace = ["UserFriendlyName", "SerialNumberID"];
 
   const asciiToString = (asciiArray: number[]) => {
     try {
-      return String.fromCharCode(...(asciiArray).filter(char => char !== 0));
+      return String.fromCharCode(...asciiArray.filter((char) => char !== 0));
     } catch {
       return null;
     }
-  }
+  };
 
   return makeToList(MonitorWMI).map((monitor) => {
     const entries = Object.entries(monitor);
-    return Object.fromEntries(entries.map(([key, value]) => {
-      if (keysToReplace.includes(key)) {
-        return [key, asciiToString(value as number[])];
-      }
-      return [key, value];
-    }));
+    return Object.fromEntries(
+      entries.map(([key, value]) => {
+        if (keysToReplace.includes(key)) {
+          return [key, asciiToString(value as number[])];
+        }
+        return [key, value];
+      })
+    );
   });
 }
 
@@ -120,6 +131,7 @@ function makeToList(AdObject: any[] | any): any[] {
 
 export {
   getPropertiesWrapper,
+  getWMIPropertiesWrapper,
   getExtensionsFromAadUser,
   getMembershipFromAdUser,
   replaceASCIIArray,

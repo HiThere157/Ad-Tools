@@ -20,7 +20,7 @@ export default function AzureDevicePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_a`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {

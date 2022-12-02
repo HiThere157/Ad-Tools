@@ -21,9 +21,9 @@ export default function GroupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_a`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_mo`, {});
-  const [members, setMembers, membersKey] = useSessionStorage(`${p}_m`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_memberOf`, {});
+  const [members, setMembers, membersKey] = useSessionStorage(`${p}_members`, {});
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {

@@ -21,8 +21,8 @@ export default function AzureGroupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_a`, {});
-  const [members, setMembers, membersKey] = useSessionStorage(`${p}_m`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
+  const [members, setMembers, membersKey] = useSessionStorage(`${p}_members`, {});
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {

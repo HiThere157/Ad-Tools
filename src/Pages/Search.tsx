@@ -19,9 +19,9 @@ export default function SearchPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [users, setUsers, usersKey] = useSessionStorage(`${p}_u`, {});
-  const [groups, setGroups, groupsKey] = useSessionStorage(`${p}_g`, {});
-  const [computers, setComputers, computersKey] = useSessionStorage(`${p}_c`, {});
+  const [users, setUsers, usersKey] = useSessionStorage(`${p}_users`, {});
+  const [groups, setGroups, groupsKey] = useSessionStorage(`${p}_groups`, {});
+  const [computers, setComputers, computersKey] = useSessionStorage(`${p}_computers`, {});
 
   const runQuery = async () => {
     setIsLoading(true);

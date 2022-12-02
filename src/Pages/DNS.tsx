@@ -18,7 +18,7 @@ export default function DnsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [results, setResults, resultsKey] = useSessionStorage(`${p}_r`, {});
+  const [results, setResults, resultsKey] = useSessionStorage(`${p}_results`, {});
 
   const runQuery = async () => {
     setIsLoading(true);
