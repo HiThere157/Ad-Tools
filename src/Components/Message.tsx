@@ -24,11 +24,11 @@ export default function MessageElement({ message }: MessageProps) {
   const getTypeInfo = () => {
     switch (message.type) {
       case "error":
-        return ["border-x-errorAccent", <BsExclamationOctagon />]
+        return ["dark:border-x-errorAccent", <BsExclamationOctagon />]
       case "info":
-        return ["border-x-primaryControlAccent", <BsCheckCircle />]
+        return ["dark:border-x-primaryControlAccent", <BsCheckCircle />]
       case "warning":
-        return ["border-x-errorAccent", <BsExclamationOctagon />]
+        return ["dark:border-x-errorAccent", <BsExclamationOctagon />]
     }
   }
 
