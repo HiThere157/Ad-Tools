@@ -32,6 +32,14 @@ article {
   background: transparent;
 }
 
+.winbar-drag-region {
+  -webkit-app-region: drag;
+}
+
+.winbar-no-drag {
+  -webkit-app-region: no-drag;
+}
+
 @layer components {
   .control {
     @apply border-2 outline-none rounded-md px-2 disabled:opacity-50 disabled:cursor-not-allowed

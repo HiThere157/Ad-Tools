@@ -1,4 +1,7 @@
 import { NavLink } from "react-router-dom";
+import { useLocalStorage } from "../Hooks/useStorage";
+
+import Button from "./Button";
 
 import {
   BsSearch,
@@ -9,82 +12,88 @@ import {
   BsClockHistory,
   BsGearFill,
 } from "react-icons/bs";
+import { GoThreeBars } from "react-icons/go";
 
-type NavBarProps = {
-  isOpen: boolean
-}
-export default function NavBar({ isOpen }: NavBarProps) {
+export default function NavBar() {
+  const [isOpen, setIsOpen] = useLocalStorage("main_isNavOpen", true);
+
   return (
-    <nav style={{ gridArea: "navbar" }} className="flex flex-col p-2 pb-4 overflow-auto dark:bg-secondaryBg">
-      <NavItem
-        to="/search"
-        icon={<BsSearch />}
-        text="Search"
-        isOpen={isOpen}
-      />
-      <NavItem
-        to="/user"
-        icon={<BsFillPersonLinesFill />}
-        text="User"
-        isOpen={isOpen}
-      />
-      <NavItem
-        to="/group"
-        icon={<BsPeopleFill />}
-        text="Group"
-        isOpen={isOpen}
-      />
-      <NavItem
-        to="/computer"
-        icon={<BsDisplay />}
-        text="Computer"
-        isOpen={isOpen}
-      />
-      <hr className="my-2 dark:border-primaryBorder" />
-      <NavItem
-        to="/azureSearch"
-        icon={<BsSearch />}
-        text="Azure Search"
-        isOpen={isOpen}
-      />
-      <NavItem
-        to="/azureUser"
-        icon={<BsFillPersonLinesFill />}
-        text="Azure User"
-        isOpen={isOpen}
-      />
-      <NavItem
-        to="/azureGroup"
-        icon={<BsPeopleFill />}
-        text="Azure Group"
-        isOpen={isOpen}
-      />
-      <NavItem
-        to="/azureDevice"
-        icon={<BsDisplay />}
-        text="Azure Device"
-        isOpen={isOpen}
-      />
-      <hr className="my-2 dark:border-primaryBorder" />
-      <NavItem
-        to="/dns"
-        icon={<BsServer />}
-        text="DNS"
-        isOpen={isOpen}
-      />
-      <hr className="my-2 dark:border-primaryBorder" />
-      <NavItem
-        to="/history"
-        icon={<BsClockHistory />}
-        text="History"
-        isOpen={isOpen}
-      />
-      <NavItem
-        to="/settings"
-        icon={<BsGearFill />}
-        text="Settings"
-        isOpen={isOpen}
-      />
+    <nav style={{ gridArea: "navbar" }} className="flex flex-col pb-4 overflow-auto dark:bg-secondaryBg">
+      <Button classOverride="flex justify-center py-1.5 rounded-none border-0" onClick={() => { setIsOpen(!isOpen) }}>
+        <GoThreeBars />
+      </Button>
+      <div className="flex flex-col p-2">
+        <NavItem
+          to="/search"
+          icon={<BsSearch />}
+          text="Search"
+          isOpen={isOpen}
+        />
+        <NavItem
+          to="/user"
+          icon={<BsFillPersonLinesFill />}
+          text="User"
+          isOpen={isOpen}
+        />
+        <NavItem
+          to="/group"
+          icon={<BsPeopleFill />}
+          text="Group"
+          isOpen={isOpen}
+        />
+        <NavItem
+          to="/computer"
+          icon={<BsDisplay />}
+          text="Computer"
+          isOpen={isOpen}
+        />
+        <hr className="my-2 dark:border-primaryBorder" />
+        <NavItem
+          to="/azureSearch"
+          icon={<BsSearch />}
+          text="Azure Search"
+          isOpen={isOpen}
+        />
+        <NavItem
+          to="/azureUser"
+          icon={<BsFillPersonLinesFill />}
+          text="Azure User"
+          isOpen={isOpen}
+        />
+        <NavItem
+          to="/azureGroup"
+          icon={<BsPeopleFill />}
+          text="Azure Group"
+          isOpen={isOpen}
+        />
+        <NavItem
+          to="/azureDevice"
+          icon={<BsDisplay />}
+          text="Azure Device"
+          isOpen={isOpen}
+        />
+        <hr className="my-2 dark:border-primaryBorder" />
+        <NavItem
+          to="/dns"
+          icon={<BsServer />}
+          text="DNS"
+          isOpen={isOpen}
+        />
+        <hr className="my-2 dark:border-primaryBorder" />
+        <NavItem
+          to="/history"
+          icon={<BsClockHistory />}
+          text="History"
+          isOpen={isOpen}
+        />
+        <NavItem
+          to="/settings"
+          icon={<BsGearFill />}
+          text="Settings"
+          isOpen={isOpen}
+        />
+      </div>
+
     </nav>
   );
 }
@@ -100,7 +109,7 @@ function NavItem({ to, icon, text, isOpen }: NavItemProps) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        "control mt-1 border-0 " +
+        "control mb-1 border-0 " +
         (isActive
           ? "dark:bg-primaryControlAccent"
           : "dark:hover:bg-secondaryControlAccent dark:focus:bg-secondaryControlAccent dark:active:bg-secondaryControlActive")

@@ -2,15 +2,10 @@ import { useEffect, useState } from "react"
 
 import { ElectronAPI } from "../Types/api";
 
-import Button from "./Button";
+import WinControl from "./WinBar/WinControl";
 import TableOfContents from "./TableOfContents";
 
-import { BsListUl } from "react-icons/bs";
-
-type HeaderProps = {
-  onNavOpen: Function
-}
-export default function Header({ onNavOpen }: HeaderProps) {
+export default function Header() {
   const [user, setUser] = useState("/");
 
   useEffect(() => {
@@ -25,18 +20,19 @@ export default function Header({ onNavOpen }: HeaderProps) {
   }, []);
 
   return (
-    <div style={{ gridArea: "header" }} className="flex top-0 justify-between w-full p-1 border-b-2 dark:bg-secondaryBg dark:border-primaryBorder">
-      <div className="flex">
-        <Button classOverride="text-xl mx-1 px-3 border-0" onClick={onNavOpen}>
-          <BsListUl />
-        </Button>
-        <div className="flex space-x-3 items-center ml-3 whitespace-nowrap">
-          <span className="font-bold text-2xl">AD Tools</span>
+    <div style={{ gridArea: "header" }} className="winbar-drag-region flex justify-between border-b-2 dark:bg-secondaryBg dark:border-primaryBorder">
+      <div className="flex items-center">
+        <img src="./icon.svg" alt="SVG mit img laden" className="mx-4 h-7"></img>
+        <div className="flex space-x-3 items-center whitespace-nowrap">
+          <span className="font-bold text-xl">AD Tools</span>
           <span className="dark:text-foregroundAccent">{user}</span>
         </div>
       </div>
 
-      <TableOfContents />
+      <div className="winbar-no-drag flex space-x-2">
+        <TableOfContents />
+        <WinControl />
+      </div>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 import useIntersectionObserver from "../Hooks/useIntersectionObserver";
 
-import Button from "./Button";
+import WinButton from "./WinBar/WinButton";
 
 import { BsHash, BsReverseLayoutTextWindowReverse } from "react-icons/bs";
 
@@ -34,9 +34,9 @@ export default function TableOfContents() {
 
   return (
     <div ref={ref} className="z-30">
-      <Button classOverride="text-xl h-full mx-1 px-3 border-0" onClick={() => setIsOpen(!isOpen)}>
+      <WinButton onClick={() => setIsOpen(!isOpen)}>
         <BsReverseLayoutTextWindowReverse />
-      </Button>
+      </WinButton>
       <div className={isOpen ? "scale-100" : "scale-0"}>
         <TableOfContentsBody headings={headings} activeIndex={activeIndex} />
       </div>

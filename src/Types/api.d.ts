@@ -16,6 +16,7 @@ export type ElectronAPI = Window &
         useCurrentUser: boolean
       ) => Promise<ResultData>;
       probeConnection: (target: string) => Promise<ResultData>;
+      changeWinState: (state: WinState) => void;
       handleZoomUpdate: (callback: Function) => void;
       removeZoomListener: () => void;
     };
@@ -56,6 +57,8 @@ export type CommandArgs = {
 };
 
 type ComputerAction = "compmgmt" | "mstsc" | "powershell";
+
+type WinState = "minimize" | "maximize_restore" | "quit";
 
 export type ResultData = {
   output?: { [key: string]: any }[];
