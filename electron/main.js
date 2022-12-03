@@ -14,7 +14,7 @@ const {
   getExecutingUser,
   startComputerAction,
 } = require("./api/powershell");
-const { probeConnection } = require("./api/node");
+const { probeConnection, getVersion } = require("./api/node");
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -70,6 +70,7 @@ app.whenReady().then(() => {
   ipcMain.handle("ps:getExecutingUser", getExecutingUser);
   ipcMain.handle("ps:startComputerAction", startComputerAction);
   ipcMain.handle("node:probeConnection", probeConnection);
+  ipcMain.handle("node:getVersion", getVersion);
   createWindow();
   app.on("activate", function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

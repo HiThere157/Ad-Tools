@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
   probeConnection: (target) =>
     ipcRenderer.invoke("node:probeConnection", target),
+  getVersion: () => ipcRenderer.invoke("node:getVersion"),
 
   handleZoomUpdate: (callback) =>
     ipcRenderer.on("win:setZoom", (_event, ...args) => callback(args)),

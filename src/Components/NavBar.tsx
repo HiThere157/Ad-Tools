@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+
+import { ElectronAPI } from "../Types/api";
 
 import {
   BsSearch,
@@ -14,8 +17,21 @@ type NavBarProps = {
   isOpen: boolean
 }
 export default function NavBar({ isOpen }: NavBarProps) {
+  const [version, setVersion] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { output } = await (window as ElectronAPI).electronAPI.getVersion();
+        setVersion(output);
+      } catch {
+        setVersion("");
+      }
+    })();
+  }, []);
+
   return (
-    <nav className="flex flex-col p-2 dark:bg-secondaryBg">
+    <nav className="relative flex flex-col p-2 overflow-auto dark:bg-secondaryBg">
       <NavItem
         to="/search"
         icon={<BsSearch />}
@@ -85,6 +101,9 @@ export default function NavBar({ isOpen }: NavBarProps) {
         text="Settings"
         isOpen={isOpen}
       />
+      <div className="fixed bottom-0 left-0 text-xs dark:text-foregroundAccent dark:bg-secondaryBg">
+        {version && <span className="m-2">v{version}</span>}
+      </div>
     </nav>
   );
 }

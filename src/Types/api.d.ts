@@ -1,7 +1,8 @@
 export type ElectronAPI = Window &
   typeof globalThis & {
     electronAPI: {
-      getExecutingUser: () => { output: string };
+      getExecutingUser: () => Promise<{ output: string }>;
+      getVersion: () => Promise<{ output: string }>;
       executeCommand: (request: {
         command: Commands;
         args: CommandArgs;
@@ -14,7 +15,7 @@ export type ElectronAPI = Window &
         target: string,
         useCurrentUser: boolean
       ) => Promise<ResultData>;
-      probeConnection: (target: string) => ResultData;
+      probeConnection: (target: string) => Promise<ResultData>;
       handleZoomUpdate: (callback: Function) => void;
       removeZoomListener: () => void;
     };
