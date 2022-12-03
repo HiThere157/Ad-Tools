@@ -50,7 +50,7 @@ type TableOfContentsBodyProps = {
 }
 function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps) {
   return (
-    <div className="container absolute right-2 w-max mt-2 p-2">
+    <div className="container absolute right-0 w-max mt-1 p-2">
       <span className="block text-xl mb-1">Table of Contents</span>
       <div className="flex flex-col">
         {headings.map((heading, index) => {
