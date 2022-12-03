@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 
 import { ElectronAPI } from "../Types/api";
 
-import Button from "../Components/Button";
-import TableOfContents from "../Components/TableOfContents";
+import Button from "./Button";
+import TableOfContents from "./TableOfContents";
 
 import { BsListUl } from "react-icons/bs";
 
@@ -25,7 +25,7 @@ export default function Header({ onNavOpen }: HeaderProps) {
   }, []);
 
   return (
-    <div className="flex top-0 justify-between w-full p-1 border-b-2 dark:bg-secondaryBg dark:border-primaryBorder">
+    <div style={{ gridArea: "header" }} className="flex top-0 justify-between w-full p-1 border-b-2 dark:bg-secondaryBg dark:border-primaryBorder">
       <div className="flex">
         <Button classOverride="text-xl mx-1 px-3 border-0" onClick={onNavOpen}>
           <BsListUl />

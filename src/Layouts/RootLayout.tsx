@@ -4,6 +4,7 @@ import { useGlobalState } from "../Hooks/useGlobalState";
 
 import Header from "../Components/Header";
 import NavBar from "../Components/NavBar";
+import Footer from "../Components/Footer";
 import ZoomLabel from "../Components/ZoomLabel";
 import MessageLayout from "../Layouts/MessageLayout";
 import Message from "../Components/Message";
@@ -16,20 +17,23 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const [isNavOpen, setIsNavOpen] = useLocalStorage("main_isNavOpen", true);
 
   return (
-    <main className="flex flex-col dark:text-foreground dark:bg-primaryBg h-screen">
+    <main style={{
+      gridTemplateAreas: `"header header" "navbar content" "footer content"`,
+    }} className="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] h-screen min-w-fit dark:text-foreground dark:bg-primaryBg" >
       <Header
         onNavOpen={() => setIsNavOpen(!isNavOpen)}
       />
-      <div className="flex flex-grow min-h-0">
-        <NavBar isOpen={isNavOpen} />
-        <div className="flex-grow p-4 min-w-0 overflow-auto">{children}</div>
-        <ZoomLabel />
-        <MessageLayout>
-          {state.messages?.map((message, index) => {
-            return <Message key={index} message={message} />
-          })}
-        </MessageLayout>
-      </div>
-    </main>
+      <NavBar isOpen={isNavOpen} />
+      <Footer />
+
+      <div style={{ gridArea: "content" }} className="p-4 overflow-auto">{children}</div>
+
+      <ZoomLabel />
+      <MessageLayout>
+        {state.messages?.map((message, index) => {
+          return <Message key={index} message={message} />
+        })}
+      </MessageLayout>
+    </main >
   );
 }
