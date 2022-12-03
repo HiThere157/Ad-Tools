@@ -12,15 +12,15 @@ import {
   BsClockHistory,
   BsGearFill,
 } from "react-icons/bs";
-import { GoThreeBars } from "react-icons/go";
+import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi"
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useLocalStorage("main_isNavOpen", true);
 
   return (
     <nav style={{ gridArea: "navbar" }} className="flex flex-col pb-4 overflow-auto dark:bg-secondaryBg">
-      <Button classOverride="flex justify-center py-1.5 rounded-none border-0" onClick={() => { setIsOpen(!isOpen) }}>
-        <GoThreeBars />
+      <Button classOverride="flex justify-center py-1 rounded-none border-0 text-xl" onClick={() => { setIsOpen(!isOpen) }}>
+        {isOpen ? <FiChevronsLeft /> : <FiChevronsRight />}
       </Button>
       <div className="flex flex-col p-2">
         <NavItem

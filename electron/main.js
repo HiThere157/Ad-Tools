@@ -40,7 +40,7 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    backgroundColor: "#000",
+    backgroundColor: "#1A1A1A",
     titleBarStyle: "hidden",
     icon: path.join(__dirname, "assets/icon32.png"),
     webPreferences: {

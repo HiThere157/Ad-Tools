@@ -61,7 +61,7 @@ type DropdownBodyProps = {
 }
 function DropdownBody({ items, onSelection }: DropdownBodyProps) {
   return (
-    <div className="absolute flex flex-col min-w-full rounded-md overflow-hidden mt-1">
+    <div className="absolute flex flex-col min-w-full rounded overflow-hidden mt-1">
       {items.map((item, index) => {
         return (
           <Button

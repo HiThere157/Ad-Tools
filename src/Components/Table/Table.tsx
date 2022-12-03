@@ -89,7 +89,7 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
           filter={filter}
           onFilterChange={updateFilter}
         />
-        <div className="border-2 border-primaryBorder rounded-md h-fit min-h-[4rem] overflow-auto">
+        <div className="border-2 border-primaryBorder rounded h-fit min-h-[4rem] overflow-auto">
           <TableElement
             entries={data.output}
             columns={columns}
