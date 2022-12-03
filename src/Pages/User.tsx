@@ -48,7 +48,7 @@ export default function UserPage() {
   return (
     <article>
       <AdInputBar
-        label="User ID:"
+        label="User:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}

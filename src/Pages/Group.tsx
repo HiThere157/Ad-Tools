@@ -61,7 +61,7 @@ export default function GroupPage() {
   return (
     <article>
       <AdInputBar
-        label="Group ID:"
+        label="Group:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}

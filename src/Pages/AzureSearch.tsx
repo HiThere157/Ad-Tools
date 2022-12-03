@@ -71,7 +71,7 @@ export default function AzureSearchPage() {
   return (
     <article>
       <AadInputBar
-        label="Search String:"
+        label="Azure Query:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}

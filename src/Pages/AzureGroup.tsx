@@ -83,7 +83,7 @@ export default function AzureGroupPage() {
   return (
     <article>
       <AadInputBar
-        label="Group ID:"
+        label="Azure Group:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}

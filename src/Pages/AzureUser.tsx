@@ -80,7 +80,7 @@ export default function AzureUserPage() {
   return (
     <article>
       <AadInputBar
-        label="User ID:"
+        label="Azure User:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}

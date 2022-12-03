@@ -68,7 +68,7 @@ export default function AzureDevicePage() {
   return (
     <article>
       <AadInputBar
-        label="Device ID:"
+        label="Azure Device:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}

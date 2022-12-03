@@ -60,7 +60,7 @@ export default function SearchPage() {
   return (
     <article>
       <AdInputBar
-        label="Search:"
+        label="Query:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}

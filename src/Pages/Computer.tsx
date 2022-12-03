@@ -97,7 +97,7 @@ export default function ComputerPage() {
     <article>
       <div className="w-fit">
         <AdInputBar
-          label="Computer ID:"
+          label="Computer:"
           isLoading={isLoading}
           query={query}
           onChange={setQuery}
