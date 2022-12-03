@@ -13,23 +13,21 @@ export default function FilterMenu({ isOpen, columns, filter, onFilterChange }: 
   return (
     <>
       {isOpen && (
-        <div className="container">
-          <div className="mb-1 flex items-center">
-            <span className="mr-2">Selected: </span>
-            <Checkbox
-              checked={filter.__selected__ === "true"}
-              onChange={() => onFilterChange("__selected__", filter.__selected__ !== "true" ? "true" : "")}
-            />
-          </div>
+        <div className="container grid grid-cols-[auto_1fr] py-1 gap-1">
+          <span className="mr-2">Selected: </span>
+          <Checkbox
+            checked={filter.__selected__ === "true"}
+            onChange={() => onFilterChange("__selected__", filter.__selected__ !== "true" ? "true" : "")}
+          />
           {columns.map((column) => {
             return (
-              <div className="mb-1 flex justify-between" key={column.key}>
+              <>
                 <span className="mr-2">{column.title}:</span>
                 <Input
                   value={filter[column.key]}
                   onChange={(filterString: string) => onFilterChange(column.key, filterString)}
                 />
-              </div>
+              </>
             );
           })}
         </div>
