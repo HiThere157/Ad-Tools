@@ -66,7 +66,7 @@ function DropdownBody({ items, onSelection }: DropdownBodyProps) {
         return (
           <Button
             key={index}
-            classOverride="rounded-none"
+            classOverride={"rounded-none " + (index !== 0 ? "border-t-0" : "")}
             onClick={() => onSelection(item)}
           >
             {item}
