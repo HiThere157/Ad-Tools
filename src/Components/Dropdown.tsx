@@ -18,13 +18,6 @@ export default function Dropdown({
 }: DropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(value);
-
-  useEffect(() => {
-    // if no selected item is set, wait for updated items
-    setSelectedItem(value ?? items[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items]);
 
   useEffect(() => {
     function handleClickOutside({ target }: MouseEvent) {
@@ -39,7 +32,6 @@ export default function Dropdown({
   }, [ref]);
 
   const changeSelectedItem = (item: string) => {
-    setSelectedItem(item);
     onChange(item);
     setIsOpen(false);
   };
@@ -47,8 +39,8 @@ export default function Dropdown({
   return (
     <div ref={ref} className="w-max z-10">
       <Button onClick={() => setIsOpen(!isOpen)} disabled={disabled}>
-        <div className="flex items-center">
-          {selectedItem}
+        <div className="flex items-center h-6">
+          {value}
           <BsCaretDownFill
             className={"ml-2 text-base " + (isOpen ? "rotate-180" : "")}
           />

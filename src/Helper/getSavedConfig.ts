@@ -43,12 +43,7 @@ function getTenants(): string[] {
     tenants = [];
   }
 
-  // if no result, use placeholder
-  if (tenants.length === 0) {
-    tenants = ["domain.com"];
-  }
-
-  setDomains(tenants);
+  setTenants(tenants);
   return tenants;
 }
 

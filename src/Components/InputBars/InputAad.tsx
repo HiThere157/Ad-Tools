@@ -33,7 +33,7 @@ export default function AadInputBar({ label, isLoading, query, onChange, onSubmi
         onChange={setInput}
         onEnter={onSubmit}
       />
-      <Dropdown items={tenants} value={tenant} disabled={isLoading} onChange={setTenant} />
+      {tenants.length !== 0 && <Dropdown items={tenants} value={tenant} disabled={isLoading} onChange={setTenant} />}
       <Button onClick={onSubmit} disabled={isLoading} children="Run" />
     </div>
   );

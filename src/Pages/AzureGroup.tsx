@@ -47,6 +47,13 @@ export default function AzureGroupPage() {
       useStaticSession: true
     });
 
+    if (groups.error) {
+      setAttributes({ output: [], error: groups.error })
+      setMembers({ output: [], error: groups.error })
+      setIsLoading(false);
+      return;
+    }
+
     const output = groups.output as Promise<{ DisplayName: string | undefined, ObjectId: string | undefined }[]>[];
     const firstResult = (await output?.[0])?.[0];
 

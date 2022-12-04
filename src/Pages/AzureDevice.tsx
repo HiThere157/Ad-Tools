@@ -44,6 +44,12 @@ export default function AzureDevicePage() {
       useStaticSession: true
     });
 
+    if (devices.error) {
+      setAttributes({ output: [], error: devices.error })
+      setIsLoading(false);
+      return;
+    }
+
     const output = devices.output as Promise<{ DisplayName: string | undefined, ObjectId: string | undefined }[]>[];
     const firstResult = (await output?.[0])?.[0];
 
