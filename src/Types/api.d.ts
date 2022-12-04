@@ -1,25 +1,28 @@
 export type ElectronAPI = Window &
   typeof globalThis & {
-    electronAPI: {
-      getExecutingUser: () => Promise<{ output: string }>;
-      getVersion: () => Promise<{ output: string }>;
-      executeCommand: (request: {
-        command: Commands;
-        args: CommandArgs;
-        selectFields: string[];
-        useStaticSession: boolean;
-        json: boolean;
-      }) => Promise<ResultData>;
-      startComputerAction: (
-        action: ComputerAction,
-        target: string,
-        useCurrentUser: boolean
-      ) => Promise<ResultData>;
-      probeConnection: (target: string) => Promise<ResultData>;
-      changeWinState: (state: WinState) => void;
-      handleZoomUpdate: (callback: Function) => void;
-      removeZoomListener: () => void;
-    };
+    electronAPI:
+      | {
+          getExecutingUser: () => Promise<ResultDataString>;
+          getDomainSuffixList: () => Promise<ResultData>;
+          getVersion: () => Promise<{ output: string }>;
+          executeCommand: (request: {
+            command: Commands;
+            args: CommandArgs;
+            selectFields: string[];
+            useStaticSession: boolean;
+            json: boolean;
+          }) => Promise<ResultData | ResultDataString>;
+          startComputerAction: (
+            action: ComputerAction,
+            target: string,
+            useCurrentUser: boolean
+          ) => Promise<ResultDataString>;
+          probeConnection: (target: string) => Promise<{ output: string }>;
+          changeWinState: (state: WinState) => void;
+          handleZoomUpdate: (callback: Function) => void;
+          removeZoomListener: () => void;
+        }
+      | undefined;
   };
 
 export type Command =
@@ -62,5 +65,9 @@ type WinState = "minimize" | "maximize_restore" | "quit";
 
 export type ResultData = {
   output?: { [key: string]: any }[];
+  error?: string;
+};
+export type ResultDataString = {
+  output?: string;
   error?: string;
 };

@@ -1,6 +1,8 @@
 import { useLocalStorage } from "../Hooks/useStorage";
 
-import { ElectronAPI, ComputerAction } from "../Types/api";
+import { ComputerAction } from "../Types/api";
+
+import { electronAPI } from "../Helper/makeAPICall"
 
 import { useGlobalState } from "../Hooks/useGlobalState";
 import { addMessage } from "../Helper/handleMessage";
@@ -17,9 +19,13 @@ export default function ComputerActions({ fqdn }: ComputerActionsProps) {
 
   const run = async (action: ComputerAction, friendlyName: string) => {
     try {
-      const result = await (window as ElectronAPI).electronAPI.startComputerAction(action, fqdn, useCurrentUser);
+      const result = await electronAPI?.startComputerAction(action, fqdn, useCurrentUser);
 
-      if (result.error) {
+      if (!result) {
+        throw new Error("electronAPI not exposed.");
+      }
+
+      if (result?.error) {
         throw result.error;
       }
       addMessage({ type: "info", message: `opened ${friendlyName} for target: ${fqdn}`, timer: 7 }, setState);

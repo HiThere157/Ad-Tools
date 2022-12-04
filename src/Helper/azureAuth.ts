@@ -1,4 +1,4 @@
-import makeAPICall from "./makeAPICall";
+import { makeAPICall } from "./makeAPICall";
 
 export default async function authenticateAzure(tenant: string) {
   const connected = await makeAPICall({

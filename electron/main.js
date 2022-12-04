@@ -15,6 +15,7 @@ autoUpdater.checkForUpdatesAndNotify();
 const {
   executeCommand,
   getExecutingUser,
+  getDomainSuffixList,
   startComputerAction,
 } = require("./api/powershell");
 const { probeConnection, getVersion } = require("./api/node");
@@ -92,6 +93,7 @@ app.whenReady().then(() => {
   // handle all api call requests
   ipcMain.handle("ps:executeCommand", executeCommand);
   ipcMain.handle("ps:getExecutingUser", getExecutingUser);
+  ipcMain.handle("ps:getDomainSuffixList", getDomainSuffixList);
   ipcMain.handle("ps:startComputerAction", startComputerAction);
   ipcMain.handle("node:probeConnection", probeConnection);
   ipcMain.handle("node:getVersion", getVersion);

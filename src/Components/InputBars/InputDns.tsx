@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { dnsTypes } from "../../Config/default";
-import makeAPICall from "../../Helper/makeAPICall";
+import { makeAPICall } from "../../Helper/makeAPICall";
 import { useGlobalState } from "../../Hooks/useGlobalState";
 import { addMessage } from "../../Helper/handleMessage";
 

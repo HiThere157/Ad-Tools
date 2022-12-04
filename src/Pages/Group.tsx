@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
-import makeAPICall from "../Helper/makeAPICall";
+import { makeAPICall } from "../Helper/makeAPICall";
 import {
   getPropertiesWrapper,
   getMembershipFromAdUser,

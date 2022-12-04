@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react"
 
-import { ElectronAPI } from "../Types/api";
+import { electronAPI } from "../Helper/makeAPICall"
 
 export default function Footer() {
   const [version, setVersion] = useState("");
 
   useEffect(() => {
     (async () => {
-      try {
-        const { output } = await (window as ElectronAPI).electronAPI.getVersion();
-        setVersion(output);
-      } catch {
-        setVersion("");
-      }
+      const result = await electronAPI?.getVersion();
+      setVersion(result?.output ?? "");
     })();
   }, []);
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { tenants } from "../../Config/default";
+import { getTenants } from "../../Helper/getSavedConfig";
 
 import Input from "../Input";
 import Dropdown from "../Dropdown";
@@ -14,6 +14,7 @@ type AadInputBarProps = {
   onSubmit: Function,
 }
 export default function AadInputBar({ label, isLoading, query, onChange, onSubmit }: AadInputBarProps) {
+  const tenants = getTenants();
   const [input, setInput] = useState(query.input ?? "");
   const [tenant, setTenant] = useState(query.tenant ?? tenants[0]);
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { ElectronAPI } from "../Types/api";
+import { electronAPI } from "../Helper/makeAPICall"
 
 import WinControl from "./WinBar/WinControl";
 import TableOfContents from "./TableOfContents";
@@ -10,12 +10,8 @@ export default function Header() {
 
   useEffect(() => {
     (async () => {
-      try {
-        const { output } = await (window as ElectronAPI).electronAPI.getExecutingUser();
-        setUser(output);
-      } catch {
-        setUser("/");
-      }
+      const result = await electronAPI?.getExecutingUser();
+      setUser(result?.output ?? "/");
     })();
   }, []);
 

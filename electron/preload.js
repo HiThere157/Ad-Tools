@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   executeCommand: (request) => ipcRenderer.invoke("ps:executeCommand", request),
 
   getExecutingUser: () => ipcRenderer.invoke("ps:getExecutingUser"),
+  getDomainSuffixList: () => ipcRenderer.invoke("ps:getDomainSuffixList"),
 
   startComputerAction: (action, target, useCurrentUser) =>
     ipcRenderer.invoke(

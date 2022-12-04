@@ -120,6 +120,14 @@ const getExecutingUser = async () => {
   });
 };
 
+const getDomainSuffixList = async () => {
+  return await invokeWrapper({
+    ps: getSession(),
+    fullCommand: "Get-DnsClientGlobalSetting | ConvertTo-Json -Compress",
+    json: true,
+  });
+};
+
 const startComputerAction = async (_event, action, target, useCurrentUser) => {
   if (!Object.keys(remoteActions).includes(action)) {
     return { error: `Invalid Action "${action}"` };
@@ -133,4 +141,9 @@ const startComputerAction = async (_event, action, target, useCurrentUser) => {
   return await invokeWrapper({ ps: getSession(), fullCommand });
 };
 
-module.exports = { executeCommand, getExecutingUser, startComputerAction };
+module.exports = {
+  executeCommand,
+  getExecutingUser,
+  getDomainSuffixList,
+  startComputerAction,
+};

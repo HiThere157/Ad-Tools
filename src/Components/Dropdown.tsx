@@ -18,7 +18,13 @@ export default function Dropdown({
 }: DropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(value ?? items[0]);
+  const [selectedItem, setSelectedItem] = useState(value);
+
+  useEffect(() => {
+    // if no selected item is set, wait for updated items
+    setSelectedItem(value ?? items[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
 
   useEffect(() => {
     function handleClickOutside({ target }: MouseEvent) {

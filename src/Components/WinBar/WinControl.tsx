@@ -1,4 +1,6 @@
-import { ElectronAPI, WinState } from "../../Types/api";
+import { WinState } from "../../Types/api";
+
+import { electronAPI } from "../../Helper/makeAPICall"
 
 import WinButton from "./WinButton";
 
@@ -6,9 +8,7 @@ import { BsDashLg, BsSquare, BsXLg } from "react-icons/bs";
 
 export default function WinControl() {
   const setWindowState = (state: WinState) => {
-    try {
-      (window as ElectronAPI).electronAPI.changeWinState(state);
-    } catch { }
+    electronAPI?.changeWinState(state);
   }
 
   return (

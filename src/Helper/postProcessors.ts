@@ -105,8 +105,8 @@ async function prepareDNSResult(
 
       if (["A", "NS", "AAAA", "PTR"].includes(typeLookup[record.Type]?.l)) {
         connection = (
-          await (window as ElectronAPI).electronAPI.probeConnection(result)
-        ).output
+          await (window as ElectronAPI).electronAPI?.probeConnection(result)
+        )?.output
           ? "True"
           : "False";
       }

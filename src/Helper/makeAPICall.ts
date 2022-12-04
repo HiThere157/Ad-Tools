@@ -4,6 +4,8 @@ import { makeToList } from "./postProcessors";
 
 import { ElectronAPI, Command, CommandArgs, ResultData } from "../Types/api";
 
+const electronAPI = (window as ElectronAPI).electronAPI;
+
 async function saveToDB(item: any) {
   const db = setupIndexedDB(commandDBConfig);
   const commandStore = new Store(db, "commands", "readwrite");
@@ -20,11 +22,11 @@ type makeAPICallParams = {
   useStaticSession?: boolean;
   json?: boolean;
 };
-export default async function makeAPICall({
+async function makeAPICall({
   command,
   args = {},
   postProcessor = (AdObject: object) => AdObject,
-  callback = () => { },
+  callback = () => {},
   selectFields = [],
   useStaticSession = false,
   json = true,
@@ -37,7 +39,7 @@ export default async function makeAPICall({
   });
 
   try {
-    const result = await (window as ElectronAPI).electronAPI.executeCommand({
+    const result = await electronAPI?.executeCommand({
       command,
       args,
       selectFields,
@@ -45,11 +47,15 @@ export default async function makeAPICall({
       json,
     });
 
+    if (!result) {
+      throw new Error("electronAPI not exposed.");
+    }
+
     saveToDB({
       command,
       args,
       date: new Date().toISOString().replace("T", " ").replace("Z", " UTC"),
-      success: !result.error
+      success: !result.error,
     });
 
     if (result.error) {
@@ -79,3 +85,5 @@ export default async function makeAPICall({
     return result;
   }
 }
+
+export { makeAPICall, electronAPI };

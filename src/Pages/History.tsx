@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
+import { columns, commandDBConfig } from "../Config/default";
 import { setupIndexedDB, Store } from "../Helper/indexedDB"
 
-import { columns, commandDBConfig } from "../Config/default";
 import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";

@@ -4,8 +4,6 @@ type ColumnDefinition = {
   sortable: boolean;
 };
 
-const domains: string[] = ["Alcon.net", "Alconnet.com", "Itlab.local"];
-const tenants: string[] = ["Alcon.net"];
 const dnsTypes: string[] = ["A_AAAA", "NS", "PTR", "MX", "ALL"];
 
 const columns: { [key: string]: ColumnDefinition[] } = {
@@ -41,7 +39,11 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Device OS", key: "DeviceOSType", sortable: true },
     { title: "Enabled", key: "AccountEnabled", sortable: true },
     { title: "MDM", key: "IsManaged", sortable: true },
-    { title: "Last Logon", key: "ApproximateLastLogonTimeStamp", sortable: true },
+    {
+      title: "Last Logon",
+      key: "ApproximateLastLogonTimeStamp",
+      sortable: true,
+    },
   ],
   dns: [
     { title: "Name", key: "Name", sortable: true },
@@ -71,5 +73,5 @@ const commandDBConfig = {
   ],
 };
 
-export { domains, tenants, dnsTypes, columns, commandDBConfig };
+export { dnsTypes, columns, commandDBConfig };
 export type { ColumnDefinition };

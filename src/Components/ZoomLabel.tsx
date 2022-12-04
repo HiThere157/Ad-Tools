@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { ElectronAPI } from "../Types/api";
+import { electronAPI } from "../Helper/makeAPICall"
 
 export default function ZoomLabel() {
   const [visible, setVisibility] = useState(false);
@@ -15,14 +15,12 @@ export default function ZoomLabel() {
   }, [zoom])
 
   useEffect(() => {
-    try {
-      (window as ElectronAPI).electronAPI.handleZoomUpdate((value: number) => {
-        setZoom(Math.round(value * 100))
-      })
-      return () => {
-        (window as ElectronAPI).electronAPI.removeZoomListener()
-      }
-    } catch { }
+    electronAPI?.handleZoomUpdate((value: number) => {
+      setZoom(Math.round(value * 100))
+    })
+    return () => {
+      electronAPI?.removeZoomListener()
+    }
   }, [])
 
   return (
