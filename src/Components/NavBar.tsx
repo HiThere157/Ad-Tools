@@ -8,6 +8,7 @@ import {
   BsFillPersonLinesFill,
   BsPeopleFill,
   BsDisplay,
+  BsLaptop,
   BsServer,
   BsClockHistory,
   BsGearFill,
@@ -68,7 +69,7 @@ export default function NavBar() {
         />
         <NavItem
           to="/azureDevice"
-          icon={<BsDisplay />}
+          icon={<BsLaptop />}
           text="Azure Device"
           isOpen={isOpen}
         />
