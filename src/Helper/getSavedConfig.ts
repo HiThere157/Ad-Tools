@@ -22,7 +22,7 @@ async function getDomains(): Promise<string[]> {
 
   // if still no result, use placeholder
   if (domains.length === 0) {
-    domains = ["domain.com"];
+    domains = ["example.com"];
   }
 
   setDomains(domains);

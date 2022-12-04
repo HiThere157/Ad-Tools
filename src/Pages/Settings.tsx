@@ -49,7 +49,7 @@ export default function GroupPage() {
           <div className="flex flex-col items-end">
             <h3 className="text-xl font-bold mb-1">Tenants</h3>
             <EditableList items={tenants} onChange={(newItems: string[]) => { updateDomainTenant(newItems, setTenants) }} />
-            <span className="w-80 mt-1 text-right dark:text-foregroundAccent">Adding Tenants is only necessary if your account can access multiple Tenants</span>
+            <span className="w-80 mt-1 text-right dark:text-foregroundAccent">Specifying tenants is only necessary if your account can access multiple tenants</span>
           </div>
         </div>
       </section>
