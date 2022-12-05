@@ -22,6 +22,7 @@ export default function EditableList({ items, onChange }: EditableListProps) {
   const removeItem = (index: number) => {
     const newItems = items.slice();
     newItems.splice(index, 1);
+    setEditingIndex(-1);
     onChange(newItems);
   }
 
@@ -38,9 +39,9 @@ export default function EditableList({ items, onChange }: EditableListProps) {
             <tr key={index} >
               <td><span className="dark:text-foregroundAccent">{index + 1}:</span></td>
               {index === editingIndex ? (
-                <td><Input value={item} onChange={(value: string) => { itemChange(value, index) }}></Input></td>
+                <td><Input value={item} onChange={(value: string) => { itemChange(value, index) }} onEnter={() => { setEditingIndex(-1) }}></Input></td>
               ) : (
-                <td><span className="mx-2">{item}</span></td>
+                <td><span className="mx-2 text-lg">{item}</span></td>
               )}
               <td>
                 <Button
