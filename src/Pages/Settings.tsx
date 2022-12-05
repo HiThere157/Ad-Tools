@@ -7,11 +7,13 @@ import { addMessage } from "../Helper/handleMessage";
 
 import Button from "../Components/Button";
 import EditableList from "../Components/EditableList";
+import SavedFilters from "../Components/SavedFilters";
 
 export default function GroupPage() {
   const { setState } = useGlobalState();
   const [domains, setDomains] = useLocalStorage("conf_domains", []);
   const [tenants, setTenants] = useLocalStorage("conf_tenants", []);
+  const [savedFilters, setSavedFilters] = useLocalStorage("conf_savedFilters", []);
 
   const clearSession = () => {
     window.sessionStorage.clear();
@@ -53,6 +55,11 @@ export default function GroupPage() {
             <span className="w-80 mt-1 text-right dark:text-foregroundAccent">Specifying tenants is only necessary if your account can access multiple tenants</span>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-bold mb-1" style={{ scrollMarginTop: "60px" }}>Saved Filters</h2>
+        <SavedFilters savedFilters={savedFilters} onChange={setSavedFilters} />
       </section>
 
       <section>

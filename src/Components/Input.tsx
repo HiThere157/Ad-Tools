@@ -27,7 +27,7 @@ export default function Input({
         className={
           "control dark:bg-secondaryBg dark:border-primaryBorder " +
           "dark:enabled:hover:border-secondaryBorderAccent " +
-          "dark:enabled:focus-within:border-secondaryBorderAccent " +
+          "dark:enabled:focus-within:border-secondaryBorderAccent w-full" +
           classOverride
         }
         value={value ?? ""}
