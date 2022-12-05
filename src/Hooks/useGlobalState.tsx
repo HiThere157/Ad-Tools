@@ -6,6 +6,7 @@ type Message = {
   type: "info" | "error" | "warning";
   message: string;
   timer?: number;
+  skipIfExists?: boolean;
 }
 type GlobalState = {
   messages: Message[];

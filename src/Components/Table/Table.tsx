@@ -102,7 +102,7 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
             onRedirect={onRedirect}
           />
           <ErrorMessage error={data.error} />
-          <Loader isVisible={isLoading && data.output?.length === 0} />
+          <Loader isVisible={isLoading && data.output?.length === 0 && !data.error} />
         </div>
       </div>
     </section>

@@ -6,9 +6,17 @@ const addMessage = (
 ) => {
   message.timestamp = Date.now();
 
+  const append = (prev: Partial<GlobalState>, message: Message) => {
+    if (message.skipIfExists && prev.messages?.some((existingMessage: Message) => existingMessage.message === message.message)) {
+      return prev.messages
+    }
+
+    return [...(prev.messages ?? []), message]
+  }
+
   callback((prev) => ({
     ...prev,
-    messages: [...(prev.messages ?? []), message],
+    messages: append(prev, message),
   }));
 };
 

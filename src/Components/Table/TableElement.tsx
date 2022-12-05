@@ -64,19 +64,25 @@ export default function TableElement({
       let isMatch = true;
       Object.entries(filter).forEach(([key, value]) => {
         // if __selected__ key is present in filter, check selected values
-        // prevent  regex check after
+        // prevent regex check after
         if (key === "__selected__") {
           isMatch = selected.includes(entry.__id__);
           return;
         }
 
         // every other filter value is checked with the entry properties
-        const wildcard = value.replace(/[.+^${}()|[\]\\]/g, "\\$&");
-        const regex = new RegExp(
-          `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
-          "i"
-        );
-        if (!regex.test(stringify(entry[key], false))) {
+        // split | and check every value seperately
+        // if any value is true, entry is a match
+        const matched = value.split("|").map((value: string) => {
+          const wildcard = value.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+          const regex = new RegExp(
+            `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
+            "i"
+          );
+          return regex.test(stringify(entry[key], false));
+        }).some((match) => match)
+
+        if (!matched) {
           isMatch = false;
         }
       });

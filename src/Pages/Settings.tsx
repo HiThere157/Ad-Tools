@@ -33,7 +33,7 @@ export default function GroupPage() {
   };
 
   const updateDomainTenant = (newItems: string[], callback: Function) => {
-    addMessage({ type: "info", message: "Domain and Tenant list was updated", timer: 7 }, setState);
+    addMessage({ type: "info", message: "Domain and Tenant list was updated", timer: 7, skipIfExists: true }, setState);
     callback(newItems);
   }
 
@@ -41,11 +41,12 @@ export default function GroupPage() {
     <article className="flex flex-col space-y-5">
       <section>
         <h2 className="text-2xl font-bold mb-1" style={{ scrollMarginTop: "60px" }}>Settings</h2>
-        <div className="flex justify-evenly">
+        <div className="flex flex-wrap justify-evenly gap-5">
           <div className="flex flex-col items-end">
             <h3 className="text-xl font-bold mb-1">Domains</h3>
             <EditableList items={domains} onChange={(newItems: string[]) => { updateDomainTenant(newItems, setDomains) }} />
           </div>
+
           <div className="flex flex-col items-end">
             <h3 className="text-xl font-bold mb-1">Tenants</h3>
             <EditableList items={tenants} onChange={(newItems: string[]) => { updateDomainTenant(newItems, setTenants) }} />
