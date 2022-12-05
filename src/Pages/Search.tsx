@@ -61,6 +61,7 @@ export default function SearchPage() {
     <article>
       <AdInputBar
         label="Query:"
+        hint="Hint: wildcard (*) is possible. (Eg.: *kochda7 => kochda7, adm_kochda7)"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}

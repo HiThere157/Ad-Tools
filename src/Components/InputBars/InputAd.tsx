@@ -8,12 +8,13 @@ import Button from "../Button";
 
 type AdInputBarProps = {
   label: string,
+  hint?: string,
   isLoading: boolean,
   query: { input: string | undefined, domain: string | undefined },
   onChange: Function,
   onSubmit: Function,
 }
-export default function AdInputBar({ label, isLoading, query, onChange, onSubmit }: AdInputBarProps) {
+export default function AdInputBar({ label, hint, isLoading, query, onChange, onSubmit }: AdInputBarProps) {
   const [domains, setDomains] = useState<string[]>([]);
   const [input, setInput] = useState(query.input ?? "");
   const [domain, setDomain] = useState(query.domain);
@@ -33,17 +34,22 @@ export default function AdInputBar({ label, isLoading, query, onChange, onSubmit
   }, []);
 
   return (
-    <div className="flex flex-wrap items-center [&>*]:m-1 mb-2">
-      <Input
-        label={label}
-        value={input}
-        classOverride="w-64"
-        disabled={isLoading}
-        onChange={setInput}
-        onEnter={onSubmit}
-      />
-      <Dropdown items={domains} value={domain} disabled={isLoading} onChange={setDomain} />
-      <Button onClick={onSubmit} disabled={isLoading} children="Run" />
+    <div className="mb-2">
+      <div className="flex flex-wrap items-center [&>*]:m-1">
+        <Input
+          label={label}
+          value={input}
+          classOverride="w-64"
+          disabled={isLoading}
+          onChange={setInput}
+          onEnter={onSubmit}
+        />
+        <Dropdown items={domains} value={domain} disabled={isLoading} onChange={setDomain} />
+        <Button onClick={onSubmit} disabled={isLoading} children="Run" />
+      </div>
+      {hint && <span className="ml-1 dark:text-foregroundAccent">
+        {hint}
+      </span>}
     </div>
   );
 }

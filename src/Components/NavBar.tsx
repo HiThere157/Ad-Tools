@@ -19,7 +19,7 @@ export default function NavBar() {
   const [isOpen, setIsOpen] = useLocalStorage("main_isNavOpen", true);
 
   return (
-    <nav style={{ gridArea: "navbar" }} className="flex flex-col pb-4 overflow-auto dark:bg-secondaryBg">
+    <nav style={{ gridArea: "navbar" }} className="select-none flex flex-col pb-4 overflow-auto dark:bg-secondaryBg">
       <Button classOverride="flex justify-center py-1 rounded-none border-0 text-xl" onClick={() => { setIsOpen(!isOpen) }}>
         {isOpen ? <FiChevronsLeft /> : <FiChevronsRight />}
       </Button>

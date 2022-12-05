@@ -131,6 +131,13 @@ export default function ComputerPage() {
           isLoading={isLoading}
         />
         <Table
+          title="Connected Monitors (WMI)"
+          name={monitorsKey}
+          columns={columns.monitor}
+          data={monitors}
+          isLoading={isLoading}
+        />
+        <Table
           title="System Info (WMI)"
           name={sysinfoKey}
           columns={columns.attribute}
@@ -142,13 +149,6 @@ export default function ComputerPage() {
           name={biosKey}
           columns={columns.attribute}
           data={bios}
-          isLoading={isLoading}
-        />
-        <Table
-          title="Connected Monitors (WMI)"
-          name={monitorsKey}
-          columns={columns.monitor}
-          data={monitors}
           isLoading={isLoading}
         />
       </TableLayout>
