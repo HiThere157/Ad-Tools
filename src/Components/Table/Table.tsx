@@ -49,14 +49,6 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
     }
   };
 
-  const updateFilter = (key: string, filterString: string) => {
-    const newFilter = { ...filter, [key]: filterString.trim() };
-    Object.keys(newFilter).forEach(
-      (key) => newFilter[key] === "" && delete newFilter[key]
-    );
-    setFilter(newFilter);
-  };
-
   const resetTable = () => {
     setSortedColumn("");
     setSortDesc(true);
@@ -84,10 +76,11 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
           isFilterHighlighted={isFilterHighlighted}
         />
         <FilterMenu
+          name={name}
           isOpen={isFilterOpen}
           columns={columns}
           filter={filter}
-          onFilterChange={updateFilter}
+          onFilterChange={setFilter}
         />
         <div className="border-2 border-primaryBorder rounded h-fit min-h-[4rem] overflow-auto">
           <TableElement

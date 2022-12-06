@@ -30,6 +30,7 @@ export default function Checkbox({
         "dark:hover:bg-secondaryControlAccent dark:hover:border-secondaryBorderAccent " +
         "dark:active:bg-secondaryControlActive dark:active:border-secondaryBorderActive " +
         "dark:text-primaryControlAccent " +
+        (disabled ? "cursor-not-allowed" : "") +
         classOverride
       }>
         {checked && <BsCheckLg className="m-0 scale-150" />}
