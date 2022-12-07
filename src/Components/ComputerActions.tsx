@@ -2,7 +2,7 @@ import { useLocalStorage } from "../Hooks/useStorage";
 
 import { ComputerAction } from "../Types/api";
 
-import { electronAPI } from "../Helper/makeAPICall"
+import { electronAPI } from "../Helper/makeAPICall";
 
 import { useGlobalState } from "../Hooks/useGlobalState";
 import { addMessage } from "../Helper/handleMessage";
@@ -11,15 +11,22 @@ import Button from "./Button";
 import Checkbox from "./Checkbox";
 
 type ComputerActionsProps = {
-  fqdn: string,
-}
+  fqdn: string;
+};
 export default function ComputerActions({ fqdn }: ComputerActionsProps) {
   const { setState } = useGlobalState();
-  const [useCurrentUser, setUseCurrentUser] = useLocalStorage("actions_useCurrentUser", true);
+  const [useCurrentUser, setUseCurrentUser] = useLocalStorage(
+    "actions_useCurrentUser",
+    true,
+  );
 
   const run = async (action: ComputerAction, friendlyName: string) => {
     try {
-      const result = await electronAPI?.startComputerAction(action, fqdn, useCurrentUser);
+      const result = await electronAPI?.startComputerAction(
+        action,
+        fqdn,
+        useCurrentUser,
+      );
 
       if (!result) {
         throw new Error("electronAPI not exposed.");
@@ -28,18 +35,48 @@ export default function ComputerActions({ fqdn }: ComputerActionsProps) {
       if (result?.error) {
         throw result.error;
       }
-      addMessage({ type: "info", message: `opened ${friendlyName} for target: ${fqdn}`, timer: 7 }, setState);
+      addMessage(
+        {
+          type: "info",
+          message: `opened ${friendlyName} for target: ${fqdn}`,
+          timer: 7,
+        },
+        setState,
+      );
     } catch {
-      addMessage({ type: "error", message: `failed to open ${friendlyName} for target: ${fqdn}` }, setState);
+      addMessage(
+        {
+          type: "error",
+          message: `failed to open ${friendlyName} for target: ${fqdn}`,
+        },
+        setState,
+      );
     }
-  }
+  };
 
   return (
     <div className="flex flex-wrap items-center justify-between [&>*]:m-1 mb-2">
-      <Button classOverride="flex-grow" onClick={() => run("compmgmt", "computer management")} children="Computer Management" />
-      <Button classOverride="flex-grow" onClick={() => run("powershell", "a powershell session")} children="Powershell" />
-      <Button classOverride="flex-grow" onClick={() => run("mstsc", "a RDP session")} children="RDP" />
-      <Checkbox classOverride="ml-1" label="use current user" checked={useCurrentUser} onChange={() => setUseCurrentUser(!useCurrentUser)} />
+      <Button
+        classOverride="flex-grow"
+        onClick={() => run("compmgmt", "computer management")}
+        children="Computer Management"
+      />
+      <Button
+        classOverride="flex-grow"
+        onClick={() => run("powershell", "a powershell session")}
+        children="Powershell"
+      />
+      <Button
+        classOverride="flex-grow"
+        onClick={() => run("mstsc", "a RDP session")}
+        children="RDP"
+      />
+      <Checkbox
+        classOverride="ml-1"
+        label="use current user"
+        checked={useCurrentUser}
+        onChange={() => setUseCurrentUser(!useCurrentUser)}
+      />
     </div>
   );
 }

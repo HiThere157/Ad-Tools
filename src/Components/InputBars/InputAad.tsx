@@ -7,14 +7,21 @@ import Dropdown from "../Dropdown";
 import Button from "../Button";
 
 type AadInputBarProps = {
-  label: string,
-  hint?: string,
-  isLoading: boolean,
-  query: { input: string | undefined, tenant: string | undefined },
-  onChange: Function,
-  onSubmit: Function,
-}
-export default function AadInputBar({ label, hint, isLoading, query, onChange, onSubmit }: AadInputBarProps) {
+  label: string;
+  hint?: string;
+  isLoading: boolean;
+  query: { input: string | undefined; tenant: string | undefined };
+  onChange: Function;
+  onSubmit: Function;
+};
+export default function AadInputBar({
+  label,
+  hint,
+  isLoading,
+  query,
+  onChange,
+  onSubmit,
+}: AadInputBarProps) {
   const tenants = getTenants();
   const [input, setInput] = useState(query.input ?? "");
   const [tenant, setTenant] = useState(query.tenant ?? tenants[0]);
@@ -35,12 +42,17 @@ export default function AadInputBar({ label, hint, isLoading, query, onChange, o
           onChange={setInput}
           onEnter={onSubmit}
         />
-        {tenants.length !== 0 && <Dropdown items={tenants} value={tenant} disabled={isLoading} onChange={setTenant} />}
+        {tenants.length !== 0 && (
+          <Dropdown
+            items={tenants}
+            value={tenant}
+            disabled={isLoading}
+            onChange={setTenant}
+          />
+        )}
         <Button onClick={onSubmit} disabled={isLoading} children="Run" />
       </div>
-      {hint && <span className="ml-1 dark:text-foregroundAccent">
-        {hint}
-      </span>}
+      {hint && <span className="ml-1 dark:text-foregroundAccent">{hint}</span>}
     </div>
   );
 }

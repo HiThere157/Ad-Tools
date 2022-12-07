@@ -4,9 +4,7 @@ import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
-import {
-  makeToList,
-} from "../Helper/postProcessors";
+import { makeToList } from "../Helper/postProcessors";
 import authenticateAzure from "../Helper/azureAuth";
 import { redirect } from "../Helper/redirects";
 
@@ -22,7 +20,10 @@ export default function AzureSearchPage() {
 
   const [users, setUsers, usersKey] = useSessionStorage(`${p}_users`, {});
   const [groups, setGroups, groupsKey] = useSessionStorage(`${p}_groups`, {});
-  const [devices, setDevices, devicesKey] = useSessionStorage(`${p}_devices`, {});
+  const [devices, setDevices, devicesKey] = useSessionStorage(
+    `${p}_devices`,
+    {},
+  );
 
   const runQuery = async () => {
     setIsLoading(true);
@@ -36,34 +37,34 @@ export default function AzureSearchPage() {
       command: "Get-AzureADUser",
       args: {
         SearchString: query.input,
-        All: "1"
+        All: "1",
       },
-      selectFields: columns.azureUser.map(column => column.key),
+      selectFields: columns.azureUser.map((column) => column.key),
       postProcessor: makeToList,
       callback: setUsers,
-      useStaticSession: true
+      useStaticSession: true,
     });
     await makeAPICall({
       command: "Get-AzureADGroup",
       args: {
         SearchString: query.input,
-        All: "1"
+        All: "1",
       },
-      selectFields: columns.azureGroup.map(column => column.key),
+      selectFields: columns.azureGroup.map((column) => column.key),
       postProcessor: makeToList,
       callback: setGroups,
-      useStaticSession: true
+      useStaticSession: true,
     });
     await makeAPICall({
       command: "Get-AzureADDevice",
       args: {
         SearchString: query.input,
-        All: "1"
+        All: "1",
       },
-      selectFields: columns.azureDevice.map(column => column.key),
+      selectFields: columns.azureDevice.map((column) => column.key),
       postProcessor: makeToList,
       callback: setDevices,
-      useStaticSession: true
+      useStaticSession: true,
     });
     setIsLoading(false);
   };
@@ -84,7 +85,10 @@ export default function AzureSearchPage() {
           columns={columns.azureUser}
           data={users}
           onRedirect={(entry: { UserPrincipalName: string }) => {
-            redirect("azureUser", { input: entry.UserPrincipalName, tenant: query.tenant })
+            redirect("azureUser", {
+              input: entry.UserPrincipalName,
+              tenant: query.tenant,
+            });
           }}
           isLoading={isLoading}
         />
@@ -94,7 +98,10 @@ export default function AzureSearchPage() {
           columns={columns.azureGroup}
           data={groups}
           onRedirect={(entry: { DisplayName: string }) => {
-            redirect("azureGroup", { input: entry.DisplayName, tenant: query.tenant })
+            redirect("azureGroup", {
+              input: entry.DisplayName,
+              tenant: query.tenant,
+            });
           }}
           isLoading={isLoading}
         />
@@ -104,7 +111,10 @@ export default function AzureSearchPage() {
           columns={columns.azureDevice}
           data={devices}
           onRedirect={(entry: { DisplayName: string }) => {
-            redirect("azureDevice", { input: entry.DisplayName, tenant: query.tenant })
+            redirect("azureDevice", {
+              input: entry.DisplayName,
+              tenant: query.tenant,
+            });
           }}
           isLoading={isLoading}
         />

@@ -4,10 +4,7 @@ import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
-import {
-  getPropertiesWrapper,
-  makeToList,
-} from "../Helper/postProcessors";
+import { getPropertiesWrapper, makeToList } from "../Helper/postProcessors";
 import authenticateAzure from "../Helper/azureAuth";
 import { redirect } from "../Helper/redirects";
 
@@ -21,8 +18,14 @@ export default function AzureGroupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
-  const [members, setMembers, membersKey] = useSessionStorage(`${p}_members`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(
+    `${p}_attribs`,
+    {},
+  );
+  const [members, setMembers, membersKey] = useSessionStorage(
+    `${p}_members`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {
@@ -44,46 +47,54 @@ export default function AzureGroupPage() {
         SearchString: query.input,
       },
       postProcessor: makeToList,
-      useStaticSession: true
+      useStaticSession: true,
     });
 
     if (groups.error) {
-      setAttributes({ output: [], error: groups.error })
-      setMembers({ output: [], error: groups.error })
+      setAttributes({ output: [], error: groups.error });
+      setMembers({ output: [], error: groups.error });
       setIsLoading(false);
       return;
     }
 
-    const output = groups.output as Promise<{ DisplayName: string | undefined, ObjectId: string | undefined }[]>[];
+    const output = groups.output as Promise<
+      { DisplayName: string | undefined; ObjectId: string | undefined }[]
+    >[];
     const firstResult = (await output?.[0])?.[0];
 
     if (firstResult?.DisplayName === query.input) {
       await makeAPICall({
         command: "Get-AzureADGroup",
         args: {
-          ObjectId: firstResult.ObjectId
+          ObjectId: firstResult.ObjectId,
         },
         postProcessor: getPropertiesWrapper,
         callback: setAttributes,
-        useStaticSession: true
-      })
+        useStaticSession: true,
+      });
       await makeAPICall({
         command: "Get-AzureADGroupMember",
         args: {
           ObjectId: firstResult.ObjectId,
-          All: "1"
+          All: "1",
         },
-        selectFields: columns.azureUser.map(column => column.key),
+        selectFields: columns.azureUser.map((column) => column.key),
         postProcessor: makeToList,
         callback: setMembers,
-        useStaticSession: true
-      })
+        useStaticSession: true,
+      });
       setIsLoading(false);
       return;
     }
 
-    setAttributes({ output: [], error: `No Group found with Identifier "${query.input}"` })
-    setMembers({ output: [], error: `No Group found with Identifier "${query.input}"` })
+    setAttributes({
+      output: [],
+      error: `No Group found with Identifier "${query.input}"`,
+    });
+    setMembers({
+      output: [],
+      error: `No Group found with Identifier "${query.input}"`,
+    });
     setIsLoading(false);
   };
 
@@ -110,7 +121,10 @@ export default function AzureGroupPage() {
           columns={columns.azureUser}
           data={members}
           onRedirect={(entry: { UserPrincipalName: string }) => {
-            redirect("azureUser", { input: entry.UserPrincipalName, tenant: query.tenant })
+            redirect("azureUser", {
+              input: entry.UserPrincipalName,
+              tenant: query.tenant,
+            });
           }}
           isLoading={isLoading}
         />

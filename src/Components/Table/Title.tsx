@@ -1,8 +1,8 @@
 type TitleProps = {
-  title: string,
-  n: number,
-  nSelected: number
-}
+  title: string;
+  n: number;
+  nSelected: number;
+};
 export default function Title({ title, n, nSelected }: TitleProps) {
   return (
     <div className="flex space-x-2 items-baseline mb-1 ml-2">

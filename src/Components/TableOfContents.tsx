@@ -45,10 +45,13 @@ export default function TableOfContents() {
 }
 
 type TableOfContentsBodyProps = {
-  headings: HTMLHeadElement[]
-  activeIndex: number
-}
-function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps) {
+  headings: HTMLHeadElement[];
+  activeIndex: number;
+};
+function TableOfContentsBody({
+  headings,
+  activeIndex,
+}: TableOfContentsBodyProps) {
   return (
     <div className="container absolute right-0 w-max mt-1 p-2">
       <span className="block text-xl mb-1">Table of Contents</span>
@@ -64,10 +67,10 @@ function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps
                   : "dark:text-foregroundAccent")
               }
             >
-              <span><BsHash className="scale-125" /></span>
-              <span
-                onClick={() => heading.scrollIntoView()}
-              >
+              <span>
+                <BsHash className="scale-125" />
+              </span>
+              <span onClick={() => heading.scrollIntoView()}>
                 {heading.innerText}
               </span>
             </div>
@@ -75,5 +78,5 @@ function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps
         })}
       </div>
     </div>
-  )
+  );
 }

@@ -21,9 +21,18 @@ export default function GroupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_memberOf`, {});
-  const [members, setMembers, membersKey] = useSessionStorage(`${p}_members`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(
+    `${p}_attribs`,
+    {},
+  );
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(
+    `${p}_memberOf`,
+    {},
+  );
+  const [members, setMembers, membersKey] = useSessionStorage(
+    `${p}_members`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {
@@ -43,16 +52,16 @@ export default function GroupPage() {
           Properties: "*",
         },
         postProcessor: [getPropertiesWrapper, getMembershipFromAdUser],
-        callback: [setAttributes, setMemberOf]
+        callback: [setAttributes, setMemberOf],
       }),
       makeAPICall({
         command: "Get-ADGroupMember",
         args: {
           Identity: query.input,
-          Server: query.domain
+          Server: query.domain,
         },
         postProcessor: makeToList,
-        callback: setMembers
+        callback: setMembers,
       }),
     ]);
     setIsLoading(false);
@@ -80,10 +89,14 @@ export default function GroupPage() {
           name={membersKey}
           columns={columns.extended}
           data={members}
-          onRedirect={(entry: { Name: string, ObjectClass: string }) => {
-            if (!["group", "user", "computer"].includes(entry.ObjectClass)) return;
-            redirect(entry.ObjectClass, { input: entry.Name, domain: query.domain })
-            if (entry.ObjectClass === "group") window.location.reload()
+          onRedirect={(entry: { Name: string; ObjectClass: string }) => {
+            if (!["group", "user", "computer"].includes(entry.ObjectClass))
+              return;
+            redirect(entry.ObjectClass, {
+              input: entry.Name,
+              domain: query.domain,
+            });
+            if (entry.ObjectClass === "group") window.location.reload();
           }}
           isLoading={isLoading}
         />
@@ -93,8 +106,8 @@ export default function GroupPage() {
           columns={columns.default}
           data={memberOf}
           onRedirect={(entry: { Name: string }) => {
-            redirect("group", { input: entry.Name, domain: query.domain })
-            window.location.reload()
+            redirect("group", { input: entry.Name, domain: query.domain });
+            window.location.reload();
           }}
           isLoading={isLoading}
         />

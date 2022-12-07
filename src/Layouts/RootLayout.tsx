@@ -9,8 +9,8 @@ import MessageLayout from "../Layouts/MessageLayout";
 import Message from "../Components/Message";
 
 type RootLayoutProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 export default function RootLayout({ children }: RootLayoutProps) {
   const { state } = useGlobalState();
 
@@ -25,14 +25,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <NavBar />
       <Footer />
 
-      <div style={{ gridArea: "content" }} className="px-4 py-2 overflow-auto">{children}</div>
+      <div style={{ gridArea: "content" }} className="px-4 py-2 overflow-auto">
+        {children}
+      </div>
 
       <ZoomLabel />
       <MessageLayout>
         {state.messages?.map((message, index) => {
-          return <Message key={index} message={message} />
+          return <Message key={index} message={message} />;
         })}
       </MessageLayout>
-    </main >
+    </main>
   );
 }

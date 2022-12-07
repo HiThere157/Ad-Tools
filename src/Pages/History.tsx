@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { columns, commandDBConfig } from "../Config/default";
-import { setupIndexedDB, Store } from "../Helper/indexedDB"
+import { setupIndexedDB, Store } from "../Helper/indexedDB";
 
 import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
@@ -18,9 +18,9 @@ export default function SearchPage() {
       const commandStore = new Store(db, "commands", "readonly");
       const result = await commandStore.getAll<any>();
       setHistory({ output: result.reverse() });
-    })()
+    })();
   } catch (error) {
-    setHistory({ output: [], error })
+    setHistory({ output: [], error });
   }
 
   return (

@@ -9,7 +9,7 @@ import {
   getMembershipFromAdUser,
   prepareDNSResult,
   replaceASCIIArray,
-  getWMIPropertiesWrapper
+  getWMIPropertiesWrapper,
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
@@ -25,11 +25,23 @@ export default function ComputerPage() {
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
   const [dns, setDNS, dnsKey] = useSessionStorage(`${p}_dns`, {});
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_memberOf`, {});
-  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage(`${p}_sysinfo`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(
+    `${p}_attribs`,
+    {},
+  );
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(
+    `${p}_memberOf`,
+    {},
+  );
+  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage(
+    `${p}_sysinfo`,
+    {},
+  );
   const [bios, setBios, biosKey] = useSessionStorage(`${p}_bios`, {});
-  const [monitors, setMonitors, monitorsKey] = useSessionStorage(`${p}_monitors`, {});
+  const [monitors, setMonitors, monitorsKey] = useSessionStorage(
+    `${p}_monitors`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {
@@ -45,10 +57,10 @@ export default function ComputerPage() {
       makeAPICall({
         command: "Resolve-DnsName",
         args: {
-          Name: `${query.input}.${query.domain}`
+          Name: `${query.input}.${query.domain}`,
         },
         postProcessor: prepareDNSResult,
-        callback: setDNS
+        callback: setDNS,
       }),
       makeAPICall({
         command: "Get-ADComputer",
@@ -58,37 +70,37 @@ export default function ComputerPage() {
           Properties: "*",
         },
         postProcessor: [getPropertiesWrapper, getMembershipFromAdUser],
-        callback: [setAttributes, setMemberOf]
+        callback: [setAttributes, setMemberOf],
       }),
       makeAPICall({
         command: "Get-WmiObject",
         args: {
           ClassName: "Win32_ComputerSystem",
-          ComputerName: `${query.input}.${query.domain}`
+          ComputerName: `${query.input}.${query.domain}`,
         },
         postProcessor: getWMIPropertiesWrapper,
-        callback: setSysinfo
+        callback: setSysinfo,
       }),
       makeAPICall({
         command: "Get-WmiObject",
         args: {
           ClassName: "Win32_bios",
-          ComputerName: `${query.input}.${query.domain}`
+          ComputerName: `${query.input}.${query.domain}`,
         },
         postProcessor: getWMIPropertiesWrapper,
-        callback: setBios
+        callback: setBios,
       }),
       makeAPICall({
         command: "Get-WmiObject",
         args: {
           ClassName: "WmiMonitorID",
           Namespace: "root/wmi",
-          ComputerName: `${query.input}.${query.domain}`
+          ComputerName: `${query.input}.${query.domain}`,
         },
         postProcessor: replaceASCIIArray,
-        callback: setMonitors
-      })
-    ])
+        callback: setMonitors,
+      }),
+    ]);
 
     setIsLoading(false);
   };
@@ -126,7 +138,7 @@ export default function ComputerPage() {
           columns={columns.default}
           data={memberOf}
           onRedirect={(entry: { Name: string }) => {
-            redirect("group", { input: entry.Name, domain: query.domain })
+            redirect("group", { input: entry.Name, domain: query.domain });
           }}
           isLoading={isLoading}
         />

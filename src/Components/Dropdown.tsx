@@ -5,11 +5,11 @@ import Button from "./Button";
 import { BsCaretDownFill } from "react-icons/bs";
 
 type DropdownProps = {
-  items: string[],
-  value: string | undefined,
-  disabled?: boolean,
-  onChange: Function
-}
+  items: string[];
+  value: string | undefined;
+  disabled?: boolean;
+  onChange: Function;
+};
 export default function Dropdown({
   items,
   value,
@@ -54,9 +54,9 @@ export default function Dropdown({
 }
 
 type DropdownBodyProps = {
-  items: string[],
-  onSelection: Function
-}
+  items: string[];
+  onSelection: Function;
+};
 function DropdownBody({ items, onSelection }: DropdownBodyProps) {
   return (
     <div className="absolute flex flex-col min-w-full rounded overflow-hidden mt-1">
@@ -71,6 +71,6 @@ function DropdownBody({ items, onSelection }: DropdownBodyProps) {
           </Button>
         );
       })}
-    </div >
+    </div>
   );
 }

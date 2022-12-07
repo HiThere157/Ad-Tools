@@ -22,10 +22,19 @@ export default function AzureUserPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(
+    `${p}_attribs`,
+    {},
+  );
   const [ext, setExt, extKey] = useSessionStorage(`${p}_ext`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_memberOf`, {});
-  const [devices, setDevices, devicesKey] = useSessionStorage(`${p}_devices`, {});
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(
+    `${p}_memberOf`,
+    {},
+  );
+  const [devices, setDevices, devicesKey] = useSessionStorage(
+    `${p}_devices`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {
@@ -50,29 +59,29 @@ export default function AzureUserPage() {
       },
       postProcessor: [getPropertiesWrapper, getExtensionsFromAadUser],
       callback: [setAttributes, setExt],
-      useStaticSession: true
+      useStaticSession: true,
     });
     await makeAPICall({
       command: "Get-AzureADUserMembership",
       args: {
         ObjectId: query.input,
-        All: "1"
+        All: "1",
       },
-      selectFields: columns.azureGroup.map(column => column.key),
+      selectFields: columns.azureGroup.map((column) => column.key),
       postProcessor: makeToList,
       callback: setMemberOf,
-      useStaticSession: true
+      useStaticSession: true,
     });
     await makeAPICall({
       command: "Get-AzureADUserRegisteredDevice",
       args: {
         ObjectId: query.input,
-        All: "1"
+        All: "1",
       },
-      selectFields: columns.azureDevice.map(column => column.key),
+      selectFields: columns.azureDevice.map((column) => column.key),
       postProcessor: makeToList,
       callback: setDevices,
-      useStaticSession: true
+      useStaticSession: true,
     });
     setIsLoading(false);
   };
@@ -108,7 +117,10 @@ export default function AzureUserPage() {
           columns={columns.azureGroup}
           data={memberOf}
           onRedirect={(entry: { DisplayName: string }) => {
-            redirect("azureGroup", { input: entry.DisplayName, tenant: query.tenant })
+            redirect("azureGroup", {
+              input: entry.DisplayName,
+              tenant: query.tenant,
+            });
           }}
           isLoading={isLoading}
         />
@@ -118,7 +130,10 @@ export default function AzureUserPage() {
           columns={columns.azureDevice}
           data={devices}
           onRedirect={(entry: { DisplayName: string }) => {
-            redirect("azureDevice", { input: entry.DisplayName, tenant: query.tenant })
+            redirect("azureDevice", {
+              input: entry.DisplayName,
+              tenant: query.tenant,
+            });
           }}
           isLoading={isLoading}
         />

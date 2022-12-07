@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import { electronAPI } from "../Helper/makeAPICall"
+import { electronAPI } from "../Helper/makeAPICall";
 
 import WinControl from "./WinBar/WinControl";
 import TableOfContents from "./TableOfContents";
@@ -16,9 +16,16 @@ export default function Header() {
   }, []);
 
   return (
-    <div style={{ gridArea: "header" }} className="winbar-drag-region select-none flex justify-between border-b-2 dark:bg-secondaryBg dark:border-primaryBorder">
+    <div
+      style={{ gridArea: "header" }}
+      className="winbar-drag-region select-none flex justify-between border-b-2 dark:bg-secondaryBg dark:border-primaryBorder"
+    >
       <div className="flex items-center">
-        <img src="./icon.svg" alt="AD Tools Logo" className="mx-[1.1rem] h-6"></img>
+        <img
+          src="./icon.svg"
+          alt="AD Tools Logo"
+          className="mx-[1.1rem] h-6"
+        ></img>
         <div className="flex space-x-3 items-center whitespace-nowrap">
           <span className="font-bold text-xl">AD Tools</span>
           <span className="dark:text-foregroundAccent">{user}</span>

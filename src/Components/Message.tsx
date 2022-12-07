@@ -6,8 +6,8 @@ import Button from "../Components/Button";
 import { BsExclamationOctagon, BsCheckCircle, BsXLg } from "react-icons/bs";
 
 type MessageProps = {
-  message: Message
-}
+  message: Message;
+};
 export default function MessageElement({ message }: MessageProps) {
   const { setState } = useGlobalState();
 
@@ -19,21 +19,26 @@ export default function MessageElement({ message }: MessageProps) {
 
   const closeMessage = () => {
     removeMessage(message.timestamp, setState);
-  }
+  };
 
   const getTypeInfo = () => {
     switch (message.type) {
       case "error":
-        return ["dark:border-x-errorAccent", <BsExclamationOctagon />]
+        return ["dark:border-x-errorAccent", <BsExclamationOctagon />];
       case "info":
-        return ["dark:border-x-primaryControlAccent", <BsCheckCircle />]
+        return ["dark:border-x-primaryControlAccent", <BsCheckCircle />];
       case "warning":
-        return ["dark:border-x-errorAccent", <BsExclamationOctagon />]
+        return ["dark:border-x-errorAccent", <BsExclamationOctagon />];
     }
-  }
+  };
 
   return (
-    <div className={"container flex justify-center items-center space-x-2 border-x-4 px-2 py-1 text-xl " + getTypeInfo()[0]}>
+    <div
+      className={
+        "container flex justify-center items-center space-x-2 border-x-4 px-2 py-1 text-xl " +
+        getTypeInfo()[0]
+      }
+    >
       {getTypeInfo()[1]}
       <span className="text-lg">{message.message}</span>
       <Button classOverride="p-1.5 text-xs" onClick={closeMessage}>

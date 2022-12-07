@@ -4,9 +4,7 @@ import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
-import {
-  prepareDNSResult,
-} from "../Helper/postProcessors";
+import { prepareDNSResult } from "../Helper/postProcessors";
 
 import DnsInputBar from "../Components/InputBars/InputDns";
 import TableLayout from "../Layouts/TableLayout";
@@ -18,7 +16,10 @@ export default function DnsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [results, setResults, resultsKey] = useSessionStorage(`${p}_results`, {});
+  const [results, setResults, resultsKey] = useSessionStorage(
+    `${p}_results`,
+    {},
+  );
 
   const runQuery = async () => {
     setIsLoading(true);
@@ -26,10 +27,10 @@ export default function DnsPage() {
       command: "Resolve-DnsName",
       args: {
         Name: query.input,
-        Type: query.type
+        Type: query.type,
       },
       postProcessor: prepareDNSResult,
-      callback: setResults
+      callback: setResults,
     });
     setIsLoading(false);
   };

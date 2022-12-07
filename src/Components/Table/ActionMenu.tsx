@@ -2,14 +2,19 @@ import { useState } from "react";
 
 import Button from "../Button";
 
-import { BsFunnel, BsArrowCounterclockwise, BsClipboard, BsClipboardCheck } from "react-icons/bs";
+import {
+  BsFunnel,
+  BsArrowCounterclockwise,
+  BsClipboard,
+  BsClipboardCheck,
+} from "react-icons/bs";
 
 type ActionMenuProps = {
-  onResetTable: Function,
-  onCopy: Function,
-  onCopySelection: Function,
-  onFilter: Function,
-  isFilterHighlighted: boolean,
+  onResetTable: Function;
+  onCopy: Function;
+  onCopySelection: Function;
+  onFilter: Function;
+  isFilterHighlighted: boolean;
 };
 export default function ActionMenu({
   onResetTable,
@@ -18,28 +23,29 @@ export default function ActionMenu({
   onFilter,
   isFilterHighlighted,
 }: ActionMenuProps) {
-  const [isCopyHighlighted, setIsCopyHighlighted] = useState(false)
-  const [isCopySelectionHighlighted, setIsCopySelectionHighlighted] = useState(false)
+  const [isCopyHighlighted, setIsCopyHighlighted] = useState(false);
+  const [isCopySelectionHighlighted, setIsCopySelectionHighlighted] =
+    useState(false);
 
   const onCopyClick = () => {
-    onCopy()
+    onCopy();
 
     if (isCopyHighlighted) return;
     setIsCopyHighlighted(true);
     setTimeout(() => {
       setIsCopyHighlighted(false);
     }, 3000);
-  }
+  };
 
   const onCopySelectionClick = () => {
-    onCopySelection()
+    onCopySelection();
 
     if (isCopySelectionHighlighted) return;
     setIsCopySelectionHighlighted(true);
     setTimeout(() => {
       setIsCopySelectionHighlighted(false);
     }, 3000);
-  }
+  };
 
   return (
     <div className="flex flex-col space-y-1">

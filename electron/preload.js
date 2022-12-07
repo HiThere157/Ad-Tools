@@ -11,7 +11,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
       "ps:startComputerAction",
       action,
       target,
-      useCurrentUser
+      useCurrentUser,
     ),
 
   probeConnection: (target) =>

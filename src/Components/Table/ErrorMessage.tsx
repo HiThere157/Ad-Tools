@@ -1,8 +1,8 @@
-import { BsExclamationOctagon } from "react-icons/bs"
+import { BsExclamationOctagon } from "react-icons/bs";
 
 type ErrorMessageProps = {
-  error?: string
-}
+  error?: string;
+};
 export default function ErrorMessage({ error }: ErrorMessageProps) {
   return (
     <>

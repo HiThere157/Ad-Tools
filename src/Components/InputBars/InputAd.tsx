@@ -7,14 +7,21 @@ import Dropdown from "../Dropdown";
 import Button from "../Button";
 
 type AdInputBarProps = {
-  label: string,
-  hint?: string,
-  isLoading: boolean,
-  query: { input: string | undefined, domain: string | undefined },
-  onChange: Function,
-  onSubmit: Function,
-}
-export default function AdInputBar({ label, hint, isLoading, query, onChange, onSubmit }: AdInputBarProps) {
+  label: string;
+  hint?: string;
+  isLoading: boolean;
+  query: { input: string | undefined; domain: string | undefined };
+  onChange: Function;
+  onSubmit: Function;
+};
+export default function AdInputBar({
+  label,
+  hint,
+  isLoading,
+  query,
+  onChange,
+  onSubmit,
+}: AdInputBarProps) {
   const [domains, setDomains] = useState<string[]>([]);
   const [input, setInput] = useState(query.input ?? "");
   const [domain, setDomain] = useState(query.domain);
@@ -29,7 +36,7 @@ export default function AdInputBar({ label, hint, isLoading, query, onChange, on
       const domains = await getDomains();
       setDomains(domains);
       setDomain(query.domain ?? domains[0]);
-    })()
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -44,12 +51,15 @@ export default function AdInputBar({ label, hint, isLoading, query, onChange, on
           onChange={setInput}
           onEnter={onSubmit}
         />
-        <Dropdown items={domains} value={domain} disabled={isLoading} onChange={setDomain} />
+        <Dropdown
+          items={domains}
+          value={domain}
+          disabled={isLoading}
+          onChange={setDomain}
+        />
         <Button onClick={onSubmit} disabled={isLoading} children="Run" />
       </div>
-      {hint && <span className="ml-1 dark:text-foregroundAccent">
-        {hint}
-      </span>}
+      {hint && <span className="ml-1 dark:text-foregroundAccent">{hint}</span>}
     </div>
   );
 }

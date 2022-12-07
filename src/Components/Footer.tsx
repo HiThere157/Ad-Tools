@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import { electronAPI } from "../Helper/makeAPICall"
+import { electronAPI } from "../Helper/makeAPICall";
 
 export default function Footer() {
   const [version, setVersion] = useState("");
@@ -13,7 +13,10 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer style={{ gridArea: "footer" }} className="flex justify-center text-xs dark:text-foregroundAccent dark:bg-secondaryBg">
+    <footer
+      style={{ gridArea: "footer" }}
+      className="flex justify-center text-xs dark:text-foregroundAccent dark:bg-secondaryBg"
+    >
       {version && <span className="m-1">v{version}</span>}
     </footer>
   );

@@ -17,11 +17,11 @@ article {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 0.375rem;
-  background-color: #2D2D2D;
+  background-color: #2d2d2d;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #3F3F3F;
+  background-color: #3f3f3f;
 }
 
 ::-webkit-scrollbar-thumb:active {
@@ -42,10 +42,10 @@ article {
 
 @layer components {
   .control {
-    @apply border-2 outline-none rounded px-2 disabled:opacity-50 disabled:cursor-not-allowed
+    @apply border-2 outline-none rounded px-2 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .container {
-    @apply px-1 border-2 outline-none rounded dark:bg-primaryControl dark:border-primaryBorder h-fit w-fit
+    @apply px-1 border-2 outline-none rounded dark:bg-primaryControl dark:border-primaryBorder h-fit w-fit;
   }
 }

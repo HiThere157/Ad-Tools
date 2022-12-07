@@ -13,14 +13,22 @@ import {
   BsClockHistory,
   BsGearFill,
 } from "react-icons/bs";
-import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi"
+import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useLocalStorage("main_isNavOpen", true);
 
   return (
-    <nav style={{ gridArea: "navbar" }} className="select-none flex flex-col pb-4 overflow-auto dark:bg-secondaryBg">
-      <Button classOverride="flex justify-center py-1 rounded-none border-0 text-xl" onClick={() => { setIsOpen(!isOpen) }}>
+    <nav
+      style={{ gridArea: "navbar" }}
+      className="select-none flex flex-col pb-4 overflow-auto dark:bg-secondaryBg"
+    >
+      <Button
+        classOverride="flex justify-center py-1 rounded-none border-0 text-xl"
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
+      >
         {isOpen ? <FiChevronsLeft /> : <FiChevronsRight />}
       </Button>
       <div className="flex flex-col p-2">
@@ -74,12 +82,7 @@ export default function NavBar() {
           isOpen={isOpen}
         />
         <hr className="my-2 dark:border-primaryBorder" />
-        <NavItem
-          to="/dns"
-          icon={<BsServer />}
-          text="DNS"
-          isOpen={isOpen}
-        />
+        <NavItem to="/dns" icon={<BsServer />} text="DNS" isOpen={isOpen} />
         <hr className="my-2 dark:border-primaryBorder" />
         <NavItem
           to="/history"
@@ -94,17 +97,16 @@ export default function NavBar() {
           isOpen={isOpen}
         />
       </div>
-
     </nav>
   );
 }
 
 type NavItemProps = {
-  to: string,
-  icon: React.ReactNode,
-  text: string,
-  isOpen: boolean
-}
+  to: string;
+  icon: React.ReactNode;
+  text: string;
+  isOpen: boolean;
+};
 function NavItem({ to, icon, text, isOpen }: NavItemProps) {
   return (
     <NavLink

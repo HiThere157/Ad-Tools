@@ -9,16 +9,16 @@ import RedirectButton from "./RedirectButton";
 import { BsCaretDownFill } from "react-icons/bs";
 
 type TableElementProps = {
-  entries?: { [key: string]: any }[],
-  columns: ColumnDefinition[],
-  sortDesc: boolean,
-  sortedColumn: string,
-  filter: { [key: string]: string },
-  selected: number[],
-  onSelectedChange: Function
-  onHeaderClick: Function,
-  onRedirect?: Function
-}
+  entries?: { [key: string]: any }[];
+  columns: ColumnDefinition[];
+  sortDesc: boolean;
+  sortedColumn: string;
+  filter: { [key: string]: string };
+  selected: number[];
+  onSelectedChange: Function;
+  onHeaderClick: Function;
+  onRedirect?: Function;
+};
 export default function TableElement({
   entries = [],
   columns,
@@ -38,24 +38,26 @@ export default function TableElement({
     if (index !== -1) {
       newSelected.splice(index, 1);
     } else {
-      newSelected.push(id)
+      newSelected.push(id);
     }
-    onSelectedChange(newSelected)
-  }
+    onSelectedChange(newSelected);
+  };
 
   const tagArray = (array: { [key: string]: any }[]) => {
     // add a unique __id__ field to every entry. used to track selected entries
     return array.map((entry, index) => {
-      return { __id__: index, ...entry }
-    })
-  }
+      return { __id__: index, ...entry };
+    });
+  };
 
   const sortArray = (array: { [key: string]: any }[]) => {
     return array.slice().sort((a, b) => {
       if (!sortDesc) {
         [a, b] = [b, a];
       }
-      return stringify(b[sortedColumn]).localeCompare(stringify(a[sortedColumn]));
+      return stringify(b[sortedColumn]).localeCompare(
+        stringify(a[sortedColumn]),
+      );
     });
   };
 
@@ -73,14 +75,17 @@ export default function TableElement({
         // every other filter value is checked with the entry properties
         // split | and check every value seperately
         // if any value is true, entry is a match
-        const matched = value.split("|").map((value: string) => {
-          const wildcard = value.replace(/[.+^${}()|[\]\\]/g, "\\$&");
-          const regex = new RegExp(
-            `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
-            "i"
-          );
-          return regex.test(stringify(entry[key], false));
-        }).some((match) => match)
+        const matched = value
+          .split("|")
+          .map((value: string) => {
+            const wildcard = value.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+            const regex = new RegExp(
+              `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
+              "i",
+            );
+            return regex.test(stringify(entry[key], false));
+          })
+          .some((match) => match);
 
         if (!matched) {
           isMatch = false;
@@ -98,21 +103,21 @@ export default function TableElement({
     if (selected.length === entries.length) {
       return true;
     }
-    return undefined
-  }
+    return undefined;
+  };
 
   const onMainCheck = () => {
     const current = getMainCheckStatus();
     if (!current) {
-      const newSelected = []
+      const newSelected = [];
       for (let i = 0; i < entries.length; i++) {
-        newSelected.push(i)
+        newSelected.push(i);
       }
-      onSelectedChange(newSelected)
+      onSelectedChange(newSelected);
     } else {
-      onSelectedChange([])
+      onSelectedChange([]);
     }
-  }
+  };
 
   return (
     <table className="w-full">
@@ -157,7 +162,12 @@ export default function TableElement({
           return (
             <tr key={entry.__id__} className="dark:hover:bg-secondaryBg">
               <td className="relative group px-2 whitespace-nowrap dark:border-primaryBorder border-y">
-                <Checkbox checked={selected.includes(entry.__id__)} onChange={() => { toggleSelected(entry.__id__) }} />
+                <Checkbox
+                  checked={selected.includes(entry.__id__)}
+                  onChange={() => {
+                    toggleSelected(entry.__id__);
+                  }}
+                />
               </td>
               {columns.map((column, index) => {
                 return (

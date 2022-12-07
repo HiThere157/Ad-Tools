@@ -4,10 +4,7 @@ import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
-import {
-  getPropertiesWrapper,
-  makeToList,
-} from "../Helper/postProcessors";
+import { getPropertiesWrapper, makeToList } from "../Helper/postProcessors";
 import authenticateAzure from "../Helper/azureAuth";
 
 import AadInputBar from "../Components/InputBars/InputAad";
@@ -20,7 +17,10 @@ export default function AzureDevicePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(
+    `${p}_attribs`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {
@@ -41,33 +41,38 @@ export default function AzureDevicePage() {
         SearchString: query.input,
       },
       postProcessor: makeToList,
-      useStaticSession: true
+      useStaticSession: true,
     });
 
     if (devices.error) {
-      setAttributes({ output: [], error: devices.error })
+      setAttributes({ output: [], error: devices.error });
       setIsLoading(false);
       return;
     }
 
-    const output = devices.output as Promise<{ DisplayName: string | undefined, ObjectId: string | undefined }[]>[];
+    const output = devices.output as Promise<
+      { DisplayName: string | undefined; ObjectId: string | undefined }[]
+    >[];
     const firstResult = (await output?.[0])?.[0];
 
     if (firstResult?.DisplayName === query.input) {
       await makeAPICall({
         command: "Get-AzureADDevice",
         args: {
-          ObjectId: firstResult.ObjectId
+          ObjectId: firstResult.ObjectId,
         },
         postProcessor: getPropertiesWrapper,
         callback: setAttributes,
-        useStaticSession: true
-      })
+        useStaticSession: true,
+      });
       setIsLoading(false);
       return;
     }
 
-    setAttributes({ output: [], error: `No Device found with Identifier "${query.input}"` })
+    setAttributes({
+      output: [],
+      error: `No Device found with Identifier "${query.input}"`,
+    });
     setIsLoading(false);
   };
 

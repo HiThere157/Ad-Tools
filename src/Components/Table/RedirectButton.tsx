@@ -1,12 +1,15 @@
 import Button from "../Button";
 
-import { BsSearch } from "react-icons/bs"
+import { BsSearch } from "react-icons/bs";
 
 type RedirectButtonProps = {
-  isVisible: boolean,
-  onClick: Function
-}
-export default function RedirectButton({ isVisible, onClick }: RedirectButtonProps) {
+  isVisible: boolean;
+  onClick: Function;
+};
+export default function RedirectButton({
+  isVisible,
+  onClick,
+}: RedirectButtonProps) {
   return (
     <>
       {isVisible && (

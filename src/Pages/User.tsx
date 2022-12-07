@@ -20,8 +20,14 @@ export default function UserPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useSessionStorage(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(`${p}_attribs`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(`${p}_memberOf`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage(
+    `${p}_attribs`,
+    {},
+  );
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(
+    `${p}_memberOf`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {
@@ -40,7 +46,7 @@ export default function UserPage() {
         Properties: "*",
       },
       postProcessor: [getPropertiesWrapper, getMembershipFromAdUser],
-      callback: [setAttributes, setMemberOf]
+      callback: [setAttributes, setMemberOf],
     });
     setIsLoading(false);
   };
@@ -68,7 +74,7 @@ export default function UserPage() {
           columns={columns.default}
           data={memberOf}
           onRedirect={(entry: { Name: string }) => {
-            redirect("group", { input: entry.Name, domain: query.domain })
+            redirect("group", { input: entry.Name, domain: query.domain });
           }}
           isLoading={isLoading}
         />

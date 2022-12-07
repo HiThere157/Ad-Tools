@@ -3,7 +3,7 @@ import { useState } from "react";
 function useStorage(
   storage: { getItem: Function; setItem: Function },
   key: string,
-  initialValue: any
+  initialValue: any,
 ) {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once

@@ -70,7 +70,7 @@ const staticSession = getSession();
 
 const executeCommand = async (
   _event,
-  { command, args, selectFields, useStaticSession, json }
+  { command, args, selectFields, useStaticSession, json },
 ) => {
   if (!allowedCommands.includes(command)) {
     return { error: `Invalid Command "${command}"` };

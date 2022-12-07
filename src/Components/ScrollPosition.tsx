@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
 type ScrollPositionProps = {
-  name: string
-}
+  name: string;
+};
 export default function ScrollPosition({ name }: ScrollPositionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation();

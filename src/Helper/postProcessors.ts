@@ -44,7 +44,7 @@ function getMembershipFromAdUser(AdObject: {
 }
 
 function replaceASCIIArray(
-  MonitorWMI: { [key: string]: string } | { [key: string]: string }[]
+  MonitorWMI: { [key: string]: string } | { [key: string]: string }[],
 ) {
   const keysToReplace = ["UserFriendlyName", "SerialNumberID"];
 
@@ -64,13 +64,13 @@ function replaceASCIIArray(
           return [key, asciiToString(value as number[])];
         }
         return [key, value];
-      })
+      }),
     );
   });
 }
 
 async function prepareDNSResult(
-  DNSObjects: { Type: number } | { Type: number }[]
+  DNSObjects: { Type: number } | { Type: number }[],
 ): Promise<
   {
     Type: number;
@@ -99,7 +99,7 @@ async function prepareDNSResult(
         result = record[resultKey] ?? "";
       } else {
         result = Object.fromEntries(
-          Object.entries(record).filter(([key]) => resultKey.includes(key))
+          Object.entries(record).filter(([key]) => resultKey.includes(key)),
         );
       }
 
@@ -118,7 +118,7 @@ async function prepareDNSResult(
         __result__: result,
         __connection__: connection,
       };
-    })
+    }),
   );
 }
 

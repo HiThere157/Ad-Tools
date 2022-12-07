@@ -1,10 +1,10 @@
 type ButtonProps = {
-  children?: React.ReactNode,
-  classOverride?: string,
-  disabled?: boolean,
-  highlight?: boolean,
-  onClick: Function
-}
+  children?: React.ReactNode;
+  classOverride?: string;
+  disabled?: boolean;
+  highlight?: boolean;
+  onClick: Function;
+};
 export default function Button({
   children,
   classOverride = "",

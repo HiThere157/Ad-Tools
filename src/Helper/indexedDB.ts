@@ -13,7 +13,7 @@ class Store {
   constructor(
     private db: Promise<IDBDatabase> | IDBDatabase,
     private store: string,
-    private mode: IDBTransactionMode
+    private mode: IDBTransactionMode,
   ) {}
 
   async getStore() {
@@ -51,7 +51,7 @@ class Store {
           (target: any) => {
             resolve(target.result as T[]);
           },
-          reject
+          reject,
         );
       } catch (error) {
         reject(error);
@@ -71,7 +71,7 @@ class Store {
         this.handleRequest(
           store.delete(IDBKeyRange.bound(0, result[deleteCount - 1].id)),
           resolve,
-          reject
+          reject,
         );
       } catch (error) {
         reject(error);

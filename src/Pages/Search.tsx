@@ -4,9 +4,7 @@ import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
-import {
-  makeToList
-} from "../Helper/postProcessors";
+import { makeToList } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
 import AdInputBar from "../Components/InputBars/InputAd";
@@ -21,7 +19,10 @@ export default function SearchPage() {
 
   const [users, setUsers, usersKey] = useSessionStorage(`${p}_users`, {});
   const [groups, setGroups, groupsKey] = useSessionStorage(`${p}_groups`, {});
-  const [computers, setComputers, computersKey] = useSessionStorage(`${p}_computers`, {});
+  const [computers, setComputers, computersKey] = useSessionStorage(
+    `${p}_computers`,
+    {},
+  );
 
   const runQuery = async () => {
     setIsLoading(true);
@@ -33,7 +34,7 @@ export default function SearchPage() {
           Server: query.domain,
         },
         postProcessor: makeToList,
-        callback: setUsers
+        callback: setUsers,
       }),
       makeAPICall({
         command: "Get-ADGroup",
@@ -42,7 +43,7 @@ export default function SearchPage() {
           Server: query.domain,
         },
         postProcessor: makeToList,
-        callback: setGroups
+        callback: setGroups,
       }),
       makeAPICall({
         command: "Get-ADComputer",
@@ -51,8 +52,8 @@ export default function SearchPage() {
           Server: query.domain,
         },
         postProcessor: makeToList,
-        callback: setComputers
-      })
+        callback: setComputers,
+      }),
     ]);
     setIsLoading(false);
   };
@@ -74,7 +75,7 @@ export default function SearchPage() {
           columns={columns.default}
           data={users}
           onRedirect={(entry: { Name: string }) => {
-            redirect("user", { input: entry.Name, domain: query.domain })
+            redirect("user", { input: entry.Name, domain: query.domain });
           }}
           isLoading={isLoading}
         />
@@ -84,7 +85,7 @@ export default function SearchPage() {
           columns={columns.default}
           data={groups}
           onRedirect={(entry: { Name: string }) => {
-            redirect("group", { input: entry.Name, domain: query.domain })
+            redirect("group", { input: entry.Name, domain: query.domain });
           }}
           isLoading={isLoading}
         />
@@ -94,7 +95,7 @@ export default function SearchPage() {
           columns={columns.default}
           data={computers}
           onRedirect={(entry: { Name: string }) => {
-            redirect("computer", { input: entry.Name, domain: query.domain })
+            redirect("computer", { input: entry.Name, domain: query.domain });
           }}
           isLoading={isLoading}
         />

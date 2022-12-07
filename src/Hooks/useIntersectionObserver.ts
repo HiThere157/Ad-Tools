@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 export default function useIntersectionObserver(
   headings: HTMLHeadElement[],
-  setActive: Function
+  setActive: Function,
 ) {
   const elements = useRef<{ [key: number]: IntersectionObserverEntry }>({});
   useEffect(() => {
@@ -12,8 +12,9 @@ export default function useIntersectionObserver(
         if (!isNaN(index)) elements.current[index] = heading;
       });
 
-      const visible = Object.values(elements.current)
-        .filter(({ isIntersecting }) => isIntersecting)
+      const visible = Object.values(elements.current).filter(
+        ({ isIntersecting }) => isIntersecting,
+      );
 
       if (visible.length !== 0) {
         setActive(Number(visible[0].target.getAttribute("data-section-index")));
@@ -22,12 +23,12 @@ export default function useIntersectionObserver(
 
     const range = (from: number, to: number, step: number) =>
       [...Array(Math.floor((to - from) / step) + 1)].map(
-        (_, i) => from + i * step
+        (_, i) => from + i * step,
       );
 
     const observer = new IntersectionObserver(callback, {
       threshold: range(0, 1, 0.01),
-      rootMargin: "-20% 0px 0px 0px"
+      rootMargin: "-20% 0px 0px 0px",
     });
 
     headings

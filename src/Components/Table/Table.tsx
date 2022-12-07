@@ -13,21 +13,37 @@ import Title from "./Title";
 import Loader from "./Loader";
 
 type TableProps = {
-  title: string,
-  name: string,
-  columns: ColumnDefinition[],
-  data: ResultData,
-  onRedirect?: Function
-  isLoading?: boolean,
-}
-export default function Table({ title, name, columns, data, onRedirect, isLoading = false }: TableProps) {
-  const [sortedColumn, setSortedColumn] = useSessionStorage(name + "_sortedColumn", "");
+  title: string;
+  name: string;
+  columns: ColumnDefinition[];
+  data: ResultData;
+  onRedirect?: Function;
+  isLoading?: boolean;
+};
+export default function Table({
+  title,
+  name,
+  columns,
+  data,
+  onRedirect,
+  isLoading = false,
+}: TableProps) {
+  const [sortedColumn, setSortedColumn] = useSessionStorage(
+    name + "_sortedColumn",
+    "",
+  );
   const [sortDesc, setSortDesc] = useSessionStorage(name + "_sortDesc", true);
   const [filter, setFilter] = useSessionStorage(name + "_filter", {});
-  const [currentSavedFilter, setCurrentSavedFilter] = useSessionStorage(name + "_currentSavedFilter", "No Preset");
+  const [currentSavedFilter, setCurrentSavedFilter] = useSessionStorage(
+    name + "_currentSavedFilter",
+    "No Preset",
+  );
   const [selected, setSelected] = useSessionStorage(name + "_selected", []);
 
-  const [isFilterOpen, setIsFilterOpen] = useSessionStorage(name + "_isFilterOpen", false);
+  const [isFilterOpen, setIsFilterOpen] = useSessionStorage(
+    name + "_isFilterOpen",
+    false,
+  );
   const [isFilterHighlighted, setIsFilterHighlighted] = useState(false);
 
   useEffect(() => {
@@ -54,14 +70,21 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
     let ret = "";
     data.output?.forEach((entry, index) => {
       if (onlySelected && !selected.includes(index)) return;
-      ret += columns.map((column) => stringify(entry[column.key], false)).join("\u{9}") + "\n";
+      ret +=
+        columns
+          .map((column) => stringify(entry[column.key], false))
+          .join("\u{9}") + "\n";
     });
     navigator.clipboard.writeText(ret);
   };
 
   return (
     <section>
-      <Title title={title} n={data.output?.length ?? 0} nSelected={selected.length} />
+      <Title
+        title={title}
+        n={data.output?.length ?? 0}
+        nSelected={selected.length}
+      />
       <div className="flex space-x-1">
         <ActionMenu
           onResetTable={resetTable}
@@ -92,7 +115,9 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
             onRedirect={onRedirect}
           />
           <ErrorMessage error={data.error} />
-          <Loader isVisible={isLoading && data.output?.length === 0 && !data.error} />
+          <Loader
+            isVisible={isLoading && data.output?.length === 0 && !data.error}
+          />
         </div>
       </div>
     </section>

@@ -15,7 +15,7 @@ export type ElectronAPI = Window &
           startComputerAction: (
             action: ComputerAction,
             target: string,
-            useCurrentUser: boolean
+            useCurrentUser: boolean,
           ) => Promise<ResultDataString>;
           probeConnection: (target: string) => Promise<{ output: string }>;
           changeWinState: (state: WinState) => void;

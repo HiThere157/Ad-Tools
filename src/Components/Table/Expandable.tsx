@@ -5,10 +5,13 @@ import Button from "../Button";
 import { BsArrowsAngleContract, BsArrowsAngleExpand } from "react-icons/bs";
 
 type ExpandableProps = {
-  children: React.ReactNode,
-  canExpand?: boolean
-}
-export default function Expandable({ children, canExpand = true }: ExpandableProps) {
+  children: React.ReactNode;
+  canExpand?: boolean;
+};
+export default function Expandable({
+  children,
+  canExpand = true,
+}: ExpandableProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => {
@@ -35,7 +38,9 @@ export default function Expandable({ children, canExpand = true }: ExpandablePro
             children
           ) : (
             <div className="flex items-center">
-              <span className="dark:text-foregroundAccent">Expand to view full Object</span>
+              <span className="dark:text-foregroundAccent">
+                Expand to view full Object
+              </span>
             </div>
           )}
         </div>

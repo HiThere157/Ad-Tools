@@ -5,14 +5,14 @@ import stringify from "../../Helper/stringify";
 import Expandable from "./Expandable";
 
 type TableCellProps = {
-  text: any
-}
+  text: any;
+};
 export default function TableCell({ text }: TableCellProps) {
-  const [stringText, setStringText] = useState("")
+  const [stringText, setStringText] = useState("");
 
   useEffect(() => {
-    setStringText(stringify(text))
-  }, [text])
+    setStringText(stringify(text));
+  }, [text]);
 
   if (typeof text === "object") {
     return (
@@ -22,7 +22,5 @@ export default function TableCell({ text }: TableCellProps) {
     );
   }
 
-  return (
-    <pre>{stringText}</pre>
-  )
+  return <pre>{stringText}</pre>;
 }

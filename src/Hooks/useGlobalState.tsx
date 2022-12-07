@@ -1,4 +1,10 @@
-import { createContext, useState, useContext, Dispatch, SetStateAction } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  Dispatch,
+  SetStateAction,
+} from "react";
 
 type Message = {
   timestamp?: number;
@@ -7,10 +13,10 @@ type Message = {
   message: string;
   timer?: number;
   skipIfExists?: boolean;
-}
+};
 type GlobalState = {
   messages: Message[];
-}
+};
 const GlobalStateContext = createContext({
   state: {} as Partial<GlobalState>,
   setState: {} as Dispatch<SetStateAction<Partial<GlobalState>>>,
@@ -18,8 +24,8 @@ const GlobalStateContext = createContext({
 
 type GlobalStateProviderProps = {
   children: React.ReactNode;
-  value?: Partial<GlobalState>
-}
+  value?: Partial<GlobalState>;
+};
 const GlobalStateProvider = ({
   children,
   value = {} as GlobalState,
