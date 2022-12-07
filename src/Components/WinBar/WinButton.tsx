@@ -1,6 +1,6 @@
 type WinButtonProps = {
   children?: React.ReactNode;
-  onClick: Function;
+  onClick: () => any;
 };
 export default function WinButton({ children, onClick }: WinButtonProps) {
   return (

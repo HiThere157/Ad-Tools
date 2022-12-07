@@ -89,7 +89,8 @@ export default function GroupPage() {
           name={membersKey}
           columns={columns.extended}
           data={members}
-          onRedirect={(entry: { Name: string; ObjectClass: string }) => {
+          onRedirect={(entry: { Name?: string; ObjectClass?: string }) => {
+            if(!entry.ObjectClass) return;
             if (!["group", "user", "computer"].includes(entry.ObjectClass))
               return;
             redirect(entry.ObjectClass, {
@@ -105,7 +106,7 @@ export default function GroupPage() {
           name={memberOfKey}
           columns={columns.default}
           data={memberOf}
-          onRedirect={(entry: { Name: string }) => {
+          onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
             window.location.reload();
           }}

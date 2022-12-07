@@ -17,7 +17,7 @@ type TableProps = {
   name: string;
   columns: ColumnDefinition[];
   data: ResultData;
-  onRedirect?: Function;
+  onRedirect?: (entry: { [key: string]: any }) => any;
   isLoading?: boolean;
 };
 export default function Table({
@@ -38,6 +38,7 @@ export default function Table({
     name + "_currentSavedFilter",
     "No Preset",
   );
+  const [filteredCount, setFilteredCount] = useState(0);
   const [selected, setSelected] = useSessionStorage(name + "_selected", []);
 
   const [isFilterOpen, setIsFilterOpen] = useSessionStorage(
@@ -45,6 +46,7 @@ export default function Table({
     false,
   );
   const [isFilterHighlighted, setIsFilterHighlighted] = useState(false);
+
 
   useEffect(() => {
     setIsFilterHighlighted(Object.keys(filter).length !== 0);
@@ -84,17 +86,17 @@ export default function Table({
         title={title}
         n={data.output?.length ?? 0}
         nSelected={selected.length}
+        nFiltered={filteredCount}
       />
       <div className="flex space-x-1">
         <ActionMenu
           onResetTable={resetTable}
-          onCopy={copyToClip}
+          onCopy={() => copyToClip(false)}
           onCopySelection={() => copyToClip(true)}
           onFilter={() => setIsFilterOpen(!isFilterOpen)}
           isFilterHighlighted={isFilterHighlighted}
         />
         <FilterMenu
-          name={name}
           isOpen={isFilterOpen}
           columns={columns}
           filter={filter}
@@ -109,6 +111,7 @@ export default function Table({
             sortDesc={sortDesc}
             sortedColumn={sortedColumn}
             filter={filter}
+            onFilter={setFilteredCount}
             selected={selected}
             onSelectedChange={setSelected}
             onHeaderClick={updateSortArguments}

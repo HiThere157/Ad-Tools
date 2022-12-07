@@ -116,7 +116,7 @@ export default function AzureUserPage() {
           name={memberOfKey}
           columns={columns.azureGroup}
           data={memberOf}
-          onRedirect={(entry: { DisplayName: string }) => {
+          onRedirect={(entry: { DisplayName?: string }) => {
             redirect("azureGroup", {
               input: entry.DisplayName,
               tenant: query.tenant,
@@ -129,7 +129,7 @@ export default function AzureUserPage() {
           name={devicesKey}
           columns={columns.azureDevice}
           data={devices}
-          onRedirect={(entry: { DisplayName: string }) => {
+          onRedirect={(entry: { DisplayName?: string }) => {
             redirect("azureDevice", {
               input: entry.DisplayName,
               tenant: query.tenant,

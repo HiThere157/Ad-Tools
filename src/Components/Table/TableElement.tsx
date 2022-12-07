@@ -14,10 +14,11 @@ type TableElementProps = {
   sortDesc: boolean;
   sortedColumn: string;
   filter: { [key: string]: string };
+  onFilter: (n: number) => void;
   selected: number[];
-  onSelectedChange: Function;
-  onHeaderClick: Function;
-  onRedirect?: Function;
+  onSelectedChange: (newSelected: number[]) => any;
+  onHeaderClick: (header: string) => any;
+  onRedirect?: (entry: { [key: string]: any }) => any;
 };
 export default function TableElement({
   entries = [],
@@ -25,6 +26,7 @@ export default function TableElement({
   sortDesc,
   sortedColumn,
   filter,
+  onFilter,
   selected,
   onSelectedChange,
   onHeaderClick,
@@ -96,6 +98,12 @@ export default function TableElement({
     });
   };
 
+  const getFinalEntries = (entries: { [key: string]: any }[]) => {
+    const finalEntries = filterArray(sortArray(tagArray(entries)))
+    onFilter(entries.length - finalEntries.length);
+    return finalEntries;
+  }
+
   const getMainCheckStatus = () => {
     if (selected.length === 0) {
       return false;
@@ -158,7 +166,7 @@ export default function TableElement({
       </thead>
 
       <tbody>
-        {filterArray(sortArray(tagArray(entries))).map((entry) => {
+        {getFinalEntries(entries).map((entry) => {
           return (
             <tr key={entry.__id__} className="dark:hover:bg-secondaryBg">
               <td className="relative group px-2 whitespace-nowrap dark:border-primaryBorder border-y">

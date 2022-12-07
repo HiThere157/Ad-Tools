@@ -11,8 +11,8 @@ type AadInputBarProps = {
   hint?: string;
   isLoading: boolean;
   query: { input: string | undefined; tenant: string | undefined };
-  onChange: Function;
-  onSubmit: Function;
+  onChange: (query: {}) => any;
+  onSubmit: () => any;
 };
 export default function AadInputBar({
   label,

@@ -10,10 +10,10 @@ import {
 } from "react-icons/bs";
 
 type ActionMenuProps = {
-  onResetTable: Function;
-  onCopy: Function;
-  onCopySelection: Function;
-  onFilter: Function;
+  onResetTable: () => any;
+  onCopy: () => any;
+  onCopySelection: () => any;
+  onFilter: () => any;
   isFilterHighlighted: boolean;
 };
 export default function ActionMenu({

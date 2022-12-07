@@ -3,7 +3,7 @@ type ButtonProps = {
   classOverride?: string;
   disabled?: boolean;
   highlight?: boolean;
-  onClick: Function;
+  onClick: () => any;
 };
 export default function Button({
   children,

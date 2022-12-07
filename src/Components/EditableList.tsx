@@ -7,7 +7,7 @@ import { BsXLg, BsFillPencilFill, BsPlusLg } from "react-icons/bs";
 
 type EditableListProps = {
   items: string[];
-  onChange: Function;
+  onChange: (newItems: string[]) => any;
 };
 export default function EditableList({ items, onChange }: EditableListProps) {
   const [newItem, setNewItem] = useState("");

@@ -74,7 +74,7 @@ export default function SearchPage() {
           name={usersKey}
           columns={columns.default}
           data={users}
-          onRedirect={(entry: { Name: string }) => {
+          onRedirect={(entry: { Name?: string }) => {
             redirect("user", { input: entry.Name, domain: query.domain });
           }}
           isLoading={isLoading}
@@ -84,7 +84,7 @@ export default function SearchPage() {
           name={groupsKey}
           columns={columns.default}
           data={groups}
-          onRedirect={(entry: { Name: string }) => {
+          onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
           }}
           isLoading={isLoading}
@@ -94,7 +94,7 @@ export default function SearchPage() {
           name={computersKey}
           columns={columns.default}
           data={computers}
-          onRedirect={(entry: { Name: string }) => {
+          onRedirect={(entry: { Name?: string }) => {
             redirect("computer", { input: entry.Name, domain: query.domain });
           }}
           isLoading={isLoading}

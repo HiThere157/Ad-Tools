@@ -13,8 +13,8 @@ type DnsInputBarProps = {
   label: string;
   isLoading: boolean;
   query: { input: string | undefined; type: string | undefined };
-  onChange: Function;
-  onSubmit: Function;
+  onChange: (query: {}) => any;
+  onSubmit: () => any;
 };
 export default function DnsInputBar({
   label,

@@ -8,7 +8,7 @@ type DropdownProps = {
   items: string[];
   value: string | undefined;
   disabled?: boolean;
-  onChange: Function;
+  onChange: (value: string) => any;
 };
 export default function Dropdown({
   items,
@@ -55,7 +55,7 @@ export default function Dropdown({
 
 type DropdownBodyProps = {
   items: string[];
-  onSelection: Function;
+  onSelection: (value: string) => any;
 };
 function DropdownBody({ items, onSelection }: DropdownBodyProps) {
   return (

@@ -7,7 +7,7 @@ type CheckboxProps = {
   classOverride?: string;
   checked: boolean | undefined;
   disabled?: boolean;
-  onChange: Function;
+  onChange: () => any;
 };
 export default function Checkbox({
   label = "",

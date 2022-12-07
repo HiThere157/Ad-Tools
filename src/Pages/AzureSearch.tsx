@@ -84,7 +84,7 @@ export default function AzureSearchPage() {
           name={usersKey}
           columns={columns.azureUser}
           data={users}
-          onRedirect={(entry: { UserPrincipalName: string }) => {
+          onRedirect={(entry: { UserPrincipalName?: string }) => {
             redirect("azureUser", {
               input: entry.UserPrincipalName,
               tenant: query.tenant,
@@ -97,7 +97,7 @@ export default function AzureSearchPage() {
           name={groupsKey}
           columns={columns.azureGroup}
           data={groups}
-          onRedirect={(entry: { DisplayName: string }) => {
+          onRedirect={(entry: { DisplayName?: string }) => {
             redirect("azureGroup", {
               input: entry.DisplayName,
               tenant: query.tenant,
@@ -110,7 +110,7 @@ export default function AzureSearchPage() {
           name={devicesKey}
           columns={columns.azureDevice}
           data={devices}
-          onRedirect={(entry: { DisplayName: string }) => {
+          onRedirect={(entry: { DisplayName?: string }) => {
             redirect("azureDevice", {
               input: entry.DisplayName,
               tenant: query.tenant,

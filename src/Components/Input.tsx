@@ -3,8 +3,8 @@ type InputProps = {
   value: string;
   classOverride?: string;
   disabled?: boolean;
-  onChange: Function;
-  onEnter?: Function;
+  onChange: (value: string) => any;
+  onEnter?: () => any;
 };
 export default function Input({
   label = "",

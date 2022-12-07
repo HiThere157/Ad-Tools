@@ -11,8 +11,8 @@ type AdInputBarProps = {
   hint?: string;
   isLoading: boolean;
   query: { input: string | undefined; domain: string | undefined };
-  onChange: Function;
-  onSubmit: Function;
+  onChange: (query: {}) => any;
+  onSubmit: () => any;
 };
 export default function AdInputBar({
   label,

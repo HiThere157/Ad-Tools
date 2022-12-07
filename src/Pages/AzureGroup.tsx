@@ -120,7 +120,7 @@ export default function AzureGroupPage() {
           name={membersKey}
           columns={columns.azureUser}
           data={members}
-          onRedirect={(entry: { UserPrincipalName: string }) => {
+          onRedirect={(entry: { UserPrincipalName?: string }) => {
             redirect("azureUser", {
               input: entry.UserPrincipalName,
               tenant: query.tenant,

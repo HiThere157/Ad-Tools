@@ -10,16 +10,14 @@ import { BsFillPencilFill, BsPlusLg, BsFillTrashFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 
 type FilterMenuProps = {
-  name: string;
   isOpen: boolean;
   columns: ColumnDefinition[];
   filter: { [key: string]: string };
-  onFilterChange: Function;
+  onFilterChange: (newFilter: { [key: string]: string }) => any;
   currentSavedFilter: string;
-  setCurrentSavedFilter: Function;
+  setCurrentSavedFilter: (value: string) => any;
 };
 export default function FilterMenu({
-  name,
   isOpen,
   columns,
   filter,
@@ -148,7 +146,7 @@ export default function FilterMenu({
             </Button>
           </div>
           <div className=" grid grid-cols-[auto_1fr] gap-1">
-            <span className="mr-2">Selected: </span>
+            <span className="mx-1">Selected: </span>
             <Checkbox
               checked={filter.__selected__ === "true"}
               onChange={() =>
@@ -162,12 +160,13 @@ export default function FilterMenu({
             {columns.map((column) => {
               return (
                 <>
-                  <span className="mr-2">{column.title}:</span>
+                  <span className="mx-1">{column.title}:</span>
                   <Input
                     value={filter[column.key]}
                     onChange={(filterString: string) =>
                       updateFilter(column.key, filterString)
                     }
+                    classOverride="min-w-30"
                     disabled={!isEditing && currentSavedFilter !== "No Preset"}
                   />
                 </>
