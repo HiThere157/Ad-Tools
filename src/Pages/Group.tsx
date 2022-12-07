@@ -90,7 +90,7 @@ export default function GroupPage() {
           columns={columns.extended}
           data={members}
           onRedirect={(entry: { Name?: string; ObjectClass?: string }) => {
-            if(!entry.ObjectClass) return;
+            if (!entry.ObjectClass) return;
             if (!["group", "user", "computer"].includes(entry.ObjectClass))
               return;
             redirect(entry.ObjectClass, {

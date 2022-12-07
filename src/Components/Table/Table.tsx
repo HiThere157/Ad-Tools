@@ -47,7 +47,6 @@ export default function Table({
   );
   const [isFilterHighlighted, setIsFilterHighlighted] = useState(false);
 
-
   useEffect(() => {
     setIsFilterHighlighted(Object.keys(filter).length !== 0);
   }, [filter]);

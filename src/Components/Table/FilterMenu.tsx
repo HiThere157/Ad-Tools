@@ -148,7 +148,9 @@ export default function FilterMenu({
           <table className="border-separate border-spacing-0.5">
             <tbody>
               <tr>
-                <td><span className="mr-1">Selected:</span></td>
+                <td>
+                  <span className="mr-1">Selected:</span>
+                </td>
                 <td>
                   <Checkbox
                     checked={filter.__selected__ === "true"}
@@ -165,7 +167,9 @@ export default function FilterMenu({
               {columns.map((column, index) => {
                 return (
                   <tr key={index}>
-                    <td><span className="mr-1">{column.title}:</span></td>
+                    <td>
+                      <span className="mr-1">{column.title}:</span>
+                    </td>
                     <td>
                       <Input
                         value={filter[column.key]}
@@ -173,7 +177,9 @@ export default function FilterMenu({
                           updateFilter(column.key, filterString)
                         }
                         classOverride="min-w-30"
-                        disabled={!isEditing && currentSavedFilter !== "No Preset"}
+                        disabled={
+                          !isEditing && currentSavedFilter !== "No Preset"
+                        }
                       />
                     </td>
                   </tr>

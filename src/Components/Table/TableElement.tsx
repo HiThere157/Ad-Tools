@@ -1,5 +1,7 @@
+import { useEffect } from "react";
+
 import { ColumnDefinition } from "../../Config/default";
-import stringify from "../../Helper/stringify";
+import { EntryArray } from "../../Helper/array";
 
 import Button from "../Button";
 import Checkbox from "../Checkbox";
@@ -7,7 +9,6 @@ import TableCell from "./TableCell";
 import RedirectButton from "./RedirectButton";
 
 import { BsCaretDownFill } from "react-icons/bs";
-import { useEffect } from "react";
 
 type TableElementProps = {
   entries?: { [key: string]: any }[];
@@ -34,9 +35,16 @@ export default function TableElement({
   onRedirect,
 }: TableElementProps) {
   useEffect(() => {
-    onFilter(entries.length - filterArray(sortArray(tagArray(entries))).length);
+    onFilter(entries.length - getFinalEntries().length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, entries])
+  }, [filter, entries, selected]);
+
+  const getFinalEntries = () => {
+    return new EntryArray(entries)
+      .tagArray()
+      .sortArray(sortDesc, sortedColumn)
+      .filterArray(selected, filter).array;
+  };
 
   const toggleSelected = (id: number) => {
     const newSelected = [...selected];
@@ -49,59 +57,6 @@ export default function TableElement({
       newSelected.push(id);
     }
     onSelectedChange(newSelected);
-  };
-
-  const tagArray = (array: { [key: string]: any }[]) => {
-    // add a unique __id__ field to every entry. used to track selected entries
-    return array.map((entry, index) => {
-      return { __id__: index, ...entry };
-    });
-  };
-
-  const sortArray = (array: { [key: string]: any }[]) => {
-    return array.slice().sort((a, b) => {
-      if (!sortDesc) {
-        [a, b] = [b, a];
-      }
-      return stringify(b[sortedColumn]).localeCompare(
-        stringify(a[sortedColumn]),
-      );
-    });
-  };
-
-  const filterArray = (array: { [key: string]: any }[]) => {
-    return array.filter((entry) => {
-      let isMatch = true;
-      Object.entries(filter).forEach(([key, value]) => {
-        // if __selected__ key is present in filter, check selected values
-        // prevent regex check after
-        if (key === "__selected__") {
-          isMatch = selected.includes(entry.__id__);
-          return;
-        }
-
-        // every other filter value is checked with the entry properties
-        // split | and check every value seperately
-        // if any value is true, entry is a match
-        const matched = value
-          .split("|")
-          .map((value: string) => {
-            const wildcard = value.replace(/[.+^${}()|[\]\\]/g, "\\$&");
-            const regex = new RegExp(
-              `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
-              "i",
-            );
-            return regex.test(stringify(entry[key], false));
-          })
-          .some((match) => match);
-
-        if (!matched) {
-          isMatch = false;
-        }
-      });
-
-      return isMatch;
-    });
   };
 
   const getMainCheckStatus = () => {
@@ -166,7 +121,7 @@ export default function TableElement({
       </thead>
 
       <tbody>
-        {filterArray(sortArray(tagArray(entries))).map((entry) => {
+        {getFinalEntries().map((entry) => {
           return (
             <tr key={entry.__id__} className="dark:hover:bg-secondaryBg">
               <td className="relative group px-2 whitespace-nowrap dark:border-primaryBorder border-y">

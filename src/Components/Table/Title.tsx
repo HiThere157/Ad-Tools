@@ -16,9 +16,9 @@ export default function Title({ title, n, nSelected, nFiltered }: TitleProps) {
 
       {(nSelected !== 0 || nFiltered !== 0) && (
         <span className="dark:text-foregroundAccent">
-          ({ nSelected !== 0 && `${nSelected} Selected`}
-          {(nSelected !== 0 && nFiltered !== 0) && ", "}
-          { nFiltered !== 0 && `${nFiltered} Hidden`})
+          ({nSelected !== 0 && `${nSelected} Selected`}
+          {nSelected !== 0 && nFiltered !== 0 && ", "}
+          {nFiltered !== 0 && `${nFiltered} Hidden`})
         </span>
       )}
     </div>
