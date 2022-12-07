@@ -21,19 +21,13 @@ type TableProps = {
   isLoading?: boolean,
 }
 export default function Table({ title, name, columns, data, onRedirect, isLoading = false }: TableProps) {
-  const [sortedColumn, setSortedColumn] = useSessionStorage(
-    name + "_sortedColumn",
-    ""
-  );
+  const [sortedColumn, setSortedColumn] = useSessionStorage(name + "_sortedColumn", "");
   const [sortDesc, setSortDesc] = useSessionStorage(name + "_sortDesc", true);
   const [filter, setFilter] = useSessionStorage(name + "_filter", {});
+  const [currentSavedFilter, setCurrentSavedFilter] = useSessionStorage(name + "_currentSavedFilter", "No Preset");
   const [selected, setSelected] = useSessionStorage(name + "_selected", []);
 
-  const [isFilterOpen, setIsFilterOpen] = useSessionStorage(
-    name + "_isFilterOpen",
-    false
-  );
-
+  const [isFilterOpen, setIsFilterOpen] = useSessionStorage(name + "_isFilterOpen", false);
   const [isFilterHighlighted, setIsFilterHighlighted] = useState(false);
 
   useEffect(() => {
@@ -53,6 +47,7 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
     setSortedColumn("");
     setSortDesc(true);
     setFilter({});
+    setCurrentSavedFilter("No Preset")
   };
 
   const copyToClip = (onlySelected: boolean) => {
@@ -81,6 +76,8 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
           columns={columns}
           filter={filter}
           onFilterChange={setFilter}
+          currentSavedFilter={currentSavedFilter}
+          setCurrentSavedFilter={setCurrentSavedFilter}
         />
         <div className="border-2 border-primaryBorder rounded h-fit min-h-[4rem] overflow-auto">
           <TableElement

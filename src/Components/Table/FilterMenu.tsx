@@ -1,4 +1,4 @@
-import { useLocalStorage, useSessionStorage } from "../../Hooks/useStorage";
+import { useLocalStorage } from "../../Hooks/useStorage";
 import { ColumnDefinition } from "../../Config/default";
 
 import Checkbox from "../Checkbox";
@@ -15,10 +15,19 @@ type FilterMenuProps = {
   columns: ColumnDefinition[]
   filter: { [key: string]: string }
   onFilterChange: Function,
+  currentSavedFilter: string,
+  setCurrentSavedFilter: Function,
 }
-export default function FilterMenu({ name, isOpen, columns, filter, onFilterChange }: FilterMenuProps) {
+export default function FilterMenu({
+  name,
+  isOpen,
+  columns,
+  filter,
+  onFilterChange,
+  currentSavedFilter,
+  setCurrentSavedFilter
+}: FilterMenuProps) {
   const [savedFilters, setSavedFilters] = useLocalStorage("conf_savedFilters", {});
-  const [currentSavedFilter, setCurrentSavedFilter] = useSessionStorage(name + "_currentSavedFilter", "No Preset");
   const [isEditing, setIsEditing] = useState(false);
 
   // when exiting edit mode, save empty names as "untitled"
@@ -36,13 +45,13 @@ export default function FilterMenu({ name, isOpen, columns, filter, onFilterChan
     setSavedFilters(Object.fromEntries(newFilterEntries));
 
     if (currentSavedFilter === "") setCurrentSavedFilter(newUniqueName);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing]);
 
-  // on dropdown change, update the filter values upstream
-  const updateCurrentFilter = (newFilter: string) => {
-    setCurrentSavedFilter(newFilter);
-    onFilterChange(savedFilters[newFilter] ?? {});
-  }
+  useEffect(()=>{
+    onFilterChange(savedFilters[currentSavedFilter] ?? {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSavedFilter])
 
   // update the filter for the current editing saved filter
   const updateFilter = (key: string, filterString: string) => {
@@ -103,7 +112,7 @@ export default function FilterMenu({ name, isOpen, columns, filter, onFilterChan
               <Dropdown
                 value={currentSavedFilter}
                 items={[...Object.keys(savedFilters), "No Preset"]}
-                onChange={(newFilter: string) => updateCurrentFilter(newFilter)}
+                onChange={setCurrentSavedFilter}
               />
             )}
             {currentSavedFilter !== "No Preset" && (
