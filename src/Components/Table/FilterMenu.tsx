@@ -19,14 +19,32 @@ type FilterMenuProps = {
 export default function FilterMenu({ name, isOpen, columns, filter, onFilterChange }: FilterMenuProps) {
   const [savedFilters, setSavedFilters] = useLocalStorage("conf_savedFilters", {});
   const [currentSavedFilter, setCurrentSavedFilter] = useSessionStorage(name + "_currentSavedFilter", "No Preset");
-  const [isLocked, setIsLocked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
+  // when exiting edit mode, save empty names as "untitled"
+  // prevent name collision
   useEffect(() => {
-    setIsLocked(currentSavedFilter !== "No Preset" && !isEditing);
-    onFilterChange(savedFilters[currentSavedFilter] ?? {});
-  }, [currentSavedFilter, isEditing]);
+    if (isEditing) return;
 
+    let newUniqueName = "untitled";
+    while (Object.keys(savedFilters).includes(newUniqueName)) {
+      newUniqueName = `_${newUniqueName}`;
+    }
+    const newFilterEntries = Object.entries(savedFilters).map(
+      ([name, filter]) => [name === "" ? newUniqueName : name, filter]
+    );
+    setSavedFilters(Object.fromEntries(newFilterEntries));
+
+    if (currentSavedFilter === "") setCurrentSavedFilter(newUniqueName);
+  }, [isEditing]);
+
+  // on dropdown change, update the filter values upstream
+  const updateCurrentFilter = (newFilter: string) => {
+    setCurrentSavedFilter(newFilter);
+    onFilterChange(savedFilters[newFilter] ?? {});
+  }
+
+  // update the filter for the current editing saved filter
   const updateFilter = (key: string, filterString: string) => {
     const newFilter = { ...filter, [key]: filterString.trim() };
     Object.keys(newFilter).forEach(
@@ -44,23 +62,49 @@ export default function FilterMenu({ name, isOpen, columns, filter, onFilterChan
     onFilterChange(newFilter);
   };
 
+  // change the name of the currently editing filter
+  // while changing the name, prevent name collision
   const changeFilterName = (newName: string) => {
+    let newUniqueName = newName;
+    while (Object.keys(savedFilters).includes(newUniqueName)) {
+      newUniqueName = `_${newUniqueName}`;
+    }
     const newFilterEntries = Object.entries(savedFilters).map(
-      ([name, filter]) => [name === currentSavedFilter ? newName : name, filter]
+      ([name, filter]) => [name === currentSavedFilter ? newUniqueName : name, filter]
     );
+
     setSavedFilters(Object.fromEntries(newFilterEntries));
-    setCurrentSavedFilter(newName);
-  }
+    setCurrentSavedFilter(newUniqueName);
+  };
+
+  // add empty filter with empty name to the saved filters
+  const addFilter = () => {
+    setSavedFilters({ ...savedFilters, "": {} });
+    setCurrentSavedFilter("");
+    setIsEditing(true);
+  };
+
+  const removeFilter = () => {
+    const newSavedFilters = { ...savedFilters };
+    delete newSavedFilters[currentSavedFilter];
+    setSavedFilters(newSavedFilters);
+    setCurrentSavedFilter("No Preset");
+    setIsEditing(false);
+  };
 
   return (
     <>
       {isOpen && (
         <div className="container py-1">
-          <div className="flex mb-3">
+          <div className="flex mb-2">
             {isEditing ? (
-              <Input value={currentSavedFilter} onChange={changeFilterName} />
+              <Input value={currentSavedFilter} onChange={changeFilterName} onEnter={() => { setIsEditing(!isEditing) }} />
             ) : (
-              <Dropdown value={currentSavedFilter} items={[...Object.keys(savedFilters), "No Preset"]} onChange={setCurrentSavedFilter} />
+              <Dropdown
+                value={currentSavedFilter}
+                items={[...Object.keys(savedFilters), "No Preset"]}
+                onChange={(newFilter: string) => updateCurrentFilter(newFilter)}
+              />
             )}
             {currentSavedFilter !== "No Preset" && (
               <Button classOverride="p-1.5 text-xs ml-1" highlight={isEditing} onClick={() => { setIsEditing(!isEditing) }}>
@@ -68,11 +112,11 @@ export default function FilterMenu({ name, isOpen, columns, filter, onFilterChan
               </Button>
             )}
             {isEditing && (
-              <Button classOverride="p-1.5 text-xs ml-1" onClick={() => { }}>
+              <Button classOverride="p-1.5 text-xs ml-1" onClick={removeFilter}>
                 <BsFillTrashFill />
               </Button>
             )}
-            <Button classOverride="p-1.5 text-xs ml-1" onClick={() => { }}>
+            <Button classOverride="p-1.5 text-xs ml-1" onClick={addFilter}>
               <BsPlusLg />
             </Button>
           </div>
@@ -81,7 +125,7 @@ export default function FilterMenu({ name, isOpen, columns, filter, onFilterChan
             <Checkbox
               checked={filter.__selected__ === "true"}
               onChange={() => updateFilter("__selected__", filter.__selected__ !== "true" ? "true" : "")}
-              disabled={isLocked}
+              disabled={!isEditing && currentSavedFilter !== "No Preset"}
             />
             {columns.map((column) => {
               return (
@@ -90,7 +134,7 @@ export default function FilterMenu({ name, isOpen, columns, filter, onFilterChan
                   <Input
                     value={filter[column.key]}
                     onChange={(filterString: string) => updateFilter(column.key, filterString)}
-                    disabled={isLocked}
+                    disabled={!isEditing && currentSavedFilter !== "No Preset"}
                   />
                 </>
               );
