@@ -10,6 +10,7 @@ import {
   prepareDNSResult,
   replaceASCIIArray,
   getWMIPropertiesWrapper,
+  makeToList,
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
@@ -33,15 +34,19 @@ export default function ComputerPage() {
     `${p}_memberOf`,
     {},
   );
-  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage(
-    `${p}_sysinfo`,
-    {},
-  );
-  const [bios, setBios, biosKey] = useSessionStorage(`${p}_bios`, {});
   const [monitors, setMonitors, monitorsKey] = useSessionStorage(
     `${p}_monitors`,
     {},
   );
+  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage(
+    `${p}_sysinfo`,
+    {},
+  );
+  const [software, setSoftware, softwareKey] = useSessionStorage(
+    `${p}_software`,
+    {},
+  );
+  const [bios, setBios, biosKey] = useSessionStorage(`${p}_bios`, {});
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {
@@ -75,6 +80,16 @@ export default function ComputerPage() {
       makeAPICall({
         command: "Get-WmiObject",
         args: {
+          ClassName: "WmiMonitorID",
+          Namespace: "root/wmi",
+          ComputerName: `${query.input}.${query.domain}`,
+        },
+        postProcessor: replaceASCIIArray,
+        callback: setMonitors,
+      }),
+      makeAPICall({
+        command: "Get-WmiObject",
+        args: {
           ClassName: "Win32_ComputerSystem",
           ComputerName: `${query.input}.${query.domain}`,
         },
@@ -84,21 +99,21 @@ export default function ComputerPage() {
       makeAPICall({
         command: "Get-WmiObject",
         args: {
+          ClassName: "Win32_Product",
+          ComputerName: `${query.input}.${query.domain}`,
+        },
+        selectFields: columns.software.map((column) => column.key),
+        postProcessor: makeToList,
+        callback: setSoftware,
+      }),
+      makeAPICall({
+        command: "Get-WmiObject",
+        args: {
           ClassName: "Win32_bios",
           ComputerName: `${query.input}.${query.domain}`,
         },
         postProcessor: getWMIPropertiesWrapper,
         callback: setBios,
-      }),
-      makeAPICall({
-        command: "Get-WmiObject",
-        args: {
-          ClassName: "WmiMonitorID",
-          Namespace: "root/wmi",
-          ComputerName: `${query.input}.${query.domain}`,
-        },
-        postProcessor: replaceASCIIArray,
-        callback: setMonitors,
       }),
     ]);
 
@@ -154,6 +169,13 @@ export default function ComputerPage() {
           name={sysinfoKey}
           columns={columns.attribute}
           data={sysinfo}
+          isLoading={isLoading}
+        />
+        <Table
+          title="Installed Software (WMI)"
+          name={softwareKey}
+          columns={columns.software}
+          data={software}
           isLoading={isLoading}
         />
         <Table

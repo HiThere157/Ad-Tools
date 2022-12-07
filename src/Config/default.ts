@@ -20,6 +20,12 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Serial Number", key: "SerialNumberID", sortable: true },
     { title: "Production year", key: "YearOfManufacture", sortable: true },
   ],
+  software: [
+    { title: "Name", key: "Name", sortable: true },
+    { title: "Vendor", key: "Vendor", sortable: true },
+    { title: "Version", key: "Version", sortable: true },
+    { title: "ID", key: "IdentifyingNumber", sortable: true },
+  ],
   extended: [
     { title: "Name", key: "Name", sortable: true },
     { title: "Type", key: "ObjectClass", sortable: true },
