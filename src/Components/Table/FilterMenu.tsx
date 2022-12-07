@@ -145,34 +145,42 @@ export default function FilterMenu({
               <BsPlusLg />
             </Button>
           </div>
-          <div className=" grid grid-cols-[auto_1fr] gap-1">
-            <span className="mx-1">Selected: </span>
-            <Checkbox
-              checked={filter.__selected__ === "true"}
-              onChange={() =>
-                updateFilter(
-                  "__selected__",
-                  filter.__selected__ !== "true" ? "true" : "",
-                )
-              }
-              disabled={!isEditing && currentSavedFilter !== "No Preset"}
-            />
-            {columns.map((column) => {
-              return (
-                <>
-                  <span className="mx-1">{column.title}:</span>
-                  <Input
-                    value={filter[column.key]}
-                    onChange={(filterString: string) =>
-                      updateFilter(column.key, filterString)
+          <table className="border-separate border-spacing-0.5">
+            <tbody>
+              <tr>
+                <td><span className="mr-1">Selected:</span></td>
+                <td>
+                  <Checkbox
+                    checked={filter.__selected__ === "true"}
+                    onChange={() =>
+                      updateFilter(
+                        "__selected__",
+                        filter.__selected__ !== "true" ? "true" : "",
+                      )
                     }
-                    classOverride="min-w-30"
                     disabled={!isEditing && currentSavedFilter !== "No Preset"}
                   />
-                </>
-              );
-            })}
-          </div>
+                </td>
+              </tr>
+              {columns.map((column, index) => {
+                return (
+                  <tr key={index}>
+                    <td><span className="mr-1">{column.title}:</span></td>
+                    <td>
+                      <Input
+                        value={filter[column.key]}
+                        onChange={(filterString: string) =>
+                          updateFilter(column.key, filterString)
+                        }
+                        classOverride="min-w-30"
+                        disabled={!isEditing && currentSavedFilter !== "No Preset"}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       )}
     </>

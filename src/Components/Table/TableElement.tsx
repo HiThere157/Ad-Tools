@@ -7,6 +7,7 @@ import TableCell from "./TableCell";
 import RedirectButton from "./RedirectButton";
 
 import { BsCaretDownFill } from "react-icons/bs";
+import { useEffect } from "react";
 
 type TableElementProps = {
   entries?: { [key: string]: any }[];
@@ -32,6 +33,11 @@ export default function TableElement({
   onHeaderClick,
   onRedirect,
 }: TableElementProps) {
+  useEffect(() => {
+    onFilter(entries.length - filterArray(sortArray(tagArray(entries))).length);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter, entries])
+
   const toggleSelected = (id: number) => {
     const newSelected = [...selected];
     // check if the entry id is already present the selected entries
@@ -98,12 +104,6 @@ export default function TableElement({
     });
   };
 
-  const getFinalEntries = (entries: { [key: string]: any }[]) => {
-    const finalEntries = filterArray(sortArray(tagArray(entries)))
-    onFilter(entries.length - finalEntries.length);
-    return finalEntries;
-  }
-
   const getMainCheckStatus = () => {
     if (selected.length === 0) {
       return false;
@@ -166,7 +166,7 @@ export default function TableElement({
       </thead>
 
       <tbody>
-        {getFinalEntries(entries).map((entry) => {
+        {filterArray(sortArray(tagArray(entries))).map((entry) => {
           return (
             <tr key={entry.__id__} className="dark:hover:bg-secondaryBg">
               <td className="relative group px-2 whitespace-nowrap dark:border-primaryBorder border-y">
