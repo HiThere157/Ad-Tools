@@ -26,7 +26,6 @@ export type ElectronAPI = Window &
   };
 
 export type Command =
-  | "Get-ADObject"
   | "Get-ADUser"
   | "Get-ADGroup"
   | "Get-ADGroupMember"

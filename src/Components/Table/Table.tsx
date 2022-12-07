@@ -47,7 +47,7 @@ export default function Table({ title, name, columns, data, onRedirect, isLoadin
     setSortedColumn("");
     setSortDesc(true);
     setFilter({});
-    setCurrentSavedFilter("No Preset")
+    setCurrentSavedFilter("No Preset");
   };
 
   const copyToClip = (onlySelected: boolean) => {

@@ -2,7 +2,6 @@ const { PowerShell } = require("node-powershell");
 const { quote } = require("shell-quote");
 
 const allowedCommands = [
-  "Get-ADObject",
   "Get-ADUser",
   "Get-ADGroup",
   "Get-ADGroupMember",
