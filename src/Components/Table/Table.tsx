@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSessionStorage } from "../../Hooks/useStorage";
+import { useLocalStorage, useSessionStorage } from "../../Hooks/useStorage";
 
 import { ColumnDefinition } from "../../Config/default";
 import { ResultData } from "../../Types/api";
@@ -34,7 +34,7 @@ export default function Table({
   );
   const [sortDesc, setSortDesc] = useSessionStorage(name + "_sortDesc", true);
   const [filter, setFilter] = useSessionStorage(name + "_filter", {});
-  const [currentSavedFilter, setCurrentSavedFilter] = useSessionStorage(
+  const [currentSavedFilter, setCurrentSavedFilter] = useLocalStorage(
     name + "_currentSavedFilter",
     "No Preset",
   );

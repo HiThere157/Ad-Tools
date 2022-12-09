@@ -15,6 +15,7 @@ type DnsInputBarProps = {
   query: { input: string | undefined; type: string | undefined };
   onChange: (query: {}) => any;
   onSubmit: () => any;
+  children?: React.ReactNode;
 };
 export default function DnsInputBar({
   label,
@@ -22,6 +23,7 @@ export default function DnsInputBar({
   query,
   onChange,
   onSubmit,
+  children,
 }: DnsInputBarProps) {
   const { setState } = useGlobalState();
   const [input, setInput] = useState(query.input ?? "");
@@ -72,6 +74,7 @@ export default function DnsInputBar({
         children="Clear Cache"
       />
       <Button onClick={onSubmit} disabled={isLoading} children="Run" />
+      {children}
     </div>
   );
 }

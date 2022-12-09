@@ -1,5 +1,12 @@
 function redirect(page: string, query: object) {
-  window.sessionStorage.setItem(`${page}_query`, JSON.stringify(query));
+  const currentQuery = JSON.parse(
+    window.sessionStorage.getItem(`${page}_query`) ?? "{}",
+  );
+
+  window.sessionStorage.setItem(
+    `${page}_query`,
+    JSON.stringify({ ...currentQuery, ...query }),
+  );
   window.sessionStorage.setItem(`${page}_scroll`, "0");
   window.sessionStorage.setItem(`${page}_reQuery`, "true");
   window.location.hash = `#/${page}`;

@@ -13,8 +13,11 @@ import { redirect } from "../Helper/redirects";
 
 import AdInputBar from "../Components/InputBars/InputAd";
 import TableLayout from "../Layouts/TableLayout";
+import Button from "../Components/Button";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
+
+import { VscAzure } from "react-icons/vsc";
 
 export default function GroupPage() {
   const p = useLocation().pathname.substring(1);
@@ -75,7 +78,16 @@ export default function GroupPage() {
         query={query}
         onChange={setQuery}
         onSubmit={runQuery}
-      />
+      >
+        <Button
+          classOverride="p-1"
+          onClick={() => {
+            redirect("azureGroup", { input: query.input });
+          }}
+        >
+          <VscAzure />
+        </Button>
+      </AdInputBar>
       <TableLayout>
         <Table
           title="Group Attributes"

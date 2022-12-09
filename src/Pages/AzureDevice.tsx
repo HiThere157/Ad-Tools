@@ -6,11 +6,15 @@ import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { getPropertiesWrapper, makeToList } from "../Helper/postProcessors";
 import authenticateAzure from "../Helper/azureAuth";
+import { redirect } from "../Helper/redirects";
 
 import AadInputBar from "../Components/InputBars/InputAad";
 import TableLayout from "../Layouts/TableLayout";
+import Button from "../Components/Button";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
+
+import { BsWindows } from "react-icons/bs";
 
 export default function AzureDevicePage() {
   const p = useLocation().pathname.substring(1);
@@ -84,7 +88,16 @@ export default function AzureDevicePage() {
         query={query}
         onChange={setQuery}
         onSubmit={runQuery}
-      />
+      >
+        <Button
+          classOverride="p-1"
+          onClick={() => {
+            redirect("computer", { input: query.input });
+          }}
+        >
+          <BsWindows />
+        </Button>
+      </AadInputBar>
       <TableLayout>
         <Table
           title="Device Attributes"

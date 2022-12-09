@@ -5,11 +5,15 @@ import { useSessionStorage } from "../Hooks/useStorage";
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { prepareDNSResult } from "../Helper/postProcessors";
+import { redirect } from "../Helper/redirects";
 
 import DnsInputBar from "../Components/InputBars/InputDns";
 import TableLayout from "../Layouts/TableLayout";
+import Button from "../Components/Button";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
+
+import { BsWindows } from "react-icons/bs";
 
 export default function DnsPage() {
   const p = useLocation().pathname.substring(1);
@@ -43,7 +47,16 @@ export default function DnsPage() {
         query={query}
         onChange={setQuery}
         onSubmit={runQuery}
-      />
+      >
+        <Button
+          classOverride="p-1"
+          onClick={() => {
+            redirect("computer", { input: query.input });
+          }}
+        >
+          <BsWindows />
+        </Button>
+      </DnsInputBar>
       <TableLayout>
         <Table
           title="Results"

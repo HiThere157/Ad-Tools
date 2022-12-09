@@ -13,6 +13,7 @@ type AadInputBarProps = {
   query: { input: string | undefined; tenant: string | undefined };
   onChange: (query: {}) => any;
   onSubmit: () => any;
+  children?: React.ReactNode;
 };
 export default function AadInputBar({
   label,
@@ -21,6 +22,7 @@ export default function AadInputBar({
   query,
   onChange,
   onSubmit,
+  children,
 }: AadInputBarProps) {
   const tenants = getTenants();
   const [input, setInput] = useState(query.input ?? "");
@@ -51,6 +53,7 @@ export default function AadInputBar({
           />
         )}
         <Button onClick={onSubmit} disabled={isLoading} children="Run" />
+        {children}
       </div>
       {hint && <span className="ml-1 dark:text-foregroundAccent">{hint}</span>}
     </div>

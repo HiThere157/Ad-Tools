@@ -19,6 +19,7 @@ import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
 import { BsCpu } from "react-icons/bs";
+import { VscAzure } from "react-icons/vsc";
 
 export default function ComputerPage() {
   const p = useLocation().pathname.substring(1);
@@ -81,6 +82,14 @@ export default function ComputerPage() {
         >
           <Button classOverride="p-1" onClick={() => redirect("wmi", query)}>
             <BsCpu />
+          </Button>
+          <Button
+            classOverride="p-1"
+            onClick={() => {
+              redirect("azureDevice", { input: query.input });
+            }}
+          >
+            <VscAzure />
           </Button>
         </AdInputBar>
         <ComputerActions fqdn={`${query.input}.${query.domain}`} />
