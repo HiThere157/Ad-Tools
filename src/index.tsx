@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import { GlobalStateProvider } from "./Hooks/useGlobalState";
 
 import RootLayout from "./Layouts/RootLayout";
+import HomePage from "./Pages/Home";
 import SearchPage from "./Pages/Search";
 import UserPage from "./Pages/User";
 import GroupPage from "./Pages/Group";
@@ -29,6 +30,7 @@ root.render(
       <HashRouter>
         <RootLayout>
           <Routes>
+            <Route path="/" element={<HomePage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/user" element={<UserPage />} />
             <Route path="/group" element={<GroupPage />} />
