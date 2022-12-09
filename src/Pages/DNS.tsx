@@ -13,7 +13,7 @@ import Button from "../Components/Button";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
-import { BsWindows } from "react-icons/bs";
+import { BsDisplay } from "react-icons/bs";
 
 export default function DnsPage() {
   const p = useLocation().pathname.substring(1);
@@ -54,7 +54,7 @@ export default function DnsPage() {
             redirect("computer", { input: query.input });
           }}
         >
-          <BsWindows />
+          <BsDisplay />
         </Button>
       </DnsInputBar>
       <TableLayout>
