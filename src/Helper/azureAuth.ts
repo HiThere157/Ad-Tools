@@ -9,7 +9,7 @@ export default async function authenticateAzure(tenant: string | undefined) {
 
   if (!connected.error) return false;
 
-  return await makeAPICall({
+  await makeAPICall({
     command: "Connect-AzureAD",
     args: tenant
       ? {
@@ -19,4 +19,6 @@ export default async function authenticateAzure(tenant: string | undefined) {
     useStaticSession: true,
     json: false,
   });
+
+  return true;
 }
