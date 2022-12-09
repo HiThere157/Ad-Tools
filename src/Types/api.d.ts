@@ -32,6 +32,7 @@ export type Command =
   | "Get-ADComputer"
   | "Get-WmiObject"
   | "Resolve-DnsName"
+  | "Get-Printer"
   | "Clear-DnsClientCache"
   | "Connect-AzureAD"
   | "Get-AzureADCurrentSessionInfo"

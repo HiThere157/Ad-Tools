@@ -168,7 +168,7 @@ export default function FilterMenu({
                 return (
                   <tr key={index}>
                     <td>
-                      <span className="mr-1">{column.title}:</span>
+                      <span className="mr-1 whitespace-nowrap">{column.title}:</span>
                     </td>
                     <td>
                       <Input
