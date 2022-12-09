@@ -8,17 +8,17 @@ import {
   getPropertiesWrapper,
   getMembershipFromAdUser,
   prepareDNSResult,
-  replaceASCIIArray,
-  getWMIPropertiesWrapper,
-  makeToList,
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
 import AdInputBar from "../Components/InputBars/InputAd";
 import ComputerActions from "../Components/ComputerActions";
 import TableLayout from "../Layouts/TableLayout";
+import Button from "../Components/Button";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
+
+import { BsCpu } from "react-icons/bs";
 
 export default function ComputerPage() {
   const p = useLocation().pathname.substring(1);
@@ -34,19 +34,6 @@ export default function ComputerPage() {
     `${p}_memberOf`,
     {},
   );
-  const [monitors, setMonitors, monitorsKey] = useSessionStorage(
-    `${p}_monitors`,
-    {},
-  );
-  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage(
-    `${p}_sysinfo`,
-    {},
-  );
-  const [software, setSoftware, softwareKey] = useSessionStorage(
-    `${p}_software`,
-    {},
-  );
-  const [bios, setBios, biosKey] = useSessionStorage(`${p}_bios`, {});
 
   const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
   useEffect(() => {
@@ -77,44 +64,6 @@ export default function ComputerPage() {
         postProcessor: [getPropertiesWrapper, getMembershipFromAdUser],
         callback: [setAttributes, setMemberOf],
       }),
-      makeAPICall({
-        command: "Get-WmiObject",
-        args: {
-          ClassName: "WmiMonitorID",
-          Namespace: "root/wmi",
-          ComputerName: `${query.input}.${query.domain}`,
-        },
-        postProcessor: replaceASCIIArray,
-        callback: setMonitors,
-      }),
-      makeAPICall({
-        command: "Get-WmiObject",
-        args: {
-          ClassName: "Win32_ComputerSystem",
-          ComputerName: `${query.input}.${query.domain}`,
-        },
-        postProcessor: getWMIPropertiesWrapper,
-        callback: setSysinfo,
-      }),
-      makeAPICall({
-        command: "Get-WmiObject",
-        args: {
-          ClassName: "Win32_Product",
-          ComputerName: `${query.input}.${query.domain}`,
-        },
-        selectFields: columns.software.map((column) => column.key),
-        postProcessor: makeToList,
-        callback: setSoftware,
-      }),
-      makeAPICall({
-        command: "Get-WmiObject",
-        args: {
-          ClassName: "Win32_bios",
-          ComputerName: `${query.input}.${query.domain}`,
-        },
-        postProcessor: getWMIPropertiesWrapper,
-        callback: setBios,
-      }),
     ]);
 
     setIsLoading(false);
@@ -129,7 +78,11 @@ export default function ComputerPage() {
           query={query}
           onChange={setQuery}
           onSubmit={runQuery}
-        />
+        >
+          <Button classOverride="p-1" onClick={() => redirect("wmi", query)}>
+            <BsCpu />
+          </Button>
+        </AdInputBar>
         <ComputerActions fqdn={`${query.input}.${query.domain}`} />
       </div>
       <TableLayout>
@@ -155,34 +108,6 @@ export default function ComputerPage() {
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
           }}
-          isLoading={isLoading}
-        />
-        <Table
-          title="Connected Monitors (WMI)"
-          name={monitorsKey}
-          columns={columns.monitor}
-          data={monitors}
-          isLoading={isLoading}
-        />
-        <Table
-          title="System Info (WMI)"
-          name={sysinfoKey}
-          columns={columns.attribute}
-          data={sysinfo}
-          isLoading={isLoading}
-        />
-        <Table
-          title="Installed Software (WMI)"
-          name={softwareKey}
-          columns={columns.software}
-          data={software}
-          isLoading={isLoading}
-        />
-        <Table
-          title="Bios Info (WMI)"
-          name={biosKey}
-          columns={columns.attribute}
-          data={bios}
           isLoading={isLoading}
         />
       </TableLayout>

@@ -8,6 +8,7 @@ import {
   BsFillPersonLinesFill,
   BsPeopleFill,
   BsDisplay,
+  BsCpu,
   BsPrinterFill,
   BsLaptop,
   BsServer,
@@ -57,6 +58,7 @@ export default function NavBar() {
           text="Computer"
           isOpen={isOpen}
         />
+        <NavItem to="/wmi" icon={<BsCpu />} text="WMI" isOpen={isOpen} />
         <NavItem
           to="/printer"
           icon={<BsPrinterFill />}

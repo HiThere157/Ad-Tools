@@ -13,6 +13,7 @@ type AdInputBarProps = {
   query: { input: string | undefined; domain: string | undefined };
   onChange: (query: {}) => any;
   onSubmit: () => any;
+  children?: React.ReactNode;
 };
 export default function AdInputBar({
   label,
@@ -21,6 +22,7 @@ export default function AdInputBar({
   query,
   onChange,
   onSubmit,
+  children,
 }: AdInputBarProps) {
   const [domains, setDomains] = useState<string[]>([]);
   const [input, setInput] = useState(query.input ?? "");
@@ -58,6 +60,7 @@ export default function AdInputBar({
           onChange={setDomain}
         />
         <Button onClick={onSubmit} disabled={isLoading} children="Run" />
+        {children}
       </div>
       {hint && <span className="ml-1 dark:text-foregroundAccent">{hint}</span>}
     </div>
