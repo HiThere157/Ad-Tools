@@ -93,7 +93,7 @@ export default function AzureUserPage() {
     <article>
       <AadInputBar
         label="Azure User:"
-        hint="Hint: full user principal name is required (Eg.: kochda7@alcon.net)"
+        hint="Hint: full user principal name is required (Eg.: kochda7@example.com)"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}
