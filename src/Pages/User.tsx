@@ -66,7 +66,7 @@ export default function UserPage() {
         <Button
           classOverride="p-1"
           onClick={() => {
-            redirect("azureUser", { input: query.input });
+            redirect("azureUser", { input: `${query.input}@${query.domain}` });
           }}
         >
           <VscAzure />

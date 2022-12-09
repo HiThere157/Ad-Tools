@@ -29,7 +29,9 @@ const columns: { [key: string]: ColumnDefinition[] } = {
   printer: [
     { title: "Name", key: "Name", sortable: true },
     { title: "Location", key: "Location", sortable: true },
+    { title: "Status", key: "__friendlyStatus__", sortable: true },
     { title: "Comment", key: "Comment", sortable: true },
+    { title: "Job Count", key: "JobCount", sortable: true },
     { title: "Driver Name", key: "DriverName", sortable: true },
   ],
   extended: [

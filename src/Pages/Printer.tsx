@@ -4,7 +4,7 @@ import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
-import { makeToList } from "../Helper/postProcessors";
+import { replacePrinterStatus } from "../Helper/postProcessors";
 
 import AdInputBar from "../Components/InputBars/InputAd";
 import TableLayout from "../Layouts/TableLayout";
@@ -28,7 +28,7 @@ export default function PrinterPage() {
       args: {
         ComputerName: `${query.input}.${query.domain}`,
       },
-      postProcessor: makeToList,
+      postProcessor: replacePrinterStatus,
       callback: setPrinters,
     });
     setIsLoading(false);

@@ -102,7 +102,7 @@ export default function AzureUserPage() {
         <Button
           classOverride="p-1"
           onClick={() => {
-            redirect("user", { input: query.input });
+            redirect("user", { input: query.input.split("@")[0] });
           }}
         >
           <BsWindows />

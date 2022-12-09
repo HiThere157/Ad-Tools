@@ -122,6 +122,25 @@ async function prepareDNSResult(
   );
 }
 
+function replacePrinterStatus(
+  PrinterObject: { PrinterStatus: number } | { PrinterStatus: number }[],
+) {
+  return makeToList(PrinterObject).map((printer) => {
+    const statusLookup: { [key: number]: string } = {
+      0: "Normal",
+      1: "Paused",
+      2: "Error",
+    };
+
+    return {
+      ...printer,
+      __friendlyStatus__:
+        statusLookup[printer.PrinterStatus] ??
+        `Unknown (${printer.PrinterStatus})`,
+    };
+  });
+}
+
 function makeToList(AdObject: any[] | any): any[] {
   if (!Array.isArray(AdObject)) {
     return [AdObject];
@@ -136,5 +155,6 @@ export {
   getMembershipFromAdUser,
   replaceASCIIArray,
   prepareDNSResult,
+  replacePrinterStatus,
   makeToList,
 };
