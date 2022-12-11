@@ -60,8 +60,10 @@ const executeCommand = async (_event, { command, args, selectFields, useStaticSe
   }
 
   for (const char of whitelist[command].charWhitelist ?? []) {
+    // for reserved characters in regex, add another \ to the regex
     const wildcard = char.replace(/[*]/g, "\\$&");
     const regex = new RegExp(`\\\\${wildcard}`, "g");
+    // undo escaping from quote lib on whitelisted characters e.g. @ and *
     fullCommand = fullCommand.replace(regex, char);
   }
 
