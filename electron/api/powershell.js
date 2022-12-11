@@ -1,39 +1,7 @@
 const { PowerShell } = require("node-powershell");
 const { quote } = require("shell-quote");
+const whitelist = require("./powershell.wl");
 
-const allowedCommands = [
-  "Get-ADUser",
-  "Get-ADGroup",
-  "Get-ADGroupMember",
-  "Get-ADComputer",
-  "Get-WmiObject",
-  "Resolve-DnsName",
-  "Get-Printer",
-  "Clear-DnsClientCache",
-  "Connect-AzureAD",
-  "Get-AzureADCurrentSessionInfo",
-  "Get-AzureADUser",
-  "Get-AzureADUserMembership",
-  "Get-AzureADUserRegisteredDevice",
-  "Get-AzureADGroup",
-  "Get-AzureADGroupMember",
-  "Get-AzureADDevice",
-];
-const allowedArguments = [
-  "Filter",
-  "Identity",
-  "Server",
-  "Properties",
-  "Name",
-  "ClassName",
-  "Namespace",
-  "ComputerName",
-  "Type",
-  "Tenant",
-  "ObjectId",
-  "SearchString",
-  "All",
-];
 const remoteActions = {
   compmgmt: (target) =>
     `Start-Process compmgmt.msc -ArgumentList "/computer:${target}"`,
@@ -73,12 +41,14 @@ const executeCommand = async (
   _event,
   { command, args, selectFields, useStaticSession, json },
 ) => {
-  if (!allowedCommands.includes(command)) {
+  if (!Object.keys(whitelist).includes(command)) {
     return { error: `Invalid Command "${command}"` };
   }
-  for (const key in args) {
-    if (!allowedArguments.includes(key)) {
-      return { error: `Invalid Argument "${key}"` };
+  for (const argument in args) {
+    if (!whitelist[command].args.includes(argument)) {
+      return {
+        error: `Invalid Argument "${argument}" for command "${command}"`,
+      };
     }
   }
 
@@ -91,18 +61,18 @@ const executeCommand = async (
       .flat(),
   ]);
   if (selectFields.length > 0) {
-    fullCommand = `${fullCommand} | Select-Object ${quote([
-      selectFields.join(","),
-    ])}`;
+    const selectedFields = quote([selectFields.join(",")]).replace(/\\,/g, ",");
+    fullCommand = `${fullCommand} | Select-Object ${selectedFields}`;
   }
   if (json) {
     fullCommand = `${fullCommand} | ConvertTo-Json -Compress`;
   }
 
-  fullCommand = fullCommand.replace(/\\\*/g, "*"); // \* -> *
-  fullCommand = fullCommand.replace(/\\@/g, "@"); // \@ -> @
-  fullCommand = fullCommand.replace(/\\,/g, ","); // \, -> ,
-  fullCommand = fullCommand.replace(/\\\//g, "/"); // \/ -> /
+  for (const char of whitelist[command].charWhitelist) {
+    const wildcard = char.replace(/[*]/g, "\\$&");
+    const regex = new RegExp(`\\\\${wildcard}`, "g");
+    fullCommand = fullCommand.replace(regex, char);
+  }
 
   return await invokeWrapper({
     ps: useStaticSession ? staticSession : getSession(),
