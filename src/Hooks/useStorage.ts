@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-function useStorage(
+function useStorage<T>(
   storage: { getItem: Function; setItem: Function },
   key: string,
   initialValue: any,
-) {
+): [T, (value: T) => void] {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
-  const [storedValue, setStoredValue] = useState(() => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") {
       return initialValue;
     }
@@ -43,12 +43,18 @@ function useStorage(
   return [storedValue, setValue];
 }
 
-function useSessionStorage(key: string, initialValue: any) {
-  return [...useStorage(window.sessionStorage, key, initialValue), key];
+function useSessionStorage<T>(
+  key: string,
+  initialValue: any,
+): [T, (value: T) => void, string] {
+  return [...useStorage<T>(window.sessionStorage, key, initialValue), key];
 }
 
-function useLocalStorage(key: string, initialValue: any) {
-  return [...useStorage(window.localStorage, key, initialValue), key];
+function useLocalStorage<T>(
+  key: string,
+  initialValue: any,
+): [T, (value: T) => void, string] {
+  return [...useStorage<T>(window.localStorage, key, initialValue), key];
 }
 
 export { useSessionStorage, useLocalStorage };

@@ -63,6 +63,18 @@ type ComputerAction = "compmgmt" | "mstsc" | "powershell";
 
 type WinState = "minimize" | "maximize_restore" | "quit";
 
+export type AdQuery = {
+  input?: string;
+  domain?: string;
+};
+export type AadQuery = {
+  input?: string;
+  tenant?: string;
+};
+export type DnsQuery = {
+  input?: string;
+  type?: string;
+};
 export type ResultData = {
   output?: { [key: string]: any }[];
   error?: string;

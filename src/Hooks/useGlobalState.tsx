@@ -30,7 +30,7 @@ const GlobalStateProvider = ({
   children,
   value = {} as GlobalState,
 }: GlobalStateProviderProps) => {
-  const [state, setState] = useState(value);
+  const [state, setState] = useState<Partial<GlobalState>>(value);
   return (
     <GlobalStateContext.Provider value={{ state, setState }}>
       {children}

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
+import { ResultData } from "../Types/api";
+
 import { columns, commandDBConfig } from "../Config/default";
 import { setupIndexedDB, Store } from "../Helper/indexedDB";
 
@@ -10,16 +12,16 @@ import ScrollPosition from "../Components/ScrollPosition";
 
 export default function SearchPage() {
   const p = useLocation().pathname.substring(1);
-  const [history, setHistory] = useState({});
+  const [history, setHistory] = useState<ResultData>({});
 
   try {
     const db = setupIndexedDB(commandDBConfig);
     (async () => {
       const commandStore = new Store(db, "commands", "readonly");
-      const result = await commandStore.getAll<any>();
+      const result = await commandStore.getAll<object[]>();
       setHistory({ output: result.reverse() });
     })();
-  } catch (error) {
+  } catch (error: any) {
     setHistory({ output: [], error });
   }
 

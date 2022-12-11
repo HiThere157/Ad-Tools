@@ -1,8 +1,4 @@
-type ColumnDefinition = {
-  title: string;
-  key: string;
-  sortable: boolean;
-};
+import { ColumnDefinition } from "../Types/table";
 
 const dnsTypes: string[] = ["A_AAAA", "NS", "PTR", "MX", "ALL"];
 
@@ -88,4 +84,3 @@ const commandDBConfig = {
 };
 
 export { dnsTypes, columns, commandDBConfig };
-export type { ColumnDefinition };

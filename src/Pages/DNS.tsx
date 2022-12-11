@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
+import { DnsQuery, ResultData } from "../Types/api";
+
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { prepareDNSResult } from "../Helper/postProcessors";
@@ -17,10 +19,10 @@ import { BsDisplay } from "react-icons/bs";
 
 export default function DnsPage() {
   const p = useLocation().pathname.substring(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useSessionStorage(`${p}_query`, {});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [query, setQuery] = useSessionStorage<DnsQuery>(`${p}_query`, {});
 
-  const [results, setResults, resultsKey] = useSessionStorage(
+  const [results, setResults, resultsKey] = useSessionStorage<ResultData>(
     `${p}_results`,
     {},
   );

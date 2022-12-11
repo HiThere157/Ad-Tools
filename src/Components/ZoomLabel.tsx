@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { electronAPI } from "../Helper/makeAPICall";
 
 export default function ZoomLabel() {
-  const [visible, setVisibility] = useState(false);
+  const [visible, setVisibility] = useState<boolean>(false);
   const [zoom, setZoom] = useState<number>();
-  const [timeoutId, setTimeoutId] = useState(0);
+  const [timeoutId, setTimeoutId] = useState<number>(0);
 
   useEffect(() => {
     if (timeoutId) clearTimeout(timeoutId);

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
+import { AadQuery, ResultData } from "../Types/api";
+
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import {
@@ -22,24 +24,27 @@ import { BsWindows } from "react-icons/bs";
 
 export default function AzureUserPage() {
   const p = useLocation().pathname.substring(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useSessionStorage(`${p}_query`, {});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [query, setQuery] = useSessionStorage<AadQuery>(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(
+  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(
     `${p}_attribs`,
     {},
   );
-  const [ext, setExt, extKey] = useSessionStorage(`${p}_ext`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage(
+  const [ext, setExt, extKey] = useSessionStorage<ResultData>(`${p}_ext`, {});
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<ResultData>(
     `${p}_memberOf`,
     {},
   );
-  const [devices, setDevices, devicesKey] = useSessionStorage(
+  const [devices, setDevices, devicesKey] = useSessionStorage<ResultData>(
     `${p}_devices`,
     {},
   );
 
-  const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
+  const [reQuery, setReQuery] = useSessionStorage<boolean>(
+    `${p}_reQuery`,
+    false,
+  );
   useEffect(() => {
     if (reQuery) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -102,7 +107,7 @@ export default function AzureUserPage() {
         <Button
           classOverride="p-1"
           onClick={() => {
-            redirect("user", { input: query.input.split("@")[0] });
+            redirect("user", { input: query.input?.split("@")[0] });
           }}
         >
           <BsWindows />

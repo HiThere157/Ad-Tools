@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { AadQuery } from "../../Types/api";
+
 import { getTenants } from "../../Helper/getSavedConfig";
 
 import Input from "../Input";
@@ -10,7 +12,7 @@ type AadInputBarProps = {
   label: string;
   hint?: string;
   isLoading: boolean;
-  query: { input: string | undefined; tenant: string | undefined };
+  query: AadQuery;
   onChange: (query: {}) => any;
   onSubmit: () => any;
   children?: React.ReactNode;
@@ -25,8 +27,8 @@ export default function AadInputBar({
   children,
 }: AadInputBarProps) {
   const tenants = getTenants();
-  const [input, setInput] = useState(query.input ?? "");
-  const [tenant, setTenant] = useState(query.tenant ?? tenants[0]);
+  const [input, setInput] = useState<string>(query.input ?? "");
+  const [tenant, setTenant] = useState<string>(query.tenant ?? tenants[0]);
 
   useEffect(() => {
     onChange({ input, tenant });

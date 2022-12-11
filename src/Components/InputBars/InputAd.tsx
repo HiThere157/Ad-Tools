@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { AdQuery } from "../../Types/api";
+
 import { getDomains } from "../../Helper/getSavedConfig";
 
 import Input from "../Input";
@@ -10,7 +12,7 @@ type AdInputBarProps = {
   label: string;
   hint?: string;
   isLoading: boolean;
-  query: { input: string | undefined; domain: string | undefined };
+  query: AdQuery;
   onChange: (query: {}) => any;
   onSubmit: () => any;
   children?: React.ReactNode;
@@ -25,8 +27,8 @@ export default function AdInputBar({
   children,
 }: AdInputBarProps) {
   const [domains, setDomains] = useState<string[]>([]);
-  const [input, setInput] = useState(query.input ?? "");
-  const [domain, setDomain] = useState(query.domain);
+  const [input, setInput] = useState<string>(query.input ?? "");
+  const [domain, setDomain] = useState<string>(query.domain ?? domains[0]);
 
   useEffect(() => {
     onChange({ input, domain });

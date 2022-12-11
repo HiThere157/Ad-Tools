@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
+import { AadQuery, ResultData } from "../Types/api";
+
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { getPropertiesWrapper, makeToList } from "../Helper/postProcessors";
@@ -18,19 +20,22 @@ import { BsWindows } from "react-icons/bs";
 
 export default function AzureGroupPage() {
   const p = useLocation().pathname.substring(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useSessionStorage(`${p}_query`, {});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [query, setQuery] = useSessionStorage<AadQuery>(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage(
+  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(
     `${p}_attribs`,
     {},
   );
-  const [members, setMembers, membersKey] = useSessionStorage(
+  const [members, setMembers, membersKey] = useSessionStorage<ResultData>(
     `${p}_members`,
     {},
   );
 
-  const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
+  const [reQuery, setReQuery] = useSessionStorage<boolean>(
+    `${p}_reQuery`,
+    false,
+  );
   useEffect(() => {
     if (reQuery) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps

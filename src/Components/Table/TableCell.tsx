@@ -8,7 +8,7 @@ type TableCellProps = {
   text: any;
 };
 export default function TableCell({ text }: TableCellProps) {
-  const [stringText, setStringText] = useState("");
+  const [stringText, setStringText] = useState<string>("");
 
   useEffect(() => {
     setStringText(stringify(text));

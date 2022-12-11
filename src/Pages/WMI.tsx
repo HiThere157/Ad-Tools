@@ -18,27 +18,34 @@ import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
 import { BsDisplay } from "react-icons/bs";
+import { AdQuery, ResultData } from "../Types/api";
 
 export default function WMIPage() {
   const p = useLocation().pathname.substring(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useSessionStorage(`${p}_query`, {});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
-  const [monitors, setMonitors, monitorsKey] = useSessionStorage(
+  const [monitors, setMonitors, monitorsKey] = useSessionStorage<ResultData>(
     `${p}_monitors`,
     {},
   );
-  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage(
+  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage<ResultData>(
     `${p}_sysinfo`,
     {},
   );
-  const [software, setSoftware, softwareKey] = useSessionStorage(
+  const [software, setSoftware, softwareKey] = useSessionStorage<ResultData>(
     `${p}_software`,
     {},
   );
-  const [bios, setBios, biosKey] = useSessionStorage(`${p}_bios`, {});
+  const [bios, setBios, biosKey] = useSessionStorage<ResultData>(
+    `${p}_bios`,
+    {},
+  );
 
-  const [reQuery, setReQuery] = useSessionStorage(`${p}_reQuery`, false);
+  const [reQuery, setReQuery] = useSessionStorage<boolean>(
+    `${p}_reQuery`,
+    false,
+  );
   useEffect(() => {
     if (reQuery) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps

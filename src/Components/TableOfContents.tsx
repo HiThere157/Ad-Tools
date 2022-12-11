@@ -11,9 +11,9 @@ export default function TableOfContents() {
   const { pathname } = useLocation();
 
   const ref = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [headings, setHeadings] = useState<HTMLHeadElement[]>([]);
-  const [activeIndex, setActiveindex] = useState(0);
+  const [activeIndex, setActiveindex] = useState<number>(0);
 
   useEffect(() => {
     function handleClickOutside({ target }: MouseEvent) {

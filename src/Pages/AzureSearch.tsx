@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
+import { AadQuery, ResultData } from "../Types/api";
+
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { makeToList } from "../Helper/postProcessors";
@@ -15,12 +17,18 @@ import ScrollPosition from "../Components/ScrollPosition";
 
 export default function AzureSearchPage() {
   const p = useLocation().pathname.substring(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useSessionStorage(`${p}_query`, {});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [query, setQuery] = useSessionStorage<AadQuery>(`${p}_query`, {});
 
-  const [users, setUsers, usersKey] = useSessionStorage(`${p}_users`, {});
-  const [groups, setGroups, groupsKey] = useSessionStorage(`${p}_groups`, {});
-  const [devices, setDevices, devicesKey] = useSessionStorage(
+  const [users, setUsers, usersKey] = useSessionStorage<ResultData>(
+    `${p}_users`,
+    {},
+  );
+  const [groups, setGroups, groupsKey] = useSessionStorage<ResultData>(
+    `${p}_groups`,
+    {},
+  );
+  const [devices, setDevices, devicesKey] = useSessionStorage<ResultData>(
     `${p}_devices`,
     {},
   );

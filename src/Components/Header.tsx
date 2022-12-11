@@ -6,7 +6,7 @@ import WinControl from "./WinBar/WinControl";
 import TableOfContents from "./TableOfContents";
 
 export default function Header() {
-  const [user, setUser] = useState("/");
+  const [user, setUser] = useState<string>("/");
 
   useEffect(() => {
     (async () => {

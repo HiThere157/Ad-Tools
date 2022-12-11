@@ -23,9 +23,9 @@ export default function ActionMenu({
   onFilter,
   isFilterHighlighted,
 }: ActionMenuProps) {
-  const [isCopyHighlighted, setIsCopyHighlighted] = useState(false);
+  const [isCopyHighlighted, setIsCopyHighlighted] = useState<boolean>(false);
   const [isCopySelectionHighlighted, setIsCopySelectionHighlighted] =
-    useState(false);
+    useState<boolean>(false);
 
   const onCopyClick = () => {
     onCopy();

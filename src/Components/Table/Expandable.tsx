@@ -12,7 +12,7 @@ export default function Expandable({
   children,
   canExpand = true,
 }: ExpandableProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <>

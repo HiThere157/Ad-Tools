@@ -18,7 +18,7 @@ import {
 import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
 
 export default function NavBar() {
-  const [isOpen, setIsOpen] = useLocalStorage("main_isNavOpen", true);
+  const [isOpen, setIsOpen] = useLocalStorage<boolean>("main_isNavOpen", true);
 
   return (
     <nav

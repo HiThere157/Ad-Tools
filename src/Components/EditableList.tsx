@@ -10,8 +10,8 @@ type EditableListProps = {
   onChange: (newItems: string[]) => any;
 };
 export default function EditableList({ items, onChange }: EditableListProps) {
-  const [newItem, setNewItem] = useState("");
-  const [editingIndex, setEditingIndex] = useState(-1);
+  const [newItem, setNewItem] = useState<string>("");
+  const [editingIndex, setEditingIndex] = useState<number>(-1);
 
   const itemChange = (value: string, index: number) => {
     const newItems = items.slice();

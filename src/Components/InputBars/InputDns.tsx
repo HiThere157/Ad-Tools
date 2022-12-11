@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { DnsQuery } from "../../Types/api";
+
 import { dnsTypes } from "../../Config/default";
 import { makeAPICall } from "../../Helper/makeAPICall";
 import { useGlobalState } from "../../Hooks/useGlobalState";
@@ -12,7 +14,7 @@ import Button from "../Button";
 type DnsInputBarProps = {
   label: string;
   isLoading: boolean;
-  query: { input: string | undefined; type: string | undefined };
+  query: DnsQuery;
   onChange: (query: {}) => any;
   onSubmit: () => any;
   children?: React.ReactNode;
@@ -26,8 +28,8 @@ export default function DnsInputBar({
   children,
 }: DnsInputBarProps) {
   const { setState } = useGlobalState();
-  const [input, setInput] = useState(query.input ?? "");
-  const [type, setType] = useState(query.type ?? dnsTypes[0]);
+  const [input, setInput] = useState<string>(query.input ?? "");
+  const [type, setType] = useState<string>(query.type ?? dnsTypes[0]);
 
   useEffect(() => {
     onChange({ input, type });

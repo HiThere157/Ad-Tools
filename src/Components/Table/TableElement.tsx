@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { ColumnDefinition } from "../../Config/default";
+import { ColumnDefinition } from "../../Types/table";
 import { EntryArray } from "../../Helper/array";
 
 import Button from "../Button";

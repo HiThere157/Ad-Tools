@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { electronAPI } from "../Helper/makeAPICall";
 
 export default function Footer() {
-  const [version, setVersion] = useState("");
+  const [version, setVersion] = useState<string>("");
 
   useEffect(() => {
     (async () => {

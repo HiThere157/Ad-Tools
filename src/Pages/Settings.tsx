@@ -10,8 +10,8 @@ import EditableList from "../Components/EditableList";
 
 export default function GroupPage() {
   const { setState } = useGlobalState();
-  const [domains, setDomains] = useLocalStorage("conf_domains", []);
-  const [tenants, setTenants] = useLocalStorage("conf_tenants", []);
+  const [domains, setDomains] = useLocalStorage<string[]>("conf_domains", []);
+  const [tenants, setTenants] = useLocalStorage<string[]>("conf_tenants", []);
 
   const clearSession = () => {
     window.sessionStorage.clear();

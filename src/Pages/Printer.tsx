@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
+import { AdQuery, ResultData } from "../Types/api";
+
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { replacePrinterStatus } from "../Helper/postProcessors";
@@ -13,10 +15,10 @@ import ScrollPosition from "../Components/ScrollPosition";
 
 export default function PrinterPage() {
   const p = useLocation().pathname.substring(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useSessionStorage(`${p}_query`, {});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
-  const [printers, setPrinters, printersKey] = useSessionStorage(
+  const [printers, setPrinters, printersKey] = useSessionStorage<ResultData>(
     `${p}_printers`,
     {},
   );

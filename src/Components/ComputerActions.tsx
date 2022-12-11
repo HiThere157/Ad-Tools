@@ -15,7 +15,7 @@ type ComputerActionsProps = {
 };
 export default function ComputerActions({ fqdn }: ComputerActionsProps) {
   const { setState } = useGlobalState();
-  const [useCurrentUser, setUseCurrentUser] = useLocalStorage(
+  const [useCurrentUser, setUseCurrentUser] = useLocalStorage<boolean>(
     "actions_useCurrentUser",
     true,
   );

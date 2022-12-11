@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { useLocalStorage } from "../../Hooks/useStorage";
-import { ColumnDefinition } from "../../Config/default";
+
+import { ColumnDefinition, Filter } from "../../Types/table";
 
 import Checkbox from "../Checkbox";
 import Input from "../Input";
@@ -7,13 +9,12 @@ import Dropdown from "../Dropdown";
 import Button from "../Button";
 
 import { BsFillPencilFill, BsPlusLg, BsFillTrashFill } from "react-icons/bs";
-import { useEffect, useState } from "react";
 
 type FilterMenuProps = {
   isOpen: boolean;
   columns: ColumnDefinition[];
-  filter: { [key: string]: string };
-  onFilterChange: (newFilter: { [key: string]: string }) => any;
+  filter: Filter;
+  onFilterChange: (newFilter: Filter) => any;
   currentSavedFilter: string;
   setCurrentSavedFilter: (value: string) => any;
 };
@@ -25,11 +26,10 @@ export default function FilterMenu({
   currentSavedFilter,
   setCurrentSavedFilter,
 }: FilterMenuProps) {
-  const [savedFilters, setSavedFilters] = useLocalStorage(
-    "conf_savedFilters",
-    {},
-  );
-  const [isEditing, setIsEditing] = useState(false);
+  const [savedFilters, setSavedFilters] = useLocalStorage<{
+    [key: string]: Filter;
+  }>("conf_savedFilters", {});
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   // when exiting edit mode, save empty names as "untitled"
   // prevent name collision
