@@ -9,7 +9,6 @@ module.exports = {
   },
   "Get-ADGroupMember": {
     args: ["Identity", "Server"],
-    charWhitelist: [],
   },
   "Get-ADComputer": {
     args: ["Identity", "Filter", "Server", "Properties"],
@@ -17,27 +16,21 @@ module.exports = {
   },
   "Get-WmiObject": {
     args: ["ClassName", "Namespace", "ComputerName"],
-    charWhitelist: [],
   },
   "Resolve-DnsName": {
     args: ["Name", "Type"],
-    charWhitelist: [],
   },
   "Get-Printer": {
     args: ["ComputerName"],
-    charWhitelist: [],
   },
   "Clear-DnsClientCache": {
     args: [],
-    charWhitelist: [],
   },
   "Connect-AzureAD": {
     args: ["Tenant"],
-    charWhitelist: [],
   },
   "Get-AzureADCurrentSessionInfo": {
     args: [],
-    charWhitelist: [],
   },
   "Get-AzureADUser": {
     args: ["ObjectId", "SearchString", "All"],
@@ -53,14 +46,11 @@ module.exports = {
   },
   "Get-AzureADGroup": {
     args: ["ObjectId", "SearchString", "All"],
-    charWhitelist: [],
   },
   "Get-AzureADGroupMember": {
     args: ["ObjectId", "All"],
-    charWhitelist: [],
   },
   "Get-AzureADDevice": {
     args: ["ObjectId", "SearchString", "All"],
-    charWhitelist: [],
   },
 };

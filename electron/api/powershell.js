@@ -68,7 +68,7 @@ const executeCommand = async (
     fullCommand = `${fullCommand} | ConvertTo-Json -Compress`;
   }
 
-  for (const char of whitelist[command].charWhitelist) {
+  for (const char of whitelist[command].charWhitelist ?? []) {
     const wildcard = char.replace(/[*]/g, "\\$&");
     const regex = new RegExp(`\\\\${wildcard}`, "g");
     fullCommand = fullCommand.replace(regex, char);
