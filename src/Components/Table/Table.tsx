@@ -3,7 +3,7 @@ import { useLocalStorage, useSessionStorage } from "../../Hooks/useStorage";
 
 import { ColumnDefinition, Filter } from "../../Types/table";
 
-import { ResultData } from "../../Types/api";
+import { Entry, ResultData } from "../../Types/api";
 import stringify from "../../Helper/stringify";
 
 import TableElement from "./TableElement";
@@ -18,7 +18,7 @@ type TableProps = {
   name: string;
   columns: ColumnDefinition[];
   data: ResultData;
-  onRedirect?: (entry: { [key: string]: any }) => any;
+  onRedirect?: (entry: Entry) => any;
   isLoading?: boolean;
 };
 export default function Table({

@@ -75,8 +75,10 @@ export type DnsQuery = {
   input?: string;
   type?: string;
 };
+
+export type Entry = { [key: string]: any };
 export type ResultData = {
-  output?: { [key: string]: any }[];
+  output?: Entry[];
   error?: string;
 };
 export type ResultDataString = {

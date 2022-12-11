@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
-import { ColumnDefinition } from "../../Types/table";
+import { Entry } from "../../Types/api";
+import { ColumnDefinition, Filter } from "../../Types/table";
 import { EntryArray } from "../../Helper/array";
 
 import Button from "../Button";
@@ -11,16 +12,16 @@ import RedirectButton from "./RedirectButton";
 import { BsCaretDownFill } from "react-icons/bs";
 
 type TableElementProps = {
-  entries?: { [key: string]: any }[];
+  entries?: Entry[];
   columns: ColumnDefinition[];
   sortDesc: boolean;
   sortedColumn: string;
-  filter: { [key: string]: string };
+  filter: Filter;
   onFilter: (n: number) => void;
   selected: number[];
   onSelectedChange: (newSelected: number[]) => any;
   onHeaderClick: (header: string) => any;
-  onRedirect?: (entry: { [key: string]: any }) => any;
+  onRedirect?: (entry: Entry) => any;
 };
 export default function TableElement({
   entries = [],

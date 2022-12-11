@@ -1,10 +1,10 @@
-import { ElectronAPI } from "../Types/api";
+import { ElectronAPI, Entry } from "../Types/api";
 
 // Wrap all Properties in {key: [key], value: [value]} objects (attributes table)
 function getPropertiesWrapper(Obj: {
   PropertyNames?: string[];
   [key: string]: any;
-}): { [key: string]: any } {
+}): Entry {
   const properties = Obj.PropertyNames ?? Object.keys(Obj);
   return properties.map((property) => {
     return { key: property, value: Obj[property] };
@@ -13,7 +13,7 @@ function getPropertiesWrapper(Obj: {
 function getWMIPropertiesWrapper(Obj: {
   Properties: { Name: string }[];
   [key: string]: any;
-}): { [key: string]: any } {
+}): Entry {
   const properties = Obj.Properties.map((property) => property.Name);
   return properties.map((property) => {
     return { key: property, value: Obj[property] };
@@ -22,7 +22,7 @@ function getWMIPropertiesWrapper(Obj: {
 
 function getExtensionsFromAadUser(Adbject: {
   ExtensionProperty: { [key: string]: string };
-}): { [key: string]: any } {
+}): Entry {
   return getPropertiesWrapper(Adbject.ExtensionProperty);
 }
 

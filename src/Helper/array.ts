@@ -1,7 +1,9 @@
+import { Entry } from "../Types/api";
+
 import stringify from "./stringify";
 
 class EntryArray {
-  constructor(public array: { [key: string]: any }[]) {}
+  constructor(public array: Entry[]) {}
 
   tagArray = () => {
     // add a unique __id__ field to every entry. used to track selected entries
