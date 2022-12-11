@@ -8,8 +8,7 @@ Object.assign(console, log.functions);
 
 // configure electron-builder autoUpdater
 autoUpdater.allowDowngrade = true;
-autoUpdater.allowPrerelease =
-  process.env.AD_TOOLS_PRERELEASE === "true" ? true : false;
+autoUpdater.allowPrerelease = process.env.AD_TOOLS_PRERELEASE === "true" ? true : false;
 autoUpdater.checkForUpdatesAndNotify();
 
 const {

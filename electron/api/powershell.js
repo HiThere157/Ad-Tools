@@ -3,19 +3,13 @@ const { quote } = require("shell-quote");
 const whitelist = require("./powershell.wl");
 
 const remoteActions = {
-  compmgmt: (target) =>
-    `Start-Process compmgmt.msc -ArgumentList "/computer:${target}"`,
+  compmgmt: (target) => `Start-Process compmgmt.msc -ArgumentList "/computer:${target}"`,
   mstsc: (target) => `Start-Process mstsc.exe -ArgumentList "/v:${target}"`,
   powershell: (target) =>
     `Start-Process powershell -ArgumentList '-NoExit -Command "Enter-PSSession ${target}"'`,
 };
 
-const invokeWrapper = async ({
-  ps,
-  fullCommand,
-  json = false,
-  dispose = true,
-}) => {
+const invokeWrapper = async ({ ps, fullCommand, json = false, dispose = true }) => {
   try {
     const output = await ps.invoke(fullCommand);
     if (!json) return { output: output.raw };
@@ -37,10 +31,7 @@ const getSession = () => {
 };
 const staticSession = getSession();
 
-const executeCommand = async (
-  _event,
-  { command, args, selectFields, useStaticSession, json },
-) => {
+const executeCommand = async (_event, { command, args, selectFields, useStaticSession, json }) => {
   if (!Object.keys(whitelist).includes(command)) {
     return { error: `Invalid Command "${command}"` };
   }
@@ -85,8 +76,7 @@ const executeCommand = async (
 const getExecutingUser = async () => {
   return await invokeWrapper({
     ps: getSession(),
-    fullCommand:
-      "[System.Security.Principal.WindowsIdentity]::GetCurrent().Name",
+    fullCommand: "[System.Security.Principal.WindowsIdentity]::GetCurrent().Name",
   });
 };
 

@@ -21,11 +21,7 @@ export default function Header() {
       className="winbar-drag-region select-none flex justify-between border-b-2 dark:bg-secondaryBg dark:border-primaryBorder"
     >
       <div className="flex items-center">
-        <img
-          src="./icon.svg"
-          alt="AD Tools Logo"
-          className="mx-[1.1rem] h-6"
-        ></img>
+        <img src="./icon.svg" alt="AD Tools Logo" className="mx-[1.1rem] h-6"></img>
         <div className="flex space-x-3 items-center whitespace-nowrap">
           <span className="font-bold text-xl">AD Tools</span>
           <span className="dark:text-foregroundAccent">{user}</span>

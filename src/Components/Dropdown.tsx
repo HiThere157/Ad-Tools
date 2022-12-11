@@ -10,12 +10,7 @@ type DropdownProps = {
   disabled?: boolean;
   onChange: (value: string) => any;
 };
-export default function Dropdown({
-  items,
-  value,
-  disabled = false,
-  onChange,
-}: DropdownProps) {
+export default function Dropdown({ items, value, disabled = false, onChange }: DropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -41,9 +36,7 @@ export default function Dropdown({
       <Button onClick={() => setIsOpen(!isOpen)} disabled={disabled}>
         <div className="flex items-center h-6">
           {value}
-          <BsCaretDownFill
-            className={"ml-2 text-base " + (isOpen ? "rotate-180" : "")}
-          />
+          <BsCaretDownFill className={"ml-2 text-base " + (isOpen ? "rotate-180" : "")} />
         </div>
       </Button>
       <div className={isOpen ? "scale-100" : "scale-0"}>

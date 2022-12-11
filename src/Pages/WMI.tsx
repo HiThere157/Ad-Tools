@@ -4,11 +4,7 @@ import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
-import {
-  replaceASCIIArray,
-  getWMIPropertiesWrapper,
-  makeToList,
-} from "../Helper/postProcessors";
+import { replaceASCIIArray, getWMIPropertiesWrapper, makeToList } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
 import AdInputBar from "../Components/InputBars/InputAd";
@@ -25,27 +21,12 @@ export default function WMIPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
-  const [monitors, setMonitors, monitorsKey] = useSessionStorage<ResultData>(
-    `${p}_monitors`,
-    {},
-  );
-  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage<ResultData>(
-    `${p}_sysinfo`,
-    {},
-  );
-  const [software, setSoftware, softwareKey] = useSessionStorage<ResultData>(
-    `${p}_software`,
-    {},
-  );
-  const [bios, setBios, biosKey] = useSessionStorage<ResultData>(
-    `${p}_bios`,
-    {},
-  );
+  const [monitors, setMonitors, monitorsKey] = useSessionStorage<ResultData>(`${p}_monitors`, {});
+  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage<ResultData>(`${p}_sysinfo`, {});
+  const [software, setSoftware, softwareKey] = useSessionStorage<ResultData>(`${p}_software`, {});
+  const [bios, setBios, biosKey] = useSessionStorage<ResultData>(`${p}_bios`, {});
 
-  const [reQuery, setReQuery] = useSessionStorage<boolean>(
-    `${p}_reQuery`,
-    false,
-  );
+  const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
     if (reQuery) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,10 +90,7 @@ export default function WMIPage() {
           onChange={setQuery}
           onSubmit={runQuery}
         >
-          <Button
-            classOverride="p-1"
-            onClick={() => redirect("computer", query)}
-          >
+          <Button classOverride="p-1" onClick={() => redirect("computer", query)}>
             <BsDisplay />
           </Button>
         </AdInputBar>

@@ -22,11 +22,7 @@ export default function ComputerActions({ fqdn }: ComputerActionsProps) {
 
   const run = async (action: ComputerAction, friendlyName: string) => {
     try {
-      const result = await electronAPI?.startComputerAction(
-        action,
-        fqdn,
-        useCurrentUser,
-      );
+      const result = await electronAPI?.startComputerAction(action, fqdn, useCurrentUser);
 
       if (!result) {
         throw new Error("electronAPI not exposed.");

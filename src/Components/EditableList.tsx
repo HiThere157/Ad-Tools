@@ -81,11 +81,7 @@ export default function EditableList({ items, onChange }: EditableListProps) {
         })}
         <tr>
           <td colSpan={2}>
-            <Input
-              value={newItem}
-              onChange={setNewItem}
-              onEnter={addItem}
-            ></Input>
+            <Input value={newItem} onChange={setNewItem} onEnter={addItem}></Input>
           </td>
           <td>
             <Button classOverride="p-1.5 text-xs" onClick={addItem}>

@@ -42,16 +42,10 @@ export default function DnsInputBar({
     });
 
     if (result.error) {
-      addMessage(
-        { type: "error", message: "failed to clear DNS cache" },
-        setState,
-      );
+      addMessage({ type: "error", message: "failed to clear DNS cache" }, setState);
       return;
     }
-    addMessage(
-      { type: "info", message: "cleared DNS cache", timer: 7 },
-      setState,
-    );
+    addMessage({ type: "info", message: "cleared DNS cache", timer: 7 }, setState);
   };
 
   return (
@@ -64,17 +58,8 @@ export default function DnsInputBar({
         onChange={setInput}
         onEnter={onSubmit}
       />
-      <Dropdown
-        items={dnsTypes}
-        value={type}
-        disabled={isLoading}
-        onChange={setType}
-      />
-      <Button
-        onClick={clearCache}
-        disabled={isLoading}
-        children="Clear Cache"
-      />
+      <Dropdown items={dnsTypes} value={type} disabled={isLoading} onChange={setType} />
+      <Button onClick={clearCache} disabled={isLoading} children="Clear Cache" />
       <Button onClick={onSubmit} disabled={isLoading} children="Run" />
       {children}
     </div>

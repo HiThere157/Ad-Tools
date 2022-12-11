@@ -8,10 +8,7 @@ type ExpandableProps = {
   children: React.ReactNode;
   canExpand?: boolean;
 };
-export default function Expandable({
-  children,
-  canExpand = true,
-}: ExpandableProps) {
+export default function Expandable({ children, canExpand = true }: ExpandableProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -34,9 +31,7 @@ export default function Expandable({
             children
           ) : (
             <div className="flex items-center">
-              <span className="dark:text-foregroundAccent">
-                Expand to view full Object
-              </span>
+              <span className="dark:text-foregroundAccent">Expand to view full Object</span>
             </div>
           )}
         </div>

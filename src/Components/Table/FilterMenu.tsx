@@ -40,9 +40,10 @@ export default function FilterMenu({
     while (Object.keys(savedFilters).includes(newUniqueName)) {
       newUniqueName = `_${newUniqueName}`;
     }
-    const newFilterEntries = Object.entries(savedFilters).map(
-      ([name, filter]) => [name === "" ? newUniqueName : name, filter],
-    );
+    const newFilterEntries = Object.entries(savedFilters).map(([name, filter]) => [
+      name === "" ? newUniqueName : name,
+      filter,
+    ]);
     setSavedFilters(Object.fromEntries(newFilterEntries));
 
     if (currentSavedFilter === "") setCurrentSavedFilter(newUniqueName);
@@ -57,9 +58,7 @@ export default function FilterMenu({
   // update the filter for the current editing saved filter
   const updateFilter = (key: string, filterString: string) => {
     const newFilter = { ...filter, [key]: filterString.trim() };
-    Object.keys(newFilter).forEach(
-      (key) => newFilter[key] === "" && delete newFilter[key],
-    );
+    Object.keys(newFilter).forEach((key) => newFilter[key] === "" && delete newFilter[key]);
 
     if (isEditing) {
       const newSavedFilters = { ...savedFilters };
@@ -79,12 +78,10 @@ export default function FilterMenu({
     while (Object.keys(savedFilters).includes(newUniqueName)) {
       newUniqueName = `_${newUniqueName}`;
     }
-    const newFilterEntries = Object.entries(savedFilters).map(
-      ([name, filter]) => [
-        name === currentSavedFilter ? newUniqueName : name,
-        filter,
-      ],
-    );
+    const newFilterEntries = Object.entries(savedFilters).map(([name, filter]) => [
+      name === currentSavedFilter ? newUniqueName : name,
+      filter,
+    ]);
 
     setSavedFilters(Object.fromEntries(newFilterEntries));
     setCurrentSavedFilter(newUniqueName);
@@ -155,10 +152,7 @@ export default function FilterMenu({
                   <Checkbox
                     checked={filter.__selected__ === "true"}
                     onChange={() =>
-                      updateFilter(
-                        "__selected__",
-                        filter.__selected__ !== "true" ? "true" : "",
-                      )
+                      updateFilter("__selected__", filter.__selected__ !== "true" ? "true" : "")
                     }
                     disabled={!isEditing && currentSavedFilter !== "No Preset"}
                   />
@@ -168,20 +162,14 @@ export default function FilterMenu({
                 return (
                   <tr key={index}>
                     <td>
-                      <span className="mr-1 whitespace-nowrap">
-                        {column.title}:
-                      </span>
+                      <span className="mr-1 whitespace-nowrap">{column.title}:</span>
                     </td>
                     <td>
                       <Input
                         value={filter[column.key]}
-                        onChange={(filterString: string) =>
-                          updateFilter(column.key, filterString)
-                        }
+                        onChange={(filterString: string) => updateFilter(column.key, filterString)}
                         classOverride="min-w-30"
-                        disabled={
-                          !isEditing && currentSavedFilter !== "No Preset"
-                        }
+                        disabled={!isEditing && currentSavedFilter !== "No Preset"}
                       />
                     </td>
                   </tr>

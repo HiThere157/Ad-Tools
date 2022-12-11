@@ -1,10 +1,7 @@
 import { ElectronAPI, Entry } from "../Types/api";
 
 // Wrap all Properties in {key: [key], value: [value]} objects (attributes table)
-function getPropertiesWrapper(Obj: {
-  PropertyNames?: string[];
-  [key: string]: any;
-}): Entry {
+function getPropertiesWrapper(Obj: { PropertyNames?: string[]; [key: string]: any }): Entry {
   const properties = Obj.PropertyNames ?? Object.keys(Obj);
   return properties.map((property) => {
     return { key: property, value: Obj[property] };
@@ -43,9 +40,7 @@ function getMembershipFromAdUser(AdObject: {
   });
 }
 
-function replaceASCIIArray(
-  MonitorWMI: { [key: string]: string } | { [key: string]: string }[],
-) {
+function replaceASCIIArray(MonitorWMI: { [key: string]: string } | { [key: string]: string }[]) {
   const keysToReplace = ["UserFriendlyName", "SerialNumberID"];
 
   const asciiToString = (asciiArray: number[]) => {
@@ -69,9 +64,7 @@ function replaceASCIIArray(
   });
 }
 
-async function prepareDNSResult(
-  DNSObjects: { Type: number } | { Type: number }[],
-): Promise<
+async function prepareDNSResult(DNSObjects: { Type: number } | { Type: number }[]): Promise<
   {
     Type: number;
     __friendlyType__: string;
@@ -104,17 +97,14 @@ async function prepareDNSResult(
       }
 
       if (["A", "NS", "AAAA", "PTR"].includes(typeLookup[record.Type]?.l)) {
-        connection = (
-          await (window as ElectronAPI).electronAPI?.probeConnection(result)
-        )?.output
+        connection = (await (window as ElectronAPI).electronAPI?.probeConnection(result))?.output
           ? "True"
           : "False";
       }
 
       return {
         ...record,
-        __friendlyType__:
-          typeLookup[record.Type]?.l ?? `Unknown (${record.Type})`,
+        __friendlyType__: typeLookup[record.Type]?.l ?? `Unknown (${record.Type})`,
         __result__: result,
         __connection__: connection,
       };
@@ -135,8 +125,7 @@ function replacePrinterStatus(
     return {
       ...printer,
       __friendlyStatus__:
-        statusLookup[printer.PrinterStatus] ??
-        `Unknown (${printer.PrinterStatus})`,
+        statusLookup[printer.PrinterStatus] ?? `Unknown (${printer.PrinterStatus})`,
     };
   });
 }

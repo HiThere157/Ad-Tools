@@ -6,10 +6,7 @@ type RedirectButtonProps = {
   isVisible: boolean;
   onClick: () => any;
 };
-export default function RedirectButton({
-  isVisible,
-  onClick,
-}: RedirectButtonProps) {
+export default function RedirectButton({ isVisible, onClick }: RedirectButtonProps) {
   return (
     <>
       {isVisible && (

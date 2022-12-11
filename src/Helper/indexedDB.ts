@@ -17,9 +17,7 @@ class Store {
   ) {}
 
   async getStore() {
-    return (await this.db)
-      .transaction(this.store, this.mode)
-      .objectStore(this.store);
+    return (await this.db).transaction(this.store, this.mode).objectStore(this.store);
   }
 
   handleRequest(request: IDBRequest, onsuccess: Function, onerror: Function) {

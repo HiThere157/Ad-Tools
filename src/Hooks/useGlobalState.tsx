@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useState,
-  useContext,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { createContext, useState, useContext, Dispatch, SetStateAction } from "react";
 
 type Message = {
   timestamp?: number;
@@ -26,10 +20,7 @@ type GlobalStateProviderProps = {
   children: React.ReactNode;
   value?: Partial<GlobalState>;
 };
-const GlobalStateProvider = ({
-  children,
-  value = {} as GlobalState,
-}: GlobalStateProviderProps) => {
+const GlobalStateProvider = ({ children, value = {} as GlobalState }: GlobalStateProviderProps) => {
   const [state, setState] = useState<Partial<GlobalState>>(value);
   return (
     <GlobalStateContext.Provider value={{ state, setState }}>

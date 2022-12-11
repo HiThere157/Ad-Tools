@@ -47,10 +47,7 @@ export default function Checkbox({
         />
       </label>
       {label && (
-        <span
-          className={"ml-2 whitespace-nowrap cursor-pointer"}
-          onClick={() => onChange()}
-        >
+        <span className={"ml-2 whitespace-nowrap cursor-pointer"} onClick={() => onChange()}>
           {label}
         </span>
       )}

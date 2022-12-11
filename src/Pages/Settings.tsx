@@ -15,32 +15,20 @@ export default function GroupPage() {
 
   const clearSession = () => {
     window.sessionStorage.clear();
-    addMessage(
-      { type: "info", message: "cleared session storage", timer: 7 },
-      setState,
-    );
+    addMessage({ type: "info", message: "cleared session storage", timer: 7 }, setState);
   };
   const clearLocal = () => {
     window.localStorage.clear();
-    addMessage(
-      { type: "info", message: "cleared local storage", timer: 7 },
-      setState,
-    );
+    addMessage({ type: "info", message: "cleared local storage", timer: 7 }, setState);
   };
   const clearIndexedDB = async () => {
     try {
       const db = setupIndexedDB(commandDBConfig);
       const commandStore = new Store(db, "commands", "readwrite");
       commandStore.deleteAll();
-      addMessage(
-        { type: "info", message: "cleared indexedDB", timer: 7 },
-        setState,
-      );
+      addMessage({ type: "info", message: "cleared indexedDB", timer: 7 }, setState);
     } catch {
-      addMessage(
-        { type: "error", message: "failed to clear indexedDB" },
-        setState,
-      );
+      addMessage({ type: "error", message: "failed to clear indexedDB" }, setState);
     }
   };
 
@@ -60,10 +48,7 @@ export default function GroupPage() {
   return (
     <article className="flex flex-col space-y-5">
       <section>
-        <h2
-          className="text-2xl font-bold mb-1"
-          style={{ scrollMarginTop: "60px" }}
-        >
+        <h2 className="text-2xl font-bold mb-1" style={{ scrollMarginTop: "60px" }}>
           Settings
         </h2>
         <div className="flex flex-wrap justify-evenly gap-5">
@@ -86,18 +71,14 @@ export default function GroupPage() {
               }}
             />
             <span className="w-80 mt-1 text-right dark:text-foregroundAccent">
-              Specifying tenants is only necessary if your account can access
-              multiple tenants
+              Specifying tenants is only necessary if your account can access multiple tenants
             </span>
           </div>
         </div>
       </section>
 
       <section>
-        <h2
-          className="text-2xl font-bold mb-1"
-          style={{ scrollMarginTop: "60px" }}
-        >
+        <h2 className="text-2xl font-bold mb-1" style={{ scrollMarginTop: "60px" }}>
           Storage
         </h2>
         <div className="grid grid-cols-3 gap-4">

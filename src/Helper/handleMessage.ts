@@ -9,10 +9,7 @@ const addMessage = (
   const append = (prev: Partial<GlobalState>, message: Message) => {
     if (
       message.skipIfExists &&
-      prev.messages?.some(
-        (existingMessage: Message) =>
-          existingMessage.message === message.message,
-      )
+      prev.messages?.some((existingMessage: Message) => existingMessage.message === message.message)
     ) {
       return prev.messages;
     }
@@ -32,9 +29,7 @@ const removeMessage = (
 ) => {
   callback((prev) => ({
     ...prev,
-    messages: (prev.messages ?? []).filter(
-      (message) => message.timestamp !== timestamp,
-    ),
+    messages: (prev.messages ?? []).filter((message) => message.timestamp !== timestamp),
   }));
 };
 

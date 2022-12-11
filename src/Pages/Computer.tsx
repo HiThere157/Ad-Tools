@@ -29,19 +29,10 @@ export default function ComputerPage() {
   const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
   const [dns, setDNS, dnsKey] = useSessionStorage<ResultData>(`${p}_dns`, {});
-  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(
-    `${p}_attribs`,
-    {},
-  );
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<ResultData>(
-    `${p}_memberOf`,
-    {},
-  );
+  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(`${p}_attribs`, {});
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<ResultData>(`${p}_memberOf`, {});
 
-  const [reQuery, setReQuery] = useSessionStorage<boolean>(
-    `${p}_reQuery`,
-    false,
-  );
+  const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
     if (reQuery) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,13 +91,7 @@ export default function ComputerPage() {
         <ComputerActions fqdn={`${query.input}.${query.domain}`} />
       </div>
       <TableLayout>
-        <Table
-          title="DNS"
-          name={dnsKey}
-          columns={columns.dns}
-          data={dns}
-          isLoading={isLoading}
-        />
+        <Table title="DNS" name={dnsKey} columns={columns.dns} data={dns} isLoading={isLoading} />
         <Table
           title="Computer Attributes"
           name={attribsKey}

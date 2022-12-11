@@ -43,10 +43,7 @@ class EntryArray {
           .split("|")
           .map((value: string) => {
             const wildcard = value.replace(/[.+^${}()|[\]\\]/g, "\\$&");
-            const regex = new RegExp(
-              `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
-              "i",
-            );
+            const regex = new RegExp(`^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`, "i");
             return regex.test(stringify(entry[key], false));
           })
           .some((match) => match);

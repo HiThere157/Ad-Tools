@@ -23,15 +23,9 @@ export default function AzureDevicePage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AadQuery>(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(
-    `${p}_attribs`,
-    {},
-  );
+  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(`${p}_attribs`, {});
 
-  const [reQuery, setReQuery] = useSessionStorage<boolean>(
-    `${p}_reQuery`,
-    false,
-  );
+  const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
     if (reQuery) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps

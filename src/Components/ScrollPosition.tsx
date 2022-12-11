@@ -8,10 +8,7 @@ type ScrollPositionProps = {
 export default function ScrollPosition({ name }: ScrollPositionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation();
-  const [scrollPos, setScrollPos] = useSessionStorage<number>(
-    `${name}_scroll`,
-    0,
-  );
+  const [scrollPos, setScrollPos] = useSessionStorage<number>(`${name}_scroll`, 0);
 
   useEffect(() => {
     const callback = ({ target }: Event) => {

@@ -48,10 +48,7 @@ type TableOfContentsBodyProps = {
   headings: HTMLHeadElement[];
   activeIndex: number;
 };
-function TableOfContentsBody({
-  headings,
-  activeIndex,
-}: TableOfContentsBodyProps) {
+function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps) {
   return (
     <div className="container absolute right-0 w-max mt-1 p-2">
       <span className="block text-xl mb-1">Table of Contents</span>
@@ -62,17 +59,13 @@ function TableOfContentsBody({
               key={index}
               className={
                 "flex items-center space-x-1 cursor-pointer py-0.5 " +
-                (index === activeIndex
-                  ? "dark:text-foreground"
-                  : "dark:text-foregroundAccent")
+                (index === activeIndex ? "dark:text-foreground" : "dark:text-foregroundAccent")
               }
             >
               <span>
                 <BsHash className="scale-125" />
               </span>
-              <span onClick={() => heading.scrollIntoView()}>
-                {heading.innerText}
-              </span>
+              <span onClick={() => heading.scrollIntoView()}>{heading.innerText}</span>
             </div>
           );
         })}

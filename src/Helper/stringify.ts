@@ -1,14 +1,8 @@
-export default function stringify(
-  any: any,
-  prettyJson: boolean = true,
-): string {
+export default function stringify(any: any, prettyJson: boolean = true): string {
   const string = toStr(any, prettyJson);
   return string.replace(/\/Date\(([0-9]+)\)\//g, (matched) => {
     const timestamp = matched.substring(6, matched.length - 2);
-    return new Date(Number(timestamp))
-      .toISOString()
-      .replace("T", " ")
-      .replace("Z", " UTC");
+    return new Date(Number(timestamp)).toISOString().replace("T", " ").replace("Z", " UTC");
   });
 }
 

@@ -18,10 +18,7 @@ export default function PrinterPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
-  const [printers, setPrinters, printersKey] = useSessionStorage<ResultData>(
-    `${p}_printers`,
-    {},
-  );
+  const [printers, setPrinters, printersKey] = useSessionStorage<ResultData>(`${p}_printers`, {});
 
   const runQuery = async () => {
     setIsLoading(true);

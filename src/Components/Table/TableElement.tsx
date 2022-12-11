@@ -94,10 +94,7 @@ export default function TableElement({
           </th>
           {columns.map((column, index) => {
             return (
-              <th
-                key={index}
-                className="p-0 whitespace-nowrap dark:border-primaryBorder border-r"
-              >
+              <th key={index} className="p-0 whitespace-nowrap dark:border-primaryBorder border-r">
                 <Button
                   classOverride="
                     disabled:opacity-100 border-0 rounded-none

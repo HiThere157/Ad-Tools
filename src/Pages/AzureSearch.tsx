@@ -20,18 +20,9 @@ export default function AzureSearchPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AadQuery>(`${p}_query`, {});
 
-  const [users, setUsers, usersKey] = useSessionStorage<ResultData>(
-    `${p}_users`,
-    {},
-  );
-  const [groups, setGroups, groupsKey] = useSessionStorage<ResultData>(
-    `${p}_groups`,
-    {},
-  );
-  const [devices, setDevices, devicesKey] = useSessionStorage<ResultData>(
-    `${p}_devices`,
-    {},
-  );
+  const [users, setUsers, usersKey] = useSessionStorage<ResultData>(`${p}_users`, {});
+  const [groups, setGroups, groupsKey] = useSessionStorage<ResultData>(`${p}_groups`, {});
+  const [devices, setDevices, devicesKey] = useSessionStorage<ResultData>(`${p}_devices`, {});
 
   const runQuery = async () => {
     setIsLoading(true);

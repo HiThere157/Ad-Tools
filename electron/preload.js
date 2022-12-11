@@ -7,15 +7,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getDomainSuffixList: () => ipcRenderer.invoke("ps:getDomainSuffixList"),
 
   startComputerAction: (action, target, useCurrentUser) =>
-    ipcRenderer.invoke(
-      "ps:startComputerAction",
-      action,
-      target,
-      useCurrentUser,
-    ),
+    ipcRenderer.invoke("ps:startComputerAction", action, target, useCurrentUser),
 
-  probeConnection: (target) =>
-    ipcRenderer.invoke("node:probeConnection", target),
+  probeConnection: (target) => ipcRenderer.invoke("node:probeConnection", target),
 
   getVersion: () => ipcRenderer.invoke("node:getVersion"),
 

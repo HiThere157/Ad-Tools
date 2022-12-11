@@ -29,31 +29,18 @@ export default function Table({
   onRedirect,
   isLoading = false,
 }: TableProps) {
-  const [sortedColumn, setSortedColumn] = useSessionStorage<string>(
-    name + "_sortedColumn",
-    "",
-  );
-  const [sortDesc, setSortDesc] = useSessionStorage<boolean>(
-    name + "_sortDesc",
-    true,
-  );
+  const [sortedColumn, setSortedColumn] = useSessionStorage<string>(name + "_sortedColumn", "");
+  const [sortDesc, setSortDesc] = useSessionStorage<boolean>(name + "_sortDesc", true);
   const [filter, setFilter] = useSessionStorage<Filter>(name + "_filter", {});
   const [currentSavedFilter, setCurrentSavedFilter] = useLocalStorage<string>(
     name + "_currentSavedFilter",
     "No Preset",
   );
   const [filteredCount, setFilteredCount] = useState<number>(0);
-  const [selected, setSelected] = useSessionStorage<number[]>(
-    name + "_selected",
-    [],
-  );
+  const [selected, setSelected] = useSessionStorage<number[]>(name + "_selected", []);
 
-  const [isFilterOpen, setIsFilterOpen] = useSessionStorage<boolean>(
-    name + "_isFilterOpen",
-    false,
-  );
-  const [isFilterHighlighted, setIsFilterHighlighted] =
-    useState<boolean>(false);
+  const [isFilterOpen, setIsFilterOpen] = useSessionStorage<boolean>(name + "_isFilterOpen", false);
+  const [isFilterHighlighted, setIsFilterHighlighted] = useState<boolean>(false);
 
   useEffect(() => {
     setIsFilterHighlighted(Object.keys(filter).length !== 0);
@@ -79,10 +66,7 @@ export default function Table({
     let ret = "";
     data.output?.forEach((entry, index) => {
       if (onlySelected && !selected.includes(index)) return;
-      ret +=
-        columns
-          .map((column) => stringify(entry[column.key], false))
-          .join("\u{9}") + "\n";
+      ret += columns.map((column) => stringify(entry[column.key], false)).join("\u{9}") + "\n";
     });
     navigator.clipboard.writeText(ret);
   };
@@ -125,9 +109,7 @@ export default function Table({
             onRedirect={onRedirect}
           />
           <ErrorMessage error={data.error} />
-          <Loader
-            isVisible={isLoading && data.output?.length === 0 && !data.error}
-          />
+          <Loader isVisible={isLoading && data.output?.length === 0 && !data.error} />
         </div>
       </div>
     </section>

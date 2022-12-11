@@ -1,9 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export default function useIntersectionObserver(
-  headings: HTMLHeadElement[],
-  setActive: Function,
-) {
+export default function useIntersectionObserver(headings: HTMLHeadElement[], setActive: Function) {
   const elements = useRef<{ [key: number]: IntersectionObserverEntry }>({});
   useEffect(() => {
     const callback = (sections: IntersectionObserverEntry[]) => {
@@ -22,9 +19,7 @@ export default function useIntersectionObserver(
     };
 
     const range = (from: number, to: number, step: number) =>
-      [...Array(Math.floor((to - from) / step) + 1)].map(
-        (_, i) => from + i * step,
-      );
+      [...Array(Math.floor((to - from) / step) + 1)].map((_, i) => from + i * step);
 
     const observer = new IntersectionObserver(callback, {
       threshold: range(0, 1, 0.01),

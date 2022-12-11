@@ -6,10 +6,7 @@ import { AdQuery, ResultData } from "../Types/api";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
-import {
-  getPropertiesWrapper,
-  getMembershipFromAdUser,
-} from "../Helper/postProcessors";
+import { getPropertiesWrapper, getMembershipFromAdUser } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
 import AdInputBar from "../Components/InputBars/InputAd";
@@ -25,19 +22,10 @@ export default function UserPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(
-    `${p}_attribs`,
-    {},
-  );
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<ResultData>(
-    `${p}_memberOf`,
-    {},
-  );
+  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(`${p}_attribs`, {});
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<ResultData>(`${p}_memberOf`, {});
 
-  const [reQuery, setReQuery] = useSessionStorage<boolean>(
-    `${p}_reQuery`,
-    false,
-  );
+  const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
     if (reQuery) runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
