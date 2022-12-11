@@ -15,7 +15,7 @@ type DnsInputBarProps = {
   label: string;
   isLoading: boolean;
   query: DnsQuery;
-  onChange: (query: {}) => any;
+  onChange: (query: DnsQuery) => any;
   onSubmit: () => any;
   children?: React.ReactNode;
 };

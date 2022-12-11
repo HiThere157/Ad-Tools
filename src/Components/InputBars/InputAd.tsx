@@ -13,7 +13,7 @@ type AdInputBarProps = {
   hint?: string;
   isLoading: boolean;
   query: AdQuery;
-  onChange: (query: {}) => any;
+  onChange: (query: AdQuery) => any;
   onSubmit: () => any;
   children?: React.ReactNode;
 };

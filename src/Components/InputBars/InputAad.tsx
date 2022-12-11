@@ -13,7 +13,7 @@ type AadInputBarProps = {
   hint?: string;
   isLoading: boolean;
   query: AadQuery;
-  onChange: (query: {}) => any;
+  onChange: (query: AadQuery) => any;
   onSubmit: () => any;
   children?: React.ReactNode;
 };
