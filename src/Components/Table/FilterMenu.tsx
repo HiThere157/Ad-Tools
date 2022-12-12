@@ -52,6 +52,8 @@ export default function FilterMenu({
 
   useEffect(() => {
     onFilterChange(savedFilters[currentSavedFilter] ?? {});
+    // if filter reset from ActionMenu, disable editing
+    if (currentSavedFilter === "No Preset") setIsEditing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSavedFilter]);
 
@@ -133,14 +135,15 @@ export default function FilterMenu({
                 <BsFillPencilFill />
               </Button>
             )}
-            {isEditing && (
+            {isEditing ? (
               <Button classOverride="p-1.5 text-xs ml-1" onClick={removeFilter}>
                 <BsFillTrashFill />
               </Button>
+            ) : (
+              <Button classOverride="p-1.5 text-xs ml-1" onClick={addFilter}>
+                <BsPlusLg />
+              </Button>
             )}
-            <Button classOverride="p-1.5 text-xs ml-1" onClick={addFilter}>
-              <BsPlusLg />
-            </Button>
           </div>
           <table className="border-separate border-spacing-0.5">
             <tbody>
