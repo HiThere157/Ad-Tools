@@ -1,5 +1,3 @@
-import { ElectronAPI, Entry } from "../Types/api";
-
 // Wrap all Properties in {key: [key], value: [value]} objects (attributes table)
 function getPropertiesWrapper(Obj: { PropertyNames?: string[]; [key: string]: any }): Entry {
   const properties = Obj.PropertyNames ?? Object.keys(Obj);

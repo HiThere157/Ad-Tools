@@ -2,8 +2,6 @@ import { commandDBConfig } from "../Config/default";
 import { setupIndexedDB, Store } from "./indexedDB";
 import { makeToList } from "./postProcessors";
 
-import { ElectronAPI, Command, CommandArgs, ResultData } from "../Types/api";
-
 const electronAPI = (window as ElectronAPI).electronAPI;
 
 async function saveToDB(item: any) {

@@ -1,4 +1,4 @@
-export type ElectronAPI = Window &
+type ElectronAPI = Window &
   typeof globalThis & {
     electronAPI:
       | {
@@ -25,7 +25,7 @@ export type ElectronAPI = Window &
       | undefined;
   };
 
-export type Command =
+type Command =
   | "Get-ADUser"
   | "Get-ADGroup"
   | "Get-ADGroupMember"
@@ -44,7 +44,7 @@ export type Command =
   | "Get-AzureADGroupMember"
   | "Get-AzureADDevice";
 
-export type CommandArgs = {
+type CommandArgs = {
   Filter?: string;
   Identity?: string;
   Server?: string;
@@ -64,25 +64,25 @@ type ComputerAction = "compmgmt" | "mstsc" | "powershell";
 
 type WinState = "minimize" | "maximize_restore" | "quit";
 
-export type AdQuery = {
+type AdQuery = {
   input?: string;
   domain?: string;
 };
-export type AadQuery = {
+type AadQuery = {
   input?: string;
   tenant?: string;
 };
-export type DnsQuery = {
+type DnsQuery = {
   input?: string;
   type?: string;
 };
 
-export type Entry = { [key: string]: any };
-export type ResultData = {
+type Entry = { [key: string]: any };
+type ResultData = {
   output?: Entry[];
   error?: string;
 };
-export type ResultDataString = {
+type ResultDataString = {
   output?: string;
   error?: string;
 };

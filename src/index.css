@@ -10,6 +10,12 @@ article {
   padding-bottom: 75vh;
 }
 
+ul {
+  margin-left: 1rem;
+  list-style-type: disc;
+  line-height: .75rem;
+}
+
 ::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5rem;

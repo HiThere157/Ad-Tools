@@ -1,5 +1,3 @@
-import { ColumnDefinition } from "../Types/table";
-
 const dnsTypes: string[] = ["A_AAAA", "NS", "PTR", "MX", "ALL"];
 
 const columns: { [key: string]: ColumnDefinition[] } = {

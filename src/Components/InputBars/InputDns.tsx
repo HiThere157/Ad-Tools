@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { DnsQuery } from "../../Types/api";
-
 import { dnsTypes } from "../../Config/default";
 import { makeAPICall } from "../../Helper/makeAPICall";
 import { useGlobalState } from "../../Hooks/useGlobalState";

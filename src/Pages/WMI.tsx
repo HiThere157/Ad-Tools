@@ -14,7 +14,6 @@ import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
 import { BsDisplay } from "react-icons/bs";
-import { AdQuery, ResultData } from "../Types/api";
 
 export default function WMIPage() {
   const p = useLocation().pathname.substring(1);

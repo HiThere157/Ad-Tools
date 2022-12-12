@@ -1,5 +1,3 @@
-import { WinState } from "../../Types/api";
-
 import { electronAPI } from "../../Helper/makeAPICall";
 
 import WinButton from "./WinButton";

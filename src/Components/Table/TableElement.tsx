@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 
-import { Entry } from "../../Types/api";
-import { ColumnDefinition, Filter } from "../../Types/table";
 import { EntryArray } from "../../Helper/array";
 
 import Button from "../Button";

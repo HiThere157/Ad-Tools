@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "../../Hooks/useStorage";
 
-import { ColumnDefinition, Filter } from "../../Types/table";
-
 import Checkbox from "../Checkbox";
 import Input from "../Input";
 import Dropdown from "../Dropdown";

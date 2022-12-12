@@ -10,6 +10,7 @@ module.exports = {
       foreground: "#F0F0F0",
       foregroundAccent: "#A0A0A0",
       errorAccent: "#B92828",
+      successAccent: "#56db56",
 
       primaryControl: "#272727",
       primaryBorder: "#303030",

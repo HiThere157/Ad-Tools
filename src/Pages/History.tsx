@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { ResultData } from "../Types/api";
-
 import { columns, commandDBConfig } from "../Config/default";
 import { setupIndexedDB, Store } from "../Helper/indexedDB";
 

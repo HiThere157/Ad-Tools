@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { AadQuery } from "../../Types/api";
-
 import { getTenants } from "../../Helper/getSavedConfig";
 import { makeAPICall } from "../../Helper/makeAPICall";
 import { useGlobalState } from "../../Hooks/useGlobalState";

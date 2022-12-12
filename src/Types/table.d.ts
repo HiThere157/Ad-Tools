@@ -4,4 +4,4 @@ type ColumnDefinition = {
   sortable: boolean;
 };
 
-export type Filter = { [key: string]: string };
+type Filter = { [key: string]: string };

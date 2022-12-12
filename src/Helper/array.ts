@@ -1,5 +1,3 @@
-import { Entry } from "../Types/api";
-
 import stringify from "./stringify";
 
 class EntryArray {

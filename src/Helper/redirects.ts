@@ -1,5 +1,3 @@
-import { AadQuery, AdQuery } from "../Types/api";
-
 function redirect(page: string, query: Partial<AadQuery | AdQuery>) {
   const currentQuery = JSON.parse(window.sessionStorage.getItem(`${page}_query`) ?? "{}");
 

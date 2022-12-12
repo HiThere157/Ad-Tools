@@ -1,7 +1,5 @@
 import { useLocalStorage } from "../Hooks/useStorage";
 
-import { ComputerAction } from "../Types/api";
-
 import { electronAPI } from "../Helper/makeAPICall";
 
 import { useGlobalState } from "../Hooks/useGlobalState";

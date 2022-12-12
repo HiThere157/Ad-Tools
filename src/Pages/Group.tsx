@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
-import { AdQuery, ResultData } from "../Types/api";
-
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import {

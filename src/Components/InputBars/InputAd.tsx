@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { AdQuery } from "../../Types/api";
-
 import { getDomains } from "../../Helper/getSavedConfig";
 
 import Input from "../Input";
