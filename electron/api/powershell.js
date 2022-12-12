@@ -59,11 +59,12 @@ const executeCommand = async (_event, { command, args, selectFields, useStaticSe
     fullCommand = `${fullCommand} | ConvertTo-Json -Compress`;
   }
 
+  // fix escaping of "-Properties *"
+  fullCommand = fullCommand.replace("-Properties \\*", "-Properties *");
+
+  // undo escaping from quote lib on whitelisted characters e.g. @
   for (const char of whitelist[command].charWhitelist ?? []) {
-    // for reserved characters in regex, add another \ to the regex
-    const wildcard = char.replace(/[*]/g, "\\$&");
-    const regex = new RegExp(`\\\\${wildcard}`, "g");
-    // undo escaping from quote lib on whitelisted characters e.g. @ and *
+    const regex = new RegExp(`\\\\${char}`, "g");
     fullCommand = fullCommand.replace(regex, char);
   }
 
