@@ -35,6 +35,7 @@ export type Command =
   | "Get-Printer"
   | "Clear-DnsClientCache"
   | "Connect-AzureAD"
+  | "Disconnect-AzureAD"
   | "Get-AzureADCurrentSessionInfo"
   | "Get-AzureADUser"
   | "Get-AzureADUserMembership"

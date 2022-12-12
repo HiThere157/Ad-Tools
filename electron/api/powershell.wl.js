@@ -26,6 +26,9 @@ module.exports = {
   "Connect-AzureAD": {
     args: ["Tenant"],
   },
+  "Disconnect-AzureAD": {
+    args: [],
+  },
   "Get-AzureADCurrentSessionInfo": {
     args: [],
   },

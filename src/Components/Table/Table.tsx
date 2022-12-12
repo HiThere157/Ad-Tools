@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocalStorage, useSessionStorage } from "../../Hooks/useStorage";
 
 import { ColumnDefinition, Filter } from "../../Types/table";
-
 import { Entry, ResultData } from "../../Types/api";
+
 import stringify from "../../Helper/stringify";
 
 import TableElement from "./TableElement";
