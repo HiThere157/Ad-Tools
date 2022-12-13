@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, shell, BrowserWindow, ipcMain } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const path = require("path");
 
@@ -68,6 +68,12 @@ function createWindow() {
     if (input.type === "keyDown" && input.key === "-" && input.control) {
       handleZoom(win, "out");
     }
+  });
+
+  // open lins with target="_blank" in real browser
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: "deny" };
   });
 
   // listen for window state change requests from renderer

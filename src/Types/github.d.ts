@@ -1,5 +1,7 @@
 type Release = {
   html_url: string;
+  tag_name: string;
+  target_commitish: string;
   name: string;
   body: string;
   prerelease: boolean;

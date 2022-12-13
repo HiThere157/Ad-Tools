@@ -6,6 +6,7 @@ import Release from "../Components/Release/Release";
 
 export default function HomePage() {
   const [releases, setReleases] = useState<Partial<Release>[]>([]);
+  const [latestIndex, setLatestIndex] = useState<number>(0);
   const [version, setVersion] = useState<string>("");
 
   useEffect(() => {
@@ -21,7 +22,16 @@ export default function HomePage() {
 
       if (!result.ok) return;
       try {
-        setReleases(await result.json());
+        const releases = (await result.json()) as Partial<Release>[];
+
+        for (let i = 0; i < releases.length; i++) {
+          if (!releases[i].prerelease) {
+            setLatestIndex(i);
+            break;
+          }
+        }
+
+        setReleases(releases);
       } catch {
         setReleases([]);
       }
@@ -35,10 +45,12 @@ export default function HomePage() {
           <Release
             key={index}
             html_url={release.html_url ?? ""}
+            tag_name={release.tag_name ?? "Unknown"}
+            target_commitish={release.target_commitish ?? "Unknown"}
             name={release.name ?? "Unknown"}
             body={release.body ?? "Unknown"}
             prerelease={release.prerelease ?? false}
-            latest={index === 0}
+            latest={index === latestIndex}
             installed={release.name === version}
             published_at={release.published_at ?? "Unknown"}
             author={
