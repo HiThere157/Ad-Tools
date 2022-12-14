@@ -25,7 +25,7 @@ export default function Header() {
         <NavLink to="/" className="winbar-no-drag">
           <img src="./icon.svg" alt="AD Tools Logo" className="mx-[1.1rem] h-6"></img>
         </NavLink>
-        <div className="flex space-x-3 items-center whitespace-nowrap">
+        <div className="flex space-x-3 items-center mt-0.5 whitespace-nowrap">
           <NavLink to="/" className="winbar-no-drag">
             <span className="font-bold text-xl">AD Tools</span>
           </NavLink>
