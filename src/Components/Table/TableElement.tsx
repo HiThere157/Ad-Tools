@@ -82,17 +82,17 @@ export default function TableElement({
   };
 
   return (
-    <table className="w-full">
+    <table className="w-full whitespace-nowrap">
       <thead className="dark:bg-elBg">
         <tr className="dark:border-elFlatBorder border-b-2">
-          <th className="px-2 whitespace-nowrap dark:border-elFlatBorder border-y">
+          <th className="px-2 dark:border-elFlatBorder border-y">
             <div className="flex justify-center">
               <Checkbox checked={getMainCheckStatus()} onChange={onMainCheck} />
             </div>
           </th>
           {columns.map((column, index) => {
             return (
-              <th key={index} className="p-0 whitespace-nowrap dark:border-elFlatBorder border">
+              <th key={index} className="p-0 dark:border-elFlatBorder border">
                 <Button
                   classOverride="
                     disabled:opacity-100 !border-0 rounded-none
@@ -120,7 +120,7 @@ export default function TableElement({
         {getFinalEntries().map((entry) => {
           return (
             <tr key={entry.__id__} className="dark:hover:bg-lightBg">
-              <td className="relative group px-2 whitespace-nowrap dark:border-elFlatBorder border-y">
+              <td className="relative group px-2 dark:border-elFlatBorder border-y">
                 <Checkbox
                   checked={selected.includes(entry.__id__)}
                   onChange={() => {
@@ -132,7 +132,7 @@ export default function TableElement({
                 return (
                   <td
                     key={index}
-                    className="relative group px-2 whitespace-nowrap dark:border-elFlatBorder border"
+                    className="relative group px-2 dark:border-elFlatBorder border"
                   >
                     <TableCell text={entry[column.key]} />
                     <RedirectButton
