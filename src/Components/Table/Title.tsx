@@ -10,12 +10,12 @@ export default function Title({ title, n, nSelected, nFiltered }: TitleProps) {
       <h2 className="text-2xl font-bold" style={{ scrollMarginTop: "60px" }}>
         {title}
       </h2>
-      <span className="dark:text-foregroundAccent">
+      <span className="dark:text-whiteColorAccent">
         {n} {n === 1 ? "Result" : "Results"}
       </span>
 
       {(nSelected !== 0 || nFiltered !== 0) && (
-        <span className="dark:text-foregroundAccent">
+        <span className="dark:text-whiteColorAccent">
           ({nSelected !== 0 && `${nSelected} Selected`}
           {nSelected !== 0 && nFiltered !== 0 && ", "}
           {nFiltered !== 0 && `${nFiltered} Hidden`})

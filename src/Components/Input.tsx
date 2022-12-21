@@ -25,9 +25,13 @@ export default function Input({
       {label && <span className={"mr-2 whitespace-nowrap"}>{label}</span>}
       <input
         className={
-          "control dark:bg-secondaryBg dark:border-primaryBorder " +
-          "dark:enabled:hover:border-secondaryBorderAccent " +
-          "dark:enabled:focus-within:border-secondaryBorderAccent w-full" +
+          // #THEMESTYLE
+
+          "control w-full " +
+          // background styling
+          "dark:bg-elFlatBg dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg " +
+          // border styling
+          "border-2 dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:focus-within:border-elFlatActiveBorder " +
           classOverride
         }
         value={value ?? ""}

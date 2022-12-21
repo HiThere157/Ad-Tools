@@ -33,13 +33,13 @@ export default function Release({
 
         <Link className="flex items-center gap-2" href={author.html_url}>
           <img className="h-8 rounded-lg" src={author.avatar_url} alt="author profile"></img>
-          <span className="dark:text-foregroundAccent">{author.login}</span>
+          <span className="dark:text-whiteColorAccent">{author.login}</span>
         </Link>
       </div>
 
-      <hr className="my-1.5 dark:border-primaryBorder" />
+      <hr className="my-1.5 dark:border-elFlatBorder" />
 
-      <div className="flex items-center text-xs text-foregroundAccent ml-1">
+      <div className="flex items-center text-xs text-whiteColorAccent ml-1">
         <span>{published_at.replace("T", " ").replace("Z", " UTC")}</span>
         <BsDot className="mx-1" />
         <div className="flex items-center gap-1">
@@ -57,7 +57,7 @@ export default function Release({
         {body ? (
           <ReactMarkdown>{body}</ReactMarkdown>
         ) : (
-          <span className="block dark:text-foregroundAccent my-1">no release notes provided</span>
+          <span className="block dark:text-whiteColorAccent my-1">no release notes provided</span>
         )}
       </div>
     </div>

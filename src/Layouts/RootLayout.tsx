@@ -19,7 +19,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       style={{
         gridTemplateAreas: `"header header" "navbar content" "footer content"`,
       }}
-      className="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] h-screen min-w-fit dark:text-foreground dark:bg-primaryBg"
+      className="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] h-screen min-w-fit dark:text-whiteColor dark:bg-darkBg"
     >
       <Header />
       <NavBar />

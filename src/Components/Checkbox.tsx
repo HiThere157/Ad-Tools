@@ -27,11 +27,15 @@ export default function Checkbox({
     <div className="flex items-center">
       <label
         className={
-          "control flex items-center h-5 w-5 p-1 dark:bg-primaryControl dark:border-primaryBorder " +
-          "dark:hover:bg-secondaryControlAccent dark:hover:border-secondaryBorderAccent " +
-          "dark:active:bg-secondaryControlActive dark:active:border-secondaryBorderActive " +
-          "dark:text-primaryControlAccent " +
-          (disabled ? "cursor-not-allowed" : "") +
+          // #THEMESTYLE
+
+          "control flex items-center h-5 w-5 p-1 " +
+          // background styling
+          "dark:bg-elFlatBg dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg " +
+          // border styling
+          "border-2 dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:active:border-elFlatActiveBorder " +
+          "dark:text-elAccentBg " +
+          (disabled ? "opacity-50 cursor-not-allowed" : "") +
           classOverride
         }
       >

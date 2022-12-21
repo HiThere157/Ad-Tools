@@ -8,15 +8,11 @@ export default function Type({ prerelease, latest, installed }: TypeProps) {
     <>
       {(prerelease || latest || installed) && (
         <div className="flex gap-2 select-none">
-          {latest && (
-            <div className="border-2 px-3 rounded-full text-primaryControlAccent">Latest</div>
-          )}
+          {latest && <div className="border-2 px-3 rounded-full text-elAccentBg">Latest</div>}
           {prerelease && (
-            <div className="border-2 px-3 rounded-full text-errorAccent">Pre-Release</div>
+            <div className="border-2 px-3 rounded-full text-redColor">Pre-Release</div>
           )}
-          {installed && (
-            <div className="border-2 px-3 rounded-full text-successAccent">Installed</div>
-          )}
+          {installed && <div className="border-2 px-3 rounded-full text-greenColor">Installed</div>}
         </div>
       )}
     </>

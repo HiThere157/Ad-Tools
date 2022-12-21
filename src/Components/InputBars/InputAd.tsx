@@ -57,7 +57,7 @@ export default function AdInputBar({
         <Button onClick={onSubmit} disabled={isLoading} children="Run" />
         {children}
       </div>
-      {hint && <span className="ml-1 dark:text-foregroundAccent">{hint}</span>}
+      {hint && <span className="ml-1 dark:text-whiteColorAccent">{hint}</span>}
     </div>
   );
 }

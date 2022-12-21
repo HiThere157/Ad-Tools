@@ -70,7 +70,7 @@ export default function GroupPage() {
                 updateDomainTenant(newItems, setTenants);
               }}
             />
-            <span className="w-80 mt-1 text-right dark:text-foregroundAccent">
+            <span className="w-80 mt-1 text-right dark:text-whiteColorAccent">
               Specifying tenants is only necessary if your account can access multiple tenants
             </span>
           </div>

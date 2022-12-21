@@ -83,19 +83,19 @@ export default function TableElement({
 
   return (
     <table className="w-full">
-      <thead>
-        <tr>
-          <th className="px-2 whitespace-nowrap dark:bg-primaryControl dark:border-primaryBorder border-r">
+      <thead className="dark:bg-elBg">
+        <tr className="dark:border-elFlatBorder border-b-2">
+          <th className="px-2 whitespace-nowrap dark:border-elFlatBorder border-y">
             <div className="flex justify-center">
               <Checkbox checked={getMainCheckStatus()} onChange={onMainCheck} />
             </div>
           </th>
           {columns.map((column, index) => {
             return (
-              <th key={index} className="p-0 whitespace-nowrap dark:border-primaryBorder border-r">
+              <th key={index} className="p-0 whitespace-nowrap dark:border-elFlatBorder border">
                 <Button
                   classOverride="
-                    disabled:opacity-100 border-0 rounded-none
+                    disabled:opacity-100 !border-0 rounded-none
                     flex items-center justify-between py-1 px-4 w-full
                   "
                   onClick={() => onHeaderClick(column.key)}
@@ -119,8 +119,8 @@ export default function TableElement({
       <tbody>
         {getFinalEntries().map((entry) => {
           return (
-            <tr key={entry.__id__} className="dark:hover:bg-secondaryBg">
-              <td className="relative group px-2 whitespace-nowrap dark:border-primaryBorder border-y">
+            <tr key={entry.__id__} className="dark:hover:bg-lightBg">
+              <td className="relative group px-2 whitespace-nowrap dark:border-elFlatBorder border-y">
                 <Checkbox
                   checked={selected.includes(entry.__id__)}
                   onChange={() => {
@@ -132,7 +132,7 @@ export default function TableElement({
                 return (
                   <td
                     key={index}
-                    className="relative group px-2 whitespace-nowrap dark:border-primaryBorder border"
+                    className="relative group px-2 whitespace-nowrap dark:border-elFlatBorder border"
                   >
                     <TableCell text={entry[column.key]} />
                     <RedirectButton

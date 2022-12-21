@@ -59,7 +59,7 @@ function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps
               key={index}
               className={
                 "flex items-center space-x-1 cursor-pointer py-0.5 " +
-                (index === activeIndex ? "dark:text-foreground" : "dark:text-foregroundAccent")
+                (index === activeIndex ? "dark:text-whiteColor" : "dark:text-whiteColorAccent")
               }
             >
               <span>

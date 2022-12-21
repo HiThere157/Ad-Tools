@@ -23,10 +23,11 @@ export default function NavBar() {
   return (
     <nav
       style={{ gridArea: "navbar" }}
-      className="select-none flex flex-col overflow-auto dark:bg-secondaryBg"
+      className="select-none flex flex-col overflow-auto dark:bg-lightBg"
     >
       <Button
-        classOverride="flex justify-center py-1 rounded-none border-0 text-xl"
+        classOverride="flex justify-center py-1 rounded-none text-xl"
+        colorful={true}
         onClick={() => {
           setIsOpen(!isOpen);
         }}
@@ -40,7 +41,7 @@ export default function NavBar() {
         <NavItem to="/computer" icon={<BsDisplay />} text="Computer" isOpen={isOpen} />
         <NavItem to="/wmi" icon={<BsCpu />} text="WMI" isOpen={isOpen} />
         <NavItem to="/printer" icon={<BsPrinterFill />} text="Printers" isOpen={isOpen} />
-        <hr className="my-2 dark:border-primaryBorder" />
+        <hr className="my-2 dark:border-elFlatBorder" />
         <NavItem to="/azureSearch" icon={<BsSearch />} text="Azure Search" isOpen={isOpen} />
         <NavItem
           to="/azureUser"
@@ -50,9 +51,9 @@ export default function NavBar() {
         />
         <NavItem to="/azureGroup" icon={<BsPeopleFill />} text="Azure Group" isOpen={isOpen} />
         <NavItem to="/azureDevice" icon={<BsLaptop />} text="Azure Device" isOpen={isOpen} />
-        <hr className="my-2 dark:border-primaryBorder" />
+        <hr className="my-2 dark:border-elFlatBorder" />
         <NavItem to="/dns" icon={<BsServer />} text="DNS" isOpen={isOpen} />
-        <hr className="my-2 dark:border-primaryBorder" />
+        <hr className="my-2 dark:border-elFlatBorder" />
         <NavItem to="/history" icon={<BsClockHistory />} text="History" isOpen={isOpen} />
         <NavItem to="/settings" icon={<BsGearFill />} text="Settings" isOpen={isOpen} />
       </div>
@@ -71,10 +72,10 @@ function NavItem({ to, icon, text, isOpen }: NavItemProps) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        "control mb-1 border-0 " +
+        "control mb-1 " +
         (isActive
-          ? "dark:bg-primaryControlAccent"
-          : "dark:hover:bg-secondaryControlAccent dark:focus:bg-secondaryControlAccent dark:active:bg-secondaryControlActive")
+          ? "dark:bg-elAccentBg"
+          : "dark:hover:bg-elFlatAccentBg dark:focus:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg")
       }
     >
       <div className="flex flex-row items-center p-1">

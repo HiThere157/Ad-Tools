@@ -43,17 +43,17 @@ export default function ActionMenu({
 
   return (
     <div className="flex flex-col space-y-1">
-      <Button classOverride="p-2" onClick={onFilter} highlight={isFilterHighlighted}>
+      <Button classOverride="p-1.5" onClick={onFilter} highlight={isFilterHighlighted}>
         <BsFunnel />
       </Button>
-      <Button classOverride="p-2" onClick={onResetTable}>
+      <Button classOverride="p-1.5" onClick={onResetTable}>
         <BsArrowCounterclockwise />
       </Button>
-      <Button classOverride="p-2" onClick={onCopyClick} highlight={isCopyHighlighted}>
+      <Button classOverride="p-1.5" onClick={onCopyClick} highlight={isCopyHighlighted}>
         <BsClipboard />
       </Button>
       <Button
-        classOverride="p-2"
+        classOverride="p-1.5"
         onClick={onCopySelectionClick}
         highlight={isCopySelectionHighlighted}
       >

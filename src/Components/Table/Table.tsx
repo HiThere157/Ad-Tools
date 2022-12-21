@@ -92,7 +92,7 @@ export default function Table({
           currentSavedFilter={currentSavedFilter}
           setCurrentSavedFilter={setCurrentSavedFilter}
         />
-        <div className="border-2 border-primaryBorder rounded h-fit min-h-[4rem] overflow-auto">
+        <div className="border-2 border-elFlatBorder rounded h-fit min-h-[4rem] overflow-auto">
           <TableElement
             entries={data.output}
             columns={columns}

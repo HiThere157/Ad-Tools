@@ -19,7 +19,7 @@ export default function Header() {
   return (
     <div
       style={{ gridArea: "header" }}
-      className="winbar-drag-region select-none flex justify-between border-b-2 dark:bg-secondaryBg dark:border-primaryBorder"
+      className="winbar-drag-region select-none flex justify-between border-b-2 dark:bg-lightBg dark:border-elFlatBorder"
     >
       <div className="flex items-center">
         <NavLink to="/" className="winbar-no-drag">
@@ -29,7 +29,7 @@ export default function Header() {
           <NavLink to="/" className="winbar-no-drag">
             <span className="font-bold text-xl">AD Tools</span>
           </NavLink>
-          <span className="dark:text-foregroundAccent">{user}</span>
+          <span className="dark:text-whiteColorAccent">{user}</span>
         </div>
       </div>
 

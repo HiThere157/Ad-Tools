@@ -38,7 +38,7 @@ export default function EditableList({ items, onChange }: EditableListProps) {
           return (
             <tr key={index}>
               <td>
-                <span className="dark:text-foregroundAccent">{index + 1}:</span>
+                <span className="dark:text-whiteColorAccent">{index + 1}:</span>
               </td>
               {index === editingIndex ? (
                 <td>

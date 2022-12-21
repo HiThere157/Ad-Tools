@@ -15,7 +15,7 @@ export default function Footer() {
   return (
     <footer
       style={{ gridArea: "footer" }}
-      className="flex justify-center text-xs dark:text-foregroundAccent dark:bg-secondaryBg"
+      className="flex justify-center text-xs dark:text-whiteColorAccent dark:bg-lightBg"
     >
       {version && <span className="m-1">v{version}</span>}
     </footer>
