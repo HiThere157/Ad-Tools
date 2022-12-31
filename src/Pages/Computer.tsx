@@ -26,9 +26,15 @@ export default function ComputerPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
-  const [dns, setDNS, dnsKey] = useSessionStorage<ResultData>(`${p}_dns`, {});
-  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(`${p}_attribs`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<ResultData>(`${p}_memberOf`, {});
+  const [dns, setDNS, dnsKey] = useSessionStorage<Result<PSResult[]>>(`${p}_dns`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_attribs`,
+    {},
+  );
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_memberOf`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
@@ -41,7 +47,7 @@ export default function ComputerPage() {
     setIsLoading(true);
 
     await Promise.all([
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Resolve-DnsName",
         args: {
           Name: `${query.input}.${query.domain}`,
@@ -49,7 +55,7 @@ export default function ComputerPage() {
         postProcessor: prepareDNSResult,
         callback: setDNS,
       }),
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Get-ADComputer",
         args: {
           Identity: query.input,

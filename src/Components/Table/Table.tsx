@@ -14,8 +14,8 @@ type TableProps = {
   title: string;
   name: string;
   columns: ColumnDefinition[];
-  data: ResultData;
-  onRedirect?: (entry: Entry) => any;
+  data: Result<PSResult[]>;
+  onRedirect?: (entry: PSResult) => any;
   isLoading?: boolean;
 };
 export default function Table({

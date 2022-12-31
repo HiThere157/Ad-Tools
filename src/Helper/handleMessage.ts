@@ -1,5 +1,3 @@
-import { GlobalState, Message } from "../Hooks/useGlobalState";
-
 const addMessage = (
   message: Message,
   callback: (value: React.SetStateAction<Partial<GlobalState>>) => void,

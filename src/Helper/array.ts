@@ -1,7 +1,7 @@
 import stringify from "./stringify";
 
-class EntryArray {
-  constructor(public array: Entry[]) {}
+class ResultArray {
+  constructor(public array: ({ __id__?: number } & PSResult)[]) {}
 
   tagArray = () => {
     // add a unique __id__ field to every entry. used to track selected entries
@@ -29,7 +29,7 @@ class EntryArray {
       Object.entries(filter).forEach(([key, value]) => {
         // if __selected__ key is present in filter, check selected values
         // prevent regex check after
-        if (key === "__selected__") {
+        if (key === "__selected__" && typeof entry.__id__ === "number") {
           isMatch = selected.includes(entry.__id__);
           return;
         }
@@ -58,4 +58,4 @@ class EntryArray {
   };
 }
 
-export { EntryArray };
+export { ResultArray };

@@ -20,8 +20,14 @@ export default function UserPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(`${p}_attribs`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<ResultData>(`${p}_memberOf`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_attribs`,
+    {},
+  );
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_memberOf`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
@@ -32,7 +38,7 @@ export default function UserPage() {
   const runQuery = async () => {
     setReQuery(false);
     setIsLoading(true);
-    await makeAPICall({
+    await makeAPICall<PSResult[]>({
       command: "Get-ADUser",
       args: {
         Identity: query.input,

@@ -17,9 +17,9 @@ export default function SearchPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
-  const [users, setUsers, usersKey] = useSessionStorage<ResultData>(`${p}_users`, {});
-  const [groups, setGroups, groupsKey] = useSessionStorage<ResultData>(`${p}_groups`, {});
-  const [computers, setComputers, computersKey] = useSessionStorage<ResultData>(
+  const [users, setUsers, usersKey] = useSessionStorage<Result<PSResult[]>>(`${p}_users`, {});
+  const [groups, setGroups, groupsKey] = useSessionStorage<Result<PSResult[]>>(`${p}_groups`, {});
+  const [computers, setComputers, computersKey] = useSessionStorage<Result<PSResult[]>>(
     `${p}_computers`,
     {},
   );
@@ -27,7 +27,7 @@ export default function SearchPage() {
   const runQuery = async () => {
     setIsLoading(true);
     await Promise.all([
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Get-ADUser",
         args: {
           Filter: `Name -like "${query.input}"`,
@@ -36,7 +36,7 @@ export default function SearchPage() {
         postProcessor: makeToList,
         callback: setUsers,
       }),
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Get-ADGroup",
         args: {
           Filter: `Name -like "${query.input}"`,
@@ -45,7 +45,7 @@ export default function SearchPage() {
         postProcessor: makeToList,
         callback: setGroups,
       }),
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Get-ADComputer",
         args: {
           Filter: `Name -like "${query.input}"`,

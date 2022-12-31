@@ -1,4 +1,4 @@
-import { Message, useGlobalState } from "../Hooks/useGlobalState";
+import { useGlobalState } from "../Hooks/useGlobalState";
 import { removeMessage } from "../Helper/handleMessage";
 
 import Button from "../Components/Button";

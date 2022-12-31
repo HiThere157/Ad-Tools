@@ -1,16 +1,5 @@
 import { createContext, useState, useContext, Dispatch, SetStateAction } from "react";
 
-type Message = {
-  timestamp?: number;
-  timeoutId?: NodeJS.Timeout;
-  type: "info" | "error" | "warning";
-  message: string;
-  timer?: number;
-  skipIfExists?: boolean;
-};
-type GlobalState = {
-  messages: Message[];
-};
 const GlobalStateContext = createContext({
   state: {} as Partial<GlobalState>,
   setState: {} as Dispatch<SetStateAction<Partial<GlobalState>>>,
@@ -38,4 +27,3 @@ const useGlobalState = () => {
 };
 
 export { GlobalStateProvider, useGlobalState };
-export type { Message, GlobalState };

@@ -1,6 +1,6 @@
 import { makeAPICall } from "./makeAPICall";
 
-export default async function authenticateAzure(tenant: string | undefined) {
+export default async function authenticateAzure(tenant: string | undefined): Promise<boolean> {
   const connected = await makeAPICall({
     command: "Get-AzureADCurrentSessionInfo",
     useStaticSession: true,

@@ -12,7 +12,7 @@ export default function Header() {
   useEffect(() => {
     (async () => {
       const result = await electronAPI?.getExecutingUser();
-      setUser(result?.output ?? "/");
+      setUser(result?.output ?? "");
     })();
   }, []);
 

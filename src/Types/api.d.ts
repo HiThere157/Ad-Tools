@@ -2,22 +2,24 @@ type ElectronAPI = Window &
   typeof globalThis & {
     electronAPI:
       | {
-          getExecutingUser: () => Promise<ResultDataString>;
-          getDomainSuffixList: () => Promise<ResultData>;
-          getVersion: () => Promise<{ output: string }>;
-          executeCommand: (request: {
+          getExecutingUser: () => Promise<Result<string>>;
+          getDomainSuffixList: () => Promise<Result<PSResult>>;
+          getVersion: () => Promise<Result<string>>;
+
+          executeCommand: <T>(request: {
             command: Commands;
             args: CommandArgs;
             selectFields: string[];
             useStaticSession: boolean;
             json: boolean;
-          }) => Promise<ResultData | ResultDataString>;
+          }) => Promise<Result<T>>;
           startComputerAction: (
             action: ComputerAction,
             target: string,
             useCurrentUser: boolean,
-          ) => Promise<ResultDataString>;
-          probeConnection: (target: string) => Promise<{ output: string }>;
+          ) => Promise<Result<string>>;
+          probeConnection: (target: string) => Promise<Result<string>>;
+
           changeWinState: (state: WinState) => void;
           handleZoomUpdate: (callback: Function) => void;
           removeZoomListener: () => void;
@@ -77,12 +79,8 @@ type DnsQuery = {
   type?: string;
 };
 
-type Entry = { [key: string]: any };
-type ResultData = {
-  output?: Entry[];
-  error?: string;
-};
-type ResultDataString = {
-  output?: string;
+type PSResult = { [key: string]: string | number | string[] | number[] };
+type Result<T> = {
+  output?: T;
   error?: string;
 };

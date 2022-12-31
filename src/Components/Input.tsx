@@ -25,8 +25,6 @@ export default function Input({
       {label && <span className={"mr-2 whitespace-nowrap"}>{label}</span>}
       <input
         className={
-          // #THEMESTYLE
-
           "control w-full " +
           // background styling
           "dark:bg-elFlatBg dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg " +

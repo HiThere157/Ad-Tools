@@ -20,10 +20,19 @@ export default function WMIPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
-  const [monitors, setMonitors, monitorsKey] = useSessionStorage<ResultData>(`${p}_monitors`, {});
-  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage<ResultData>(`${p}_sysinfo`, {});
-  const [software, setSoftware, softwareKey] = useSessionStorage<ResultData>(`${p}_software`, {});
-  const [bios, setBios, biosKey] = useSessionStorage<ResultData>(`${p}_bios`, {});
+  const [monitors, setMonitors, monitorsKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_monitors`,
+    {},
+  );
+  const [sysinfo, setSysinfo, sysinfoKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_sysinfo`,
+    {},
+  );
+  const [software, setSoftware, softwareKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_software`,
+    {},
+  );
+  const [bios, setBios, biosKey] = useSessionStorage<Result<PSResult[]>>(`${p}_bios`, {});
 
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
@@ -36,7 +45,7 @@ export default function WMIPage() {
     setIsLoading(true);
 
     await Promise.all([
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Get-WmiObject",
         args: {
           ClassName: "WmiMonitorID",
@@ -46,7 +55,7 @@ export default function WMIPage() {
         postProcessor: replaceASCIIArray,
         callback: setMonitors,
       }),
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Get-WmiObject",
         args: {
           ClassName: "Win32_ComputerSystem",
@@ -55,7 +64,7 @@ export default function WMIPage() {
         postProcessor: getWMIPropertiesWrapper,
         callback: setSysinfo,
       }),
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Get-WmiObject",
         args: {
           ClassName: "Win32_Product",
@@ -65,7 +74,7 @@ export default function WMIPage() {
         postProcessor: makeToList,
         callback: setSoftware,
       }),
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Get-WmiObject",
         args: {
           ClassName: "Win32_bios",

@@ -21,8 +21,14 @@ export default function AzureGroupPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AadQuery>(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(`${p}_attribs`, {});
-  const [members, setMembers, membersKey] = useSessionStorage<ResultData>(`${p}_members`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_attribs`,
+    {},
+  );
+  const [members, setMembers, membersKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_members`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
@@ -38,7 +44,7 @@ export default function AzureGroupPage() {
     setMembers({ output: [] });
 
     await authenticateAzure(query.tenant);
-    const groups = await makeAPICall({
+    const groups = await makeAPICall<Promise<PSResult[]>[]>({
       command: "Get-AzureADGroup",
       args: {
         SearchString: query.input,
@@ -54,25 +60,22 @@ export default function AzureGroupPage() {
       return;
     }
 
-    const output = groups.output as Promise<
-      { DisplayName: string | undefined; ObjectId: string | undefined }[]
-    >[];
-    const firstResult = (await output?.[0])?.[0];
+    const firstResult = (await groups.output?.[0])?.[0];
 
     if (firstResult?.DisplayName === query.input) {
-      await makeAPICall({
+      await makeAPICall<PSResult[]>({
         command: "Get-AzureADGroup",
         args: {
-          ObjectId: firstResult.ObjectId,
+          ObjectId: firstResult?.ObjectId.toString(),
         },
         postProcessor: getPropertiesWrapper,
         callback: setAttributes,
         useStaticSession: true,
       });
-      await makeAPICall({
+      await makeAPICall<PSResult[]>({
         command: "Get-AzureADGroupMember",
         args: {
-          ObjectId: firstResult.ObjectId,
+          ObjectId: firstResult?.ObjectId.toString(),
           All: "1",
         },
         selectFields: columns.azureUser.map((column) => column.key),

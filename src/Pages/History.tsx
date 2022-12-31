@@ -10,13 +10,13 @@ import ScrollPosition from "../Components/ScrollPosition";
 
 export default function SearchPage() {
   const p = useLocation().pathname.substring(1);
-  const [history, setHistory] = useState<ResultData>({});
+  const [history, setHistory] = useState<Result<PSResult[]>>({});
 
   try {
     const db = setupIndexedDB(commandDBConfig);
     (async () => {
       const commandStore = new Store(db, "commands", "readonly");
-      const result = await commandStore.getAll<object[]>();
+      const result = await commandStore.getAll<PSResult>();
       setHistory({ output: result.reverse() });
     })();
   } catch (error: any) {

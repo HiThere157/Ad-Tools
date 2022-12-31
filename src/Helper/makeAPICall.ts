@@ -20,7 +20,7 @@ type makeAPICallParams = {
   useStaticSession?: boolean;
   json?: boolean;
 };
-async function makeAPICall({
+async function makeAPICall<T>({
   command,
   args = {},
   postProcessor = (AdObject: object) => AdObject,
@@ -28,7 +28,7 @@ async function makeAPICall({
   selectFields = [],
   useStaticSession = false,
   json = true,
-}: makeAPICallParams): Promise<ResultData> {
+}: makeAPICallParams): Promise<Result<T>> {
   const postProcessorList = makeToList(postProcessor);
   const callBackList = makeToList(callback);
 
@@ -37,7 +37,7 @@ async function makeAPICall({
   });
 
   try {
-    const result = await electronAPI?.executeCommand({
+    const result = await electronAPI?.executeCommand<T>({
       command,
       args,
       selectFields,
@@ -68,12 +68,11 @@ async function makeAPICall({
         output: await processed[index],
       });
     });
-    await Promise.all(processed);
 
-    return { output: processed };
+    const resolvedProcessed = await Promise.all(processed);
+    return { output: resolvedProcessed } as Result<T>;
   } catch (error: any) {
-    const result = {
-      output: [],
+    const result: Result<T> = {
       error: error.toString(),
     };
 

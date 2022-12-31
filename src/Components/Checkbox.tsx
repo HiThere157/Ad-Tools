@@ -27,8 +27,6 @@ export default function Checkbox({
     <div className="flex items-center">
       <label
         className={
-          // #THEMESTYLE
-
           "control flex items-center h-5 w-5 p-1 " +
           // background styling
           "dark:bg-elFlatBg dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg " +

@@ -20,11 +20,14 @@ export default function DnsPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<DnsQuery>(`${p}_query`, {});
 
-  const [results, setResults, resultsKey] = useSessionStorage<ResultData>(`${p}_results`, {});
+  const [results, setResults, resultsKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_results`,
+    {},
+  );
 
   const runQuery = async () => {
     setIsLoading(true);
-    await makeAPICall({
+    await makeAPICall<PSResult[]>({
       command: "Resolve-DnsName",
       args: {
         Name: query.input,

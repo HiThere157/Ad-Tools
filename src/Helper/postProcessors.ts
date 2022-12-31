@@ -1,23 +1,23 @@
 // Wrap all Properties in {key: [key], value: [value]} objects (attributes table)
-function getPropertiesWrapper(Obj: { PropertyNames?: string[]; [key: string]: any }): Entry {
+function getPropertiesWrapper(Obj: { PropertyNames?: string[] } & PSResult): PSResult[] {
   const properties = Obj.PropertyNames ?? Object.keys(Obj);
-  return properties.map((property) => {
-    return { key: property, value: Obj[property] };
-  });
-}
-function getWMIPropertiesWrapper(Obj: {
-  Properties: { Name: string }[];
-  [key: string]: any;
-}): Entry {
-  const properties = Obj.Properties.map((property) => property.Name);
-  return properties.map((property) => {
-    return { key: property, value: Obj[property] };
-  });
-}
 
-function getExtensionsFromAadUser(Adbject: {
-  ExtensionProperty: { [key: string]: string };
-}): Entry {
+  return properties.map((property) => {
+    return { key: property, value: Obj[property] };
+  });
+}
+function getWMIPropertiesWrapper(
+  Obj: {
+    Properties: { Name: string }[];
+  } & PSResult,
+): PSResult[] {
+  const properties = Obj.Properties.map((property) => property.Name);
+
+  return properties.map((property) => {
+    return { key: property, value: Obj[property] };
+  });
+}
+function getExtensionsFromAadUser(Adbject: { ExtensionProperty: PSResult }): PSResult[] {
   return getPropertiesWrapper(Adbject.ExtensionProperty);
 }
 
@@ -38,14 +38,14 @@ function getMembershipFromAdUser(AdObject: {
   });
 }
 
-function replaceASCIIArray(MonitorWMI: { [key: string]: string } | { [key: string]: string }[]) {
+function replaceASCIIArray(MonitorWMI: PSResult | PSResult[]): PSResult[] {
   const keysToReplace = ["UserFriendlyName", "SerialNumberID"];
 
   const asciiToString = (asciiArray: number[]) => {
     try {
       return String.fromCharCode(...asciiArray.filter((char) => char !== 0));
     } catch {
-      return null;
+      return "null";
     }
   };
 
@@ -112,7 +112,7 @@ async function prepareDNSResult(DNSObjects: { Type: number } | { Type: number }[
 
 function replacePrinterStatus(
   PrinterObject: { PrinterStatus: number } | { PrinterStatus: number }[],
-) {
+): PSResult[] {
   return makeToList(PrinterObject).map((printer) => {
     const statusLookup: { [key: number]: string } = {
       0: "Normal",
@@ -128,7 +128,7 @@ function replacePrinterStatus(
   });
 }
 
-function makeToList(AdObject: any[] | any): any[] {
+function makeToList<T>(AdObject: T[] | T): T[] {
   if (!Array.isArray(AdObject)) {
     return [AdObject];
   }

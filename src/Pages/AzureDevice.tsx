@@ -21,7 +21,10 @@ export default function AzureDevicePage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AadQuery>(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(`${p}_attribs`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_attribs`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
@@ -36,7 +39,7 @@ export default function AzureDevicePage() {
     setAttributes({ output: [] });
 
     await authenticateAzure(query.tenant);
-    const devices = await makeAPICall({
+    const devices = await makeAPICall<Promise<PSResult[]>[]>({
       command: "Get-AzureADDevice",
       args: {
         SearchString: query.input,
@@ -51,16 +54,13 @@ export default function AzureDevicePage() {
       return;
     }
 
-    const output = devices.output as Promise<
-      { DisplayName: string | undefined; ObjectId: string | undefined }[]
-    >[];
-    const firstResult = (await output?.[0])?.[0];
+    const firstResult = (await devices.output?.[0])?.[0];
 
     if (firstResult?.DisplayName === query.input) {
-      await makeAPICall({
+      await makeAPICall<PSResult[]>({
         command: "Get-AzureADDevice",
         args: {
-          ObjectId: firstResult.ObjectId,
+          ObjectId: firstResult?.ObjectId.toString(),
         },
         postProcessor: getPropertiesWrapper,
         callback: setAttributes,

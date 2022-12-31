@@ -1,14 +1,3 @@
-type IndexedDBConfig = {
-  database: string;
-  version: number;
-  stores: IndexedDBStore[];
-};
-
-type IndexedDBStore = {
-  name: string;
-  id: IDBObjectStoreParameters;
-};
-
 class Store {
   constructor(
     private db: Promise<IDBDatabase> | IDBDatabase,

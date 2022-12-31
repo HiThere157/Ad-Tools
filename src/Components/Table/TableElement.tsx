@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { EntryArray } from "../../Helper/array";
+import { ResultArray } from "../../Helper/array";
 
 import Button from "../Button";
 import Checkbox from "../Checkbox";
@@ -10,7 +10,7 @@ import RedirectButton from "./RedirectButton";
 import { BsCaretDownFill } from "react-icons/bs";
 
 type TableElementProps = {
-  entries?: Entry[];
+  entries?: PSResult[];
   columns: ColumnDefinition[];
   sortDesc: boolean;
   sortedColumn: string;
@@ -19,7 +19,7 @@ type TableElementProps = {
   selected: number[];
   onSelectedChange: (newSelected: number[]) => any;
   onHeaderClick: (header: string) => any;
-  onRedirect?: (entry: Entry) => any;
+  onRedirect?: (entry: PSResult) => any;
 };
 export default function TableElement({
   entries = [],
@@ -39,7 +39,7 @@ export default function TableElement({
   }, [filter, entries, selected]);
 
   const getFinalEntries = () => {
-    return new EntryArray(entries)
+    return new ResultArray(entries)
       .tagArray()
       .sortArray(sortDesc, sortedColumn)
       .filterArray(selected, filter).array;
@@ -122,18 +122,15 @@ export default function TableElement({
             <tr key={entry.__id__} className="dark:hover:bg-lightBg">
               <td className="relative group px-2 dark:border-elFlatBorder border-y">
                 <Checkbox
-                  checked={selected.includes(entry.__id__)}
+                  checked={selected.includes(entry.__id__ ?? -1)}
                   onChange={() => {
-                    toggleSelected(entry.__id__);
+                    toggleSelected(entry.__id__ ?? -1);
                   }}
                 />
               </td>
               {columns.map((column, index) => {
                 return (
-                  <td
-                    key={index}
-                    className="relative group px-2 dark:border-elFlatBorder border"
-                  >
+                  <td key={index} className="relative group px-2 dark:border-elFlatBorder border">
                     <TableCell text={entry[column.key]} />
                     <RedirectButton
                       isVisible={!!onRedirect}

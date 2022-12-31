@@ -24,9 +24,18 @@ export default function GroupPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
 
-  const [attribs, setAttributes, attribsKey] = useSessionStorage<ResultData>(`${p}_attribs`, {});
-  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<ResultData>(`${p}_memberOf`, {});
-  const [members, setMembers, membersKey] = useSessionStorage<ResultData>(`${p}_members`, {});
+  const [attribs, setAttributes, attribsKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_attribs`,
+    {},
+  );
+  const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_memberOf`,
+    {},
+  );
+  const [members, setMembers, membersKey] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_members`,
+    {},
+  );
 
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
@@ -38,7 +47,7 @@ export default function GroupPage() {
     setReQuery(false);
     setIsLoading(true);
     await Promise.all([
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Get-ADGroup",
         args: {
           Identity: query.input,
@@ -48,7 +57,7 @@ export default function GroupPage() {
         postProcessor: [getPropertiesWrapper, getMembershipFromAdUser],
         callback: [setAttributes, setMemberOf],
       }),
-      makeAPICall({
+      makeAPICall<PSResult[]>({
         command: "Get-ADGroupMember",
         args: {
           Identity: query.input,

@@ -17,8 +17,6 @@ export default function Button({
   return (
     <button
       className={
-        // #THEMESTYLE
-
         "control " +
         // background styling
         (colorful
