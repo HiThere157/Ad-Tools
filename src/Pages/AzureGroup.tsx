@@ -44,7 +44,7 @@ export default function AzureGroupPage() {
     setMembers({ output: [] });
 
     await authenticateAzure(query.tenant);
-    const groups = await makeAPICall<Promise<PSResult[]>[]>({
+    const groups = await makeAPICall<PSResult[]>({
       command: "Get-AzureADGroup",
       args: {
         SearchString: query.input,

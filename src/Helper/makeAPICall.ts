@@ -23,12 +23,12 @@ type makeAPICallParams = {
 async function makeAPICall<T>({
   command,
   args = {},
-  postProcessor = (AdObject: object) => AdObject,
+  postProcessor = (AdObject: PSResult) => AdObject,
   callback = () => {},
   selectFields = [],
   useStaticSession = false,
   json = true,
-}: makeAPICallParams): Promise<Result<T>> {
+}: makeAPICallParams): Promise<Result<Promise<T>[]>> {
   const postProcessorList = makeToList(postProcessor);
   const callBackList = makeToList(callback);
 
@@ -70,9 +70,9 @@ async function makeAPICall<T>({
     });
 
     const resolvedProcessed = await Promise.all(processed);
-    return { output: resolvedProcessed } as Result<T>;
+    return { output: resolvedProcessed };
   } catch (error: any) {
-    const result: Result<T> = {
+    const result = {
       error: error.toString(),
     };
 
