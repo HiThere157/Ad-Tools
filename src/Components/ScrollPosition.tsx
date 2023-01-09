@@ -1,13 +1,12 @@
-import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import { useSessionStorage } from "../Hooks/useStorage";
+
+import { BsFillArrowUpCircleFill } from "react-icons/bs";
 
 type ScrollPositionProps = {
   name: string;
 };
 export default function ScrollPosition({ name }: ScrollPositionProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { pathname } = useLocation();
   const [scrollPos, setScrollPos] = useSessionStorage<number>(`${name}_scroll`, 0);
 
   useEffect(() => {
@@ -15,19 +14,38 @@ export default function ScrollPosition({ name }: ScrollPositionProps) {
       setScrollPos((target as HTMLElement).scrollTop ?? 0);
     };
 
-    const containerRef = ref?.current?.parentElement?.parentElement;
-    containerRef?.addEventListener("scroll", callback);
+    const scrollContainer = document.getElementById("js-scroll-container");
+    scrollContainer?.addEventListener("scroll", callback);
 
     return () => {
-      containerRef?.removeEventListener("scroll", callback);
+      scrollContainer?.removeEventListener("scroll", callback);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref, name]);
+  }, [name]);
+
+  const scrollTo = (height: number, smooth?: boolean) => {
+    document
+      .getElementById("js-scroll-container")
+      ?.scrollTo({ top: height, behavior: smooth ? "smooth" : "auto" });
+  };
 
   useEffect(() => {
-    ref?.current?.parentElement?.parentElement?.scrollTo(0, scrollPos);
+    scrollTo(scrollPos);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, []);
 
-  return <div ref={ref}></div>;
+  return (
+    <div className="absolute bottom-5 right-8">
+      {scrollPos > 200 && (
+        <button
+          className="text-4xl dark:bg-darkBg dark:text-elAccentBg dark:hover:text-elActiveBg"
+          onClick={() => {
+            scrollTo(0, true);
+          }}
+        >
+          <BsFillArrowUpCircleFill />
+        </button>
+      )}
+    </div>
+  );
 }

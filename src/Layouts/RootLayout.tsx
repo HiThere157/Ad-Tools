@@ -25,7 +25,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <NavBar />
       <Footer />
 
-      <div style={{ gridArea: "content" }} className="px-4 py-2 overflow-auto">
+      <div
+        id="js-scroll-container"
+        style={{ gridArea: "content" }}
+        className="px-4 py-2 overflow-auto"
+      >
         {children}
       </div>
 
