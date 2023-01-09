@@ -32,7 +32,7 @@ export default function Dropdown({ items, value, disabled = false, onChange }: D
   };
 
   return (
-    <div ref={ref} className="w-max z-10">
+    <div ref={ref} className="w-max z-[10]">
       <Button onClick={() => setIsOpen(!isOpen)} disabled={disabled}>
         <div className="flex items-center h-6">
           {value}

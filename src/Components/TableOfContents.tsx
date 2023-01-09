@@ -33,13 +33,17 @@ export default function TableOfContents() {
   }, [pathname]);
 
   return (
-    <div ref={ref} className="z-30">
-      <WinButton onClick={() => setIsOpen(!isOpen)}>
-        <BsReverseLayoutTextWindowReverse />
-      </WinButton>
-      <div className={isOpen ? "scale-100" : "scale-0"}>
-        <TableOfContentsBody headings={headings} activeIndex={activeIndex} />
-      </div>
+    <div ref={ref} className="z-[40]">
+      {headings.length !== 0 && (
+        <>
+          <WinButton onClick={() => setIsOpen(!isOpen)}>
+            <BsReverseLayoutTextWindowReverse />
+          </WinButton>
+          <div className={isOpen ? "scale-100" : "scale-0"}>
+            <TableOfContentsBody headings={headings} activeIndex={activeIndex} />
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -65,7 +69,9 @@ function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps
               <span>
                 <BsHash className="scale-125" />
               </span>
-              <span onClick={() => heading.scrollIntoView({behavior: "smooth"})}>{heading.innerText}</span>
+              <span onClick={() => heading.scrollIntoView({ behavior: "smooth" })}>
+                {heading.innerText}
+              </span>
             </div>
           );
         })}

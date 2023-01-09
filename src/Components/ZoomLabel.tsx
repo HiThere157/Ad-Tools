@@ -30,7 +30,7 @@ export default function ZoomLabel() {
   return (
     <>
       {visible && zoom && (
-        <div className="container absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] p-3 z-40">
+        <div className="container absolute z-[50] top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] p-3">
           <span className="text-lg">{zoom}%</span>
         </div>
       )}
