@@ -38,7 +38,7 @@ export default function ScrollPosition({ name }: ScrollPositionProps) {
     <div className="absolute bottom-5 right-8">
       {scrollPos > 200 && (
         <button
-          className="text-4xl dark:bg-darkBg dark:text-elAccentBg dark:hover:text-elActiveBg"
+          className="text-4xl dark:bg-darkBg dark:text-elAccentBg dark:hover:text-elActiveBg rounded-full"
           onClick={() => {
             scrollTo(0, true);
           }}

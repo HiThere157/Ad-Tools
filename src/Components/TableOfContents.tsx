@@ -65,7 +65,7 @@ function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps
               <span>
                 <BsHash className="scale-125" />
               </span>
-              <span onClick={() => heading.scrollIntoView()}>{heading.innerText}</span>
+              <span onClick={() => heading.scrollIntoView({behavior: "smooth"})}>{heading.innerText}</span>
             </div>
           );
         })}
