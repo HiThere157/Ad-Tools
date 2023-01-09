@@ -49,7 +49,15 @@ export default function FilterMenu({
   }, [isEditing]);
 
   useEffect(() => {
-    onFilterChange(savedFilters[currentSavedFilter] ?? {});
+    // is executed on mount, check if no saved filter is selected
+    // and use last unnamed filter
+    if (currentSavedFilter === "No Preset") {
+      onFilterChange(filter);
+    } else {
+      // when changing saved filters, send filter update
+      onFilterChange(savedFilters[currentSavedFilter] ?? {});
+    }
+
     // if filter reset from ActionMenu, disable editing
     if (currentSavedFilter === "No Preset") setIsEditing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
