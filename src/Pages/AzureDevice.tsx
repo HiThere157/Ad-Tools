@@ -38,7 +38,10 @@ export default function AzureDevicePage() {
 
     setAttributes({ output: [] });
 
-    await authenticateAzure(query.tenant);
+    await authenticateAzure({
+      tenant: query.tenant,
+      useCredentials: query.useCredentials ?? false,
+    });
     const devices = await makeAPICall<PSResult[]>({
       command: "Get-AzureADDevice",
       args: {

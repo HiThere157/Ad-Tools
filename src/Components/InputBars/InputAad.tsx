@@ -8,6 +8,7 @@ import { addMessage } from "../../Helper/handleMessage";
 import Input from "../Input";
 import Dropdown from "../Dropdown";
 import Button from "../Button";
+import Checkbox from "../Checkbox";
 
 type AadInputBarProps = {
   label: string;
@@ -31,11 +32,12 @@ export default function AadInputBar({
   const tenants = getTenants();
   const [input, setInput] = useState<string>(query.input ?? "");
   const [tenant, setTenant] = useState<string>(query.tenant ?? tenants[0]);
+  const [useCredentials, setUseCredentials] = useState<boolean>(query.useCredentials ?? false);
 
   useEffect(() => {
-    onChange({ input, tenant });
+    onChange({ input, tenant, useCredentials });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input, tenant]);
+  }, [input, tenant, useCredentials]);
 
   const azureLogout = async () => {
     const result = await makeAPICall({
@@ -66,10 +68,20 @@ export default function AadInputBar({
         {tenants.length !== 0 && (
           <>
             <Dropdown items={tenants} value={tenant} disabled={isLoading} onChange={setTenant} />
-            <Button onClick={azureLogout} disabled={isLoading} children="Logout" />
+            <Button onClick={azureLogout} disabled={isLoading}>
+              Logout
+            </Button>
           </>
         )}
-        <Button onClick={onSubmit} disabled={isLoading} children="Run" />
+        <Button onClick={onSubmit} disabled={isLoading}>
+          Run
+        </Button>
+        <Checkbox
+          label="use credentials"
+          checked={useCredentials}
+          disabled={isLoading}
+          onChange={() => setUseCredentials(!useCredentials)}
+        />
         {children}
       </div>
       {hint && <span className="ml-1 dark:text-whiteColorAccent">{hint}</span>}

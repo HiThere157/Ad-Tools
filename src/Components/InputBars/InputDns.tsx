@@ -57,8 +57,12 @@ export default function DnsInputBar({
         onEnter={onSubmit}
       />
       <Dropdown items={dnsTypes} value={type} disabled={isLoading} onChange={setType} />
-      <Button onClick={clearCache} disabled={isLoading} children="Clear Cache" />
-      <Button onClick={onSubmit} disabled={isLoading} children="Run" />
+      <Button onClick={clearCache} disabled={isLoading}>
+        Clear Cache
+      </Button>
+      <Button onClick={onSubmit} disabled={isLoading}>
+        Run
+      </Button>
       {children}
     </div>
   );

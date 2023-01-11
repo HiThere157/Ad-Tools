@@ -18,6 +18,7 @@ type ElectronAPI = Window &
             target: string,
             useCurrentUser: boolean,
           ) => Promise<Result<string>>;
+          authAzureAD: (tenant?: string, useCredentials: boolean) => Promise<Result<string>>;
           probeConnection: (target: string) => Promise<Result<string>>;
 
           changeWinState: (state: WinState) => void;
@@ -36,7 +37,6 @@ type Command =
   | "Resolve-DnsName"
   | "Get-Printer"
   | "Clear-DnsClientCache"
-  | "Connect-AzureAD"
   | "Disconnect-AzureAD"
   | "Get-AzureADCurrentSessionInfo"
   | "Get-AzureADUser"
@@ -56,7 +56,6 @@ type CommandArgs = {
   Namespace?: string;
   ComputerName?: string;
   Type?: string;
-  Tenant?: string;
   ObjectId?: string;
   SearchString?: string;
   All?: string;
@@ -73,6 +72,7 @@ type AdQuery = {
 type AadQuery = {
   input?: string;
   tenant?: string;
+  useCredentials?: boolean;
 };
 type DnsQuery = {
   input?: string;

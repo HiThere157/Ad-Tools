@@ -49,7 +49,13 @@ export default function Checkbox({
         />
       </label>
       {label && (
-        <span className={"ml-2 whitespace-nowrap cursor-pointer"} onClick={() => onChange()}>
+        <span
+          className={
+            "ml-2 whitespace-nowrap cursor-pointer " +
+            (disabled ? "opacity-50 cursor-not-allowed" : "")
+          }
+          onClick={() => !disabled && onChange()}
+        >
           {label}
         </span>
       )}

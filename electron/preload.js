@@ -9,6 +9,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
   startComputerAction: (action, target, useCurrentUser) =>
     ipcRenderer.invoke("ps:startComputerAction", action, target, useCurrentUser),
 
+  authAzureAD: (tenant, useCredentials) =>
+    ipcRenderer.invoke("ps:authAzureAD", tenant, useCredentials),
+
   probeConnection: (target) => ipcRenderer.invoke("node:probeConnection", target),
 
   getVersion: () => ipcRenderer.invoke("node:getVersion"),

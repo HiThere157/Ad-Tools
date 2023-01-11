@@ -16,6 +16,7 @@ const {
   getExecutingUser,
   getDomainSuffixList,
   startComputerAction,
+  authAzureAD,
 } = require("./api/powershell");
 const { probeConnection, getVersion } = require("./api/node");
 
@@ -100,6 +101,7 @@ app.whenReady().then(() => {
   ipcMain.handle("ps:getExecutingUser", getExecutingUser);
   ipcMain.handle("ps:getDomainSuffixList", getDomainSuffixList);
   ipcMain.handle("ps:startComputerAction", startComputerAction);
+  ipcMain.handle("ps:authAzureAD", authAzureAD);
   ipcMain.handle("node:probeConnection", probeConnection);
   ipcMain.handle("node:getVersion", getVersion);
 

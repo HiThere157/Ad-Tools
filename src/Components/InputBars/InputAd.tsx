@@ -54,7 +54,9 @@ export default function AdInputBar({
           onEnter={onSubmit}
         />
         <Dropdown items={domains} value={domain} disabled={isLoading} onChange={setDomain} />
-        <Button onClick={onSubmit} disabled={isLoading} children="Run" />
+        <Button onClick={onSubmit} disabled={isLoading}>
+          Run
+        </Button>
         {children}
       </div>
       {hint && <span className="ml-1 dark:text-whiteColorAccent">{hint}</span>}

@@ -104,9 +104,23 @@ const startComputerAction = async (_event, action, target, useCurrentUser) => {
   return await invokeWrapper({ ps: getSession(), fullCommand });
 };
 
+const authAzureAD = async (_event, tenant, useCredentials) => {
+  let fullCommand = "Connect-AzureAD";
+
+  if (tenant) {
+    fullCommand = `${fullCommand} -Tenant ${quote([tenant])}`;
+  }
+  if (useCredentials) {
+    fullCommand = `${fullCommand} -Credential (Get-Credential)`;
+  }
+
+  return await invokeWrapper({ ps: staticSession, fullCommand, dispose: false });
+};
+
 module.exports = {
   executeCommand,
   getExecutingUser,
   getDomainSuffixList,
   startComputerAction,
+  authAzureAD,
 };

@@ -1,6 +1,13 @@
-import { makeAPICall } from "./makeAPICall";
+import { makeAPICall, electronAPI } from "./makeAPICall";
 
-export default async function authenticateAzure(tenant: string | undefined): Promise<boolean> {
+type authenticateAzureParams = {
+  tenant?: string;
+  useCredentials: boolean;
+};
+export default async function authenticateAzure({
+  tenant,
+  useCredentials,
+}: authenticateAzureParams): Promise<boolean> {
   const connected = await makeAPICall({
     command: "Get-AzureADCurrentSessionInfo",
     useStaticSession: true,
@@ -9,16 +16,7 @@ export default async function authenticateAzure(tenant: string | undefined): Pro
 
   if (!connected.error) return false;
 
-  await makeAPICall({
-    command: "Connect-AzureAD",
-    args: tenant
-      ? {
-          Tenant: tenant,
-        }
-      : undefined,
-    useStaticSession: true,
-    json: false,
-  });
+  await electronAPI?.authAzureAD(tenant, useCredentials);
 
   return true;
 }

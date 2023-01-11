@@ -23,9 +23,6 @@ module.exports = {
   "Clear-DnsClientCache": {
     args: [],
   },
-  "Connect-AzureAD": {
-    args: ["Tenant"],
-  },
   "Disconnect-AzureAD": {
     args: [],
   },

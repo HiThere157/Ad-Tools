@@ -54,7 +54,10 @@ export default function AzureUserPage() {
     setMemberOf({ output: [] });
     setDevices({ output: [] });
 
-    await authenticateAzure(query.tenant);
+    await authenticateAzure({
+      tenant: query.tenant,
+      useCredentials: query.useCredentials ?? false,
+    });
     await makeAPICall<PSResult[]>({
       command: "Get-AzureADUser",
       args: {

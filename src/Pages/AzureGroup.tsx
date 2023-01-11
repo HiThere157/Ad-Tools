@@ -43,7 +43,10 @@ export default function AzureGroupPage() {
     setAttributes({ output: [] });
     setMembers({ output: [] });
 
-    await authenticateAzure(query.tenant);
+    await authenticateAzure({
+      tenant: query.tenant,
+      useCredentials: query.useCredentials ?? false,
+    });
     const groups = await makeAPICall<PSResult[]>({
       command: "Get-AzureADGroup",
       args: {
