@@ -11,4 +11,7 @@ type Release = {
     avatar_url: string;
     html_url: string;
   };
+  assets: {
+    download_count: number;
+  }[];
 };

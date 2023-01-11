@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import Type from "./Type";
 import Link from "../Link";
 
-import { BsBoxArrowUpRight, BsDot, BsTag } from "react-icons/bs";
+import { BsBoxArrowUpRight, BsDot, BsTag, BsDownload } from "react-icons/bs";
 import { BiGitBranch } from "react-icons/bi";
 
 type ReleaseProps = Release & {
@@ -21,6 +21,7 @@ export default function Release({
   installed,
   published_at,
   author,
+  assets,
 }: ReleaseProps) {
   return (
     <div className="container flex flex-col px-2 py-1 w-full max-w-3xl">
@@ -50,6 +51,11 @@ export default function Release({
         <div className="flex items-center gap-1">
           <BiGitBranch className="mt-0.5" />
           <span>{target_commitish}</span>
+        </div>
+        <BsDot className="mx-1" />
+        <div className="flex items-center gap-1">
+          <BsDownload className="mt-0.5" />
+          <span>{assets.reduce((downloads, asset) => downloads + asset.download_count, 0)}</span>
         </div>
       </div>
 

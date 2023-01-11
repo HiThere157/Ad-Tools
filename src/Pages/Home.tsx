@@ -60,6 +60,7 @@ export default function HomePage() {
                 html_url: "",
               }
             }
+            assets={release.assets ?? []}
           />
         );
       })}
