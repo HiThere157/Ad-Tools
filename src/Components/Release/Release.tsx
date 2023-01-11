@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import Type from "./Type";
 import Link from "../Link";
 
-import { BsBoxArrowUpRight, BsDot, BsTag, BsDownload } from "react-icons/bs";
+import { BsBoxArrowUpRight, BsClock, BsDot, BsTag, BsDownload } from "react-icons/bs";
 import { BiGitBranch } from "react-icons/bi";
 
 type ReleaseProps = Release & {
@@ -41,7 +41,10 @@ export default function Release({
       <hr className="my-1.5 dark:border-elFlatBorder" />
 
       <div className="flex items-center text-xs text-whiteColorAccent ml-1">
-        <span>{published_at.replace("T", " ").replace("Z", " UTC")}</span>
+        <div className="flex items-center gap-1">
+          <BsClock className="mt-0.5" />
+          <span>{published_at.replace("T", " ").replace("Z", " UTC")}</span>
+        </div>
         <BsDot className="mx-1" />
         <div className="flex items-center gap-1">
           <BsTag className="mt-0.5" />
