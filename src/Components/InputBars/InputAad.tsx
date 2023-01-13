@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { getTenants } from "../../Helper/getSavedConfig";
-import { azureLogout } from "../../Helper/azureAuth";
-
 import Input from "../Input";
 import Button from "../Button";
 
@@ -24,7 +21,6 @@ export default function AadInputBar({
   onSubmit,
   children,
 }: AadInputBarProps) {
-  const tenants = getTenants();
   const [input, setInput] = useState<string>(query.input ?? "");
 
   useEffect(() => {
@@ -43,13 +39,6 @@ export default function AadInputBar({
           onChange={setInput}
           onEnter={onSubmit}
         />
-        {tenants.length !== 0 && (
-          <>
-            <Button onClick={azureLogout} disabled={isLoading}>
-              Logout
-            </Button>
-          </>
-        )}
         <Button onClick={onSubmit} disabled={isLoading}>
           Run
         </Button>

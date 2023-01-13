@@ -9,7 +9,7 @@ import {
   getExtensionsFromAadUser,
   makeToList,
 } from "../Helper/postProcessors";
-import { isAuthenticated, azureLogin } from "../Helper/azureAuth";
+import { isAuthenticated } from "../Helper/azureAuth";
 import { redirect } from "../Helper/redirects";
 
 import AzureLogin from "../Components/Popups/AzureLogin";
@@ -97,11 +97,7 @@ export default function AzureUserPage() {
 
   return (
     <article>
-      <AzureLogin
-        isOpen={loginPopup}
-        onExit={() => setLoginPopup(false)}
-        onSubmit={azureLogin}
-      />
+      <AzureLogin isOpen={loginPopup} onExit={() => setLoginPopup(false)} />
       <AadInputBar
         label="Azure User:"
         hint="Hint: full user principal name is required (Eg.: kochda7@example.com)"

@@ -33,22 +33,4 @@ function setDomains(domains: string[]) {
   localStorage.setItem("conf_domains", JSON.stringify(domains));
 }
 
-function getTenants(): string[] {
-  // look for stored domains in localstorage
-  const stored = localStorage.getItem("conf_tenants");
-  let tenants;
-  try {
-    tenants = JSON.parse(stored ?? "[]");
-  } catch {
-    tenants = [];
-  }
-
-  setTenants(tenants);
-  return tenants;
-}
-
-function setTenants(tenants: string[]) {
-  localStorage.setItem("conf_tenants", JSON.stringify(tenants));
-}
-
-export { getDomains, setDomains, getTenants, setTenants };
+export { getDomains, setDomains };

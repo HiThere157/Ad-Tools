@@ -11,7 +11,6 @@ import EditableList from "../Components/EditableList";
 export default function GroupPage() {
   const { setState } = useGlobalState();
   const [domains, setDomains] = useLocalStorage<string[]>("conf_domains", []);
-  const [tenants, setTenants] = useLocalStorage<string[]>("conf_tenants", []);
 
   const clearSession = () => {
     window.sessionStorage.clear();
@@ -32,49 +31,29 @@ export default function GroupPage() {
     }
   };
 
-  const updateDomainTenant = (newItems: string[], callback: Function) => {
+  const updateDomains = (newDomains: string[]) => {
     addMessage(
       {
         type: "info",
-        message: "Domain and Tenant list was updated",
+        message: "Domain list was updated",
         timer: 7,
         skipIfExists: true,
       },
       setState,
     );
-    callback(newItems);
+    setDomains(newDomains);
   };
 
   return (
     <article className="flex flex-col space-y-5">
       <section>
         <h2 className="text-2xl font-bold mb-1" style={{ scrollMarginTop: "60px" }}>
-          Settings
+          Domain Settings
         </h2>
-        <div className="flex flex-wrap justify-evenly gap-5">
-          <div className="flex flex-col items-end">
-            <h3 className="text-xl font-bold mb-1">Domains</h3>
-            <EditableList
-              items={domains}
-              onChange={(newItems: string[]) => {
-                updateDomainTenant(newItems, setDomains);
-              }}
-            />
-          </div>
-
-          <div className="flex flex-col items-end">
-            <h3 className="text-xl font-bold mb-1">Tenants</h3>
-            <EditableList
-              items={tenants}
-              onChange={(newItems: string[]) => {
-                updateDomainTenant(newItems, setTenants);
-              }}
-            />
-            <span className="w-80 mt-1 text-right dark:text-whiteColorAccent">
-              Specifying tenants is only necessary if your account can access multiple tenants
-            </span>
-          </div>
-        </div>
+        <EditableList
+          items={domains}
+          onChange={updateDomains}
+        />
       </section>
 
       <section>

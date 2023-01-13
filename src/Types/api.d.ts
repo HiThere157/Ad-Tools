@@ -64,7 +64,6 @@ type StartComputerActionOptions = {
   useCurrentUser: boolean;
 };
 type AuthAzureADOptions = {
-  tenant?: string;
   accountId?: string;
   useCredentials: boolean;
 };

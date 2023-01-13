@@ -104,15 +104,12 @@ const startComputerAction = async (_event, { action, target, useCurrentUser }) =
   return await invokeWrapper({ ps: getSession(), fullCommand });
 };
 
-const authAzureAD = async (_event, { tenant, accountID, useCredentials }) => {
+const authAzureAD = async (_event, { accountId, useCredentials }) => {
   let fullCommand = "Connect-AzureAD";
 
-  if (accountID) {
-    fullCommand = `${fullCommand} -AccountId ${quote([accountID])}`;
+  if (accountId) {
+    fullCommand = `${fullCommand} -AccountId ${quote([accountId])}`;
     fullCommand = fullCommand.replace(/\\@/g, "@");
-  }
-  if (tenant) {
-    fullCommand = `${fullCommand} -Tenant ${quote([tenant])}`;
   }
   if (useCredentials) {
     fullCommand = `${fullCommand} -Credential (Get-Credential)`;

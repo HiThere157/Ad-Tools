@@ -1,4 +1,9 @@
+import { useState } from "react";
 import { useLocalStorage } from "../../Hooks/useStorage";
+
+import { azureLogin } from "../../Helper/azureAuth";
+import { useGlobalState } from "../../Hooks/useGlobalState";
+import { addMessage } from "../../Helper/handleMessage";
 
 import Popup from "./Popup";
 import Button from "../Button";
@@ -9,14 +14,30 @@ import TabControl from "../Tab/TabControl";
 type AzureLoginProps = {
   isOpen: boolean;
   onExit: () => any;
-  onSubmit: () => any;
 };
-export default function AzureLogin({ isOpen, onExit, onSubmit }: AzureLoginProps) {
-  const [upn, setUpn] = useLocalStorage<string>("conf_AzureLastUpn", "");
+export default function AzureLogin({ isOpen, onExit }: AzureLoginProps) {
+  const { setState } = useGlobalState();
+  const [isNoteOpen, setIsNoteOpen] = useState<boolean>(false);
+
+  const [upn, setUpn] = useLocalStorage<string>("conf_azureLastUpn", "");
   const [useCredentials, setUseCredentials] = useLocalStorage<boolean>(
-    "conf_AzureUseCredentials",
+    "conf_azureUseCredentials",
     false,
   );
+
+  const login = async () => {
+    setIsNoteOpen(true);
+    const success = await azureLogin();
+
+    if (success) {
+      addMessage({ type: "info", message: "logged in", timer: 7 }, setState);
+    } else {
+      addMessage({ type: "error", message: "failed to log in (cancelled / module missing)" }, setState);
+    }
+
+    setIsNoteOpen(false);
+    onExit();
+  }
 
   return (
     <Popup title="Azure Login" isOpen={isOpen} onExit={onExit}>
@@ -25,12 +46,18 @@ export default function AzureLogin({ isOpen, onExit, onSubmit }: AzureLoginProps
         onChange={(newIndex: number) => setUseCredentials(newIndex === 1)}
       >
         <Tab title="Web (SSO)">
-          <LoginFrame onCancel={onExit} onSubmit={onSubmit}>
-            <Input label="UPN:" value={upn} classOverride="w-56" onChange={setUpn} />
+          <LoginFrame isNoteOpen={isNoteOpen} onCancel={onExit} onSubmit={login}>
+            <Input
+              label="UPN:"
+              value={upn}
+              classOverride="w-56"
+              onChange={setUpn}
+              onEnter={login}
+            />
           </LoginFrame>
         </Tab>
         <Tab title="Credentials">
-          <LoginFrame onCancel={onExit} onSubmit={onSubmit} />
+          <LoginFrame isNoteOpen={isNoteOpen} onCancel={onExit} onSubmit={login} />
         </Tab>
       </TabControl>
     </Popup>
@@ -39,10 +66,11 @@ export default function AzureLogin({ isOpen, onExit, onSubmit }: AzureLoginProps
 
 type LoginFrameProps = {
   children?: React.ReactNode;
+  isNoteOpen: boolean;
   onCancel: () => any;
   onSubmit: () => any;
 };
-function LoginFrame({ children, onCancel, onSubmit }: LoginFrameProps) {
+function LoginFrame({ children, isNoteOpen, onCancel, onSubmit }: LoginFrameProps) {
   return (
     <div className="flex flex-col items-center">
       {children}
@@ -52,6 +80,8 @@ function LoginFrame({ children, onCancel, onSubmit }: LoginFrameProps) {
           Submit
         </Button>
       </div>
+
+      {isNoteOpen && <span className="mt-2 text-center dark:text-redColor">login popup opened.<br />(check behind other windows aswell)</span>}
     </div>
   );
 }

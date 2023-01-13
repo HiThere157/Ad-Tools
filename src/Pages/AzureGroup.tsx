@@ -5,7 +5,7 @@ import { useSessionStorage } from "../Hooks/useStorage";
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { getPropertiesWrapper, makeToList } from "../Helper/postProcessors";
-import { isAuthenticated, azureLogin } from "../Helper/azureAuth";
+import { isAuthenticated } from "../Helper/azureAuth";
 import { redirect } from "../Helper/redirects";
 
 import AzureLogin from "../Components/Popups/AzureLogin";
@@ -106,11 +106,7 @@ export default function AzureGroupPage() {
 
   return (
     <article>
-      <AzureLogin
-        isOpen={loginPopup}
-        onExit={() => setLoginPopup(false)}
-        onSubmit={azureLogin}
-      />
+      <AzureLogin isOpen={loginPopup} onExit={() => setLoginPopup(false)} />
       <AadInputBar
         label="Azure Group:"
         isLoading={isLoading}
