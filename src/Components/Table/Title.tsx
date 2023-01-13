@@ -6,7 +6,7 @@ type TitleProps = {
 };
 export default function Title({ title, n, nSelected, nFiltered }: TitleProps) {
   return (
-    <div className="flex space-x-2 items-baseline mb-1 ml-2">
+    <div className="flex gap-x-2 items-baseline mb-1 ml-2">
       <h2 className="text-2xl font-bold" style={{ scrollMarginTop: "60px" }}>
         {title}
       </h2>

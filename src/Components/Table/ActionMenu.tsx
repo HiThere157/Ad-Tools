@@ -42,7 +42,7 @@ export default function ActionMenu({
   };
 
   return (
-    <div className="flex flex-col space-y-1">
+    <div className="flex flex-col gap-y-1">
       <Button classOverride="p-1.5" onClick={onFilter} highlight={isFilterHighlighted}>
         <BsFunnel />
       </Button>

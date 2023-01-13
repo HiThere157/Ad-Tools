@@ -62,7 +62,7 @@ function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps
             <div
               key={index}
               className={
-                "flex items-center space-x-1 cursor-pointer py-0.5 " +
+                "flex items-center gap-x-1 cursor-pointer py-0.5 " +
                 (index === activeIndex ? "dark:text-whiteColor" : "dark:text-whiteColorAccent")
               }
             >

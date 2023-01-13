@@ -45,7 +45,7 @@ export default function GroupPage() {
   };
 
   return (
-    <article className="flex flex-col space-y-5">
+    <article className="flex flex-col gap-y-5">
       <section>
         <h2 className="text-2xl font-bold mb-1" style={{ scrollMarginTop: "60px" }}>
           Domain Settings

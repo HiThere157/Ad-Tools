@@ -76,7 +76,7 @@ export default function Table({
         nSelected={selected.length}
         nFiltered={filteredCount}
       />
-      <div className="flex space-x-1">
+      <div className="flex gap-x-1">
         <ActionMenu
           onResetTable={resetTable}
           onCopy={() => copyToClip(false)}

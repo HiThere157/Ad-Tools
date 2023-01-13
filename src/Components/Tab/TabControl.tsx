@@ -20,7 +20,7 @@ export default function TabControl({ children, defaultIndex, onChange }: TabCont
     tabs[selectedIndex]?.scrollIntoView({ behavior: "smooth" });
     onChange?.(selectedIndex);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedIndex]);
+  }, [selectedIndex, tabs]);
 
   return (
     <div>

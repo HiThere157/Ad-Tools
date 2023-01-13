@@ -35,7 +35,7 @@ export default function MessageElement({ message }: MessageProps) {
   return (
     <div
       className={
-        "container flex justify-center items-center space-x-2 border-x-4 px-2 py-1 text-xl " +
+        "container flex justify-center items-center gap-x-2 border-x-4 px-2 py-1 text-xl " +
         getTypeInfo()[0]
       }
     >
