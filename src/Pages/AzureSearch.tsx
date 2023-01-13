@@ -5,9 +5,10 @@ import { useSessionStorage } from "../Hooks/useStorage";
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { makeToList } from "../Helper/postProcessors";
-import authenticateAzure from "../Helper/azureAuth";
+import { isAuthenticated, azureLogin } from "../Helper/azureAuth";
 import { redirect } from "../Helper/redirects";
 
+import AzureLogin from "../Components/Popups/AzureLogin";
 import AadInputBar from "../Components/InputBars/InputAad";
 import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
@@ -25,6 +26,12 @@ export default function AzureSearchPage() {
     {},
   );
 
+  const [loginPopup, setLoginPopup] = useState<boolean>(false);
+  const checkLogin = async () => {
+    if (await isAuthenticated()) return runQuery();
+    setLoginPopup(true);
+  };
+
   const runQuery = async () => {
     setIsLoading(true);
 
@@ -32,10 +39,6 @@ export default function AzureSearchPage() {
     setGroups({ output: [] });
     setDevices({ output: [] });
 
-    await authenticateAzure({
-      tenant: query.tenant,
-      useCredentials: query.useCredentials ?? false,
-    });
     await makeAPICall<PSResult[]>({
       command: "Get-AzureADUser",
       args: {
@@ -74,12 +77,17 @@ export default function AzureSearchPage() {
 
   return (
     <article>
+      <AzureLogin
+        isOpen={loginPopup}
+        onExit={() => setLoginPopup(false)}
+        onSubmit={azureLogin}
+      />
       <AadInputBar
         label="Azure Query:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}
-        onSubmit={runQuery}
+        onSubmit={checkLogin}
       />
       <TableLayout>
         <Table
@@ -90,7 +98,6 @@ export default function AzureSearchPage() {
           onRedirect={(entry: { UserPrincipalName?: string }) => {
             redirect("azureUser", {
               input: entry.UserPrincipalName,
-              tenant: query.tenant,
             });
           }}
           isLoading={isLoading}
@@ -103,7 +110,6 @@ export default function AzureSearchPage() {
           onRedirect={(entry: { DisplayName?: string }) => {
             redirect("azureGroup", {
               input: entry.DisplayName,
-              tenant: query.tenant,
             });
           }}
           isLoading={isLoading}
@@ -116,7 +122,6 @@ export default function AzureSearchPage() {
           onRedirect={(entry: { DisplayName?: string }) => {
             redirect("azureDevice", {
               input: entry.DisplayName,
-              tenant: query.tenant,
             });
           }}
           isLoading={isLoading}

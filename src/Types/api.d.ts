@@ -5,20 +5,9 @@ type ElectronAPI = Window &
           getExecutingUser: () => Promise<Result<string>>;
           getDomainSuffixList: () => Promise<Result<PSResult>>;
           getVersion: () => Promise<Result<string>>;
-
-          executeCommand: <T>(request: {
-            command: Commands;
-            args: CommandArgs;
-            selectFields: string[];
-            useStaticSession: boolean;
-            json: boolean;
-          }) => Promise<Result<T>>;
-          startComputerAction: (
-            action: ComputerAction,
-            target: string,
-            useCurrentUser: boolean,
-          ) => Promise<Result<string>>;
-          authAzureAD: (tenant?: string, useCredentials: boolean) => Promise<Result<string>>;
+          executeCommand: <T>(request: ExecuteCommandRequest) => Promise<Result<T>>;
+          startComputerAction: (options: StartComputerActionOptions) => Promise<Result<string>>;
+          authAzureAD: (options: AuthAzureADOptions) => Promise<Result<string>>;
           probeConnection: (target: string) => Promise<Result<string>>;
 
           changeWinState: (state: WinState) => void;
@@ -45,7 +34,6 @@ type Command =
   | "Get-AzureADGroup"
   | "Get-AzureADGroupMember"
   | "Get-AzureADDevice";
-
 type CommandArgs = {
   Filter?: string;
   Identity?: string;
@@ -60,10 +48,26 @@ type CommandArgs = {
   SearchString?: string;
   All?: string;
 };
-
 type ComputerAction = "compmgmt" | "mstsc" | "powershell";
-
 type WinState = "minimize" | "maximize_restore" | "quit";
+
+type ExecuteCommandRequest = {
+  command: Commands;
+  args: CommandArgs;
+  selectFields: string[];
+  useStaticSession: boolean;
+  json: boolean;
+};
+type StartComputerActionOptions = {
+  action: ComputerAction;
+  target: string;
+  useCurrentUser: boolean;
+};
+type AuthAzureADOptions = {
+  tenant?: string;
+  accountId?: string;
+  useCredentials: boolean;
+};
 
 type AdQuery = {
   input?: string;
@@ -71,8 +75,6 @@ type AdQuery = {
 };
 type AadQuery = {
   input?: string;
-  tenant?: string;
-  useCredentials?: boolean;
 };
 type DnsQuery = {
   input?: string;

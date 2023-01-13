@@ -3,7 +3,7 @@ type ButtonProps = {
   classOverride?: string;
   disabled?: boolean;
   highlight?: boolean;
-  colorful?: boolean;
+  theme?: "flat" | "colorOnHover" | "color";
   onClick: () => any;
 };
 export default function Button({
@@ -11,21 +11,22 @@ export default function Button({
   classOverride = "",
   disabled = false,
   highlight = false,
-  colorful = false,
+  theme = "flat",
   onClick,
 }: ButtonProps) {
   return (
     <button
       className={
-        "control " +
-        // background styling
-        (colorful
-          ? "dark:bg-elBg dark:hover:bg-elAccentBg dark:active:bg-elActiveBg "
-          : "dark:bg-elBg dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg ") +
-        // border styling
-        (colorful
-          ? "border-0 "
-          : "border-2 dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:active:border-elFlatActiveBorder ") +
+        "control border-2 " +
+        (theme === "flat"
+          ? "dark:bg-elBg dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:active:border-elFlatActiveBorder "
+          : " ") +
+        (theme === "colorOnHover"
+          ? "dark:bg-elBg dark:hover:bg-elAccentBg dark:active:bg-elActiveBg dark:border-elBg dark:hover:border-elAccentBg dark:active:border-elActiveBg "
+          : " ") +
+        (theme === "color"
+          ? "dark:bg-elAccentBg dark:hover:bg-elActiveBg dark:active:bg-elDarkerActiveBg dark:border-elAccentBg dark:hover:border-elActiveBg dark:active:border-elDarkerActiveBg "
+          : " ") +
         // highlight styling
         (highlight ? "dark:!border-elAccentBg " : " ") +
         classOverride

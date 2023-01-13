@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { getTenants } from "../../Helper/getSavedConfig";
-import { makeAPICall } from "../../Helper/makeAPICall";
-import { useGlobalState } from "../../Hooks/useGlobalState";
-import { addMessage } from "../../Helper/handleMessage";
+import { azureLogout } from "../../Helper/azureAuth";
 
 import Input from "../Input";
-import Dropdown from "../Dropdown";
 import Button from "../Button";
-import Checkbox from "../Checkbox";
 
 type AadInputBarProps = {
   label: string;
@@ -28,31 +24,13 @@ export default function AadInputBar({
   onSubmit,
   children,
 }: AadInputBarProps) {
-  const { setState } = useGlobalState();
   const tenants = getTenants();
   const [input, setInput] = useState<string>(query.input ?? "");
-  const [tenant, setTenant] = useState<string>(query.tenant ?? tenants[0]);
-  const [useCredentials, setUseCredentials] = useState<boolean>(query.useCredentials ?? false);
 
   useEffect(() => {
-    onChange({ input, tenant, useCredentials });
+    onChange({ input });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input, tenant, useCredentials]);
-
-  const azureLogout = async () => {
-    const result = await makeAPICall({
-      command: "Disconnect-AzureAD",
-      useStaticSession: true,
-      json: false,
-    });
-
-    if (result.error) {
-      addMessage({ type: "error", message: "failed to log out" }, setState);
-
-      return;
-    }
-    addMessage({ type: "info", message: "logged out successfully", timer: 7 }, setState);
-  };
+  }, [input]);
 
   return (
     <div className="mb-2">
@@ -67,7 +45,6 @@ export default function AadInputBar({
         />
         {tenants.length !== 0 && (
           <>
-            <Dropdown items={tenants} value={tenant} disabled={isLoading} onChange={setTenant} />
             <Button onClick={azureLogout} disabled={isLoading}>
               Logout
             </Button>
@@ -76,12 +53,6 @@ export default function AadInputBar({
         <Button onClick={onSubmit} disabled={isLoading}>
           Run
         </Button>
-        <Checkbox
-          label="use credentials"
-          checked={useCredentials}
-          disabled={isLoading}
-          onChange={() => setUseCredentials(!useCredentials)}
-        />
         {children}
       </div>
       {hint && <span className="ml-1 dark:text-whiteColorAccent">{hint}</span>}

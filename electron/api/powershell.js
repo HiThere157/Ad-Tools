@@ -91,7 +91,7 @@ const getDomainSuffixList = async () => {
   });
 };
 
-const startComputerAction = async (_event, action, target, useCurrentUser) => {
+const startComputerAction = async (_event, { action, target, useCurrentUser }) => {
   if (!Object.keys(remoteActions).includes(action)) {
     return { error: `Invalid Action "${action}"` };
   }
@@ -104,9 +104,13 @@ const startComputerAction = async (_event, action, target, useCurrentUser) => {
   return await invokeWrapper({ ps: getSession(), fullCommand });
 };
 
-const authAzureAD = async (_event, tenant, useCredentials) => {
+const authAzureAD = async (_event, { tenant, accountID, useCredentials }) => {
   let fullCommand = "Connect-AzureAD";
 
+  if (accountID) {
+    fullCommand = `${fullCommand} -AccountId ${quote([accountID])}`;
+    fullCommand = fullCommand.replace(/\\@/g, "@");
+  }
   if (tenant) {
     fullCommand = `${fullCommand} -Tenant ${quote([tenant])}`;
   }

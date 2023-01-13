@@ -5,9 +5,10 @@ import { useSessionStorage } from "../Hooks/useStorage";
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { getPropertiesWrapper, makeToList } from "../Helper/postProcessors";
-import authenticateAzure from "../Helper/azureAuth";
+import { isAuthenticated, azureLogin } from "../Helper/azureAuth";
 import { redirect } from "../Helper/redirects";
 
+import AzureLogin from "../Components/Popups/AzureLogin";
 import AadInputBar from "../Components/InputBars/InputAad";
 import TableLayout from "../Layouts/TableLayout";
 import Button from "../Components/Button";
@@ -36,6 +37,12 @@ export default function AzureGroupPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reQuery]);
 
+  const [loginPopup, setLoginPopup] = useState<boolean>(false);
+  const checkLogin = async () => {
+    if (await isAuthenticated()) return runQuery();
+    setLoginPopup(true);
+  };
+
   const runQuery = async () => {
     setReQuery(false);
     setIsLoading(true);
@@ -43,10 +50,6 @@ export default function AzureGroupPage() {
     setAttributes({ output: [] });
     setMembers({ output: [] });
 
-    await authenticateAzure({
-      tenant: query.tenant,
-      useCredentials: query.useCredentials ?? false,
-    });
     const groups = await makeAPICall<PSResult[]>({
       command: "Get-AzureADGroup",
       args: {
@@ -103,12 +106,17 @@ export default function AzureGroupPage() {
 
   return (
     <article>
+      <AzureLogin
+        isOpen={loginPopup}
+        onExit={() => setLoginPopup(false)}
+        onSubmit={azureLogin}
+      />
       <AadInputBar
         label="Azure Group:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}
-        onSubmit={runQuery}
+        onSubmit={checkLogin}
       >
         <Button
           classOverride="p-1"
@@ -135,7 +143,6 @@ export default function AzureGroupPage() {
           onRedirect={(entry: { UserPrincipalName?: string }) => {
             redirect("azureUser", {
               input: entry.UserPrincipalName,
-              tenant: query.tenant,
             });
           }}
           isLoading={isLoading}

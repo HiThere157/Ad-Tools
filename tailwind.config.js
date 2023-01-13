@@ -15,6 +15,7 @@ module.exports = {
       elBg: "#272727",
       elAccentBg: "#208CF0",
       elActiveBg: "#1482DC",
+      elDarkerActiveBg: "#0d72cf",
 
       elFlatBg: "#1A1A1A",
       elFlatAccentBg: "#292929",

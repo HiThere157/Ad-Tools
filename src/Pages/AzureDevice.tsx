@@ -5,9 +5,10 @@ import { useSessionStorage } from "../Hooks/useStorage";
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { getPropertiesWrapper, makeToList } from "../Helper/postProcessors";
-import authenticateAzure from "../Helper/azureAuth";
+import { isAuthenticated, azureLogin } from "../Helper/azureAuth";
 import { redirect } from "../Helper/redirects";
 
+import AzureLogin from "../Components/Popups/AzureLogin";
 import AadInputBar from "../Components/InputBars/InputAad";
 import TableLayout from "../Layouts/TableLayout";
 import Button from "../Components/Button";
@@ -32,16 +33,18 @@ export default function AzureDevicePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reQuery]);
 
+  const [loginPopup, setLoginPopup] = useState<boolean>(false);
+  const checkLogin = async () => {
+    if (await isAuthenticated()) return runQuery();
+    setLoginPopup(true);
+  };
+
   const runQuery = async () => {
     setReQuery(false);
     setIsLoading(true);
 
     setAttributes({ output: [] });
 
-    await authenticateAzure({
-      tenant: query.tenant,
-      useCredentials: query.useCredentials ?? false,
-    });
     const devices = await makeAPICall<PSResult[]>({
       command: "Get-AzureADDevice",
       args: {
@@ -82,12 +85,17 @@ export default function AzureDevicePage() {
 
   return (
     <article>
+      <AzureLogin
+        isOpen={loginPopup}
+        onExit={() => setLoginPopup(false)}
+        onSubmit={azureLogin}
+      />
       <AadInputBar
         label="Azure Device:"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}
-        onSubmit={runQuery}
+        onSubmit={checkLogin}
       >
         <Button
           classOverride="p-1"
