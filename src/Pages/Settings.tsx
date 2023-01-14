@@ -50,10 +50,7 @@ export default function GroupPage() {
         <h2 className="text-2xl font-bold mb-1" style={{ scrollMarginTop: "60px" }}>
           Domain Settings
         </h2>
-        <EditableList
-          items={domains}
-          onChange={updateDomains}
-        />
+        <EditableList items={domains} onChange={updateDomains} />
       </section>
 
       <section>

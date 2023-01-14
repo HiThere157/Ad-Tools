@@ -32,12 +32,15 @@ export default function AzureLogin({ isOpen, onExit }: AzureLoginProps) {
     if (success) {
       addMessage({ type: "info", message: "logged in", timer: 7 }, setState);
     } else {
-      addMessage({ type: "error", message: "failed to log in (cancelled / module missing)" }, setState);
+      addMessage(
+        { type: "error", message: "failed to log in (cancelled / module missing)" },
+        setState,
+      );
     }
 
     setIsNoteOpen(false);
     onExit();
-  }
+  };
 
   return (
     <Popup title="Azure Login" isOpen={isOpen} onExit={onExit}>
@@ -81,7 +84,13 @@ function LoginFrame({ children, isNoteOpen, onCancel, onSubmit }: LoginFrameProp
         </Button>
       </div>
 
-      {isNoteOpen && <span className="mt-2 text-center dark:text-redColor">login popup opened.<br />(check behind other windows aswell)</span>}
+      {isNoteOpen && (
+        <span className="mt-2 text-center dark:text-redColor">
+          login popup opened.
+          <br />
+          (check behind other windows aswell)
+        </span>
+      )}
     </div>
   );
 }

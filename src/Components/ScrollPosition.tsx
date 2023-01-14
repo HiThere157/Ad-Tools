@@ -35,7 +35,7 @@ export default function ScrollPosition({ name }: ScrollPositionProps) {
   }, []);
 
   return (
-    <div className="absolute z-[20] bottom-5 right-8">
+    <div className="absolute z-[30] bottom-5 right-8">
       {scrollPos > 200 && (
         <button
           className="text-4xl dark:bg-darkBg dark:text-elAccentBg dark:hover:text-elActiveBg rounded-full"

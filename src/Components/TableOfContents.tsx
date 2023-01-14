@@ -33,7 +33,7 @@ export default function TableOfContents() {
   }, [pathname]);
 
   return (
-    <div ref={ref} className="z-[40]">
+    <div ref={ref} className="z-[20]">
       {headings.length !== 0 && (
         <>
           <WinButton onClick={() => setIsOpen(!isOpen)}>

@@ -21,7 +21,7 @@ async function azureLogin(): Promise<boolean> {
     useCredentials,
   });
 
-  if(!result) return false;
+  if (!result) return false;
   return !result.error;
 }
 

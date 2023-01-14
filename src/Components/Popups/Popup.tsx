@@ -12,7 +12,7 @@ export default function Popup({ children, isOpen, title, onExit }: PopupProps) {
   return (
     <>
       {isOpen && (
-        <div className="z-[45]">
+        <div className="[&>*]:z-[50]">
           <div
             className="absolute top-0 bottom-0 left-0 right-0 opacity-80 dark:bg-darkBg"
             onClick={onExit}
