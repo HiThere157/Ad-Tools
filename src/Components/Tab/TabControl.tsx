@@ -8,6 +8,7 @@ type TabControlProps = {
   onChange?: (newIndex: number) => any;
 };
 export default function TabControl({ children, defaultIndex, onChange }: TabControlProps) {
+  const behavior = useRef<ScrollBehavior>("auto");
   const bodyRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(defaultIndex ?? 0);
   const [tabs, setTabs] = useState<Element[]>([]);
@@ -17,7 +18,11 @@ export default function TabControl({ children, defaultIndex, onChange }: TabCont
   }, [children, bodyRef]);
 
   useEffect(() => {
-    tabs[selectedIndex]?.scrollIntoView({ behavior: "smooth" });
+    tabs[selectedIndex]?.scrollIntoView({ behavior: behavior.current });
+
+    // prevent smooth scroll on first open
+    setTimeout(() => behavior.current = "smooth", 0);
+
     onChange?.(selectedIndex);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedIndex, tabs]);
