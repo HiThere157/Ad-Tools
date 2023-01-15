@@ -21,7 +21,7 @@ export default function TabControl({ children, defaultIndex, onChange }: TabCont
     tabs[selectedIndex]?.scrollIntoView({ behavior: behavior.current });
 
     // prevent smooth scroll on first open
-    setTimeout(() => behavior.current = "smooth", 0);
+    setTimeout(() => (behavior.current = "smooth"), 0);
 
     onChange?.(selectedIndex);
     // eslint-disable-next-line react-hooks/exhaustive-deps
