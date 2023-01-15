@@ -6,9 +6,11 @@ const path = require("path");
 const log = require("electron-log");
 Object.assign(console, log.functions);
 
+const isBetaChannel = process.env.AD_TOOLS_PRERELEASE.toLowerCase() === "true";
+
 // configure electron-builder autoUpdater
 autoUpdater.allowDowngrade = true;
-autoUpdater.allowPrerelease = process.env.AD_TOOLS_PRERELEASE === "true" ? true : false;
+autoUpdater.allowPrerelease = isBetaChannel;
 autoUpdater.checkForUpdatesAndNotify();
 
 const {
@@ -43,7 +45,7 @@ function createWindow() {
     height: 600,
     backgroundColor: "#1A1A1A",
     titleBarStyle: "hidden",
-    icon: path.join(__dirname, "assets/icon32.png"),
+    icon: path.join(__dirname, isBetaChannel ? "assets/icon32_beta.png" : "assets/icon32.png"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
