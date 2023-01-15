@@ -8,7 +8,7 @@ export default function Footer() {
   useEffect(() => {
     (async () => {
       const result = await electronAPI?.getVersion();
-      setVersion(result?.output ?? "");
+      setVersion(result?.output?.version ?? "");
     })();
   }, []);
 

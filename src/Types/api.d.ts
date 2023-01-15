@@ -4,7 +4,7 @@ type ElectronAPI = Window &
       | {
           getExecutingUser: () => Promise<Result<string>>;
           getDomainSuffixList: () => Promise<Result<PSResult>>;
-          getVersion: () => Promise<Result<string>>;
+          getVersion: () => Promise<Result<Version>>;
           executeCommand: <T>(request: ExecuteCommandRequest) => Promise<Result<T>>;
           startComputerAction: (options: StartComputerActionOptions) => Promise<Result<string>>;
           authAzureAD: (options: AuthAzureADOptions) => Promise<Result<string>>;
@@ -50,6 +50,10 @@ type CommandArgs = {
 };
 type ComputerAction = "compmgmt" | "mstsc" | "powershell";
 type WinState = "minimize" | "maximize_restore" | "quit";
+type Version = {
+  version: string;
+  isBeta: boolean;
+};
 
 type ExecuteCommandRequest = {
   command: Commands;

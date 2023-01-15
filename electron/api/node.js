@@ -7,7 +7,8 @@ const probeConnection = async (_event, target) => {
 };
 
 const getVersion = async (_event) => {
-  return { output: package.version };
+  const isBeta = process.env.AD_TOOLS_PRERELEASE.toLowerCase() === "true";
+  return { output: { version: package.version, isBeta } };
 };
 
 module.exports = { probeConnection, getVersion };

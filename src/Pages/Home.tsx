@@ -12,7 +12,7 @@ export default function HomePage() {
   useEffect(() => {
     (async () => {
       const result = await electronAPI?.getVersion();
-      setVersion(result?.output ?? "");
+      setVersion(result?.output?.version ?? "");
     })();
   }, []);
 
