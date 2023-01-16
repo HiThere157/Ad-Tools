@@ -54,6 +54,7 @@ export default function AzureLogin({ isOpen, onExit }: AzureLoginProps) {
               label="UPN:"
               value={upn}
               classOverride="w-56"
+              disabled={isNoteOpen}
               onChange={setUpn}
               onEnter={login}
             />
@@ -79,7 +80,7 @@ function LoginFrame({ children, isNoteOpen, onCancel, onSubmit }: LoginFrameProp
       {children}
       <div className="flex gap-2 text-lg mt-4">
         <Button onClick={onCancel}>Cancel</Button>
-        <Button theme="color" onClick={onSubmit}>
+        <Button theme="color" disabled={isNoteOpen} onClick={onSubmit}>
           Submit
         </Button>
       </div>

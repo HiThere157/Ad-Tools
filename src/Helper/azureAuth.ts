@@ -11,7 +11,8 @@ async function isAuthenticated(): Promise<boolean> {
 }
 
 async function azureLogin(): Promise<boolean> {
-  const accountId = JSON.parse(window.localStorage.getItem("conf_azureLastUpn") ?? "");
+  const accountIdString = window.localStorage.getItem("conf_azureLastUpn");
+  const accountId = accountIdString ? JSON.parse(accountIdString) : "";
   const useCredentials = JSON.parse(
     window.localStorage.getItem("conf_azureUseCredentials") ?? "false",
   );
