@@ -106,7 +106,13 @@ export default function AzureGroupPage() {
 
   return (
     <article>
-      <AzureLogin isOpen={loginPopup} onExit={() => setLoginPopup(false)} />
+      <AzureLogin
+        isOpen={loginPopup}
+        onExit={() => {
+          setLoginPopup(false);
+          runQuery();
+        }}
+      />
       <AadInputBar
         label="Azure Group:"
         isLoading={isLoading}

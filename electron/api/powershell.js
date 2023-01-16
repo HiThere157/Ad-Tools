@@ -112,7 +112,7 @@ const authAzureAD = async (_event, { accountId, useCredentials }) => {
     fullCommand = fullCommand.replace(/\\@/g, "@");
   }
   if (useCredentials) {
-    fullCommand = `${fullCommand} -Credential (Get-Credential)`;
+    fullCommand = `${fullCommand} -Credential (Get-Credential -Message "Enter your credentials. (UPN + password)")`;
   }
 
   return await invokeWrapper({ ps: staticSession, fullCommand, dispose: false });

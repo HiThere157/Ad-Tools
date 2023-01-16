@@ -97,7 +97,13 @@ export default function AzureUserPage() {
 
   return (
     <article>
-      <AzureLogin isOpen={loginPopup} onExit={() => setLoginPopup(false)} />
+      <AzureLogin
+        isOpen={loginPopup}
+        onExit={() => {
+          setLoginPopup(false);
+          runQuery();
+        }}
+      />
       <AadInputBar
         label="Azure User:"
         hint="Hint: full user principal name is required (Eg.: kochda7@example.com)"
