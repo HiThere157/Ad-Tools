@@ -8,12 +8,11 @@ type ScrollPositionProps = {
 };
 export default function ScrollPosition({ name }: ScrollPositionProps) {
   const [scrollPos, setScrollPos] = useSessionStorage<number>(`${name}_scroll`, 0);
+  const callback = ({ target }: Event) => {
+    setScrollPos((target as HTMLElement).scrollTop ?? 0);
+  };
 
   useEffect(() => {
-    const callback = ({ target }: Event) => {
-      setScrollPos((target as HTMLElement).scrollTop ?? 0);
-    };
-
     const scrollContainer = document.getElementById("js-scroll-container");
     scrollContainer?.addEventListener("scroll", callback);
 
