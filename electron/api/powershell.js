@@ -97,7 +97,7 @@ const startComputerAction = async (_event, { action, target, useCurrentUser }) =
   }
 
   let fullCommand = remoteActions[action](quote([target]));
-  if (!useCurrentUser) {
+  if (!useCurrentUser && action !== "mstsc") {
     fullCommand = `${fullCommand} -Verb RunAsUser; Start-Sleep -Seconds 10; Wait-Process -Name CredentialUIBroker -ErrorAction SilentlyContinue`;
   }
 
