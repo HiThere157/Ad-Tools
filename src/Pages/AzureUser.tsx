@@ -42,7 +42,7 @@ export default function AzureUserPage() {
 
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
-    if (reQuery) runQuery();
+    if (reQuery) checkLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reQuery]);
 
