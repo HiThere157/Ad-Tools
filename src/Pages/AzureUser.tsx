@@ -42,7 +42,7 @@ export default function AzureUserPage() {
 
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
-    if (reQuery) runQuery();
+    if (reQuery) checkLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reQuery]);
 
@@ -97,7 +97,13 @@ export default function AzureUserPage() {
 
   return (
     <article>
-      <AzureLogin isOpen={loginPopup} onExit={() => setLoginPopup(false)} />
+      <AzureLogin
+        isOpen={loginPopup}
+        onExit={() => {
+          setLoginPopup(false);
+          runQuery();
+        }}
+      />
       <AadInputBar
         label="Azure User:"
         hint="Hint: full user principal name is required (Eg.: kochda7@example.com)"

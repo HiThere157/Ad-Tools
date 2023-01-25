@@ -29,7 +29,7 @@ export default function AzureDevicePage() {
 
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
-    if (reQuery) runQuery();
+    if (reQuery) checkLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reQuery]);
 
@@ -85,7 +85,13 @@ export default function AzureDevicePage() {
 
   return (
     <article>
-      <AzureLogin isOpen={loginPopup} onExit={() => setLoginPopup(false)} />
+      <AzureLogin
+        isOpen={loginPopup}
+        onExit={() => {
+          setLoginPopup(false);
+          runQuery();
+        }}
+      />
       <AadInputBar
         label="Azure Device:"
         isLoading={isLoading}

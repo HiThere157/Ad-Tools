@@ -33,7 +33,7 @@ export default function AzureGroupPage() {
 
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
-    if (reQuery) runQuery();
+    if (reQuery) checkLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reQuery]);
 
@@ -106,7 +106,13 @@ export default function AzureGroupPage() {
 
   return (
     <article>
-      <AzureLogin isOpen={loginPopup} onExit={() => setLoginPopup(false)} />
+      <AzureLogin
+        isOpen={loginPopup}
+        onExit={() => {
+          setLoginPopup(false);
+          runQuery();
+        }}
+      />
       <AadInputBar
         label="Azure Group:"
         isLoading={isLoading}
