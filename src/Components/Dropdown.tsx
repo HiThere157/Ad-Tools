@@ -35,7 +35,7 @@ export default function Dropdown({ items, value, disabled = false, onChange }: D
     <div ref={ref} className="w-max z-[10]">
       <Button onClick={() => setIsOpen(!isOpen)} disabled={disabled}>
         <div className="flex items-center h-6">
-          {value}
+          {value || "No Domain"}
           <BsCaretDownFill className={"ml-2 text-base " + (isOpen ? "rotate-180" : "")} />
         </div>
       </Button>
@@ -57,10 +57,10 @@ function DropdownBody({ items, onSelection }: DropdownBodyProps) {
         return (
           <Button
             key={index}
-            classOverride={"rounded-none " + (index !== 0 ? "border-t-0" : "")}
+            classOverride={"rounded-none min-h-[1.5em] " + (index !== 0 ? "border-t-0" : "")}
             onClick={() => onSelection(item)}
           >
-            {item}
+            {item || "No Domain"}
           </Button>
         );
       })}
