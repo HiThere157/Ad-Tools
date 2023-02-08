@@ -26,6 +26,7 @@ export default function Table({
   onRedirect,
   isLoading = false,
 }: TableProps) {
+  const [isVisible, setIsVisible] = useSessionStorage<boolean>(name + "_visible", true);
   const [sortedColumn, setSortedColumn] = useSessionStorage<string>(name + "_sortedColumn", "");
   const [sortDesc, setSortDesc] = useSessionStorage<boolean>(name + "_sortDesc", true);
   const [filter, setFilter] = useSessionStorage<Filter>(name + "_filter", {});
@@ -75,40 +76,44 @@ export default function Table({
         n={data.output?.length ?? 0}
         nSelected={selected.length}
         nFiltered={filteredCount}
+        isTableOpen={isVisible}
+        setTableOpen={setIsVisible}
       />
-      <div className="flex gap-x-1">
-        <ActionMenu
-          onResetTable={resetTable}
-          onCopy={() => copyToClip(false)}
-          onCopySelection={() => copyToClip(true)}
-          onFilter={() => setIsFilterOpen(!isFilterOpen)}
-          isFilterHighlighted={isFilterHighlighted}
-        />
-        <FilterMenu
-          isOpen={isFilterOpen}
-          columns={columns}
-          filter={filter}
-          onFilterChange={setFilter}
-          currentSavedFilter={currentSavedFilter}
-          setCurrentSavedFilter={setCurrentSavedFilter}
-        />
-        <div className="border-2 border-elFlatBorder rounded h-fit min-h-[4rem] overflow-auto">
-          <TableElement
-            entries={data.output}
-            columns={columns}
-            sortDesc={sortDesc}
-            sortedColumn={sortedColumn}
-            filter={filter}
-            onFilter={setFilteredCount}
-            selected={selected}
-            onSelectedChange={setSelected}
-            onHeaderClick={updateSortArguments}
-            onRedirect={onRedirect}
+      {isVisible && (
+        <div className="flex gap-x-1">
+          <ActionMenu
+            onResetTable={resetTable}
+            onCopy={() => copyToClip(false)}
+            onCopySelection={() => copyToClip(true)}
+            onFilter={() => setIsFilterOpen(!isFilterOpen)}
+            isFilterHighlighted={isFilterHighlighted}
           />
-          <ErrorMessage error={data.error} />
-          <Loader isVisible={isLoading && data.output?.length === 0 && !data.error} />
+          <FilterMenu
+            isOpen={isFilterOpen}
+            columns={columns}
+            filter={filter}
+            onFilterChange={setFilter}
+            currentSavedFilter={currentSavedFilter}
+            setCurrentSavedFilter={setCurrentSavedFilter}
+          />
+          <div className="border-2 border-elFlatBorder rounded h-fit min-h-[4rem] overflow-auto">
+            <TableElement
+              entries={data.output}
+              columns={columns}
+              sortDesc={sortDesc}
+              sortedColumn={sortedColumn}
+              filter={filter}
+              onFilter={setFilteredCount}
+              selected={selected}
+              onSelectedChange={setSelected}
+              onHeaderClick={updateSortArguments}
+              onRedirect={onRedirect}
+            />
+            <ErrorMessage error={data.error} />
+            <Loader isVisible={isLoading && data.output?.length === 0 && !data.error} />
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
