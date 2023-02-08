@@ -1,5 +1,5 @@
-import { useGlobalState } from "../Hooks/useGlobalState";
-import { addMessage } from "../Helper/handleMessage";
+import { useGlobalState } from "../../Hooks/useGlobalState";
+import { addMessage } from "../../Helper/handleMessage";
 
 type LinkProps = {
   href: string;

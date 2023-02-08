@@ -1,7 +1,7 @@
 import ReactMarkdown from "react-markdown";
 
 import Type from "./Type";
-import Link from "../Link";
+import Link from "./Link";
 
 import { BsBoxArrowUpRight, BsClock, BsDot, BsTag, BsDownload } from "react-icons/bs";
 import { BiGitBranch } from "react-icons/bi";

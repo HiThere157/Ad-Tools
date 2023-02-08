@@ -12,6 +12,7 @@ import {
   BsPrinterFill,
   BsLaptop,
   BsServer,
+  BsLayoutWtf,
   BsClockHistory,
   BsGearFill,
 } from "react-icons/bs";
@@ -53,6 +54,7 @@ export default function NavBar() {
         <NavItem to="/azureDevice" icon={<BsLaptop />} text="Azure Device" isOpen={isOpen} />
         <hr className="my-2 dark:border-elFlatBorder" />
         <NavItem to="/dns" icon={<BsServer />} text="DNS" isOpen={isOpen} />
+        <NavItem to="/designer" icon={<BsLayoutWtf />} text="Designer" isOpen={isOpen} />
         <hr className="my-2 dark:border-elFlatBorder" />
         <NavItem to="/history" icon={<BsClockHistory />} text="History" isOpen={isOpen} />
         <NavItem to="/settings" icon={<BsGearFill />} text="Settings" isOpen={isOpen} />

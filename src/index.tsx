@@ -20,6 +20,7 @@ import AzureUserPage from "./Pages/AzureUser";
 import AzureGroupPage from "./Pages/AzureGroup";
 import AzureDevicePage from "./Pages/AzureDevice";
 import DnsPage from "./Pages/DNS";
+import DesignerPage from "./Pages/Designer";
 import HistoryPage from "./Pages/History";
 import SettingsPage from "./Pages/Settings";
 
@@ -42,6 +43,7 @@ root.render(
             <Route path="/azureGroup" element={<AzureGroupPage />} />
             <Route path="/azureDevice" element={<AzureDevicePage />} />
             <Route path="/dns" element={<DnsPage />} />
+            <Route path="/designer" element={<DesignerPage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>

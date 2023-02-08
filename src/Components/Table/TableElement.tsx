@@ -15,7 +15,7 @@ type TableElementProps = {
   sortDesc: boolean;
   sortedColumn: string;
   filter: Filter;
-  onFilter: (n: number) => void;
+  onFilter: (n: number) => any;
   selected: number[];
   onSelectedChange: (newSelected: number[]) => any;
   onHeaderClick: (header: string) => any;
