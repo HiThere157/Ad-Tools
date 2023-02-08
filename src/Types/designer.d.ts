@@ -1,3 +1,5 @@
+type PosSize = Position & Size;
+
 type Position = {
   x: number;
   y: number;

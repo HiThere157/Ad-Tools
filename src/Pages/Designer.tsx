@@ -2,12 +2,11 @@ import { useState } from "react";
 import Draggable from "../Components/Designer/Draggable";
 
 export default function DesignerPage() {
-  const [pos, setPos] = useState<Position>({ x: 10, y: 10 });
-  const [size, setSize] = useState<Size>({ w: 100, h: 100 });
+  const [posSize, setPosSize] = useState<PosSize>({ x: 10, y: 10, w: 100, h: 100 });
 
   return (
     <article>
-      <Draggable title="Test" position={pos} size={size} onMove={setPos} onResize={setSize}>
+      <Draggable title="Test" posSize={posSize} onPosSizeChange={setPosSize}>
         <div></div>
       </Draggable>
     </article>
