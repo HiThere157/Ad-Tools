@@ -53,7 +53,13 @@ export default function AdInputBar({
           onChange={setInput}
           onEnter={onSubmit}
         />
-        <Dropdown items={domains} value={domain} disabled={isLoading} onChange={setDomain} />
+        <Dropdown
+          items={domains}
+          value={domain}
+          placeholder="No Domain"
+          disabled={isLoading}
+          onChange={setDomain}
+        />
         <Button onClick={onSubmit} disabled={isLoading}>
           Run
         </Button>

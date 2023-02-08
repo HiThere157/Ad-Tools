@@ -7,10 +7,17 @@ import { BsCaretDownFill } from "react-icons/bs";
 type DropdownProps = {
   items: string[];
   value: string | undefined;
+  placeholder?: string;
   disabled?: boolean;
   onChange: (value: string) => any;
 };
-export default function Dropdown({ items, value, disabled = false, onChange }: DropdownProps) {
+export default function Dropdown({
+  items,
+  value,
+  placeholder = "",
+  disabled = false,
+  onChange,
+}: DropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -35,7 +42,7 @@ export default function Dropdown({ items, value, disabled = false, onChange }: D
     <div ref={ref} className="w-max z-[10]">
       <Button onClick={() => setIsOpen(!isOpen)} disabled={disabled}>
         <div className="flex items-center h-6">
-          {value || "No Domain"}
+          {value || placeholder}
           <BsCaretDownFill className={"ml-2 text-base " + (isOpen ? "rotate-180" : "")} />
         </div>
       </Button>
