@@ -11,7 +11,8 @@ import Title from "./Title";
 import Loader from "./Loader";
 
 type TableProps = {
-  title: string;
+  isBasic?: boolean;
+  title?: string;
   name: string;
   columns: ColumnDefinition[];
   data: Result<PSResult[]>;
@@ -19,6 +20,7 @@ type TableProps = {
   isLoading?: boolean;
 };
 export default function Table({
+  isBasic = false,
   title,
   name,
   columns,
@@ -27,8 +29,10 @@ export default function Table({
   isLoading = false,
 }: TableProps) {
   const [isVisible, setIsVisible] = useSessionStorage<boolean>(name + "_visible", true);
+
   const [sortedColumn, setSortedColumn] = useSessionStorage<string>(name + "_sortedColumn", "");
   const [sortDesc, setSortDesc] = useSessionStorage<boolean>(name + "_sortDesc", true);
+
   const [filter, setFilter] = useSessionStorage<Filter>(name + "_filter", {});
   const [currentSavedFilter, setCurrentSavedFilter] = useLocalStorage<string>(
     name + "_currentSavedFilter",
@@ -71,31 +75,37 @@ export default function Table({
 
   return (
     <section>
-      <Title
-        title={title}
-        n={data.output?.length ?? 0}
-        nSelected={selected.length}
-        nFiltered={filteredCount}
-        isTableOpen={isVisible}
-        setTableOpen={setIsVisible}
-      />
+      {title && (
+        <Title
+          title={title}
+          n={data.output?.length ?? 0}
+          nSelected={selected.length}
+          nFiltered={filteredCount}
+          isTableOpen={isVisible}
+          setTableOpen={setIsVisible}
+        />
+      )}
       {isVisible && (
         <div className="flex gap-x-1">
-          <ActionMenu
-            onResetTable={resetTable}
-            onCopy={() => copyToClip(false)}
-            onCopySelection={() => copyToClip(true)}
-            onFilter={() => setIsFilterOpen(!isFilterOpen)}
-            isFilterHighlighted={isFilterHighlighted}
-          />
-          <FilterMenu
-            isOpen={isFilterOpen}
-            columns={columns}
-            filter={filter}
-            onFilterChange={setFilter}
-            currentSavedFilter={currentSavedFilter}
-            setCurrentSavedFilter={setCurrentSavedFilter}
-          />
+          {!isBasic && (
+            <>
+              <ActionMenu
+                onResetTable={resetTable}
+                onCopy={() => copyToClip(false)}
+                onCopySelection={() => copyToClip(true)}
+                onFilter={() => setIsFilterOpen(!isFilterOpen)}
+                isFilterHighlighted={isFilterHighlighted}
+              />
+              <FilterMenu
+                isOpen={isFilterOpen}
+                columns={columns}
+                filter={filter}
+                onFilterChange={setFilter}
+                currentSavedFilter={currentSavedFilter}
+                setCurrentSavedFilter={setCurrentSavedFilter}
+              />
+            </>
+          )}
           <div className="border-2 border-elFlatBorder rounded h-fit min-h-[4rem] overflow-auto">
             <TableElement
               entries={data.output}

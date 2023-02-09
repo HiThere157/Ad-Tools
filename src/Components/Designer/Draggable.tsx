@@ -5,7 +5,7 @@ type DraggableProps = {
   title: string;
   posSize: PosSize;
   canResize?: boolean;
-  onPosSizeChange: (newPosSize: PosSize) => any;
+  onPosSizeChange: (posSize: PosSize) => any;
 };
 export default function Draggable({
   children,
@@ -53,7 +53,7 @@ export default function Draggable({
         width: posSize.w + "px",
         height: posSize.h + "px",
       }}
-      className="border-2 rounded dark:border-elFlatBorder  absolute"
+      className="border-2 rounded dark:border-elFlatBorder absolute"
     >
       {canResize && (
         <div
