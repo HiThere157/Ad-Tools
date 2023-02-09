@@ -11,8 +11,7 @@ import Title from "./Title";
 import Loader from "./Loader";
 
 type TableProps = {
-  isBasic?: boolean;
-  title?: string;
+  title: string;
   name: string;
   columns: ColumnDefinition[];
   data: Result<PSResult[]>;
@@ -20,7 +19,6 @@ type TableProps = {
   isLoading?: boolean;
 };
 export default function Table({
-  isBasic = false,
   title,
   name,
   columns,
@@ -75,37 +73,31 @@ export default function Table({
 
   return (
     <section>
-      {title && (
-        <Title
-          title={title}
-          n={data.output?.length ?? 0}
-          nSelected={selected.length}
-          nFiltered={filteredCount}
-          isTableOpen={isVisible}
-          setTableOpen={setIsVisible}
-        />
-      )}
+      <Title
+        title={title}
+        n={data.output?.length ?? 0}
+        nSelected={selected.length}
+        nFiltered={filteredCount}
+        isTableOpen={isVisible}
+        setTableOpen={setIsVisible}
+      />
       {isVisible && (
         <div className="flex gap-x-1">
-          {!isBasic && (
-            <>
-              <ActionMenu
-                onResetTable={resetTable}
-                onCopy={() => copyToClip(false)}
-                onCopySelection={() => copyToClip(true)}
-                onFilter={() => setIsFilterOpen(!isFilterOpen)}
-                isFilterHighlighted={isFilterHighlighted}
-              />
-              <FilterMenu
-                isOpen={isFilterOpen}
-                columns={columns}
-                filter={filter}
-                onFilterChange={setFilter}
-                currentSavedFilter={currentSavedFilter}
-                setCurrentSavedFilter={setCurrentSavedFilter}
-              />
-            </>
-          )}
+          <ActionMenu
+            onResetTable={resetTable}
+            onCopy={() => copyToClip(false)}
+            onCopySelection={() => copyToClip(true)}
+            onFilter={() => setIsFilterOpen(!isFilterOpen)}
+            isFilterHighlighted={isFilterHighlighted}
+          />
+          <FilterMenu
+            isOpen={isFilterOpen}
+            columns={columns}
+            filter={filter}
+            onFilterChange={setFilter}
+            currentSavedFilter={currentSavedFilter}
+            setCurrentSavedFilter={setCurrentSavedFilter}
+          />
           <div className="border-2 border-elFlatBorder rounded h-fit min-h-[4rem] overflow-auto">
             <TableElement
               entries={data.output}
