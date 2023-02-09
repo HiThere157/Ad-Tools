@@ -12,7 +12,7 @@ export default function Input({
   classOverride = "",
   disabled = false,
   onChange,
-  onEnter = () => { },
+  onEnter = () => {},
 }: InputProps) {
   const onKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
