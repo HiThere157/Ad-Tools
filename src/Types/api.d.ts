@@ -2,21 +2,25 @@ type ElectronAPI = Window &
   typeof globalThis & {
     electronAPI:
       | {
+          executeCommand: <T>(request: ExecuteCommandRequest) => Promise<Result<T>>;
           getExecutingUser: () => Promise<Result<string>>;
           getDomainSuffixList: () => Promise<Result<PSResult>>;
-          getVersion: () => Promise<Result<Version>>;
-          executeCommand: <T>(request: ExecuteCommandRequest) => Promise<Result<T>>;
           startComputerAction: (options: StartComputerActionOptions) => Promise<Result<string>>;
           authAzureAD: (options: AuthAzureADOptions) => Promise<Result<string>>;
+
           probeConnection: (target: string) => Promise<Result<string>>;
+          getVersion: () => Promise<Result<Version>>;
 
           changeWinState: (state: WinState) => void;
           handleZoomUpdate: (callback: Function) => void;
           removeZoomListener: () => void;
+
+          checkForUpdate: () => void;
         }
       | undefined;
   };
 
+/** whitelist filters **/
 type Command =
   | "Get-ADUser"
   | "Get-ADGroup"
@@ -34,6 +38,7 @@ type Command =
   | "Get-AzureADGroup"
   | "Get-AzureADGroupMember"
   | "Get-AzureADDevice";
+
 type CommandArgs = {
   Filter?: string;
   Identity?: string;
@@ -48,13 +53,17 @@ type CommandArgs = {
   SearchString?: string;
   All?: string;
 };
+
 type ComputerAction = "compmgmt" | "mstsc" | "powershell";
+
 type WinState = "minimize" | "maximize_restore" | "quit";
+
 type Version = {
   version: string;
   isBeta: boolean;
 };
 
+/** api parameter types **/
 type ExecuteCommandRequest = {
   command: Commands;
   args: CommandArgs;
@@ -72,6 +81,14 @@ type AuthAzureADOptions = {
   useCredentials: boolean;
 };
 
+/** api result types **/
+type PSResult = { [key: string]: string | number | string[] | number[] };
+type Result<T> = {
+  output?: T;
+  error?: string;
+};
+
+/** query types **/
 type AdQuery = {
   input?: string;
   domain?: string;
@@ -82,10 +99,4 @@ type AadQuery = {
 type DnsQuery = {
   input?: string;
   type?: string;
-};
-
-type PSResult = { [key: string]: string | number | string[] | number[] };
-type Result<T> = {
-  output?: T;
-  error?: string;
 };

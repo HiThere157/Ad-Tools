@@ -102,8 +102,13 @@ app.whenReady().then(() => {
   ipcMain.handle("ps:getDomainSuffixList", getDomainSuffixList);
   ipcMain.handle("ps:startComputerAction", startComputerAction);
   ipcMain.handle("ps:authAzureAD", authAzureAD);
+
   ipcMain.handle("node:probeConnection", probeConnection);
   ipcMain.handle("node:getVersion", getVersion);
+
+  ipcMain.handle("update:checkForUpdate", () => {
+    autoUpdater.checkForUpdatesAndNotify();
+  });
 
   createWindow();
   app.on("activate", function () {
