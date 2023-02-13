@@ -12,7 +12,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
   changeWinState: (state) => ipcRenderer.send("win:changeWinState", state),
   handleZoomUpdate: (callback) =>
-    ipcRenderer.on("win:setZoom", (_event, ...args) => callback(args)),
+    ipcRenderer.on("win:setZoom", (_event, value) => callback(value)),
   removeZoomListener: () => {
     if (Object.values(CONTENT_EVENTS.E2C).includes("win:setZoom")) {
       ipcRenderer.removeAllListeners("win:setZoom");
@@ -20,4 +20,11 @@ contextBridge.exposeInMainWorld("electronAPI", {
   },
 
   checkForUpdate: () => ipcRenderer.invoke("update:checkForUpdate"),
+  handleDownloadStatusUpdate: (callback) =>
+    ipcRenderer.on("update:downloadStatusUpdate", (_event, status) => callback(status)),
+  removeDownloadStatusUpdate: () => {
+    if (Object.values(CONTENT_EVENTS.E2C).includes("update:downloadStatusUpdate")) {
+      ipcRenderer.removeAllListeners("update:downloadStatusUpdate");
+    }
+  },
 });

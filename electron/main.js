@@ -1,14 +1,9 @@
 const { app, shell, BrowserWindow, ipcMain } = require("electron");
-const { autoUpdater } = require("electron-updater");
 const path = require("path");
 
 // override console.{log, error, ...} functions with the provided electron-log functions
 const log = require("electron-log");
 Object.assign(console, log.functions);
-
-// configure electron-builder autoUpdater
-autoUpdater.allowDowngrade = true;
-autoUpdater.allowPrerelease = process.env.AD_TOOLS_PRERELEASE?.toLowerCase() === "true";
 
 const {
   executeCommand,
@@ -18,26 +13,10 @@ const {
   authAzureAD,
 } = require("./api/powershell");
 const { probeConnection, getVersion } = require("./api/node");
+const { changeWinState, handleZoom, handleUpdater } = require("./api/win");
 
-function handleZoom(window, direction) {
-  const currentZoom = window.webContents.getZoomFactor();
-  let nextZoom = 1;
-
-  if (direction === "in") {
-    nextZoom = currentZoom + 0.1;
-  }
-  if (direction === "out") {
-    nextZoom = currentZoom - 0.1;
-  }
-
-  const clamped = Math.min(1.5, Math.max(0.5, nextZoom));
-
-  window.webContents.send("win:setZoom", clamped);
-  window.webContents.zoomFactor = clamped;
-}
-
-function createWindow() {
-  const win = new BrowserWindow({
+app.whenReady().then(() => {
+  const window = new BrowserWindow({
     width: 800,
     height: 600,
     backgroundColor: "#1A1A1A",
@@ -48,53 +27,36 @@ function createWindow() {
     },
   });
 
-  win.removeMenu();
-  win.loadFile("./build/index.html");
+  window.removeMenu();
+  window.loadFile("./build/index.html");
 
   // handle ctrl+scroll event to zoom
-  win.webContents.on("zoom-changed", (_event, zoomDirection) => {
-    handleZoom(win, zoomDirection);
+  window.webContents.on("zoom-changed", (_event, zoomDirection) => {
+    handleZoom(window, zoomDirection);
   });
   // handle F12 for dev console and ctrl+{+,-} for zoom
-  win.webContents.on("before-input-event", (event, input) => {
+  window.webContents.on("before-input-event", (event, input) => {
     if (input.key === "F12") {
-      win.webContents.openDevTools();
+      window.webContents.openDevTools();
       event.preventDefault();
     }
 
-    if (input.type === "keyDown" && input.key === "+" && input.control) {
-      handleZoom(win, "in");
+    if (input.type !== "keyDown" || !input.control) return;
+
+    if (input.key === "+") {
+      handleZoom(window, "in");
     }
-    if (input.type === "keyDown" && input.key === "-" && input.control) {
-      handleZoom(win, "out");
+    if (input.key === "-") {
+      handleZoom(window, "out");
     }
   });
 
   // open lins with target="_blank" in real browser
-  win.webContents.setWindowOpenHandler(({ url }) => {
+  window.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: "deny" };
   });
 
-  // listen for window state change requests from renderer
-  ipcMain.on("win:changeWinState", (_event, state) => {
-    switch (state) {
-      case "minimize":
-        win.minimize();
-        break;
-
-      case "maximize_restore":
-        win.isMaximized() ? win.restore() : win.maximize();
-        break;
-
-      case "quit":
-        win.close();
-        break;
-    }
-  });
-}
-
-app.whenReady().then(() => {
   // handle all api call requests
   ipcMain.handle("ps:executeCommand", executeCommand);
   ipcMain.handle("ps:getExecutingUser", getExecutingUser);
@@ -105,18 +67,12 @@ app.whenReady().then(() => {
   ipcMain.handle("node:probeConnection", probeConnection);
   ipcMain.handle("node:getVersion", getVersion);
 
-  ipcMain.handle("update:checkForUpdate", async () => {
-    const result = await autoUpdater.checkForUpdates();
-    // if (!result) return null;
-    // callback(["yo"]);
-    return {
-      version: result?.updateInfo?.version,
-    }
+  ipcMain.on("win:changeWinState", (_event, state) => {
+    changeWinState(window, state);
   });
 
-  createWindow();
-  app.on("activate", function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  ipcMain.handle("update:checkForUpdate", async () => {
+    return await handleUpdater(window);
   });
 });
 

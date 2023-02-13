@@ -25,6 +25,15 @@ export default function UpdateManager() {
     console.log(electronAPI?.checkForUpdate());
   })();
 
+  useEffect(() => {
+    electronAPI?.handleDownloadStatusUpdate((status: DownloadStatus) => {
+      console.log(status);
+    });
+    return () => {
+      electronAPI?.removeDownloadStatusUpdate();
+    };
+  }, []);
+
   return (
     <div ref={ref} className="z-[20]">
       <WinButton onClick={() => setIsOpen(!isOpen)}>
