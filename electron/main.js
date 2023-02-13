@@ -109,7 +109,10 @@ app.whenReady().then(() => {
     const result = await autoUpdater.checkForUpdates();
     // if (!result) return null;
     // callback(["yo"]);
-    return { version: result?.updateInfo?.version }
+    return {
+      version: result?.updateInfo?.version,
+      result
+    }
   });
 
   createWindow();
