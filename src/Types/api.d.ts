@@ -1,23 +1,23 @@
 type ElectronAPI = Window &
   typeof globalThis & {
     electronAPI:
-      | {
-          executeCommand: <T>(request: ExecuteCommandRequest) => Promise<Result<T>>;
-          getExecutingUser: () => Promise<Result<string>>;
-          getDomainSuffixList: () => Promise<Result<PSResult>>;
-          startComputerAction: (options: StartComputerActionOptions) => Promise<Result<string>>;
-          authAzureAD: (options: AuthAzureADOptions) => Promise<Result<string>>;
+    | {
+      executeCommand: <T>(request: ExecuteCommandRequest) => Promise<Result<T>>;
+      getExecutingUser: () => Promise<Result<string>>;
+      getDomainSuffixList: () => Promise<Result<PSResult>>;
+      startComputerAction: (options: StartComputerActionOptions) => Promise<Result<string>>;
+      authAzureAD: (options: AuthAzureADOptions) => Promise<Result<string>>;
 
-          probeConnection: (target: string) => Promise<Result<string>>;
-          getVersion: () => Promise<Result<Version>>;
+      probeConnection: (target: string) => Promise<Result<string>>;
+      getVersion: () => Promise<Result<Version>>;
 
-          changeWinState: (state: WinState) => void;
-          handleZoomUpdate: (callback: Function) => void;
-          removeZoomListener: () => void;
+      changeWinState: (state: WinState) => void;
+      handleZoomUpdate: (callback: Function) => void;
+      removeZoomListener: () => void;
 
-          checkForUpdate: () => void;
-        }
-      | undefined;
+      checkForUpdate: () => Promise<UpdateCheckResult | null>;
+    }
+    | undefined;
   };
 
 /** whitelist filters **/
@@ -71,11 +71,13 @@ type ExecuteCommandRequest = {
   useStaticSession: boolean;
   json: boolean;
 };
+
 type StartComputerActionOptions = {
   action: ComputerAction;
   target: string;
   useCurrentUser: boolean;
 };
+
 type AuthAzureADOptions = {
   accountId?: string;
   useCredentials: boolean;
@@ -87,6 +89,11 @@ type Result<T> = {
   output?: T;
   error?: string;
 };
+
+type UpdateCheckResult = {
+  updateInfo: { version: string };
+  downloadPromise?: Promise<string[]> | null;
+}
 
 /** query types **/
 type AdQuery = {

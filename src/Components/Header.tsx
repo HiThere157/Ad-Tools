@@ -5,6 +5,7 @@ import { electronAPI } from "../Helper/makeAPICall";
 
 import WinControl from "./WinBar/WinControl";
 import TableOfContents from "./TableOfContents";
+import UpdateManager from "./UpdateManager";
 
 export default function Header() {
   const [user, setUser] = useState<string>("/");
@@ -43,6 +44,7 @@ export default function Header() {
       </div>
 
       <div className="winbar-no-drag flex gap-x-2">
+        <UpdateManager />
         <TableOfContents />
         <WinControl />
       </div>

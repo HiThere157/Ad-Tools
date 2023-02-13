@@ -9,7 +9,6 @@ Object.assign(console, log.functions);
 // configure electron-builder autoUpdater
 autoUpdater.allowDowngrade = true;
 autoUpdater.allowPrerelease = process.env.AD_TOOLS_PRERELEASE?.toLowerCase() === "true";
-autoUpdater.checkForUpdatesAndNotify();
 
 const {
   executeCommand,
@@ -107,7 +106,7 @@ app.whenReady().then(() => {
   ipcMain.handle("node:getVersion", getVersion);
 
   ipcMain.handle("update:checkForUpdate", () => {
-    autoUpdater.checkForUpdatesAndNotify();
+    return autoUpdater.checkForUpdates();
   });
 
   createWindow();
