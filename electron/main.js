@@ -105,14 +105,19 @@ app.whenReady().then(() => {
   ipcMain.handle("node:probeConnection", probeConnection);
   ipcMain.handle("node:getVersion", getVersion);
 
-  ipcMain.handle("update:checkForUpdate", async (callback) => {
+  ipcMain.handle("update:checkForUpdate", async (_event, callback) => {
     const result = await autoUpdater.checkForUpdates();
     if (!result) return null;
 
     if(result.downloadPromise){
       callback("download started?")
     }
-    result.downloadPromise?.then(callback);
+
+    try{
+      result.downloadPromise?.then(callback);
+    }catch(err) {
+      console.error(err)
+    }
 
     return {
       version: result.updateInfo.version
