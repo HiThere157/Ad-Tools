@@ -120,7 +120,7 @@ app.whenReady().then(() => {
     }
 
     return {
-      version: result.updateInfo.version
+      version: typeof result.updateInfo.version
     };
   });
 
