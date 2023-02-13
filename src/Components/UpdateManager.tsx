@@ -22,8 +22,7 @@ export default function UpdateManager() {
   }, [ref]);
 
   (async () => {
-    const updateResult = await electronAPI?.checkForUpdate(console.log);
-    console.log(updateResult);
+    console.log(electronAPI?.checkForUpdate());
   })();
 
   return (

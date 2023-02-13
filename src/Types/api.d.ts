@@ -15,7 +15,7 @@ type ElectronAPI = Window &
       handleZoomUpdate: (callback: Function) => void;
       removeZoomListener: () => void;
 
-      checkForUpdate: (callback: (files: string) => void) => Promise<UpdateCheckResult | null>;
+      checkForUpdate: () => Promise<UpdateCheckResult | null>;
     }
     | undefined;
   };

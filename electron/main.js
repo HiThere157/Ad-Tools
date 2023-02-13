@@ -105,23 +105,11 @@ app.whenReady().then(() => {
   ipcMain.handle("node:probeConnection", probeConnection);
   ipcMain.handle("node:getVersion", getVersion);
 
-  ipcMain.handle("update:checkForUpdate", async (_event, callback) => {
+  ipcMain.handle("update:checkForUpdate", async () => {
     const result = await autoUpdater.checkForUpdates();
-    if (!result) return null;
-
-    if(result.downloadPromise){
-      callback("download started?")
-    }
-
-    try{
-      result.downloadPromise?.then(callback);
-    }catch(err) {
-      console.error(err)
-    }
-
-    return {
-      version: typeof result.updateInfo.version
-    };
+    // if (!result) return null;
+    // callback(["yo"]);
+    return { version: result?.updateInfo?.version }
   });
 
   createWindow();
