@@ -14,6 +14,7 @@ import {
   BsArrowRepeat,
   BsExclamationOctagon,
   BsCheckCircle,
+  BsCloudArrowDown,
   BsFillForwardFill,
 } from "react-icons/bs";
 import Link from "./Link";
@@ -135,8 +136,8 @@ function UpdateManagerBody({ status, version, latestVersion, onRefresh }: Update
 
           {status === "pending" && <ClipLoader size="19px" color="#208CF0" speedMultiplier={0.5} />}
           {status === "error" && <BsExclamationOctagon className="text-lg text-redColor" />}
-          {status === "complete" && <BsCheckCircle className="text-lg text-orangeColor" />}
-          {status === "upToDate" && <BsCheckCircle className="text-lg text-greenColor" />}
+          {status === "complete" && <BsCloudArrowDown className="text-lg text-greenColor" />}
+          {status === "upToDate" && <BsCheckCircle className="text-lg text-elAccentBg" />}
         </div>
       </div>
     </div>
