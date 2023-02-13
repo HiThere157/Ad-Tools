@@ -111,7 +111,6 @@ app.whenReady().then(() => {
     // callback(["yo"]);
     return {
       version: result?.updateInfo?.version,
-      result
     }
   });
 
