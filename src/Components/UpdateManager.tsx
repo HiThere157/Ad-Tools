@@ -124,7 +124,7 @@ function UpdateManagerBody({ status, version, latestVersion, onRefresh }: Update
             <Link href="https://github.com/HiThere157/Ad-Tools">AD Tools</Link>
             <div className="flex items-center text-whiteColorAccent text-xs ml-3">
               {version && <span>v{version}</span>}
-              {version && latestVersion && (
+              {version && latestVersion && version !== latestVersion && (
                 <>
                   <BsFillForwardFill className="mx-2" />
                   <span>v{latestVersion}</span>
