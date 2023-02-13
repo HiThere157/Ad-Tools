@@ -22,9 +22,9 @@ export default function UpdateManager() {
   }, [ref]);
 
   (async () => {
-    const updateResult = await electronAPI?.checkForUpdate();
+    const updateResult = await electronAPI?.checkForUpdate(console.log);
     console.log(updateResult);
-  })()
+  })();
 
   return (
     <div ref={ref} className="z-[20]">
@@ -42,7 +42,6 @@ function UpdateManagerBody() {
   return (
     <div className="container absolute right-0 w-max mt-1 p-2">
       <span className="block text-xl mb-1">Update Manager</span>
-
     </div>
   );
 }

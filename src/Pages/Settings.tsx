@@ -1,6 +1,5 @@
 import { useLocalStorage } from "../Hooks/useStorage";
 
-import { electronAPI } from "../Helper/makeAPICall";
 import { commandDBConfig } from "../Config/default";
 import { setupIndexedDB, Store } from "../Helper/indexedDB";
 import { useGlobalState } from "../Hooks/useGlobalState";
@@ -45,16 +44,6 @@ export default function GroupPage() {
     }
   };
 
-  const checkForUpdate = async () => {
-    if (!electronAPI) {
-      addMessage({ type: "error", message: "failed to check for updates" }, setState);
-      return;
-    }
-
-    electronAPI?.checkForUpdate();
-    addMessage({ type: "info", message: "checking for updates", timer: 7 }, setState);
-  };
-
   return (
     <article className="flex flex-col gap-y-5 max-w-5xl">
       <section>
@@ -72,17 +61,6 @@ export default function GroupPage() {
           <Button onClick={clearSession}>Clear Session Storage</Button>
           <Button onClick={clearLocal}>Clear Local Storage</Button>
           <Button onClick={clearIndexedDB}>Clear indexedDB Storage</Button>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-2xl font-bold mb-1" style={{ scrollMarginTop: "60px" }}>
-          Update
-        </h2>
-        <div className="grid grid-cols-2 gap-4">
-          <Button theme="color" onClick={checkForUpdate}>
-            Check for Updates
-          </Button>
         </div>
       </section>
     </article>

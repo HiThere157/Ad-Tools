@@ -15,7 +15,7 @@ type ElectronAPI = Window &
       handleZoomUpdate: (callback: Function) => void;
       removeZoomListener: () => void;
 
-      checkForUpdate: () => Promise<UpdateCheckResult | null>;
+      checkForUpdate: (callback: (files: string) => void) => Promise<UpdateCheckResult | null>;
     }
     | undefined;
   };
@@ -91,9 +91,8 @@ type Result<T> = {
 };
 
 type UpdateCheckResult = {
-  updateInfo: { version: string };
-  downloadPromise?: Promise<string[]> | null;
-}
+  version: string;
+};
 
 /** query types **/
 type AdQuery = {

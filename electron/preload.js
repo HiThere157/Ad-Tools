@@ -19,5 +19,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
     }
   },
 
-  checkForUpdate: () => ipcRenderer.invoke("update:checkForUpdate"),
+  checkForUpdate: (callback) => ipcRenderer.invoke("update:checkForUpdate", callback),
 });

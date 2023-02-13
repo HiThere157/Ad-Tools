@@ -3,7 +3,7 @@ type ButtonProps = {
   classOverride?: string;
   disabled?: boolean;
   highlight?: boolean;
-  theme?: "flat" | "colorOnHover" | "color";
+  theme?: "flat" | "colorOnHover" | "color" | "invisible";
   onClick: () => any;
 };
 export default function Button({
@@ -26,6 +26,9 @@ export default function Button({
           : " ") +
         (theme === "color"
           ? "dark:bg-elAccentBg dark:hover:bg-elActiveBg dark:active:bg-elDarkerActiveBg dark:border-elAccentBg dark:hover:border-elActiveBg dark:active:border-elDarkerActiveBg "
+          : " ") +
+        (theme === "invisible"
+          ? "dark:bg-transparent dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:active:border-elFlatActiveBorder "
           : " ") +
         // highlight styling
         (highlight ? "dark:!border-elAccentBg " : " ") +
