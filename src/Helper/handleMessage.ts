@@ -19,6 +19,8 @@ const addMessage = (
     ...prev,
     messages: append(prev, message),
   }));
+
+  return message.timestamp;
 };
 
 const removeMessage = (

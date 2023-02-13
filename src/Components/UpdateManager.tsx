@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 
 import { electronAPI } from "../Helper/makeAPICall";
 import { useGlobalState } from "../Hooks/useGlobalState";
-import { addMessage } from "../Helper/handleMessage";
+import { addMessage, removeMessage } from "../Helper/handleMessage";
 
 import WinButton from "./WinBar/WinButton";
 import Button from "./Button";
@@ -24,6 +24,7 @@ export default function UpdateManager() {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [status, setStatus] = useState<DownloadStatus>("upToDate");
+  const [messageId, setMessageId] = useState<number>();
 
   const [version, setVersion] = useState<string>("");
   const [latestVersion, setLatestVersion] = useState<string>("");
@@ -51,20 +52,27 @@ export default function UpdateManager() {
   useEffect(() => {
     fetchInfo();
 
-    electronAPI?.handleDownloadStatusUpdate((status: DownloadStatus) => {
-      setStatus(status);
-      if (status === "complete")
+    electronAPI?.handleDownloadStatusUpdate((newStatus: DownloadStatus) => {
+      setStatus(newStatus);
+      if (newStatus === "complete") {
         addMessage(
           { type: "info", message: "Update Download complete. Restart to apply", timer: 7 },
           setState,
         );
-      if (status === "error")
+        removeMessage(messageId, setState);
+      }
+
+      if (newStatus === "error") {
         addMessage(
           { type: "error", message: "An Error occured while downloading an Update" },
           setState,
         );
-      if (status === "pending")
-        addMessage({ type: "info", message: "Download for an Update started", timer: 7 }, setState);
+      }
+
+      if (newStatus === "pending") {
+        const id = addMessage({ type: "info", message: "Download for an Update started", timer: 7 }, setState);
+        setMessageId(id);
+      }
     });
     return () => {
       electronAPI?.removeDownloadStatusUpdate();
