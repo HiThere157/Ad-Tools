@@ -11,8 +11,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getVersion: () => ipcRenderer.invoke("node:getVersion"),
 
   changeWinState: (state) => ipcRenderer.send("win:changeWinState", state),
-  handleZoomUpdate: (callback) =>
-    ipcRenderer.on("win:setZoom", (_event, value) => callback(value)),
+  handleZoomUpdate: (callback) => ipcRenderer.on("win:setZoom", (_event, value) => callback(value)),
   removeZoomListener: () => {
     if (Object.values(CONTENT_EVENTS.E2C).includes("win:setZoom")) {
       ipcRenderer.removeAllListeners("win:setZoom");

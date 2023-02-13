@@ -30,10 +30,10 @@ export default function AzureLogin({ isOpen, onExit }: AzureLoginProps) {
     const success = await azureLogin();
 
     if (success) {
-      addMessage({ type: "info", message: "logged in", timer: 7 }, setState);
+      addMessage({ type: "info", message: "Logged In", timer: 7 }, setState);
     } else {
       addMessage(
-        { type: "error", message: "failed to log in (cancelled / module missing)" },
+        { type: "error", message: "Failed to Log In (cancelled / module missing)" },
         setState,
       );
     }

@@ -1,7 +1,7 @@
 import ReactMarkdown from "react-markdown";
 
 import Type from "./Type";
-import Link from "./Link";
+import Link from "../Link";
 
 import { BsBoxArrowUpRight, BsClock, BsDot, BsTag, BsDownload } from "react-icons/bs";
 import { BiGitBranch } from "react-icons/bi";
@@ -66,7 +66,7 @@ export default function Release({
         {body ? (
           <ReactMarkdown>{body}</ReactMarkdown>
         ) : (
-          <span className="block dark:text-whiteColorAccent my-1">no release notes provided</span>
+          <span className="block dark:text-whiteColorAccent my-1">No Release Notes provided</span>
         )}
       </div>
     </div>

@@ -95,7 +95,7 @@ type Result<T> = {
 type UpdateCheckResult = {
   version?: string;
 };
-type DownloadStatus = "pending" | "complete" | "error";
+type DownloadStatus = "pending" | "complete" | "error" | "upToDate";
 
 /** query types **/
 type AdQuery = {

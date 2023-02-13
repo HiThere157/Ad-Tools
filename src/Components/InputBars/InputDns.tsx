@@ -40,10 +40,10 @@ export default function DnsInputBar({
     });
 
     if (result.error) {
-      addMessage({ type: "error", message: "failed to clear DNS cache" }, setState);
+      addMessage({ type: "error", message: "Failed to clear DNS Cache" }, setState);
       return;
     }
-    addMessage({ type: "info", message: "cleared DNS cache", timer: 7 }, setState);
+    addMessage({ type: "info", message: "Cleared DNS Cache", timer: 7 }, setState);
   };
 
   return (

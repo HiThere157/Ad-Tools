@@ -1,5 +1,5 @@
-import { useGlobalState } from "../../Hooks/useGlobalState";
-import { addMessage } from "../../Helper/handleMessage";
+import { useGlobalState } from "../Hooks/useGlobalState";
+import { addMessage } from "../Helper/handleMessage";
 
 type LinkProps = {
   href: string;
@@ -10,7 +10,7 @@ export default function Link({ href, className, children }: LinkProps) {
   const { setState } = useGlobalState();
 
   const clicked = () => {
-    addMessage({ type: "info", message: "opened this link in your browser", timer: 7 }, setState);
+    addMessage({ type: "info", message: "Opened Link in the Browser", timer: 7 }, setState);
   };
 
   return (

@@ -16,7 +16,7 @@ export default function GroupPage() {
     addMessage(
       {
         type: "info",
-        message: "Domain list was updated",
+        message: "Domain List was updated",
         timer: 7,
         skipIfExists: true,
       },
@@ -27,20 +27,20 @@ export default function GroupPage() {
 
   const clearSession = () => {
     window.sessionStorage.clear();
-    addMessage({ type: "info", message: "cleared session storage", timer: 7 }, setState);
+    addMessage({ type: "info", message: "Cleared Session Storage", timer: 7 }, setState);
   };
   const clearLocal = () => {
     window.localStorage.clear();
-    addMessage({ type: "info", message: "cleared local storage", timer: 7 }, setState);
+    addMessage({ type: "info", message: "Cleared Local Storage", timer: 7 }, setState);
   };
   const clearIndexedDB = async () => {
     try {
       const db = setupIndexedDB(commandDBConfig);
       const commandStore = new Store(db, "commands", "readwrite");
       commandStore.deleteAll();
-      addMessage({ type: "info", message: "cleared indexedDB", timer: 7 }, setState);
+      addMessage({ type: "info", message: "Cleared IndexedDB", timer: 7 }, setState);
     } catch {
-      addMessage({ type: "error", message: "failed to clear indexedDB" }, setState);
+      addMessage({ type: "error", message: "Failed to clear IndexedDB" }, setState);
     }
   };
 

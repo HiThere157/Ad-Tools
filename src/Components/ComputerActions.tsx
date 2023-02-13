@@ -36,7 +36,7 @@ export default function ComputerActions({ fqdn }: ComputerActionsProps) {
       addMessage(
         {
           type: "info",
-          message: `opened ${friendlyName} for target: ${fqdn}`,
+          message: `Opened ${friendlyName} for Target: ${fqdn}`,
           timer: 7,
         },
         setState,
@@ -45,7 +45,7 @@ export default function ComputerActions({ fqdn }: ComputerActionsProps) {
       addMessage(
         {
           type: "error",
-          message: `failed to open ${friendlyName} for target: ${fqdn}`,
+          message: `Failed to open ${friendlyName} for Target: ${fqdn}`,
         },
         setState,
       );
