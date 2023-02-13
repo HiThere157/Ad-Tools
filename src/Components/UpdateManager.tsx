@@ -133,9 +133,7 @@ function UpdateManagerBody({ status, version, latestVersion, onRefresh }: Update
             </div>
           </div>
 
-          {status === "complete" && (
-            <ClipLoader size="19px" color="#208CF0" speedMultiplier={0.5} />
-          )}
+          {status === "pending" && <ClipLoader size="19px" color="#208CF0" speedMultiplier={0.5} />}
           {status === "error" && <BsExclamationOctagon className="text-lg text-redColor" />}
           {status === "complete" && <BsCheckCircle className="text-lg text-orangeColor" />}
           {status === "upToDate" && <BsCheckCircle className="text-lg text-greenColor" />}
