@@ -19,10 +19,7 @@ export default function UpdateManager() {
   const [status, setStatus] = useState<DownloadStatus>("upToDate");
 
   const [version, setVersion] = useState<string>("");
-  const [modVersion, setModVersion] = useState<ModuleVersion>({
-    azureAD: null,
-    activeDirectory: null,
-  });
+  const [modVersion, setModVersion] = useState<ModuleVersion>();
   const [latestVersion, setLatestVersion] = useState<string>("");
 
   useEffect(() => {
@@ -38,6 +35,8 @@ export default function UpdateManager() {
   }, [ref]);
 
   const fetchInfo = async () => {
+    setModVersion(undefined);
+
     const versionResult = await electronAPI?.getVersion();
     const modVersionResult = await electronAPI?.getModuleVersion();
     const latestVersionResult = await electronAPI?.checkForUpdate();
@@ -115,7 +114,7 @@ export default function UpdateManager() {
 type UpdateManagerBodyProps = {
   status: DownloadStatus;
   version: string;
-  modVersion: ModuleVersion;
+  modVersion?: ModuleVersion;
   latestVersion: string;
   onRefresh: () => any;
 };
@@ -159,19 +158,19 @@ function UpdateManagerBody({
         <div className="flex items-baseline">
           <Link href="https://github.com/HiThere157/Ad-Tools">Azure AD</Link>
           <div className="flex items-center text-whiteColorAccent text-xs ml-2">
-            {modVersion.azureAD && <span>v{modVersion.azureAD}</span>}
+            {modVersion?.azureAD && <span>v{modVersion.azureAD}</span>}
           </div>
         </div>
-        <ModuleStatus version={modVersion.azureAD} />
+        <ModuleStatus version={modVersion?.azureAD} />
       </div>
       <div className="flex items-center justify-between mx-1">
         <div className="flex items-baseline">
           <Link href="https://github.com/HiThere157/Ad-Tools">RSAT Tools</Link>
           <div className="flex items-center text-whiteColorAccent text-xs ml-2">
-            {modVersion.activeDirectory && <span>v{modVersion.activeDirectory}</span>}
+            {modVersion?.activeDirectory && <span>v{modVersion.activeDirectory}</span>}
           </div>
         </div>
-        <ModuleStatus version={modVersion.activeDirectory} />
+        <ModuleStatus version={modVersion?.activeDirectory} />
       </div>
     </div>
   );
