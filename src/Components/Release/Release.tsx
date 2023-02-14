@@ -11,6 +11,7 @@ type ReleaseProps = Release & {
   installed: boolean;
 };
 export default function Release({
+  repository,
   html_url,
   tag_name,
   target_commitish,
@@ -27,7 +28,9 @@ export default function Release({
     <div className="container flex flex-col px-2 py-1 w-full max-w-3xl">
       <div className="flex items-center justify-between whitespace-nowrap ml-1">
         <Link className="group flex items-center gap-2" href={html_url}>
-          <h2 className="text-2xl font-bold">{name}</h2>
+          <h2 className="text-2xl font-bold">
+            {repository}: {name}
+          </h2>
           <Type prerelease={prerelease} latest={latest} installed={installed} />
           <BsBoxArrowUpRight className="group-hover:scale-100 scale-0" />
         </Link>

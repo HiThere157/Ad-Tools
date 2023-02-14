@@ -2,40 +2,42 @@ import { useState, useEffect } from "react";
 
 import { electronAPI } from "../Helper/makeAPICall";
 
+import ScrollPosition from "../Components/ScrollPosition";
 import Release from "../Components/Release/Release";
 
 export default function HomePage() {
   const [releases, setReleases] = useState<Partial<Release>[]>([]);
-  const [latestIndex, setLatestIndex] = useState<number>(0);
   const [version, setVersion] = useState<string>("");
+  const [latestIndex, setLatestIndex] = useState<number>(0);
 
-  useEffect(() => {
-    (async () => {
-      const result = await electronAPI?.getVersion();
-      setVersion(result?.output?.version ?? "");
-    })();
-  }, []);
+  const fetchInfo = async () => {
+    const versionResult = await electronAPI?.getVersion();
+    setVersion(versionResult?.output?.version ?? "");
 
-  useEffect(() => {
-    (async () => {
-      const result = await fetch("https://api.github.com/repos/HiThere157/Ad-Tools/releases");
+    const result = await fetch("https://api.github.com/repos/HiThere157/Ad-Tools/releases");
+    if (!result.ok) return;
+    try {
+      const releases = (await result.json()) as Partial<Release>[];
 
-      if (!result.ok) return;
-      try {
-        const releases = (await result.json()) as Partial<Release>[];
+      releases.forEach((release) => {
+        release.repository = release.html_url?.split("/").at(-4);
+      });
 
-        for (let i = 0; i < releases.length; i++) {
-          if (!releases[i].prerelease) {
-            setLatestIndex(i);
-            break;
-          }
+      for (let i = 0; i < releases.length; i++) {
+        if (!releases[i].prerelease) {
+          setLatestIndex(i);
+          break;
         }
-
-        setReleases(releases);
-      } catch {
-        setReleases([]);
       }
-    })();
+
+      setReleases(releases);
+    } catch {
+      setReleases([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchInfo();
   }, []);
 
   return (
@@ -44,6 +46,7 @@ export default function HomePage() {
         return (
           <Release
             key={index}
+            repository={release.repository ?? "Unknown"}
             html_url={release.html_url ?? ""}
             tag_name={release.tag_name ?? "Unknown"}
             target_commitish={release.target_commitish ?? "Unknown"}
@@ -64,6 +67,7 @@ export default function HomePage() {
           />
         );
       })}
+      <ScrollPosition name="home" />
     </article>
   );
 }

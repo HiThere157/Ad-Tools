@@ -33,7 +33,7 @@ export default function Header() {
             src={isBeta ? "./icon_beta.svg" : "./icon.svg"}
             alt="AD Tools Logo"
             className="mx-[1.1rem] h-6"
-          ></img>
+          />
         </NavLink>
         <div className="flex gap-x-3 items-center mt-0.5 whitespace-nowrap">
           <NavLink to="/" className="winbar-no-drag">

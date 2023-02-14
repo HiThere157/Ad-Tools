@@ -1,4 +1,5 @@
 type Release = {
+  repository: string;
   html_url: string;
   tag_name: string;
   target_commitish: string;

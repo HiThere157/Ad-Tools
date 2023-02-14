@@ -139,7 +139,7 @@ function UpdateManagerBody({
 
       <div className="flex items-center justify-between mx-1">
         <div className="flex items-baseline">
-          <Link href="https://github.com/HiThere157/Ad-Tools">AD Tools</Link>
+          <Link href="https://github.com/HiThere157/Ad-Tools">AD-Tools</Link>
           <div className="flex items-center text-whiteColorAccent text-xs ml-2">
             {version && <span>v{version}</span>}
             {version && latestVersion && version !== latestVersion && (
