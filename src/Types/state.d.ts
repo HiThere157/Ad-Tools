@@ -3,6 +3,7 @@ type Message = {
   timeoutId?: NodeJS.Timeout;
   type: "info" | "error" | "warning";
   message: string;
+  key?: string;
   timer?: number;
   skipIfExists?: boolean;
 };

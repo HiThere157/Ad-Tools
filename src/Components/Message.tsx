@@ -18,7 +18,7 @@ export default function MessageElement({ message }: MessageProps) {
   }
 
   const closeMessage = () => {
-    removeMessage(message.timestamp, setState);
+    removeMessage({ timestamp: message.timestamp }, setState);
   };
 
   const getTypeInfo = () => {

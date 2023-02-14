@@ -5,7 +5,7 @@ import { electronAPI } from "../Helper/makeAPICall";
 
 import WinControl from "./WinBar/WinControl";
 import TableOfContents from "./TableOfContents";
-import UpdateManager from "./UpdateManager";
+import UpdateManager from "./UpdateManager/UpdateManager";
 
 export default function Header() {
   const [user, setUser] = useState<string>("/");

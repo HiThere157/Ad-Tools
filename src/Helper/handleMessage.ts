@@ -24,12 +24,19 @@ const addMessage = (
 };
 
 const removeMessage = (
-  timestamp: number | undefined,
+  options: {
+    timestamp?: number;
+    key?: string;
+  },
   callback: (value: React.SetStateAction<Partial<GlobalState>>) => void,
 ) => {
   callback((prev) => ({
     ...prev,
-    messages: (prev.messages ?? []).filter((message) => message.timestamp !== timestamp),
+    messages: (prev.messages ?? []).filter((message) => {
+      const isTimeStampMatch = message.timestamp === options.timestamp;
+      const isKeyMatch = message.key === options.key && message.key;
+      return !(isKeyMatch || isTimeStampMatch);
+    }),
   }));
 };
 

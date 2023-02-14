@@ -10,12 +10,13 @@ type ElectronAPI = Window &
 
           probeConnection: (target: string) => Promise<Result<string>>;
           getVersion: () => Promise<Result<Version>>;
+          getModuleVersion: () => Promise<Result<ModuleVersion>>;
 
           changeWinState: (state: WinState) => void;
           handleZoomUpdate: (callback: (value: number) => void) => void;
           removeZoomListener: () => void;
 
-          checkForUpdate: () => Promise<UpdateCheckResult>;
+          checkForUpdate: () => Promise<Result<UpdateCheckResult>>;
           handleDownloadStatusUpdate: (callback: (status: DownloadStatus) => void) => void;
           removeDownloadStatusUpdate: () => void;
         }
@@ -63,6 +64,10 @@ type WinState = "minimize" | "maximize_restore" | "quit";
 type Version = {
   version: string;
   isBeta: boolean;
+};
+type ModuleVersion = {
+  azureAD: string | null;
+  activeDirectory: string | null;
 };
 
 /** api parameter types **/

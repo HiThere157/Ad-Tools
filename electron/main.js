@@ -12,8 +12,9 @@ const {
   startComputerAction,
   authAzureAD,
 } = require("./api/powershell");
-const { probeConnection, getVersion } = require("./api/node");
-const { changeWinState, handleZoom, handleUpdater } = require("./api/win");
+const { probeConnection, getVersion, getModuleVersion } = require("./api/node");
+const { changeWinState, handleZoom } = require("./api/win");
+const { handleUpdater } = require("./api/update");
 
 app.whenReady().then(() => {
   const window = new BrowserWindow({
@@ -66,6 +67,7 @@ app.whenReady().then(() => {
 
   ipcMain.handle("node:probeConnection", probeConnection);
   ipcMain.handle("node:getVersion", getVersion);
+  ipcMain.handle("node:getModuleVersion", getModuleVersion);
 
   ipcMain.on("win:changeWinState", (_event, state) => {
     changeWinState(window, state);

@@ -1,9 +1,3 @@
-const { autoUpdater } = require("electron-updater");
-
-// configure electron-builder autoUpdater
-autoUpdater.allowDowngrade = true;
-autoUpdater.allowPrerelease = process.env.AD_TOOLS_PRERELEASE?.toLowerCase() === "true";
-
 const changeWinState = (window, state) => {
   switch (state) {
     case "minimize":
@@ -37,27 +31,7 @@ const handleZoom = (window, direction) => {
   window.webContents.zoomFactor = clamped;
 };
 
-const handleUpdater = async (window) => {
-  const result = await autoUpdater.checkForUpdates();
-
-  if (result?.downloadPromise) {
-    window.webContents.send("update:downloadStatusUpdate", "pending");
-    result?.downloadPromise
-      ?.then(() => {
-        window.webContents.send("update:downloadStatusUpdate", "complete");
-      })
-      ?.catch(() => {
-        window.webContents.send("update:downloadStatusUpdate", "error");
-      });
-  }
-
-  return {
-    version: result?.updateInfo?.version,
-  };
-};
-
 module.exports = {
   changeWinState,
   handleZoom,
-  handleUpdater,
 };
