@@ -156,7 +156,7 @@ function UpdateManagerBody({
 
       <div className="flex items-center justify-between mx-1">
         <div className="flex items-baseline">
-          <Link href="https://github.com/HiThere157/Ad-Tools">Azure AD</Link>
+          <Link href="https://github.com/HiThere157/Ad-Tools/wiki/Installation">Azure AD</Link>
           <div className="flex items-center text-whiteColorAccent text-xs ml-2">
             {modVersion?.azureAD && <span>v{modVersion.azureAD}</span>}
           </div>
@@ -165,7 +165,7 @@ function UpdateManagerBody({
       </div>
       <div className="flex items-center justify-between mx-1">
         <div className="flex items-baseline">
-          <Link href="https://github.com/HiThere157/Ad-Tools">RSAT Tools</Link>
+          <Link href="https://github.com/HiThere157/Ad-Tools/wiki/Installation">RSAT Tools</Link>
           <div className="flex items-center text-whiteColorAccent text-xs ml-2">
             {modVersion?.activeDirectory && <span>v{modVersion.activeDirectory}</span>}
           </div>
