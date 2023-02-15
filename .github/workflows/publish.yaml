@@ -5,15 +5,20 @@ on: workflow_dispatch
 jobs:
   publish:
     name: Publish
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3.5.1
         with:
           node-version: 18.x
+
       - name: Install
         run: npm install
+
       - name: Publish
         run: npm run publish
         env:
