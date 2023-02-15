@@ -1,3 +1,5 @@
+import Title from "../Title";
+
 import { ClipLoader } from "react-spinners";
 import { BsExclamationOctagon, BsCheckCircle, BsCloudArrowDown } from "react-icons/bs";
 
@@ -5,10 +7,33 @@ type DownloadStatusProps = {
   status: DownloadStatus;
 };
 export default function DownloadStatus({ status }: DownloadStatusProps) {
-  if (status === "pending") return <ClipLoader size="19px" color="#208CF0" speedMultiplier={0.5} />;
-  if (status === "error") return <BsExclamationOctagon className="text-lg text-redColor" />;
-  if (status === "complete") return <BsCloudArrowDown className="text-lg text-greenColor" />;
-  if (status === "upToDate") return <BsCheckCircle className="text-lg text-elAccentBg" />;
+  switch (status) {
+    case "pending":
+      return (
+        <Title text="Downloading" position="left">
+          <ClipLoader size="19px" color="#208CF0" speedMultiplier={0.5} />
+        </Title>
+      );
+    case "error":
+      return (
+        <Title text="Error" position="left">
+          <BsExclamationOctagon className="text-lg text-redColor" />
+        </Title>
+      );
+    case "complete":
+      return (
+        <Title text="Download Complete" position="left">
+          <BsCloudArrowDown className="text-lg text-greenColor" />
+        </Title>
+      );
+    case "upToDate":
+      return (
+        <Title text="Up To Date" position="left">
+          <BsCheckCircle className="text-lg text-elAccentBg" />
+        </Title>
+      );
 
-  return <></>;
+    default:
+      return <></>;
+  }
 }
