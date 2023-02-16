@@ -59,7 +59,7 @@ export default function EditableList({ items, onChange }: EditableListProps) {
               )}
               <td>
                 <Button
-                  classOverride="p-1.5 text-xs"
+                  classList="p-1.5 text-xs"
                   highlight={editingIndex === index}
                   onClick={() => {
                     setEditingIndex(index === editingIndex ? -1 : index);
@@ -68,7 +68,7 @@ export default function EditableList({ items, onChange }: EditableListProps) {
                   <BsFillPencilFill />
                 </Button>
                 <Button
-                  classOverride="p-1.5 text-xs ml-1"
+                  classList="p-1.5 text-xs ml-1"
                   onClick={() => {
                     removeItem(index);
                   }}
@@ -84,7 +84,7 @@ export default function EditableList({ items, onChange }: EditableListProps) {
             <Input value={newItem} onChange={setNewItem} onEnter={addItem}></Input>
           </td>
           <td>
-            <Button classOverride="p-1.5 text-xs" onClick={addItem}>
+            <Button classList="p-1.5 text-xs" onClick={addItem}>
               <BsPlusLg />
             </Button>
           </td>

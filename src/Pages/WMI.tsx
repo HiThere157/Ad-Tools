@@ -98,7 +98,7 @@ export default function WMIPage() {
           onChange={setQuery}
           onSubmit={runQuery}
         >
-          <Button classOverride="p-1" onClick={() => redirect("computer", query)}>
+          <Button classList="p-1" onClick={() => redirect("computer", query)}>
             <BsDisplay />
           </Button>
         </AdInputBar>

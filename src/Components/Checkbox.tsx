@@ -4,14 +4,14 @@ import { BsCheckLg, BsDashLg } from "react-icons/bs";
 
 type CheckboxProps = {
   label?: string;
-  classOverride?: string;
+  classList?: string;
   checked: boolean | undefined;
   disabled?: boolean;
   onChange: () => any;
 };
 export default function Checkbox({
   label = "",
-  classOverride = "",
+  classList = "",
   checked,
   disabled = false,
   onChange,
@@ -34,7 +34,7 @@ export default function Checkbox({
           "border-2 dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:active:border-elFlatActiveBorder " +
           "dark:text-elAccentBg " +
           (disabled ? "opacity-50 cursor-not-allowed" : "") +
-          classOverride
+          classList
         }
       >
         {checked && <BsCheckLg className="m-0 scale-150" />}

@@ -80,11 +80,11 @@ export default function ComputerPage() {
           onChange={setQuery}
           onSubmit={runQuery}
         >
-          <Button classOverride="p-1" onClick={() => redirect("wmi", query)}>
+          <Button classList="p-1" onClick={() => redirect("wmi", query)}>
             <BsCpu />
           </Button>
           <Button
-            classOverride="p-1"
+            classList="p-1"
             onClick={() => {
               redirect("azureDevice", { input: query.input });
             }}

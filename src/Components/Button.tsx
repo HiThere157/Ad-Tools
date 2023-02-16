@@ -1,6 +1,6 @@
 type ButtonProps = {
   children?: React.ReactNode;
-  classOverride?: string;
+  classList?: string;
   disabled?: boolean;
   highlight?: boolean;
   theme?: "flat" | "colorOnHover" | "color" | "invisible";
@@ -8,7 +8,7 @@ type ButtonProps = {
 };
 export default function Button({
   children,
-  classOverride = "",
+  classList = "",
   disabled = false,
   highlight = false,
   theme = "flat",
@@ -32,7 +32,7 @@ export default function Button({
           : " ") +
         // highlight styling
         (highlight ? "dark:!border-elAccentBg " : " ") +
-        classOverride
+        classList
       }
       onClick={() => onClick()}
       disabled={disabled}

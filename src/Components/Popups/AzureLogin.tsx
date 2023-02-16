@@ -53,7 +53,7 @@ export default function AzureLogin({ isOpen, onExit }: AzureLoginProps) {
             <Input
               label="UPN:"
               value={upn}
-              classOverride="w-56"
+              classList="w-56"
               disabled={isNoteOpen}
               onChange={setUpn}
               onEnter={login}

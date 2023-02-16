@@ -132,7 +132,7 @@ export default function FilterMenu({
             )}
             {currentSavedFilter !== "No Preset" && (
               <Button
-                classOverride="p-1.5 text-xs ml-1"
+                classList="p-1.5 text-xs ml-1"
                 highlight={isEditing}
                 onClick={() => {
                   setIsEditing(!isEditing);
@@ -142,11 +142,11 @@ export default function FilterMenu({
               </Button>
             )}
             {isEditing ? (
-              <Button classOverride="p-1.5 text-xs ml-1" onClick={removeFilter}>
+              <Button classList="p-1.5 text-xs ml-1" onClick={removeFilter}>
                 <BsFillTrashFill />
               </Button>
             ) : (
-              <Button classOverride="p-1.5 text-xs ml-1" onClick={addFilter}>
+              <Button classList="p-1.5 text-xs ml-1" onClick={addFilter}>
                 <BsPlusLg />
               </Button>
             )}
@@ -177,7 +177,7 @@ export default function FilterMenu({
                       <Input
                         value={filter[column.key]}
                         onChange={(filterString: string) => updateFilter(column.key, filterString)}
-                        classOverride="min-w-30"
+                        classList="min-w-30"
                         disabled={!isEditing && currentSavedFilter !== "No Preset"}
                       />
                     </td>

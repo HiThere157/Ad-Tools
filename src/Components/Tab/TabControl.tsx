@@ -34,7 +34,7 @@ export default function TabControl({ children, defaultIndex, onChange }: TabCont
           return (
             <div key={index} className="text-lg my-2">
               <Button
-                classOverride="border-0 px-4"
+                classList="border-0 px-4"
                 theme="invisible"
                 onClick={() => {
                   setSelectedIndex(index);

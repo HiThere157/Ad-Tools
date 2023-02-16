@@ -61,7 +61,7 @@ export default function UserPage() {
         onSubmit={runQuery}
       >
         <Button
-          classOverride="p-1"
+          classList="p-1"
           onClick={() => {
             redirect("azureUser", { input: `${query.input}@${query.domain}` });
           }}

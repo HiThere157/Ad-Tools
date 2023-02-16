@@ -96,7 +96,7 @@ export default function UpdateManager() {
 
   return (
     <div ref={ref} className="z-[20]">
-      <WinButton classOverride="relative" onClick={() => setIsOpen(!isOpen)}>
+      <WinButton classList="relative" onClick={() => setIsOpen(!isOpen)}>
         <BsDownload />
         {status && status !== "upToDate" && (
           <BsCircleFill className="absolute top-0.5 right-1 text-xs text-redColor" />
@@ -133,7 +133,7 @@ function UpdateManagerBody({
     <div className="container absolute right-0 w-max mt-1 p-1">
       <div className="flex items-center justify-between">
         <span className="block text-xl ml-1 mr-10">Update Manager</span>
-        <Button classOverride="p-1.5" onClick={onRefresh}>
+        <Button classList="p-1.5" onClick={onRefresh}>
           <BsArrowRepeat />
         </Button>
       </div>

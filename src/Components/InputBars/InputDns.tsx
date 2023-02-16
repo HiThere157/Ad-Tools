@@ -51,7 +51,7 @@ export default function DnsInputBar({
       <Input
         label={label}
         value={input}
-        classOverride="w-64"
+        classList="w-64"
         disabled={isLoading}
         onChange={setInput}
         onEnter={onSubmit}

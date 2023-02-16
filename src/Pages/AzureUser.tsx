@@ -113,7 +113,7 @@ export default function AzureUserPage() {
         onSubmit={checkLogin}
       >
         <Button
-          classOverride="p-1"
+          classList="p-1"
           onClick={() => {
             redirect("user", { input: query.input?.split("@")[0] });
           }}

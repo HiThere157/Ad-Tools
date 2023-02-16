@@ -55,22 +55,18 @@ export default function ComputerActions({ fqdn }: ComputerActionsProps) {
   return (
     <div className="flex flex-wrap items-center justify-between [&>*]:m-1 mb-2">
       <Button
-        classOverride="flex-grow"
+        classList="flex-grow"
         onClick={() => run("compmgmt", "computer management")}
         children="Computer Management"
       />
       <Button
-        classOverride="flex-grow"
+        classList="flex-grow"
         onClick={() => run("powershell", "a powershell session")}
         children="Powershell"
       />
-      <Button
-        classOverride="flex-grow"
-        onClick={() => run("mstsc", "a RDP session")}
-        children="RDP"
-      />
+      <Button classList="flex-grow" onClick={() => run("mstsc", "a RDP session")} children="RDP" />
       <Checkbox
-        classOverride="ml-1"
+        classList="ml-1"
         label="use current user"
         checked={useCurrentUser}
         onChange={() => setUseCurrentUser(!useCurrentUser)}

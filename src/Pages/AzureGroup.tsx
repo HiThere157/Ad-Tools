@@ -121,7 +121,7 @@ export default function AzureGroupPage() {
         onSubmit={checkLogin}
       >
         <Button
-          classOverride="p-1"
+          classList="p-1"
           onClick={() => {
             redirect("group", { input: query.input });
           }}

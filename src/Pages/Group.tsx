@@ -80,7 +80,7 @@ export default function GroupPage() {
         onSubmit={runQuery}
       >
         <Button
-          classOverride="p-1"
+          classList="p-1"
           onClick={() => {
             redirect("azureGroup", { input: query.input });
           }}

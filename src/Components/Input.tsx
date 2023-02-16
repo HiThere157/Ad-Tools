@@ -1,7 +1,7 @@
 type InputProps = {
   label?: string;
   value: string;
-  classOverride?: string;
+  classList?: string;
   disabled?: boolean;
   onChange: (value: string) => any;
   onEnter?: () => any;
@@ -9,7 +9,7 @@ type InputProps = {
 export default function Input({
   label = "",
   value,
-  classOverride = "",
+  classList = "",
   disabled = false,
   onChange,
   onEnter = () => {},
@@ -30,7 +30,7 @@ export default function Input({
           "dark:bg-elFlatBg dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg " +
           // border styling
           "border-2 dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:focus-within:border-elFlatActiveBorder " +
-          classOverride
+          classList
         }
         value={value ?? ""}
         onChange={(event) => onChange(event.target.value)}

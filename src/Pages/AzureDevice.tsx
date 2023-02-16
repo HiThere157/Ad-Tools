@@ -100,7 +100,7 @@ export default function AzureDevicePage() {
         onSubmit={checkLogin}
       >
         <Button
-          classOverride="p-1"
+          classList="p-1"
           onClick={() => {
             redirect("computer", { input: query.input });
           }}

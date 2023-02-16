@@ -20,7 +20,7 @@ export default function Popup({ children, isOpen, title, onExit }: PopupProps) {
           <div className="absolute container top-1/3 left-1/2 translate-y-[-50%] translate-x-[-50%] w-[25rem] py-1">
             <div className="flex justify-between items-center">
               <h1 className="text-2xl font-bold mx-2">{title}</h1>
-              <Button classOverride="p-1.5" onClick={onExit}>
+              <Button classList="p-1.5" onClick={onExit}>
                 <BsXLg />
               </Button>
             </div>

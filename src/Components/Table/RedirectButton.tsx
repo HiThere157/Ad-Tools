@@ -12,7 +12,7 @@ export default function RedirectButton({ isVisible, onClick }: RedirectButtonPro
       {isVisible && (
         <Button
           onClick={onClick}
-          classOverride="absolute right-2 top-1/2 translate-y-[-50%] p-1 scale-0 group-hover:scale-100"
+          classList="absolute right-2 top-1/2 translate-y-[-50%] p-1 scale-0 group-hover:scale-100"
         >
           <BsSearch />
         </Button>
