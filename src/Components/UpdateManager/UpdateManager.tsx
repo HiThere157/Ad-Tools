@@ -34,19 +34,26 @@ export default function UpdateManager() {
     };
   }, [ref]);
 
-  const fetchInfo = async () => {
-    setStatus(undefined);
-    setModVersion(undefined);
+  const fetchInfo = () => {
+    (async () => {
+      setStatus(undefined);
+      const versionResult = (await electronAPI?.getVersion())?.output?.version;
+      const latestVersionResult = (await electronAPI?.checkForUpdate())?.output?.version;
 
-    const versionResult = (await electronAPI?.getVersion())?.output?.version;
-    const latestVersionResult = (await electronAPI?.checkForUpdate())?.output?.version;
+      // improve UX by preventing only split second visibility of the loading animation
+      await new Promise((r) => setInterval(r, 1000));
 
-    if (versionResult && versionResult === latestVersionResult) setStatus("upToDate");
-    setVersion(versionResult);
-    setLatestVersion(latestVersionResult);
+      if (versionResult && versionResult === latestVersionResult) setStatus("upToDate");
+      setVersion(versionResult);
+      setLatestVersion(latestVersionResult);
+    })();
 
-    const modVersionResult = await electronAPI?.getModuleVersion();
-    setModVersion(modVersionResult?.output);
+    (async () => {
+      setModVersion(undefined);
+      const modVersionResult = await electronAPI?.getModuleVersion();
+
+      setModVersion(modVersionResult?.output);
+    })();
   };
 
   useEffect(() => {
