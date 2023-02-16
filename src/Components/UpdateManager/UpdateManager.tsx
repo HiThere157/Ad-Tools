@@ -35,16 +35,18 @@ export default function UpdateManager() {
   }, [ref]);
 
   const fetchInfo = async () => {
-    setModVersion(undefined);
     setStatus(undefined);
+    setModVersion(undefined);
 
-    const versionResult = await electronAPI?.getVersion();
-    const latestVersionResult = await electronAPI?.checkForUpdate();
+    const versionResult = (await electronAPI?.getVersion())?.output?.version;
+    const latestVersionResult = (await electronAPI?.checkForUpdate())?.output?.version;
+
+    if (versionResult && versionResult === latestVersionResult) setStatus("upToDate");
+    setVersion(versionResult);
+    setLatestVersion(latestVersionResult);
+
     const modVersionResult = await electronAPI?.getModuleVersion();
-
-    setVersion(versionResult?.output?.version);
     setModVersion(modVersionResult?.output);
-    setLatestVersion(latestVersionResult?.output?.version);
   };
 
   useEffect(() => {
@@ -79,13 +81,6 @@ export default function UpdateManager() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    console.log(version, latestVersion)
-    if (version === latestVersion && version) {
-      setStatus("upToDate");
-    }
-  }, [version, latestVersion]);
 
   const refreshInfo = () => {
     fetchInfo();
