@@ -32,7 +32,7 @@ export default function Release({
             {repository}: {name}
           </h2>
           <Type prerelease={prerelease} latest={latest} installed={installed} />
-          <BsBoxArrowUpRight className="group-hover:scale-100 scale-0" />
+          <BsBoxArrowUpRight className="group-hover:scale-100 scale-0 text-whiteColorAccent" />
         </Link>
 
         <Link className="flex items-center gap-2" href={author.html_url}>
