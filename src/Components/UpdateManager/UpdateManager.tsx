@@ -81,6 +81,7 @@ export default function UpdateManager() {
   }, []);
 
   useEffect(() => {
+    console.log(version, latestVersion)
     if (version === latestVersion && version) {
       setStatus("upToDate");
     }
