@@ -2,10 +2,11 @@ type TitleProps = {
   children: React.ReactNode;
   text: string;
   position: "left" | "bottom";
+  classOverride?: string;
 };
-export default function Title({ children, text, position }: TitleProps) {
+export default function Title({ children, text, position, classOverride = "" }: TitleProps) {
   return (
-    <div className="relative group">
+    <div className={"relative group " + classOverride}>
       {children}
       {position === "left" && (
         <div className="absolute top-1/2 right-0 translate-y-[-50%] translate-x-[100%] pl-2 group-hover:scale-100 scale-0">

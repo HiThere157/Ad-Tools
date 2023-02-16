@@ -11,7 +11,7 @@ export default function ModuleStatus({ version }: ModuleStatusProps) {
     case undefined:
       return (
         <Title text="Loading" position="left">
-          <PulseLoader size="8px" color="#208CF0" speedMultiplier={0.5} />
+          <PulseLoader size="6px" color="#208CF0" speedMultiplier={0.5} />
         </Title>
       );
     case null:

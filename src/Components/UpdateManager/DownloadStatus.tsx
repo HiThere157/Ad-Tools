@@ -11,12 +11,12 @@ export default function DownloadStatus({ status }: DownloadStatusProps) {
     case undefined:
       return (
         <Title text="Loading" position="left">
-          <PulseLoader size="8px" color="#208CF0" speedMultiplier={0.5} />
+          <PulseLoader size="6px" color="#208CF0" speedMultiplier={0.5} />
         </Title>
       );
     case "pending":
       return (
-        <Title text="Downloading" position="left">
+        <Title classOverride="h-[19px]" text="Downloading" position="left">
           <ClipLoader size="19px" color="#208CF0" speedMultiplier={0.5} />
         </Title>
       );
