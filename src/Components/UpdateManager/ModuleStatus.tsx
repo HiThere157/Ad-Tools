@@ -1,6 +1,6 @@
 import Title from "../Title";
 
-import { ClipLoader } from "react-spinners";
+import { PulseLoader } from "react-spinners";
 import { BsExclamationOctagon, BsCheckCircle } from "react-icons/bs";
 
 type ModuleStatusProps = {
@@ -11,7 +11,7 @@ export default function ModuleStatus({ version }: ModuleStatusProps) {
     case undefined:
       return (
         <Title text="Loading" position="left">
-          <ClipLoader size="19px" color="#208CF0" speedMultiplier={0.5} />
+          <PulseLoader size="8px" color="#208CF0" speedMultiplier={0.5} />
         </Title>
       );
     case null:

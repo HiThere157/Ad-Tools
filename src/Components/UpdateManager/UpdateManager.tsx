@@ -16,11 +16,11 @@ export default function UpdateManager() {
   const { setState } = useGlobalState();
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [status, setStatus] = useState<DownloadStatus>("upToDate");
+  const [status, setStatus] = useState<DownloadStatus>();
 
-  const [version, setVersion] = useState<string>("");
+  const [version, setVersion] = useState<string>();
+  const [latestVersion, setLatestVersion] = useState<string>();
   const [modVersion, setModVersion] = useState<ModuleVersion>();
-  const [latestVersion, setLatestVersion] = useState<string>("");
 
   useEffect(() => {
     function handleClickOutside({ target }: MouseEvent) {
@@ -36,14 +36,15 @@ export default function UpdateManager() {
 
   const fetchInfo = async () => {
     setModVersion(undefined);
+    setStatus(undefined);
 
     const versionResult = await electronAPI?.getVersion();
-    const modVersionResult = await electronAPI?.getModuleVersion();
     const latestVersionResult = await electronAPI?.checkForUpdate();
+    const modVersionResult = await electronAPI?.getModuleVersion();
 
-    setVersion(versionResult?.output?.version ?? "");
-    setModVersion(modVersionResult?.output ?? { azureAD: null, activeDirectory: null });
-    setLatestVersion(latestVersionResult?.output?.version ?? "");
+    setVersion(versionResult?.output?.version);
+    setModVersion(modVersionResult?.output);
+    setLatestVersion(latestVersionResult?.output?.version);
   };
 
   useEffect(() => {
@@ -80,7 +81,7 @@ export default function UpdateManager() {
   }, []);
 
   useEffect(() => {
-    if (version === latestVersion) {
+    if (version === latestVersion && version) {
       setStatus("upToDate");
     }
   }, [version, latestVersion]);
@@ -94,7 +95,7 @@ export default function UpdateManager() {
     <div ref={ref} className="z-[20]">
       <WinButton classOverride="relative" onClick={() => setIsOpen(!isOpen)}>
         <BsDownload />
-        {status !== "upToDate" && (
+        {status && status !== "upToDate" && (
           <BsCircleFill className="absolute top-0.5 right-1 text-xs text-redColor" />
         )}
       </WinButton>
@@ -112,10 +113,10 @@ export default function UpdateManager() {
 }
 
 type UpdateManagerBodyProps = {
-  status: DownloadStatus;
-  version: string;
+  status?: DownloadStatus;
+  version?: string;
   modVersion?: ModuleVersion;
-  latestVersion: string;
+  latestVersion?: string;
   onRefresh: () => any;
 };
 function UpdateManagerBody({

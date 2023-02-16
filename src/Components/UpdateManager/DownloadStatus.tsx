@@ -1,13 +1,19 @@
 import Title from "../Title";
 
-import { ClipLoader } from "react-spinners";
+import { ClipLoader, PulseLoader } from "react-spinners";
 import { BsExclamationOctagon, BsCheckCircle, BsCloudArrowDown } from "react-icons/bs";
 
 type DownloadStatusProps = {
-  status: DownloadStatus;
+  status?: DownloadStatus;
 };
 export default function DownloadStatus({ status }: DownloadStatusProps) {
   switch (status) {
+    case undefined:
+      return (
+        <Title text="Loading" position="left">
+          <PulseLoader size="8px" color="#208CF0" speedMultiplier={0.5} />
+        </Title>
+      );
     case "pending":
       return (
         <Title text="Downloading" position="left">
