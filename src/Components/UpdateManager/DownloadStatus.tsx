@@ -28,7 +28,7 @@ export default function DownloadStatus({ status }: DownloadStatusProps) {
       );
     case "complete":
       return (
-        <Title text="Download Complete" position="left">
+        <Title text="Downloaded" position="left">
           <BsCloudArrowDown className="text-lg text-greenColor" />
         </Title>
       );

@@ -37,11 +37,12 @@ export default function UpdateManager() {
   const fetchInfo = () => {
     (async () => {
       setStatus(undefined);
-      const versionResult = (await electronAPI?.getVersion())?.output?.version;
-      const latestVersionResult = (await electronAPI?.checkForUpdate())?.output?.version;
 
       // improve UX by preventing only split second visibility of the loading animation
       await new Promise((r) => setInterval(r, 1000));
+
+      const versionResult = (await electronAPI?.getVersion())?.output?.version;
+      const latestVersionResult = (await electronAPI?.checkForUpdate())?.output?.version;
 
       if (versionResult && versionResult === latestVersionResult) setStatus("upToDate");
       setVersion(versionResult);
