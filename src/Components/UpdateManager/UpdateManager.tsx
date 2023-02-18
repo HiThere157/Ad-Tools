@@ -21,9 +21,6 @@ export default function UpdateManager() {
   const [appStatus, setAppStatus] = useState<DownloadStatus>();
   const [appVersion, setAppVersion] = useState<CurrentVersionInfo>({});
 
-  const [excelAdStatus, setExcelAdStatus] = useState<DownloadStatus>();
-  const [excelAdVersion, setExcelAdVersion] = useState<CurrentVersionInfo>({});
-
   const [modVersion, setModVersion] = useState<ModuleVersion>();
 
   useEffect(() => {
@@ -50,23 +47,6 @@ export default function UpdateManager() {
       if (versionResult && versionResult === latestVersionResult) setAppStatus("upToDate");
 
       setAppVersion({
-        current: versionResult,
-        latest: latestVersionResult,
-      });
-    })();
-
-    (async () => {
-      setExcelAdStatus(undefined);
-      // improve UX by preventing only split second visibility of the loading animation
-      await new Promise((r) => setInterval(r, 1000));
-
-      const versionResult = (await electronAPI?.getAddInVersion())?.output?.excelAD;
-      const latestVersionResult = (await electronAPI?.checkForExcelAdUpdate())?.output?.version;
-
-      if (versionResult && versionResult === latestVersionResult) setExcelAdStatus("upToDate");
-      if (latestVersionResult === null) setExcelAdStatus("notAvailable");
-
-      setExcelAdVersion({
         current: versionResult,
         latest: latestVersionResult,
       });
@@ -105,13 +85,8 @@ export default function UpdateManager() {
       }
     });
 
-    electronAPI?.handleExcelAdDownloadStatusUpdate((newStatus: DownloadStatus) => {
-      setExcelAdStatus(newStatus);
-    });
-
     return () => {
       electronAPI?.removeAppDownloadStatusUpdate();
-      electronAPI?.removeExcelAdDownloadStatusUpdate();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -128,8 +103,6 @@ export default function UpdateManager() {
         <UpdateManagerBody
           appStatus={appStatus}
           appVersion={appVersion}
-          excelAdStatus={excelAdStatus}
-          excelAdVersion={excelAdVersion}
           modVersion={modVersion}
           onRefresh={fetchInfo}
         />
@@ -141,16 +114,12 @@ export default function UpdateManager() {
 type UpdateManagerBodyProps = {
   appStatus?: DownloadStatus;
   appVersion: CurrentVersionInfo;
-  excelAdStatus?: DownloadStatus;
-  excelAdVersion: CurrentVersionInfo;
   modVersion?: ModuleVersion;
   onRefresh: () => any;
 };
 function UpdateManagerBody({
   appStatus,
   appVersion,
-  excelAdStatus,
-  excelAdVersion,
   modVersion,
   onRefresh,
 }: UpdateManagerBodyProps) {
@@ -171,13 +140,6 @@ function UpdateManagerBody({
           <VersionLabel version1={appVersion.current} version2={appVersion.latest} />
         </div>
         <DownloadStatus status={appStatus} />
-      </div>
-      <div className="flex items-center justify-between mx-1">
-        <div className="flex items-baseline">
-          <Link href="https://github.com/HiThere157/ExcelAD">ExcelAD</Link>
-          <VersionLabel version1={excelAdVersion.current} version2={excelAdVersion.latest} />
-        </div>
-        <DownloadStatus status={excelAdStatus} />
       </div>
 
       <hr className="my-1 dark:border-elFlatBorder"></hr>

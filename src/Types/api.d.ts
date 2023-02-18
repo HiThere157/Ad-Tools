@@ -11,7 +11,6 @@ type ElectronAPI = Window &
           probeConnection: (target: string) => Promise<Result<string>>;
           getAppVersion: () => Promise<Result<Version>>;
           getModuleVersion: () => Promise<Result<ModuleVersion>>;
-          getAddInVersion: () => Promise<Result<AddInVersion>>;
 
           changeWinState: (state: WinState) => void;
           handleZoomUpdate: (callback: (value: number) => void) => void;
@@ -20,10 +19,6 @@ type ElectronAPI = Window &
           checkForAppUpdate: () => Promise<Result<UpdateCheckResult>>;
           handleAppDownloadStatusUpdate: (callback: (status: DownloadStatus) => void) => void;
           removeAppDownloadStatusUpdate: () => void;
-
-          checkForExcelAdUpdate: () => Promise<Result<UpdateCheckResult>>;
-          handleExcelAdDownloadStatusUpdate: (callback: (status: DownloadStatus) => void) => void;
-          removeExcelAdDownloadStatusUpdate: () => void;
         }
       | undefined;
   };
@@ -96,7 +91,7 @@ type Result<T> = {
 type UpdateCheckResult = {
   version?: string;
 };
-type DownloadStatus = "notAvailable" | "pending" | "complete" | "error" | "upToDate";
+type DownloadStatus = "pending" | "complete" | "error" | "upToDate";
 
 type Version = {
   version: string;
@@ -105,9 +100,6 @@ type Version = {
 type ModuleVersion = {
   azureAD: string | null;
   activeDirectory: string | null;
-};
-type AddInVersion = {
-  excelAD: string | null;
 };
 type CurrentVersionInfo = {
   current?: string | null;

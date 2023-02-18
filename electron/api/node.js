@@ -1,8 +1,6 @@
 const { PowerShell } = require("node-powershell");
 const ping = require("ping");
 const package = require("../package.json");
-const fs = require("fs");
-const path = require("path");
 
 const probeConnection = async (_event, target) => {
   const result = await ping.promise.probe(target);
@@ -43,27 +41,4 @@ const getModuleVersion = async (_event) => {
   }
 };
 
-const getAddInVersion = (_event) => {
-  try {
-    const rawExcelAdVersion = fs.readFileSync(
-      path.join(__dirname, "../../../AddIns/ExcelAD/version.json"),
-    );
-    const excelAdVersion = JSON.parse(rawExcelAdVersion);
-
-    if (!excelAdVersion.version) throw "Version File corrupted";
-
-    return {
-      output: {
-        excelAD: excelAdVersion.version,
-      },
-    };
-  } catch {
-    return {
-      output: {
-        excelAD: null,
-      },
-    };
-  }
-};
-
-module.exports = { probeConnection, getAppVersion, getModuleVersion, getAddInVersion };
+module.exports = { probeConnection, getAppVersion, getModuleVersion };

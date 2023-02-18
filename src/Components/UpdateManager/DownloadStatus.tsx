@@ -1,7 +1,7 @@
 import Title from "../Title";
 
 import { ClipLoader, PulseLoader } from "react-spinners";
-import { BsSlashCircle, BsExclamationOctagon, BsCheckCircle, BsCloudArrowDown } from "react-icons/bs";
+import { BsExclamationOctagon, BsCheckCircle, BsCloudArrowDown } from "react-icons/bs";
 
 type DownloadStatusProps = {
   status?: DownloadStatus;
@@ -12,12 +12,6 @@ export default function DownloadStatus({ status }: DownloadStatusProps) {
       return (
         <Title text="Loading" position="left">
           <PulseLoader size="6px" color="#208CF0" speedMultiplier={0.5} />
-        </Title>
-      );
-    case "notAvailable":
-      return (
-        <Title classList="h-[19px]" text="Not Available" position="left">
-          <BsSlashCircle className="text-lg text-whiteColorAccent" />
         </Title>
       );
     case "pending":
