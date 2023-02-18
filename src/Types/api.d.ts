@@ -18,11 +18,11 @@ type ElectronAPI = Window &
           removeZoomListener: () => void;
 
           checkForAppUpdate: () => Promise<Result<UpdateCheckResult>>;
-          handleAppDownloadStatusUpdate: (callback: (status: AppDownloadStatus) => void) => void;
+          handleAppDownloadStatusUpdate: (callback: (status: DownloadStatus) => void) => void;
           removeAppDownloadStatusUpdate: () => void;
 
           checkForExcelAdUpdate: () => Promise<Result<UpdateCheckResult>>;
-          handleExcelAdDownloadStatusUpdate: (callback: (status: AddInDownloadStatus) => void) => void;
+          handleExcelAdDownloadStatusUpdate: (callback: (status: DownloadStatus) => void) => void;
           removeExcelAdDownloadStatusUpdate: () => void;
         }
       | undefined;
@@ -96,8 +96,7 @@ type Result<T> = {
 type UpdateCheckResult = {
   version?: string;
 };
-type AppDownloadStatus = "pending" | "complete" | "error" | "upToDate";
-type AddInDownloadStatus = "notInstalled" | "notAvailable" | "pending" | "error" | "upToDate";
+type DownloadStatus = "notAvailable" | "pending" | "complete" | "error" | "upToDate";
 
 type Version = {
   version: string;

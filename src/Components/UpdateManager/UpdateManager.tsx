@@ -8,8 +8,7 @@ import WinButton from "../WinBar/WinButton";
 import Button from "../Button";
 import Link from "../Link";
 import ModuleStatus from "./ModuleStatus";
-import AppDownloadStatus from "./AppDownloadStatus";
-import AddInDownloadStatus from "./AddInDownloadStatus";
+import DownloadStatus from "./DownloadStatus";
 import VersionLabel from "./VersionLabel";
 
 import { BsDownload, BsCircleFill, BsArrowRepeat } from "react-icons/bs";
@@ -19,10 +18,10 @@ export default function UpdateManager() {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const [appStatus, setAppStatus] = useState<AppDownloadStatus>();
+  const [appStatus, setAppStatus] = useState<DownloadStatus>();
   const [appVersion, setAppVersion] = useState<CurrentVersionInfo>({});
 
-  const [excelAdStatus, setExcelAdStatus] = useState<AddInDownloadStatus>();
+  const [excelAdStatus, setExcelAdStatus] = useState<DownloadStatus>();
   const [excelAdVersion, setExcelAdVersion] = useState<CurrentVersionInfo>({});
 
   const [modVersion, setModVersion] = useState<ModuleVersion>();
@@ -66,7 +65,6 @@ export default function UpdateManager() {
 
       if (versionResult && versionResult === latestVersionResult) setExcelAdStatus("upToDate");
       if (latestVersionResult === null) setExcelAdStatus("notAvailable");
-      if (versionResult === null) setExcelAdStatus("notInstalled");
 
       setExcelAdVersion({
         current: versionResult,
@@ -85,7 +83,7 @@ export default function UpdateManager() {
   useEffect(() => {
     fetchInfo();
 
-    electronAPI?.handleAppDownloadStatusUpdate((newStatus: AppDownloadStatus) => {
+    electronAPI?.handleAppDownloadStatusUpdate((newStatus: DownloadStatus) => {
       setAppStatus(newStatus);
       switch (newStatus) {
         case "complete":
@@ -107,7 +105,7 @@ export default function UpdateManager() {
       }
     });
 
-    electronAPI?.handleExcelAdDownloadStatusUpdate((newStatus: AddInDownloadStatus) => {
+    electronAPI?.handleExcelAdDownloadStatusUpdate((newStatus: DownloadStatus) => {
       setExcelAdStatus(newStatus);
     });
 
@@ -141,9 +139,9 @@ export default function UpdateManager() {
 }
 
 type UpdateManagerBodyProps = {
-  appStatus?: AppDownloadStatus;
+  appStatus?: DownloadStatus;
   appVersion: CurrentVersionInfo;
-  excelAdStatus?: AddInDownloadStatus;
+  excelAdStatus?: DownloadStatus;
   excelAdVersion: CurrentVersionInfo;
   modVersion?: ModuleVersion;
   onRefresh: () => any;
@@ -172,14 +170,14 @@ function UpdateManagerBody({
           <Link href="https://github.com/HiThere157/Ad-Tools">AD-Tools</Link>
           <VersionLabel version1={appVersion.current} version2={appVersion.latest} />
         </div>
-        <AppDownloadStatus status={appStatus} />
+        <DownloadStatus status={appStatus} />
       </div>
       <div className="flex items-center justify-between mx-1">
         <div className="flex items-baseline">
           <Link href="https://github.com/HiThere157/ExcelAD">ExcelAD</Link>
           <VersionLabel version1={excelAdVersion.current} version2={excelAdVersion.latest} />
         </div>
-        <AddInDownloadStatus status={excelAdStatus} />
+        <DownloadStatus status={excelAdStatus} />
       </div>
 
       <hr className="my-1 dark:border-elFlatBorder"></hr>

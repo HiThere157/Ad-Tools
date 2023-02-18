@@ -15,26 +15,20 @@ contextBridge.exposeInMainWorld("electronAPI", {
   changeWinState: (state) => ipcRenderer.send("win:changeWinState", state),
   handleZoomUpdate: (callback) => ipcRenderer.on("win:setZoom", (_event, value) => callback(value)),
   removeZoomListener: () => {
-    if (Object.values(CONTENT_EVENTS.E2C).includes("win:setZoom")) {
-      ipcRenderer.removeAllListeners("win:setZoom");
-    }
+    ipcRenderer.removeAllListeners("win:setZoom");
   },
 
   checkForAppUpdate: () => ipcRenderer.invoke("update:checkForAppUpdate"),
   handleAppDownloadStatusUpdate: (callback) =>
     ipcRenderer.on("update:appDownloadStatusUpdate", (_event, status) => callback(status)),
   removeAppDownloadStatusUpdate: () => {
-    if (Object.values(CONTENT_EVENTS.E2C).includes("update:appDownloadStatusUpdate")) {
-      ipcRenderer.removeAllListeners("update:appDownloadStatusUpdate");
-    }
+    ipcRenderer.removeAllListeners("update:appDownloadStatusUpdate");
   },
 
   checkForExcelAdUpdate: () => ipcRenderer.invoke("update:checkForExcelAdUpdate"),
   handleExcelAdDownloadStatusUpdate: (callback) =>
     ipcRenderer.on("update:excelAdDownloadStatusUpdate", (_event, status) => callback(status)),
   removeExcelAdDownloadStatusUpdate: () => {
-    if (Object.values(CONTENT_EVENTS.E2C).includes("update:excelAdDownloadStatusUpdate")) {
-      ipcRenderer.removeAllListeners("update:excelAdDownloadStatusUpdate");
-    }
+    ipcRenderer.removeAllListeners("update:excelAdDownloadStatusUpdate");
   },
 });
