@@ -20,6 +20,7 @@ export default function HomePage() {
   const fetchInfo = async () => {
     setVersions({
       "Ad-Tools": (await electronAPI?.getAppVersion())?.output?.version,
+      "ExcelAD": (await electronAPI?.getAddInVersion())?.output?.excelAD ?? undefined,
     });
 
     const results = await Promise.all([
