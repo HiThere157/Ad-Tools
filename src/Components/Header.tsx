@@ -17,7 +17,7 @@ export default function Header() {
       setUser(result?.output ?? "");
     })();
     (async () => {
-      const result = await electronAPI?.getVersion();
+      const result = await electronAPI?.getAppVersion();
       setIsBeta(result?.output?.isBeta ?? false);
     })();
   }, []);

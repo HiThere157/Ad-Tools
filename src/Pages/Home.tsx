@@ -19,12 +19,12 @@ export default function HomePage() {
 
   const fetchInfo = async () => {
     setVersions({
-      "Ad-Tools": (await electronAPI?.getVersion())?.output?.version,
+      "Ad-Tools": (await electronAPI?.getAppVersion())?.output?.version,
     });
 
     const results = await Promise.all([
       fetch("https://api.github.com/repos/HiThere157/Ad-Tools/releases"),
-      // fetch("https://api.github.com/repos/HiThere157/ExcelAD/releases"),
+      fetch("https://api.github.com/repos/HiThere157/ExcelAD/releases"),
     ]);
 
     if (results.some((result) => !result.ok)) {

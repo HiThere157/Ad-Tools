@@ -8,8 +8,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
   authAzureAD: (options) => ipcRenderer.invoke("ps:authAzureAD", options),
 
   probeConnection: (target) => ipcRenderer.invoke("node:probeConnection", target),
-  getVersion: () => ipcRenderer.invoke("node:getVersion"),
+  getAppVersion: () => ipcRenderer.invoke("node:getAppVersion"),
   getModuleVersion: () => ipcRenderer.invoke("node:getModuleVersion"),
+  getAddInVersion: () => ipcRenderer.invoke("node:getAddInVersion"),
 
   changeWinState: (state) => ipcRenderer.send("win:changeWinState", state),
   handleZoomUpdate: (callback) => ipcRenderer.on("win:setZoom", (_event, value) => callback(value)),
@@ -19,12 +20,21 @@ contextBridge.exposeInMainWorld("electronAPI", {
     }
   },
 
-  checkForUpdate: () => ipcRenderer.invoke("update:checkForUpdate"),
-  handleDownloadStatusUpdate: (callback) =>
-    ipcRenderer.on("update:downloadStatusUpdate", (_event, status) => callback(status)),
-  removeDownloadStatusUpdate: () => {
-    if (Object.values(CONTENT_EVENTS.E2C).includes("update:downloadStatusUpdate")) {
-      ipcRenderer.removeAllListeners("update:downloadStatusUpdate");
+  checkForAppUpdate: () => ipcRenderer.invoke("update:checkForAppUpdate"),
+  handleAppDownloadStatusUpdate: (callback) =>
+    ipcRenderer.on("update:appDownloadStatusUpdate", (_event, status) => callback(status)),
+  removeAppDownloadStatusUpdate: () => {
+    if (Object.values(CONTENT_EVENTS.E2C).includes("update:appDownloadStatusUpdate")) {
+      ipcRenderer.removeAllListeners("update:appDownloadStatusUpdate");
+    }
+  },
+
+  checkForExcelAdUpdate: () => ipcRenderer.invoke("update:checkForExcelAdUpdate"),
+  handleExcelAdDownloadStatusUpdate: (callback) =>
+    ipcRenderer.on("update:excelAdDownloadStatusUpdate", (_event, status) => callback(status)),
+  removeExcelAdDownloadStatusUpdate: () => {
+    if (Object.values(CONTENT_EVENTS.E2C).includes("update:excelAdDownloadStatusUpdate")) {
+      ipcRenderer.removeAllListeners("update:excelAdDownloadStatusUpdate");
     }
   },
 });

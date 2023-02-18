@@ -8,18 +8,23 @@ import WinButton from "../WinBar/WinButton";
 import Button from "../Button";
 import Link from "../Link";
 import ModuleStatus from "./ModuleStatus";
-import DownloadStatus from "./DownloadStatus";
+import AppDownloadStatus from "./AppDownloadStatus";
+import AddInDownloadStatus from "./AddInDownloadStatus";
+import VersionLabel from "./VersionLabel";
 
-import { BsDownload, BsCircleFill, BsArrowRepeat, BsFillForwardFill } from "react-icons/bs";
+import { BsDownload, BsCircleFill, BsArrowRepeat } from "react-icons/bs";
 
 export default function UpdateManager() {
   const { setState } = useGlobalState();
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [status, setStatus] = useState<DownloadStatus>();
 
-  const [version, setVersion] = useState<string>();
-  const [latestVersion, setLatestVersion] = useState<string>();
+  const [appStatus, setAppStatus] = useState<AppDownloadStatus>();
+  const [appVersion, setAppVersion] = useState<CurrentVersionInfo>({});
+
+  const [excelAdStatus, setExcelAdStatus] = useState<AddInDownloadStatus>();
+  const [excelAdVersion, setExcelAdVersion] = useState<CurrentVersionInfo>({});
+
   const [modVersion, setModVersion] = useState<ModuleVersion>();
 
   useEffect(() => {
@@ -36,55 +41,79 @@ export default function UpdateManager() {
 
   const fetchInfo = () => {
     (async () => {
-      setStatus(undefined);
+      setAppStatus(undefined);
       // improve UX by preventing only split second visibility of the loading animation
       await new Promise((r) => setInterval(r, 1000));
 
-      const versionResult = (await electronAPI?.getVersion())?.output?.version;
-      const latestVersionResult = (await electronAPI?.checkForUpdate())?.output?.version;
+      const versionResult = (await electronAPI?.getAppVersion())?.output?.version;
+      const latestVersionResult = (await electronAPI?.checkForAppUpdate())?.output?.version;
 
-      if (versionResult && versionResult === latestVersionResult) setStatus("upToDate");
-      setVersion(versionResult);
-      setLatestVersion(latestVersionResult);
+      if (versionResult && versionResult === latestVersionResult) setAppStatus("upToDate");
+
+      setAppVersion({
+        current: versionResult,
+        latest: latestVersionResult,
+      });
+    })();
+
+    (async () => {
+      setExcelAdStatus(undefined);
+      // improve UX by preventing only split second visibility of the loading animation
+      await new Promise((r) => setInterval(r, 1000));
+
+      const versionResult = (await electronAPI?.getAddInVersion())?.output?.excelAD;
+      const latestVersionResult = (await electronAPI?.checkForExcelAdUpdate())?.output?.version;
+
+      if (versionResult && versionResult === latestVersionResult) setExcelAdStatus("upToDate");
+      if (latestVersionResult === null) setExcelAdStatus("notAvailable");
+      if (versionResult === null) setExcelAdStatus("notInstalled");
+
+      setExcelAdVersion({
+        current: versionResult,
+        latest: latestVersionResult,
+      });
     })();
 
     (async () => {
       setModVersion(undefined);
-      const modVersionResult = await electronAPI?.getModuleVersion();
+      const modVersionResult = (await electronAPI?.getModuleVersion())?.output;
 
-      setModVersion(modVersionResult?.output);
+      setModVersion(modVersionResult);
     })();
   };
 
   useEffect(() => {
     fetchInfo();
 
-    electronAPI?.handleDownloadStatusUpdate((newStatus: DownloadStatus) => {
-      setStatus(newStatus);
-      if (newStatus === "complete") {
-        addMessage(
-          { type: "info", message: "Update Download complete. Restart to apply", timer: 7 },
-          setState,
-        );
-        removeMessage({ key: "updateDownloadStart" }, setState);
-      }
-
-      if (newStatus === "error") {
-        addMessage(
-          { type: "error", message: "An Error occured while downloading an Update" },
-          setState,
-        );
-      }
-
-      if (newStatus === "pending") {
-        addMessage(
-          { type: "info", key: "updateDownloadStart", message: "Download for an Update started" },
-          setState,
-        );
+    electronAPI?.handleAppDownloadStatusUpdate((newStatus: AppDownloadStatus) => {
+      setAppStatus(newStatus);
+      switch (newStatus) {
+        case "complete":
+          addMessage(
+            { type: "info", message: "Update Download complete. Restart to apply", timer: 7 },
+            setState,
+          );
+          return removeMessage({ key: "updateDownloadStart" }, setState);
+        case "error":
+          return addMessage(
+            { type: "error", message: "An Error occured while downloading an Update" },
+            setState,
+          );
+        case "pending":
+          return addMessage(
+            { type: "info", key: "updateDownloadStart", message: "Download for an Update started" },
+            setState,
+          );
       }
     });
+
+    electronAPI?.handleExcelAdDownloadStatusUpdate((newStatus: AddInDownloadStatus) => {
+      setExcelAdStatus(newStatus);
+    });
+
     return () => {
-      electronAPI?.removeDownloadStatusUpdate();
+      electronAPI?.removeAppDownloadStatusUpdate();
+      electronAPI?.removeExcelAdDownloadStatusUpdate();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -93,16 +122,17 @@ export default function UpdateManager() {
     <div ref={ref} className="z-[20]">
       <WinButton classList="relative" onClick={() => setIsOpen(!isOpen)}>
         <BsDownload />
-        {status && status !== "upToDate" && (
+        {appStatus && appStatus !== "upToDate" && (
           <BsCircleFill className="absolute top-0.5 right-1 text-xs text-redColor" />
         )}
       </WinButton>
       <div className={isOpen ? "scale-100" : "scale-0"}>
         <UpdateManagerBody
-          status={status}
-          version={version}
+          appStatus={appStatus}
+          appVersion={appVersion}
+          excelAdStatus={excelAdStatus}
+          excelAdVersion={excelAdVersion}
           modVersion={modVersion}
-          latestVersion={latestVersion}
           onRefresh={fetchInfo}
         />
       </div>
@@ -111,17 +141,19 @@ export default function UpdateManager() {
 }
 
 type UpdateManagerBodyProps = {
-  status?: DownloadStatus;
-  version?: string;
+  appStatus?: AppDownloadStatus;
+  appVersion: CurrentVersionInfo;
+  excelAdStatus?: AddInDownloadStatus;
+  excelAdVersion: CurrentVersionInfo;
   modVersion?: ModuleVersion;
-  latestVersion?: string;
   onRefresh: () => any;
 };
 function UpdateManagerBody({
-  status,
-  version,
+  appStatus,
+  appVersion,
+  excelAdStatus,
+  excelAdVersion,
   modVersion,
-  latestVersion,
   onRefresh,
 }: UpdateManagerBodyProps) {
   return (
@@ -138,17 +170,16 @@ function UpdateManagerBody({
       <div className="flex items-center justify-between mx-1">
         <div className="flex items-baseline">
           <Link href="https://github.com/HiThere157/Ad-Tools">AD-Tools</Link>
-          <div className="flex items-center text-whiteColorAccent text-xs ml-2">
-            {version && <span>v{version}</span>}
-            {version && latestVersion && version !== latestVersion && (
-              <>
-                <BsFillForwardFill className="mx-2" />
-                <span>v{latestVersion}</span>
-              </>
-            )}
-          </div>
+          <VersionLabel version1={appVersion.current} version2={appVersion.latest} />
         </div>
-        <DownloadStatus status={status} />
+        <AppDownloadStatus status={appStatus} />
+      </div>
+      <div className="flex items-center justify-between mx-1">
+        <div className="flex items-baseline">
+          <Link href="https://github.com/HiThere157/ExcelAD">ExcelAD</Link>
+          <VersionLabel version1={excelAdVersion.current} version2={excelAdVersion.latest} />
+        </div>
+        <AddInDownloadStatus status={excelAdStatus} />
       </div>
 
       <hr className="my-1 dark:border-elFlatBorder"></hr>
@@ -156,18 +187,14 @@ function UpdateManagerBody({
       <div className="flex items-center justify-between mx-1">
         <div className="flex items-baseline">
           <Link href="https://github.com/HiThere157/Ad-Tools/wiki/Installation">Azure AD</Link>
-          <div className="flex items-center text-whiteColorAccent text-xs ml-2">
-            {modVersion?.azureAD && <span>v{modVersion.azureAD}</span>}
-          </div>
+          <VersionLabel version1={modVersion?.azureAD} />
         </div>
         <ModuleStatus version={modVersion?.azureAD} />
       </div>
       <div className="flex items-center justify-between mx-1">
         <div className="flex items-baseline">
           <Link href="https://github.com/HiThere157/Ad-Tools/wiki/Installation">RSAT Tools</Link>
-          <div className="flex items-center text-whiteColorAccent text-xs ml-2">
-            {modVersion?.activeDirectory && <span>v{modVersion.activeDirectory}</span>}
-          </div>
+          <VersionLabel version1={modVersion?.activeDirectory} />
         </div>
         <ModuleStatus version={modVersion?.activeDirectory} />
       </div>

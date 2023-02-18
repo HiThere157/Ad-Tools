@@ -3,10 +3,10 @@ import Title from "../Title";
 import { ClipLoader, PulseLoader } from "react-spinners";
 import { BsExclamationOctagon, BsCheckCircle, BsCloudArrowDown } from "react-icons/bs";
 
-type DownloadStatusProps = {
-  status?: DownloadStatus;
+type AppDownloadStatusProps = {
+  status?: AppDownloadStatus;
 };
-export default function DownloadStatus({ status }: DownloadStatusProps) {
+export default function AppDownloadStatus({ status }: AppDownloadStatusProps) {
   switch (status) {
     case undefined:
       return (

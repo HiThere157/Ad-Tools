@@ -9,16 +9,21 @@ type ElectronAPI = Window &
           authAzureAD: (options: AuthAzureADOptions) => Promise<Result<string>>;
 
           probeConnection: (target: string) => Promise<Result<string>>;
-          getVersion: () => Promise<Result<Version>>;
+          getAppVersion: () => Promise<Result<Version>>;
           getModuleVersion: () => Promise<Result<ModuleVersion>>;
+          getAddInVersion: () => Promise<Result<AddInVersion>>;
 
           changeWinState: (state: WinState) => void;
           handleZoomUpdate: (callback: (value: number) => void) => void;
           removeZoomListener: () => void;
 
-          checkForUpdate: () => Promise<Result<UpdateCheckResult>>;
-          handleDownloadStatusUpdate: (callback: (status: DownloadStatus) => void) => void;
-          removeDownloadStatusUpdate: () => void;
+          checkForAppUpdate: () => Promise<Result<UpdateCheckResult>>;
+          handleAppDownloadStatusUpdate: (callback: (status: AppDownloadStatus) => void) => void;
+          removeAppDownloadStatusUpdate: () => void;
+
+          checkForExcelAdUpdate: () => Promise<Result<UpdateCheckResult>>;
+          handleExcelAdDownloadStatusUpdate: (callback: (status: AddInDownloadStatus) => void) => void;
+          removeExcelAdDownloadStatusUpdate: () => void;
         }
       | undefined;
   };
@@ -61,15 +66,6 @@ type ComputerAction = "compmgmt" | "mstsc" | "powershell";
 
 type WinState = "minimize" | "maximize_restore" | "quit";
 
-type Version = {
-  version: string;
-  isBeta: boolean;
-};
-type ModuleVersion = {
-  azureAD: string | null;
-  activeDirectory: string | null;
-};
-
 /** api parameter types **/
 type ExecuteCommandRequest = {
   command: Commands;
@@ -100,7 +96,24 @@ type Result<T> = {
 type UpdateCheckResult = {
   version?: string;
 };
-type DownloadStatus = "pending" | "complete" | "error" | "upToDate";
+type AppDownloadStatus = "pending" | "complete" | "error" | "upToDate";
+type AddInDownloadStatus = "notInstalled" | "notAvailable" | "pending" | "error" | "upToDate";
+
+type Version = {
+  version: string;
+  isBeta: boolean;
+};
+type ModuleVersion = {
+  azureAD: string | null;
+  activeDirectory: string | null;
+};
+type AddInVersion = {
+  excelAD: string | null;
+};
+type CurrentVersionInfo = {
+  current?: string | null;
+  latest?: string | null;
+};
 
 /** query types **/
 type AdQuery = {

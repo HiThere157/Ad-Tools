@@ -1,13 +1,15 @@
 const { PowerShell } = require("node-powershell");
 const ping = require("ping");
 const package = require("../package.json");
+const fs = require("fs");
+const path = require("path");
 
 const probeConnection = async (_event, target) => {
   const result = await ping.promise.probe(target);
   return { output: result.alive };
 };
 
-const getVersion = async (_event) => {
+const getAppVersion = async (_event) => {
   const isBeta = process.env.AD_TOOLS_PRERELEASE?.toLowerCase() === "true";
   return { output: { version: package.version, isBeta } };
 };
@@ -41,4 +43,27 @@ const getModuleVersion = async (_event) => {
   }
 };
 
-module.exports = { probeConnection, getVersion, getModuleVersion };
+const getAddInVersion = (_event) => {
+  try {
+    const rawExcelAdVersion = fs.readFileSync(
+      path.join(__dirname, "../../../AddIns/ExcelAD/version.json"),
+    );
+    const excelAdVersion = JSON.parse(rawExcelAdVersion);
+
+    if (!excelAdVersion.version) throw "Version File corrupted";
+
+    return {
+      output: {
+        excelAD: excelAdVersion.version,
+      },
+    };
+  } catch {
+    return {
+      output: {
+        excelAD: null,
+      },
+    };
+  }
+};
+
+module.exports = { probeConnection, getAppVersion, getModuleVersion, getAddInVersion };

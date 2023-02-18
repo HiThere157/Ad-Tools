@@ -12,9 +12,9 @@ const {
   startComputerAction,
   authAzureAD,
 } = require("./api/powershell");
-const { probeConnection, getVersion, getModuleVersion } = require("./api/node");
+const { probeConnection, getAppVersion, getModuleVersion, getAddInVersion } = require("./api/node");
 const { changeWinState, handleZoom } = require("./api/win");
-const { handleUpdater } = require("./api/update");
+const { handleAppUpdater, handleExcelAdUpdater } = require("./api/update");
 
 app.whenReady().then(() => {
   const window = new BrowserWindow({
@@ -66,15 +66,19 @@ app.whenReady().then(() => {
   ipcMain.handle("ps:authAzureAD", authAzureAD);
 
   ipcMain.handle("node:probeConnection", probeConnection);
-  ipcMain.handle("node:getVersion", getVersion);
+  ipcMain.handle("node:getAppVersion", getAppVersion);
   ipcMain.handle("node:getModuleVersion", getModuleVersion);
+  ipcMain.handle("node:getAddInVersion", getAddInVersion);
 
   ipcMain.on("win:changeWinState", (_event, state) => {
     changeWinState(window, state);
   });
 
-  ipcMain.handle("update:checkForUpdate", async () => {
-    return await handleUpdater(window);
+  ipcMain.handle("update:checkForAppUpdate", async () => {
+    return await handleAppUpdater(window);
+  });
+  ipcMain.handle("update:checkForExcelAdUpdate", async () => {
+    return await handleExcelAdUpdater(window);
   });
 });
 
