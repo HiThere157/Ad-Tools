@@ -64,7 +64,9 @@ function DropdownBody({ items, onSelection }: DropdownBodyProps) {
         return (
           <Button
             key={index}
-            classList={"rounded-none min-h-[1.5em] " + (index !== 0 ? "border-t-0" : "")}
+            classList={
+              "rounded-none whitespace-nowrap min-h-[1.5em] " + (index !== 0 ? "border-t-0" : "")
+            }
             onClick={() => onSelection(item)}
           >
             {item || "No Domain"}

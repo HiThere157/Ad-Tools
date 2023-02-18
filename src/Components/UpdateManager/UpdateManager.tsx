@@ -37,7 +37,6 @@ export default function UpdateManager() {
   const fetchInfo = () => {
     (async () => {
       setStatus(undefined);
-
       // improve UX by preventing only split second visibility of the loading animation
       await new Promise((r) => setInterval(r, 1000));
 
@@ -90,11 +89,6 @@ export default function UpdateManager() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const refreshInfo = () => {
-    fetchInfo();
-    addMessage({ type: "info", message: "Checking for Updates", timer: 7 }, setState);
-  };
-
   return (
     <div ref={ref} className="z-[20]">
       <WinButton classList="relative" onClick={() => setIsOpen(!isOpen)}>
@@ -109,7 +103,7 @@ export default function UpdateManager() {
           version={version}
           modVersion={modVersion}
           latestVersion={latestVersion}
-          onRefresh={refreshInfo}
+          onRefresh={fetchInfo}
         />
       </div>
     </div>

@@ -6,6 +6,7 @@ type Release = {
   name: string;
   body: string;
   prerelease: boolean;
+  latest: boolean;
   published_at: string;
   author: {
     login: string;
