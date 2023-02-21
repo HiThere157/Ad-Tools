@@ -27,18 +27,17 @@ export default function Title({
             {title}
           </h2>
         </button>
-        <span className="dark:text-whiteColorAccent">
+        <span className="dark:text-whiteColorAccent mr-1">
           {n} {n === 1 ? "Result" : "Results"}
         </span>
+        {(nSelected !== 0 || nFiltered !== 0) && (
+          <span className="dark:text-whiteColorAccent">
+            ({nSelected !== 0 && `${nSelected} Selected`}
+            {nSelected !== 0 && nFiltered !== 0 && ", "}
+            {nFiltered !== 0 && `${nFiltered} Hidden`})
+          </span>
+        )}
       </div>
-
-      {(nSelected !== 0 || nFiltered !== 0) && (
-        <span className="dark:text-whiteColorAccent">
-          ({nSelected !== 0 && `${nSelected} Selected`}
-          {nSelected !== 0 && nFiltered !== 0 && ", "}
-          {nFiltered !== 0 && `${nFiltered} Hidden`})
-        </span>
-      )}
     </div>
   );
 }
