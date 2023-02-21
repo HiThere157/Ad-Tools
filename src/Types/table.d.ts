@@ -3,5 +3,3 @@ type ColumnDefinition = {
   key: string;
   sortable: boolean;
 };
-
-type Filter = { [key: string]: string };

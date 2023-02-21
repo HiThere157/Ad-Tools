@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocalStorage, useSessionStorage } from "../../Hooks/useStorage";
 
 import stringify from "../../Helper/stringify";
@@ -26,25 +26,20 @@ export default function Table({
   onRedirect,
   isLoading = false,
 }: TableProps) {
-  const [isVisible, setIsVisible] = useSessionStorage<boolean>(name + "_visible", true);
+  const [isVisible, setIsVisible] = useSessionStorage<boolean>(`${name}_visible`, true);
 
-  const [sortedColumn, setSortedColumn] = useSessionStorage<string>(name + "_sortedColumn", "");
-  const [sortDesc, setSortDesc] = useSessionStorage<boolean>(name + "_sortDesc", true);
+  const [sortedColumn, setSortedColumn] = useSessionStorage<string>(`${name}_sortedColumn`, "");
+  const [sortDesc, setSortDesc] = useSessionStorage<boolean>(`${name}_sortDesc`, true);
 
-  const [filter, setFilter] = useSessionStorage<Filter>(name + "_filter", {});
+  const [filter, setFilter] = useSessionStorage<Filter>(`${name}_filter`, {});
   const [currentSavedFilter, setCurrentSavedFilter] = useLocalStorage<string>(
-    name + "_currentSavedFilter",
+    `${name}_currentSavedFilter`,
     "No Preset",
   );
   const [filteredCount, setFilteredCount] = useState<number>(0);
-  const [selected, setSelected] = useSessionStorage<number[]>(name + "_selected", []);
+  const [selected, setSelected] = useSessionStorage<number[]>(`${name}_selected`, []);
 
-  const [isFilterOpen, setIsFilterOpen] = useSessionStorage<boolean>(name + "_isFilterOpen", false);
-  const [isFilterHighlighted, setIsFilterHighlighted] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsFilterHighlighted(Object.keys(filter).length !== 0);
-  }, [filter]);
+  const [isFilterOpen, setIsFilterOpen] = useSessionStorage<boolean>(`${name}_isFilterOpen`, false);
 
   const updateSortArguments = (key: string) => {
     if (sortedColumn === key) {
@@ -88,7 +83,7 @@ export default function Table({
             onCopy={() => copyToClip(false)}
             onCopySelection={() => copyToClip(true)}
             onFilter={() => setIsFilterOpen(!isFilterOpen)}
-            isFilterHighlighted={isFilterHighlighted}
+            isFilterHighlighted={Object.keys(filter).length !== 0}
           />
           <FilterMenu
             isOpen={isFilterOpen}

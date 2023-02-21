@@ -18,6 +18,7 @@ import TableLayout from "../Layouts/TableLayout";
 import Button from "../Components/Button";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
+import Hint from "../Components/InputBars/Hint";
 
 import { BsWindows } from "react-icons/bs";
 
@@ -106,7 +107,6 @@ export default function AzureUserPage() {
       />
       <AadInputBar
         label="Azure User:"
-        hint="Hint: full user principal name is required (Eg.: kochda7@example.com)"
         isLoading={isLoading}
         query={query}
         onChange={setQuery}
@@ -121,6 +121,7 @@ export default function AzureUserPage() {
           <BsWindows />
         </Button>
       </AadInputBar>
+      <Hint hint="Hint: full user principal name is required (Eg.: kochda7@example.com)" />
       <TableLayout>
         <Table
           title="User Attributes"

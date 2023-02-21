@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Button from "./Button";
 import Input from "./Input";
@@ -8,8 +8,9 @@ import { BsXLg, BsFillPencilFill, BsPlusLg } from "react-icons/bs";
 type EditableListProps = {
   items: string[];
   onChange: (newItems: string[]) => any;
+  isLocked?: boolean;
 };
-export default function EditableList({ items, onChange }: EditableListProps) {
+export default function EditableList({ items, onChange, isLocked = false }: EditableListProps) {
   const [newItem, setNewItem] = useState<string>("");
   const [editingIndex, setEditingIndex] = useState<number>(-1);
 
@@ -31,6 +32,10 @@ export default function EditableList({ items, onChange }: EditableListProps) {
     setNewItem("");
   };
 
+  useEffect(() => {
+    if (isLocked) setEditingIndex(-1);
+  }, [isLocked]);
+
   return (
     <table className="border-separate border-spacing-1">
       <tbody>
@@ -50,7 +55,8 @@ export default function EditableList({ items, onChange }: EditableListProps) {
                     onEnter={() => {
                       setEditingIndex(-1);
                     }}
-                  ></Input>
+                    disabled={isLocked}
+                  />
                 </td>
               ) : (
                 <td>
@@ -64,6 +70,7 @@ export default function EditableList({ items, onChange }: EditableListProps) {
                   onClick={() => {
                     setEditingIndex(index === editingIndex ? -1 : index);
                   }}
+                  disabled={isLocked}
                 >
                   <BsFillPencilFill />
                 </Button>
@@ -72,6 +79,7 @@ export default function EditableList({ items, onChange }: EditableListProps) {
                   onClick={() => {
                     removeItem(index);
                   }}
+                  disabled={isLocked}
                 >
                   <BsXLg />
                 </Button>
@@ -81,10 +89,15 @@ export default function EditableList({ items, onChange }: EditableListProps) {
         })}
         <tr>
           <td colSpan={2}>
-            <Input value={newItem} onChange={setNewItem} onEnter={addItem}></Input>
+            <Input
+              value={newItem}
+              onChange={setNewItem}
+              onEnter={addItem}
+              disabled={isLocked}
+            ></Input>
           </td>
           <td>
-            <Button classList="p-1.5 text-xs" onClick={addItem}>
+            <Button classList="p-1.5 text-xs" onClick={addItem} disabled={isLocked}>
               <BsPlusLg />
             </Button>
           </td>

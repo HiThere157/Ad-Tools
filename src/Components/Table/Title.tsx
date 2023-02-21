@@ -18,11 +18,11 @@ export default function Title({
 }: TitleProps) {
   return (
     <div className="flex mb-1 ml-1">
-      <button className="text-2xl mr-1" onClick={() => setTableOpen(!isTableOpen)}>
+      <button className="text-2xl mr-1 outline-none" onClick={() => setTableOpen(!isTableOpen)}>
         {isTableOpen ? <FiChevronUp /> : <FiChevronDown />}
       </button>
       <div className="flex items-baseline">
-        <button className="mr-2" onClick={() => setTableOpen(!isTableOpen)}>
+        <button className="mr-2 outline-none" onClick={() => setTableOpen(!isTableOpen)}>
           <h2 className="text-2xl font-bold" style={{ scrollMarginTop: "60px" }}>
             {title}
           </h2>

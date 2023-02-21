@@ -118,3 +118,5 @@ type DnsQuery = {
   input?: string;
   type?: string;
 };
+
+type Filter = { [key: string]: string };

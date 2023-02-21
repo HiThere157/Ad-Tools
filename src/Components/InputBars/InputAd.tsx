@@ -8,8 +8,8 @@ import Button from "../Button";
 
 type AdInputBarProps = {
   label: string;
-  hint?: string;
   isLoading: boolean;
+  isBlocked?: boolean;
   query: AdQuery;
   onChange: (query: AdQuery) => any;
   onSubmit: () => any;
@@ -17,8 +17,8 @@ type AdInputBarProps = {
 };
 export default function AdInputBar({
   label,
-  hint,
   isLoading,
+  isBlocked = false,
   query,
   onChange,
   onSubmit,
@@ -43,29 +43,26 @@ export default function AdInputBar({
   }, []);
 
   return (
-    <div className="mb-2">
-      <div className="flex flex-wrap items-center [&>*]:m-1">
-        <Input
-          label={label}
-          value={input}
-          classList="w-64"
-          disabled={isLoading}
-          onChange={setInput}
-          onEnter={onSubmit}
-        />
-        <Dropdown
-          items={domains}
-          value={domain}
-          placeholder="No Domain"
-          disabled={isLoading}
-          onChange={setDomain}
-        />
-        <Button onClick={onSubmit} disabled={isLoading}>
-          Run
-        </Button>
-        {children}
-      </div>
-      {hint && <span className="ml-1 dark:text-whiteColorAccent">{hint}</span>}
+    <div className="flex flex-wrap items-center [&>*]:m-1 mb-2">
+      <Input
+        label={label}
+        value={input}
+        classList="w-64"
+        disabled={isLoading || isBlocked}
+        onChange={setInput}
+        onEnter={onSubmit}
+      />
+      <Dropdown
+        items={domains}
+        value={domain}
+        placeholder="No Domain"
+        disabled={isLoading}
+        onChange={setDomain}
+      />
+      <Button onClick={onSubmit} disabled={isLoading}>
+        Run
+      </Button>
+      {children}
     </div>
   );
 }

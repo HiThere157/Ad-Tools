@@ -5,7 +5,6 @@ import Button from "../Button";
 
 type AadInputBarProps = {
   label: string;
-  hint?: string;
   isLoading: boolean;
   query: AadQuery;
   onChange: (query: AadQuery) => any;
@@ -14,7 +13,6 @@ type AadInputBarProps = {
 };
 export default function AadInputBar({
   label,
-  hint,
   isLoading,
   query,
   onChange,
@@ -29,22 +27,19 @@ export default function AadInputBar({
   }, [input]);
 
   return (
-    <div className="mb-2">
-      <div className="flex flex-wrap items-center [&>*]:m-1">
-        <Input
-          label={label}
-          value={input}
-          classList="w-64"
-          disabled={isLoading}
-          onChange={setInput}
-          onEnter={onSubmit}
-        />
-        <Button onClick={onSubmit} disabled={isLoading}>
-          Run
-        </Button>
-        {children}
-      </div>
-      {hint && <span className="ml-1 dark:text-whiteColorAccent">{hint}</span>}
+    <div className="flex flex-wrap items-center [&>*]:m-1 mb-2">
+      <Input
+        label={label}
+        value={input}
+        classList="w-64"
+        disabled={isLoading}
+        onChange={setInput}
+        onEnter={onSubmit}
+      />
+      <Button onClick={onSubmit} disabled={isLoading}>
+        Run
+      </Button>
+      {children}
     </div>
   );
 }
