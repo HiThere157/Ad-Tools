@@ -99,7 +99,7 @@ export default function TableElement({
                     flex items-center justify-between py-1 px-4 w-full
                   "
                   onClick={() => onHeaderClick(column.key)}
-                  disabled={column.sortable == false}
+                  disabled={column.sortable === false}
                 >
                   <span>{column.title}</span>
                   <BsCaretDownFill
