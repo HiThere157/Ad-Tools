@@ -177,7 +177,7 @@ export default function FilterMenu({
                       <Input
                         value={filter[column.key]}
                         onChange={(filterString: string) => updateFilter(column.key, filterString)}
-                        classList="min-w-30"
+                        classList="w-40"
                         disabled={!isEditing && currentSavedFilter !== "No Preset"}
                       />
                     </td>
