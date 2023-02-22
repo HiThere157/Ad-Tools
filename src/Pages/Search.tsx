@@ -33,7 +33,7 @@ export default function SearchPage() {
     if (!isAdvanced) return `Name -like "${query.input}"`;
 
     return Object.entries(searchFilter)
-      .map(([key, value]) => `${key} -like ${value}`)
+      .map(([key, value]) => `${key} -like "${value}"`)
       .join(" -and ");
   };
 
