@@ -1,7 +1,7 @@
 import { useGlobalState } from "../Hooks/useGlobalState";
 
 import Header from "../Components/Header";
-import NavBar from "../Components/NavBar";
+import NavBar from "../Components/Navbar/NavBar";
 import Footer from "../Components/Footer";
 
 import ZoomLabel from "../Components/ZoomLabel";

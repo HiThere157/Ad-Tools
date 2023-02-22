@@ -1,7 +1,7 @@
-import { NavLink } from "react-router-dom";
-import { useLocalStorage } from "../Hooks/useStorage";
+import { useLocalStorage } from "../../Hooks/useStorage";
 
-import Button from "./Button";
+import Button from "../Button";
+import NavItem from "./NavItem";
 
 import {
   BsSearch,
@@ -58,30 +58,5 @@ export default function NavBar() {
         <NavItem to="/settings" icon={<BsGearFill />} text="Settings" isOpen={isOpen} />
       </div>
     </nav>
-  );
-}
-
-type NavItemProps = {
-  to: string;
-  icon: React.ReactNode;
-  text: string;
-  isOpen: boolean;
-};
-function NavItem({ to, icon, text, isOpen }: NavItemProps) {
-  return (
-    <NavLink
-      to={to}
-      className={({ isActive }) =>
-        "control mb-1 " +
-        (isActive
-          ? "dark:bg-elAccentBg"
-          : "dark:hover:bg-elFlatAccentBg dark:focus:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg")
-      }
-    >
-      <div className="flex flex-row items-center p-1">
-        <div className="text-xl">{icon}</div>
-        {isOpen && <span className="ml-2 whitespace-nowrap">{text}</span>}
-      </div>
-    </NavLink>
   );
 }

@@ -14,6 +14,7 @@ import { redirect } from "../Helper/redirects";
 import AdInputBar from "../Components/InputBars/InputAd";
 import TableLayout from "../Layouts/TableLayout";
 import Button from "../Components/Button";
+import Title from "../Components/Title";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
@@ -79,14 +80,16 @@ export default function GroupPage() {
         onChange={setQuery}
         onSubmit={runQuery}
       >
-        <Button
-          classList="p-1"
-          onClick={() => {
-            redirect("azureGroup", { input: query.input });
-          }}
-        >
-          <VscAzure />
-        </Button>
+        <Title text="Show Azure Group Page" position="bottom">
+          <Button
+            classList="p-1"
+            onClick={() => {
+              redirect("azureGroup", { input: query.input });
+            }}
+          >
+            <VscAzure />
+          </Button>
+        </Title>
       </AdInputBar>
       <TableLayout>
         <Table

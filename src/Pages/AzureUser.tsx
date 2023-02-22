@@ -16,6 +16,7 @@ import AzureLogin from "../Components/Popups/AzureLogin";
 import AadInputBar from "../Components/InputBars/InputAad";
 import TableLayout from "../Layouts/TableLayout";
 import Button from "../Components/Button";
+import Title from "../Components/Title";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 import Hint from "../Components/InputBars/Hint";
@@ -112,14 +113,16 @@ export default function AzureUserPage() {
         onChange={setQuery}
         onSubmit={checkLogin}
       >
-        <Button
-          classList="p-1"
-          onClick={() => {
-            redirect("user", { input: query.input?.split("@")[0] });
-          }}
-        >
-          <BsWindows />
-        </Button>
+        <Title text="Show AD User Page" position="bottom">
+          <Button
+            classList="p-1"
+            onClick={() => {
+              redirect("user", { input: query.input?.split("@")[0] });
+            }}
+          >
+            <BsWindows />
+          </Button>
+        </Title>
       </AadInputBar>
       <Hint hint="Hint: full user principal name is required (Eg.: kochda7@example.com)" />
       <TableLayout>

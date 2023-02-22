@@ -7,6 +7,7 @@ import { addMessage, removeMessage } from "../../Helper/handleMessage";
 import WinButton from "../WinBar/WinButton";
 import Button from "../Button";
 import Link from "../Link";
+import Title from "../Title";
 import ModuleStatus from "./ModuleStatus";
 import DownloadStatus from "./DownloadStatus";
 import VersionLabel from "./VersionLabel";
@@ -127,9 +128,11 @@ function UpdateManagerBody({
     <div className="container absolute right-0 w-max mt-1 p-1">
       <div className="flex items-center justify-between">
         <span className="block text-xl ml-1 mr-10">Update Manager</span>
-        <Button classList="p-1.5" onClick={onRefresh}>
-          <BsArrowRepeat />
-        </Button>
+        <Title text="Refresh" position="right">
+          <Button classList="p-1.5" onClick={onRefresh}>
+            <BsArrowRepeat />
+          </Button>
+        </Title>
       </div>
 
       <hr className="my-1 dark:border-elFlatBorder"></hr>

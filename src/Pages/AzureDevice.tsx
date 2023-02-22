@@ -12,6 +12,7 @@ import AzureLogin from "../Components/Popups/AzureLogin";
 import AadInputBar from "../Components/InputBars/InputAad";
 import TableLayout from "../Layouts/TableLayout";
 import Button from "../Components/Button";
+import Title from "../Components/Title";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
@@ -99,14 +100,16 @@ export default function AzureDevicePage() {
         onChange={setQuery}
         onSubmit={checkLogin}
       >
-        <Button
-          classList="p-1"
-          onClick={() => {
-            redirect("computer", { input: query.input });
-          }}
-        >
-          <BsWindows />
-        </Button>
+        <Title text="Show AD Computer Page" position="bottom">
+          <Button
+            classList="p-1"
+            onClick={() => {
+              redirect("computer", { input: query.input });
+            }}
+          >
+            <BsWindows />
+          </Button>
+        </Title>
       </AadInputBar>
       <TableLayout>
         <Table

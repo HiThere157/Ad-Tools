@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import Button from "./Button";
 import Input from "./Input";
+import Title from "./Title";
 
 import { BsXLg, BsFillPencilFill, BsPlusLg } from "react-icons/bs";
 
@@ -64,25 +65,30 @@ export default function EditableList({ items, onChange, isLocked = false }: Edit
                 </td>
               )}
               <td>
-                <Button
-                  classList="p-1.5 text-xs"
-                  highlight={editingIndex === index}
-                  onClick={() => {
-                    setEditingIndex(index === editingIndex ? -1 : index);
-                  }}
-                  disabled={isLocked}
-                >
-                  <BsFillPencilFill />
-                </Button>
-                <Button
-                  classList="p-1.5 text-xs ml-1"
-                  onClick={() => {
-                    removeItem(index);
-                  }}
-                  disabled={isLocked}
-                >
-                  <BsXLg />
-                </Button>
+                <Title text="Edit Entry" position="bottom">
+                  <Button
+                    classList="p-1.5 text-xs"
+                    highlight={editingIndex === index}
+                    onClick={() => {
+                      setEditingIndex(index === editingIndex ? -1 : index);
+                    }}
+                    disabled={isLocked}
+                  >
+                    <BsFillPencilFill />
+                  </Button>
+                </Title>
+
+                <Title text="Remove Entry" position="bottom">
+                  <Button
+                    classList="p-1.5 text-xs ml-1"
+                    onClick={() => {
+                      removeItem(index);
+                    }}
+                    disabled={isLocked}
+                  >
+                    <BsXLg />
+                  </Button>
+                </Title>
               </td>
             </tr>
           );
@@ -97,9 +103,11 @@ export default function EditableList({ items, onChange, isLocked = false }: Edit
             ></Input>
           </td>
           <td>
-            <Button classList="p-1.5 text-xs" onClick={addItem} disabled={isLocked}>
-              <BsPlusLg />
-            </Button>
+            <Title text="Add Entry" position="bottom">
+              <Button classList="p-1.5 text-xs" onClick={addItem} disabled={isLocked}>
+                <BsPlusLg />
+              </Button>
+            </Title>
           </td>
         </tr>
       </tbody>

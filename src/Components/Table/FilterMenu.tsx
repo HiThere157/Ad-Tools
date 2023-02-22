@@ -5,6 +5,7 @@ import Checkbox from "../Checkbox";
 import Input from "../Input";
 import Dropdown from "../Dropdown";
 import Button from "../Button";
+import Title from "../Title";
 
 import { BsFillPencilFill, BsPlusLg, BsFillTrashFill } from "react-icons/bs";
 
@@ -155,24 +156,30 @@ export default function FilterMenu({
               />
             )}
             {currentSavedFilter !== "No Preset" && (
-              <Button
-                classList="p-1.5 text-xs ml-1"
-                highlight={isEditing}
-                onClick={() => {
-                  setIsEditing(!isEditing);
-                }}
-              >
-                <BsFillPencilFill />
-              </Button>
+              <Title text="Edit Preset" position="bottom">
+                <Button
+                  classList="p-1.5 text-xs ml-1"
+                  highlight={isEditing}
+                  onClick={() => {
+                    setIsEditing(!isEditing);
+                  }}
+                >
+                  <BsFillPencilFill />
+                </Button>
+              </Title>
             )}
             {isEditing ? (
-              <Button classList="p-1.5 text-xs ml-1" onClick={removeSavedFilter}>
-                <BsFillTrashFill />
-              </Button>
+              <Title text="Delete Preset" position="bottom">
+                <Button classList="p-1.5 text-xs ml-1" onClick={removeSavedFilter}>
+                  <BsFillTrashFill />
+                </Button>
+              </Title>
             ) : (
-              <Button classList="p-1.5 text-xs ml-1" onClick={addSavedFilter}>
-                <BsPlusLg />
-              </Button>
+              <Title text="Create Preset" position="bottom">
+                <Button classList="p-1.5 text-xs ml-1" onClick={addSavedFilter}>
+                  <BsPlusLg />
+                </Button>
+              </Title>
             )}
           </div>
 
@@ -233,14 +240,16 @@ export default function FilterMenu({
                           onChange={(filterString: string) => updateFilter(key, filterString)}
                           disabled={!isEditing && currentSavedFilter !== "No Preset"}
                         />
-                        <Button
-                          classList="p-1.5 text-xs ml-1"
-                          onClick={() => {
-                            removeColumn(key);
-                          }}
-                        >
-                          <BsFillTrashFill />
-                        </Button>
+                        <Title text="Remove Column" position="right">
+                          <Button
+                            classList="p-1.5 text-xs ml-1"
+                            onClick={() => {
+                              removeColumn(key);
+                            }}
+                          >
+                            <BsFillTrashFill />
+                          </Button>
+                        </Title>
                       </div>
                     </td>
                   </tr>
@@ -260,14 +269,16 @@ export default function FilterMenu({
                 addColumn(nextColName);
               }}
             />
-            <Button
-              classList="p-1.5 text-xs mx-1"
-              onClick={() => {
-                addColumn(nextColName);
-              }}
-            >
-              <BsPlusLg />
-            </Button>
+            <Title text="Add Column" position="right">
+              <Button
+                classList="p-1.5 text-xs mx-1"
+                onClick={() => {
+                  addColumn(nextColName);
+                }}
+              >
+                <BsPlusLg />
+              </Button>
+            </Title>
           </div>
         </div>
       )}

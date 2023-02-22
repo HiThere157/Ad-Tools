@@ -10,6 +10,7 @@ import { redirect } from "../Helper/redirects";
 import DnsInputBar from "../Components/InputBars/InputDns";
 import TableLayout from "../Layouts/TableLayout";
 import Button from "../Components/Button";
+import Title from "../Components/Title";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
@@ -48,14 +49,16 @@ export default function DnsPage() {
         onChange={setQuery}
         onSubmit={runQuery}
       >
-        <Button
-          classList="p-1"
-          onClick={() => {
-            redirect("computer", { input: query.input });
-          }}
-        >
-          <BsDisplay />
-        </Button>
+        <Title text="Show Computer Page" position="bottom">
+          <Button
+            classList="p-1"
+            onClick={() => {
+              redirect("computer", { input: query.input });
+            }}
+          >
+            <BsDisplay />
+          </Button>
+        </Title>
       </DnsInputBar>
       <TableLayout>
         <Table

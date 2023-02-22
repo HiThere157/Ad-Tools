@@ -15,6 +15,7 @@ import AdInputBar from "../Components/InputBars/InputAd";
 import ComputerActions from "../Components/ComputerActions";
 import TableLayout from "../Layouts/TableLayout";
 import Button from "../Components/Button";
+import Title from "../Components/Title";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
@@ -80,17 +81,21 @@ export default function ComputerPage() {
           onChange={setQuery}
           onSubmit={runQuery}
         >
-          <Button classList="p-1" onClick={() => redirect("wmi", query)}>
-            <BsCpu />
-          </Button>
-          <Button
-            classList="p-1"
-            onClick={() => {
-              redirect("azureDevice", { input: query.input });
-            }}
-          >
-            <VscAzure />
-          </Button>
+          <Title text="Show WMI Page" position="bottom">
+            <Button classList="p-1" onClick={() => redirect("wmi", query)}>
+              <BsCpu />
+            </Button>
+          </Title>
+          <Title text="Show Azure Device Page" position="bottom">
+            <Button
+              classList="p-1"
+              onClick={() => {
+                redirect("azureDevice", { input: query.input });
+              }}
+            >
+              <VscAzure />
+            </Button>
+          </Title>
         </AdInputBar>
         <ComputerActions fqdn={`${query.input}.${query.domain}`} />
       </div>
