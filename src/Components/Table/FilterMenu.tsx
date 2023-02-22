@@ -11,16 +11,20 @@ import { BsFillPencilFill, BsPlusLg, BsFillTrashFill } from "react-icons/bs";
 type FilterMenuProps = {
   isOpen: boolean;
   columns: ColumnDefinition[];
+  customColumns: string[];
+  setCustomColumns: (newColumns: string[]) => any;
   filter: Filter;
-  onFilterChange: (newFilter: Filter) => any;
+  setFilter: (newFilter: Filter) => any;
   currentSavedFilter: string;
   setCurrentSavedFilter: (value: string) => any;
 };
 export default function FilterMenu({
   isOpen,
   columns,
+  customColumns,
+  setCustomColumns,
   filter,
-  onFilterChange,
+  setFilter,
   currentSavedFilter,
   setCurrentSavedFilter,
 }: FilterMenuProps) {
@@ -28,6 +32,8 @@ export default function FilterMenu({
     [key: string]: Filter;
   }>("conf_savedFilters", {});
   const [isEditing, setIsEditing] = useState<boolean>(false);
+
+  const [nextColName, setNextColName] = useState<string>("");
 
   // when exiting edit mode, save empty names as "untitled"
   // prevent name collision
@@ -52,10 +58,10 @@ export default function FilterMenu({
     // is executed on mount, check if no saved filter is selected
     // and use last unnamed filter
     if (currentSavedFilter === "No Preset") {
-      onFilterChange(filter);
+      setFilter(filter);
     } else {
       // when changing saved filters, send filter update
-      onFilterChange(savedFilters[currentSavedFilter] ?? {});
+      setFilter(savedFilters[currentSavedFilter] ?? {});
     }
 
     // if filter reset from ActionMenu, disable editing
@@ -66,7 +72,6 @@ export default function FilterMenu({
   // update the filter for the current editing saved filter
   const updateFilter = (key: string, filterString: string) => {
     const newFilter = { ...filter, [key]: filterString.trim() };
-    Object.keys(newFilter).forEach((key) => newFilter[key] === "" && delete newFilter[key]);
 
     if (isEditing) {
       const newSavedFilters = { ...savedFilters };
@@ -76,12 +81,30 @@ export default function FilterMenu({
       setSavedFilters(newSavedFilters);
     }
 
-    onFilterChange(newFilter);
+    setFilter(newFilter);
+  };
+
+  // add new custom column to the filter object
+  const addColumn = (key: string) => {
+    if (!key) return;
+    if (columns.some((column) => column.key === key)) return;
+    if (customColumns.includes(key)) return;
+
+    setCustomColumns([...customColumns, key]);
+    setNextColName("");
+  };
+
+  // remove a custom column from the filter object
+  const removeColumn = (key: string) => {
+    const newFilter = { ...filter };
+    delete newFilter[key];
+    setCustomColumns(customColumns.filter((column) => column !== key));
+    setFilter(newFilter);
   };
 
   // change the name of the currently editing filter
   // while changing the name, prevent name collision
-  const changeFilterName = (newName: string) => {
+  const changeSavedFilterName = (newName: string) => {
     let newUniqueName = newName;
     while (Object.keys(savedFilters).includes(newUniqueName)) {
       newUniqueName = `_${newUniqueName}`;
@@ -96,13 +119,13 @@ export default function FilterMenu({
   };
 
   // add empty filter with empty name to the saved filters
-  const addFilter = () => {
+  const addSavedFilter = () => {
     setSavedFilters({ ...savedFilters, "": {} });
     setCurrentSavedFilter("");
     setIsEditing(true);
   };
 
-  const removeFilter = () => {
+  const removeSavedFilter = () => {
     const newSavedFilters = { ...savedFilters };
     delete newSavedFilters[currentSavedFilter];
     setSavedFilters(newSavedFilters);
@@ -114,11 +137,12 @@ export default function FilterMenu({
     <>
       {isOpen && (
         <div className="container py-1">
-          <div className="flex mb-2">
+          <div className="flex items-center mb-2">
+            <span className="ml-1 mr-2">Preset:</span>
             {isEditing ? (
               <Input
                 value={currentSavedFilter}
-                onChange={changeFilterName}
+                onChange={changeSavedFilterName}
                 onEnter={() => {
                   setIsEditing(!isEditing);
                 }}
@@ -142,16 +166,19 @@ export default function FilterMenu({
               </Button>
             )}
             {isEditing ? (
-              <Button classList="p-1.5 text-xs ml-1" onClick={removeFilter}>
+              <Button classList="p-1.5 text-xs ml-1" onClick={removeSavedFilter}>
                 <BsFillTrashFill />
               </Button>
             ) : (
-              <Button classList="p-1.5 text-xs ml-1" onClick={addFilter}>
+              <Button classList="p-1.5 text-xs ml-1" onClick={addSavedFilter}>
                 <BsPlusLg />
               </Button>
             )}
           </div>
-          <table className="border-separate border-spacing-0.5">
+
+          <hr className="my-1 dark:border-elFlatBorder"></hr>
+
+          <table className="border-separate border-spacing-0.5 w-full">
             <tbody>
               <tr>
                 <td>
@@ -177,15 +204,71 @@ export default function FilterMenu({
                       <Input
                         value={filter[column.key]}
                         onChange={(filterString: string) => updateFilter(column.key, filterString)}
-                        classList="w-40"
+                        classList="min-w-[10rem]"
                         disabled={!isEditing && currentSavedFilter !== "No Preset"}
                       />
                     </td>
                   </tr>
                 );
               })}
+
+              {customColumns.length > 0 && (
+                <tr>
+                  <td colSpan={2}>
+                    <hr className="my-1 dark:border-elFlatBorder"></hr>
+                  </td>
+                </tr>
+              )}
+
+              {customColumns.map((key, index) => {
+                return (
+                  <tr key={index}>
+                    <td>
+                      <span className="mr-1 whitespace-nowrap">{key}:</span>
+                    </td>
+                    <td>
+                      <div className="flex items-center w-full [&>*:first-child]:w-full">
+                        <Input
+                          value={filter[key]}
+                          onChange={(filterString: string) => updateFilter(key, filterString)}
+                          disabled={!isEditing && currentSavedFilter !== "No Preset"}
+                        />
+                        <Button
+                          classList="p-1.5 text-xs ml-1"
+                          onClick={() => {
+                            removeColumn(key);
+                          }}
+                        >
+                          <BsFillTrashFill />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
+
+          <hr className="my-1 dark:border-elFlatBorder"></hr>
+
+          <div className="flex items-center mt-2">
+            <span className="ml-1 mr-2 whitespace-nowrap">Add Column:</span>
+            <Input
+              value={nextColName}
+              onChange={setNextColName}
+              onEnter={() => {
+                addColumn(nextColName);
+              }}
+            />
+            <Button
+              classList="p-1.5 text-xs mx-1"
+              onClick={() => {
+                addColumn(nextColName);
+              }}
+            >
+              <BsPlusLg />
+            </Button>
+          </div>
         </div>
       )}
     </>

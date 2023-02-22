@@ -5,10 +5,25 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Key", key: "key" },
     { title: "Value", key: "value" },
   ],
-  default: [
+  member: [
     { title: "Name", key: "Name" },
-    { title: "Distinguished Name", key: "DistinguishedName" },
+    { title: "Type", key: "ObjectClass" },
   ],
+
+  user: [
+    { title: "Name", key: "Name" },
+    { title: "Display Name", key: "DisplayName" },
+    { title: "Department", key: "Department" },
+  ],
+  group: [
+    { title: "Name", key: "Name" },
+    { title: "Description", key: "Description" },
+  ],
+  computer: [
+    { title: "Name", key: "Name" },
+    { title: "Device OS", key: "OperatingSystem" },
+  ],
+
   monitor: [
     { title: "Name", key: "UserFriendlyName" },
     { title: "Serial Number", key: "SerialNumberID" },
@@ -20,6 +35,7 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Version", key: "Version" },
     { title: "ID", key: "IdentifyingNumber" },
   ],
+
   printer: [
     { title: "Name", key: "Name" },
     { title: "Location", key: "Location" },
@@ -28,19 +44,15 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Job Count", key: "JobCount" },
     { title: "Driver Name", key: "DriverName" },
   ],
-  extended: [
-    { title: "Name", key: "Name" },
-    { title: "Type", key: "ObjectClass" },
-    { title: "Distinguished Name", key: "DistinguishedName" },
-  ],
-  azureGroup: [
-    { title: "Display Name", key: "DisplayName" },
-    { title: "Description", key: "Description" },
-  ],
+
   azureUser: [
     { title: "User Principal Name", key: "UserPrincipalName" },
     { title: "Display Name", key: "DisplayName" },
     { title: "Department", key: "Department" },
+  ],
+  azureGroup: [
+    { title: "Display Name", key: "DisplayName" },
+    { title: "Description", key: "Description" },
   ],
   azureDevice: [
     { title: "Display Name", key: "DisplayName" },
@@ -52,6 +64,7 @@ const columns: { [key: string]: ColumnDefinition[] } = {
       key: "ApproximateLastLogonTimeStamp",
     },
   ],
+
   dns: [
     { title: "Name", key: "Name" },
     { title: "Type", key: "__friendlyType__" },

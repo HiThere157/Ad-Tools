@@ -99,7 +99,7 @@ export default function GroupPage() {
         <Table
           title="Members"
           name={membersKey}
-          columns={columns.extended}
+          columns={columns.member}
           data={members}
           onRedirect={(entry: { Name?: string; ObjectClass?: string }) => {
             if (!entry.ObjectClass) return;
@@ -115,7 +115,7 @@ export default function GroupPage() {
         <Table
           title="Group Memberships"
           name={memberOfKey}
-          columns={columns.default}
+          columns={columns.member}
           data={memberOf}
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });

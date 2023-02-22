@@ -102,7 +102,7 @@ export default function SearchPage() {
         <Table
           title="Users"
           name={usersKey}
-          columns={columns.default}
+          columns={columns.user}
           data={users}
           onRedirect={(entry: { Name?: string }) => {
             redirect("user", { input: entry.Name, domain: query.domain });
@@ -112,7 +112,7 @@ export default function SearchPage() {
         <Table
           title="Groups"
           name={groupsKey}
-          columns={columns.default}
+          columns={columns.group}
           data={groups}
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
@@ -122,7 +122,7 @@ export default function SearchPage() {
         <Table
           title="Computers"
           name={computersKey}
-          columns={columns.default}
+          columns={columns.computer}
           data={computers}
           onRedirect={(entry: { Name?: string }) => {
             redirect("computer", { input: entry.Name, domain: query.domain });

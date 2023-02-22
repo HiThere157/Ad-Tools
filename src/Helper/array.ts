@@ -24,9 +24,14 @@ class ResultArray {
   };
 
   filterArray = (selected: number[], filter: { [key: string]: string }) => {
+    const parsedFilter = { ...filter };
+    Object.keys(parsedFilter).forEach(
+      (key) => parsedFilter[key] === "" && delete parsedFilter[key],
+    );
+
     this.array = this.array.filter((entry) => {
       let isMatch = true;
-      Object.entries(filter).forEach(([key, value]) => {
+      Object.entries(parsedFilter).forEach(([key, value]) => {
         // if __selected__ key is present in filter, check selected values
         // prevent regex check after
         if (key === "__selected__" && typeof entry.__id__ === "number") {

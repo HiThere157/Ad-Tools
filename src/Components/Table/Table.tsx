@@ -31,6 +31,7 @@ export default function Table({
   const [sortedColumn, setSortedColumn] = useSessionStorage<string>(`${name}_sortedColumn`, "");
   const [sortDesc, setSortDesc] = useSessionStorage<boolean>(`${name}_sortDesc`, true);
 
+  const [customColumns, setCustomColumns] = useLocalStorage<string[]>(`${name}_customColumns`, []);
   const [filter, setFilter] = useSessionStorage<Filter>(`${name}_filter`, {});
   const [currentSavedFilter, setCurrentSavedFilter] = useLocalStorage<string>(
     `${name}_currentSavedFilter`,
@@ -88,15 +89,22 @@ export default function Table({
           <FilterMenu
             isOpen={isFilterOpen}
             columns={columns}
+            customColumns={customColumns}
+            setCustomColumns={setCustomColumns}
             filter={filter}
-            onFilterChange={setFilter}
+            setFilter={setFilter}
             currentSavedFilter={currentSavedFilter}
             setCurrentSavedFilter={setCurrentSavedFilter}
           />
           <div className="border-2 border-elFlatBorder rounded h-fit min-h-[4rem] overflow-auto">
             <TableElement
               entries={data.output}
-              columns={columns}
+              columns={[
+                ...columns,
+                ...customColumns.map((column) => {
+                  return { title: column, key: column };
+                }),
+              ]}
               sortDesc={sortDesc}
               sortedColumn={sortedColumn}
               filter={filter}
