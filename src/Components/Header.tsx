@@ -28,15 +28,16 @@ export default function Header() {
       className="winbar-drag-region select-none flex justify-between border-b-2 dark:bg-lightBg dark:border-elFlatBorder"
     >
       <div className="flex items-center">
-        <NavLink to="/" className="winbar-no-drag">
+        <NavLink draggable="false" to="/" className="winbar-no-drag">
           <img
+            draggable="false"
             src={isBeta ? "./icon_beta.svg" : "./icon.svg"}
             alt="AD Tools Logo"
             className="mx-[1.1rem] h-6"
           />
         </NavLink>
         <div className="flex gap-x-3 items-center mt-0.5 whitespace-nowrap">
-          <NavLink to="/" className="winbar-no-drag">
+          <NavLink draggable="false" to="/" className="winbar-no-drag">
             <span className="font-bold text-xl">AD Tools {isBeta && "[Beta]"}</span>
           </NavLink>
           <span className="dark:text-whiteColorAccent">{user}</span>

@@ -10,6 +10,7 @@ export default function NavItem({ to, icon, text, isOpen }: NavItemProps) {
   return (
     <NavLink
       to={to}
+      draggable="false"
       className={({ isActive }) =>
         "control mb-1 " +
         (isActive

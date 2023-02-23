@@ -14,7 +14,14 @@ export default function Link({ href, className, children }: LinkProps) {
   };
 
   return (
-    <a href={href} className={className} onClick={clicked} target="_blank" rel="noreferrer">
+    <a
+      href={href}
+      className={className}
+      onClick={clicked}
+      draggable="false"
+      target="_blank"
+      rel="noreferrer"
+    >
       {children}
     </a>
   );
