@@ -45,7 +45,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
-          Properties: "DisplayName,Department",
+          Properties: columns.user.map((column) => column.key).join(","),
         },
         postProcessor: makeToList,
         callback: setUsers,
@@ -55,7 +55,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
-          Properties: "Description",
+          Properties: columns.group.map((column) => column.key).join(","),
         },
         postProcessor: makeToList,
         callback: setGroups,
@@ -65,7 +65,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
-          Properties: "OperatingSystem",
+          Properties: columns.computer.map((column) => column.key).join(","),
         },
         postProcessor: makeToList,
         callback: setComputers,

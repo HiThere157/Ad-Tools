@@ -5,11 +5,13 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Key", key: "key" },
     { title: "Value", key: "value" },
   ],
+
+  // AD Columns
   member: [
     { title: "Name", key: "Name" },
     { title: "Type", key: "ObjectClass" },
   ],
-
+  membership: [{ title: "Name", key: "Name" }],
   user: [
     { title: "Name", key: "Name" },
     { title: "Display Name", key: "DisplayName" },
@@ -24,6 +26,7 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Device OS", key: "OperatingSystem" },
   ],
 
+  // WMI Columns
   monitor: [
     { title: "Name", key: "UserFriendlyName" },
     { title: "Serial Number", key: "SerialNumberID" },
@@ -36,6 +39,7 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "ID", key: "IdentifyingNumber" },
   ],
 
+  // General Columns
   printer: [
     { title: "Name", key: "Name" },
     { title: "Location", key: "Location" },
@@ -45,6 +49,7 @@ const columns: { [key: string]: ColumnDefinition[] } = {
     { title: "Driver Name", key: "DriverName" },
   ],
 
+  // AAD Columns
   azureUser: [
     { title: "User Principal Name", key: "UserPrincipalName" },
     { title: "Display Name", key: "DisplayName" },
