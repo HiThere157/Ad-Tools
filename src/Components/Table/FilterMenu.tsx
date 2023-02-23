@@ -12,8 +12,6 @@ import { BsFillPencilFill, BsPlusLg, BsFillTrashFill } from "react-icons/bs";
 type FilterMenuProps = {
   isOpen: boolean;
   columns: ColumnDefinition[];
-  customColumns: string[];
-  setCustomColumns?: (newColumns: string[]) => any;
   filter: Filter;
   setFilter: (newFilter: Filter) => any;
   currentSavedFilter: string;
@@ -22,8 +20,6 @@ type FilterMenuProps = {
 export default function FilterMenu({
   isOpen,
   columns,
-  customColumns,
-  setCustomColumns,
   filter,
   setFilter,
   currentSavedFilter,
@@ -33,8 +29,6 @@ export default function FilterMenu({
     [key: string]: Filter;
   }>("conf_savedFilters", {});
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [nextColName, setNextColName] = useState<string>("");
-
   // when exiting edit mode, save empty names as "untitled"
   // prevent name collision
   useEffect(() => {
@@ -81,24 +75,6 @@ export default function FilterMenu({
       setSavedFilters(newSavedFilters);
     }
 
-    setFilter(newFilter);
-  };
-
-  // add new custom column to the filter object
-  const addColumn = (key: string) => {
-    if (!key) return;
-    if (columns.some((column) => column.key === key)) return;
-    if (customColumns.includes(key)) return;
-
-    setCustomColumns?.([...customColumns, key]);
-    setNextColName("");
-  };
-
-  // remove a custom column from the filter object
-  const removeColumn = (key: string) => {
-    const newFilter = { ...filter };
-    delete newFilter[key];
-    setCustomColumns?.(customColumns.filter((column) => column !== key));
     setFilter(newFilter);
   };
 
@@ -217,70 +193,8 @@ export default function FilterMenu({
                   </tr>
                 );
               })}
-
-              {customColumns.length > 0 && (
-                <tr>
-                  <td colSpan={2}>
-                    <hr className="my-1 dark:border-elFlatBorder"></hr>
-                  </td>
-                </tr>
-              )}
-
-              {customColumns.map((key, index) => {
-                return (
-                  <tr key={index}>
-                    <td>
-                      <span className="mr-1 whitespace-nowrap">{key}:</span>
-                    </td>
-                    <td>
-                      <div className="flex items-center w-full [&>*:first-child]:w-full">
-                        <Input
-                          value={filter[key]}
-                          onChange={(filterString: string) => updateFilter(key, filterString)}
-                          disabled={!isEditing && currentSavedFilter !== "No Preset"}
-                        />
-                        <Title text="Remove Column" position="right">
-                          <Button
-                            classList="p-1.5 text-xs ml-1"
-                            onClick={() => {
-                              removeColumn(key);
-                            }}
-                          >
-                            <BsFillTrashFill />
-                          </Button>
-                        </Title>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
             </tbody>
           </table>
-
-          <hr className="my-1 dark:border-elFlatBorder"></hr>
-
-          <div className="flex items-center mt-2">
-            <span className="ml-1 mr-2 whitespace-nowrap">Add Column:</span>
-            <Input
-              value={nextColName}
-              onChange={setNextColName}
-              onEnter={() => {
-                addColumn(nextColName);
-              }}
-              disabled={!setCustomColumns}
-            />
-            <Title text="Add Column" position="right">
-              <Button
-                classList="p-1.5 text-xs mx-1"
-                onClick={() => {
-                  addColumn(nextColName);
-                }}
-                disabled={!setCustomColumns}
-              >
-                <BsPlusLg />
-              </Button>
-            </Title>
-          </div>
         </div>
       )}
     </>

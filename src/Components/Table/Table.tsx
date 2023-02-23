@@ -14,8 +14,6 @@ type TableProps = {
   title: string;
   name: string;
   columns: ColumnDefinition[];
-  customColumns?: string[];
-  setCustomColumns?: (newColumns: string[]) => any;
   data: Result<PSResult[]>;
   onRedirect?: (entry: PSResult) => any;
   isLoading?: boolean;
@@ -24,8 +22,6 @@ export default function Table({
   title,
   name,
   columns,
-  customColumns = [],
-  setCustomColumns,
   data,
   onRedirect,
   isLoading = false,
@@ -65,9 +61,7 @@ export default function Table({
     let ret = "";
     data.output?.forEach((entry, index) => {
       if (onlySelected && !selected.includes(index)) return;
-
-      const allColumns = [...columns.map((column) => column.key), ...customColumns];
-      ret += allColumns.map((column) => stringify(entry[column], false)).join("\u{9}") + "\n";
+      ret += columns.map((column) => stringify(entry[column.key], false)).join("\u{9}") + "\n";
     });
     navigator.clipboard.writeText(ret);
   };
@@ -94,8 +88,6 @@ export default function Table({
           <FilterMenu
             isOpen={isFilterOpen}
             columns={columns}
-            customColumns={customColumns}
-            setCustomColumns={setCustomColumns}
             filter={filter}
             setFilter={setFilter}
             currentSavedFilter={currentSavedFilter}
@@ -104,12 +96,7 @@ export default function Table({
           <div className="border-2 border-elFlatBorder rounded h-fit min-h-[4rem] overflow-auto">
             <TableElement
               entries={data.output}
-              columns={[
-                ...columns,
-                ...customColumns.map((column) => {
-                  return { title: column, key: column };
-                }),
-              ]}
+              columns={columns}
               sortDesc={sortDesc}
               sortedColumn={sortedColumn}
               filter={filter}
