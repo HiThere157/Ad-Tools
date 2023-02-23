@@ -111,7 +111,7 @@ export default function ComputerPage() {
         <Table
           title="Group Memberships"
           name={memberOfKey}
-          columns={columns.member}
+          columns={columns.group}
           data={memberOf}
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });

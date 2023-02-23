@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useSessionStorage } from "../Hooks/useStorage";
+import { useLocalStorage, useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
@@ -25,6 +25,9 @@ export default function AzureSearchPage() {
     `${p}_devices`,
     {},
   );
+  const [usersCC, setUsersCC] = useLocalStorage<string[]>(`${usersKey}_customColumns`, []);
+  const [groupsCC, setGroupsCC] = useLocalStorage<string[]>(`${groupsKey}_customColumns`, []);
+  const [devicesCC, setDevicesCC] = useLocalStorage<string[]>(`${devicesKey}_customColumns`, []);
 
   const [loginPopup, setLoginPopup] = useState<boolean>(false);
   const checkLogin = async () => {
@@ -45,7 +48,7 @@ export default function AzureSearchPage() {
         SearchString: query.input,
         All: "1",
       },
-      selectFields: columns.azureUser.map((column) => column.key),
+      selectFields: [...columns.azureUser.map((col) => col.key), ...usersCC],
       postProcessor: makeToList,
       callback: setUsers,
       useStaticSession: true,
@@ -56,7 +59,7 @@ export default function AzureSearchPage() {
         SearchString: query.input,
         All: "1",
       },
-      selectFields: columns.azureGroup.map((column) => column.key),
+      selectFields: [...columns.azureGroup.map((col) => col.key), ...groupsCC],
       postProcessor: makeToList,
       callback: setGroups,
       useStaticSession: true,
@@ -67,7 +70,7 @@ export default function AzureSearchPage() {
         SearchString: query.input,
         All: "1",
       },
-      selectFields: columns.azureDevice.map((column) => column.key),
+      selectFields: [...columns.azureDevice.map((col) => col.key), ...devicesCC],
       postProcessor: makeToList,
       callback: setDevices,
       useStaticSession: true,
@@ -96,6 +99,8 @@ export default function AzureSearchPage() {
           title="Users"
           name={usersKey}
           columns={columns.azureUser}
+          customColumns={usersCC}
+          setCustomColumns={setUsersCC}
           data={users}
           onRedirect={(entry: { UserPrincipalName?: string }) => {
             redirect("azureUser", {
@@ -108,6 +113,8 @@ export default function AzureSearchPage() {
           title="Groups"
           name={groupsKey}
           columns={columns.azureGroup}
+          customColumns={groupsCC}
+          setCustomColumns={setGroupsCC}
           data={groups}
           onRedirect={(entry: { DisplayName?: string }) => {
             redirect("azureGroup", {
@@ -120,6 +127,8 @@ export default function AzureSearchPage() {
           title="Devices"
           name={devicesKey}
           columns={columns.azureDevice}
+          customColumns={devicesCC}
+          setCustomColumns={setDevicesCC}
           data={devices}
           onRedirect={(entry: { DisplayName?: string }) => {
             redirect("azureDevice", {

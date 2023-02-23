@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useSessionStorage } from "../Hooks/useStorage";
+import { useLocalStorage, useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
@@ -28,6 +28,12 @@ export default function SearchPage() {
     `${p}_computers`,
     {},
   );
+  const [usersCC, setUsersCC] = useLocalStorage<string[]>(`${usersKey}_customColumns`, []);
+  const [groupsCC, setGroupsCC] = useLocalStorage<string[]>(`${groupsKey}_customColumns`, []);
+  const [computersCC, setComputersCC] = useLocalStorage<string[]>(
+    `${computersKey}_customColumns`,
+    [],
+  );
 
   const getFilterString = () => {
     if (!isAdvanced) return `Name -like "${query.input}"`;
@@ -46,6 +52,7 @@ export default function SearchPage() {
           Filter: getFilterString(),
           Server: query.domain,
         },
+        selectFields: [...columns.user.map((col) => col.key), ...usersCC],
         postProcessor: makeToList,
         callback: setUsers,
       }),
@@ -55,6 +62,7 @@ export default function SearchPage() {
           Filter: getFilterString(),
           Server: query.domain,
         },
+        selectFields: [...columns.group.map((col) => col.key), ...groupsCC],
         postProcessor: makeToList,
         callback: setGroups,
       }),
@@ -64,6 +72,7 @@ export default function SearchPage() {
           Filter: getFilterString(),
           Server: query.domain,
         },
+        selectFields: [...columns.computer.map((col) => col.key), ...computersCC],
         postProcessor: makeToList,
         callback: setComputers,
       }),
@@ -103,6 +112,8 @@ export default function SearchPage() {
           title="Users"
           name={usersKey}
           columns={columns.user}
+          customColumns={usersCC}
+          setCustomColumns={setUsersCC}
           data={users}
           onRedirect={(entry: { Name?: string }) => {
             redirect("user", { input: entry.Name, domain: query.domain });
@@ -113,6 +124,8 @@ export default function SearchPage() {
           title="Groups"
           name={groupsKey}
           columns={columns.group}
+          customColumns={groupsCC}
+          setCustomColumns={setGroupsCC}
           data={groups}
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
@@ -123,6 +136,8 @@ export default function SearchPage() {
           title="Computers"
           name={computersKey}
           columns={columns.computer}
+          customColumns={computersCC}
+          setCustomColumns={setComputersCC}
           data={computers}
           onRedirect={(entry: { Name?: string }) => {
             redirect("computer", { input: entry.Name, domain: query.domain });

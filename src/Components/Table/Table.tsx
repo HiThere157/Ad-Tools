@@ -14,6 +14,8 @@ type TableProps = {
   title: string;
   name: string;
   columns: ColumnDefinition[];
+  customColumns?: string[];
+  setCustomColumns?: (newColumns: string[]) => any;
   data: Result<PSResult[]>;
   onRedirect?: (entry: PSResult) => any;
   isLoading?: boolean;
@@ -22,6 +24,8 @@ export default function Table({
   title,
   name,
   columns,
+  customColumns = [],
+  setCustomColumns,
   data,
   onRedirect,
   isLoading = false,
@@ -31,7 +35,6 @@ export default function Table({
   const [sortedColumn, setSortedColumn] = useSessionStorage<string>(`${name}_sortedColumn`, "");
   const [sortDesc, setSortDesc] = useSessionStorage<boolean>(`${name}_sortDesc`, true);
 
-  const [customColumns, setCustomColumns] = useLocalStorage<string[]>(`${name}_customColumns`, []);
   const [filter, setFilter] = useSessionStorage<Filter>(`${name}_filter`, {});
   const [currentSavedFilter, setCurrentSavedFilter] = useLocalStorage<string>(
     `${name}_currentSavedFilter`,
@@ -62,7 +65,9 @@ export default function Table({
     let ret = "";
     data.output?.forEach((entry, index) => {
       if (onlySelected && !selected.includes(index)) return;
-      ret += columns.map((column) => stringify(entry[column.key], false)).join("\u{9}") + "\n";
+
+      const allColumns = [...columns.map((column) => column.key), ...customColumns];
+      ret += allColumns.map((column) => stringify(entry[column], false)).join("\u{9}") + "\n";
     });
     navigator.clipboard.writeText(ret);
   };

@@ -13,7 +13,7 @@ type FilterMenuProps = {
   isOpen: boolean;
   columns: ColumnDefinition[];
   customColumns: string[];
-  setCustomColumns: (newColumns: string[]) => any;
+  setCustomColumns?: (newColumns: string[]) => any;
   filter: Filter;
   setFilter: (newFilter: Filter) => any;
   currentSavedFilter: string;
@@ -33,7 +33,6 @@ export default function FilterMenu({
     [key: string]: Filter;
   }>("conf_savedFilters", {});
   const [isEditing, setIsEditing] = useState<boolean>(false);
-
   const [nextColName, setNextColName] = useState<string>("");
 
   // when exiting edit mode, save empty names as "untitled"
@@ -91,7 +90,7 @@ export default function FilterMenu({
     if (columns.some((column) => column.key === key)) return;
     if (customColumns.includes(key)) return;
 
-    setCustomColumns([...customColumns, key]);
+    setCustomColumns?.([...customColumns, key]);
     setNextColName("");
   };
 
@@ -99,7 +98,7 @@ export default function FilterMenu({
   const removeColumn = (key: string) => {
     const newFilter = { ...filter };
     delete newFilter[key];
-    setCustomColumns(customColumns.filter((column) => column !== key));
+    setCustomColumns?.(customColumns.filter((column) => column !== key));
     setFilter(newFilter);
   };
 
@@ -268,6 +267,7 @@ export default function FilterMenu({
               onEnter={() => {
                 addColumn(nextColName);
               }}
+              disabled={!setCustomColumns}
             />
             <Title text="Add Column" position="right">
               <Button
@@ -275,6 +275,7 @@ export default function FilterMenu({
                 onClick={() => {
                   addColumn(nextColName);
                 }}
+                disabled={!setCustomColumns}
               >
                 <BsPlusLg />
               </Button>
