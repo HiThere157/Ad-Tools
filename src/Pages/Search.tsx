@@ -45,6 +45,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
+          Properties: "DisplayName,Department",
         },
         postProcessor: makeToList,
         callback: setUsers,
@@ -54,6 +55,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
+          Properties: "Description",
         },
         postProcessor: makeToList,
         callback: setGroups,
@@ -63,6 +65,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
+          Properties: "OperatingSystem",
         },
         postProcessor: makeToList,
         callback: setComputers,

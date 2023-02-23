@@ -51,6 +51,7 @@ const executeCommand = async (_event, { command, args, selectFields, useStaticSe
       })
       .flat(),
   ]);
+
   if (selectFields.length > 0) {
     const selectedFields = quote([selectFields.join(",")]).replace(/\\,/g, ",");
     fullCommand = `${fullCommand} | Select-Object ${selectedFields}`;

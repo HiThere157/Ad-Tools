@@ -1,15 +1,18 @@
 module.exports = {
   "Get-ADUser": {
     args: ["Identity", "Filter", "Server", "Properties"],
+    charWhitelist: [","],
   },
   "Get-ADGroup": {
     args: ["Identity", "Filter", "Server", "Properties"],
+    charWhitelist: [","],
   },
   "Get-ADGroupMember": {
     args: ["Identity", "Server"],
   },
   "Get-ADComputer": {
     args: ["Identity", "Filter", "Server", "Properties"],
+    charWhitelist: [","],
   },
   "Get-WmiObject": {
     args: ["ClassName", "Namespace", "ComputerName"],
