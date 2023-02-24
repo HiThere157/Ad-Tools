@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import Input from "../Input";
 import Button from "../Button";
 
@@ -19,21 +17,14 @@ export default function AadInputBar({
   onSubmit,
   children,
 }: AadInputBarProps) {
-  const [input, setInput] = useState<string>(query.input ?? "");
-
-  useEffect(() => {
-    onChange({ input });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input]);
-
   return (
     <div className="flex flex-wrap items-center [&>*]:m-1 mb-2">
       <Input
         label={label}
-        value={input}
+        value={query.input ?? ""}
         classList="w-64"
         disabled={isLoading}
-        onChange={setInput}
+        onChange={(input) => onChange({ input })}
         onEnter={onSubmit}
       />
       <Button onClick={onSubmit} disabled={isLoading}>

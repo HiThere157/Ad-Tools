@@ -10,11 +10,13 @@ type EditableObjectProps = {
   object: { [key: string]: string };
   onChange: Function;
   isLocked?: boolean;
+  placeholder?: { key: string; value: string };
 };
 export default function EditableObject({
   object,
   onChange,
   isLocked = false,
+  placeholder,
 }: EditableObjectProps) {
   const [newKey, setNewKey] = useState("");
   const [newValue, setNewValue] = useState("");
@@ -123,7 +125,13 @@ export default function EditableObject({
         })}
         <tr>
           <td>
-            <Input value={newKey} onChange={setNewKey} onEnter={addAttrib} disabled={isLocked} />
+            <Input
+              value={newKey}
+              onChange={setNewKey}
+              onEnter={addAttrib}
+              disabled={isLocked}
+              placeholder={placeholder?.key}
+            />
           </td>
           <td>
             <span className="dark:text-foregroundAccent mx-2">:</span>
@@ -134,6 +142,7 @@ export default function EditableObject({
               onChange={setNewValue}
               onEnter={addAttrib}
               disabled={isLocked}
+              placeholder={placeholder?.value}
             />
           </td>
           <td className="flex">

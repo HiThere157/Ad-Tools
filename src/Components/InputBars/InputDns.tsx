@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { dnsTypes } from "../../Config/default";
 import { makeAPICall } from "../../Helper/makeAPICall";
@@ -26,13 +26,11 @@ export default function DnsInputBar({
   children,
 }: DnsInputBarProps) {
   const { setState } = useGlobalState();
-  const [input, setInput] = useState<string>(query.input ?? "");
-  const [type, setType] = useState<string>(query.type ?? dnsTypes[0]);
 
   useEffect(() => {
-    onChange({ input, type });
+    onChange({ input: query.input, type: query.type ?? dnsTypes[0] });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input, type]);
+  }, []);
 
   const clearCache = async () => {
     const result = await makeAPICall({
@@ -50,13 +48,18 @@ export default function DnsInputBar({
     <div className="flex flex-wrap items-center [&>*]:m-1 mb-2">
       <Input
         label={label}
-        value={input}
+        value={query.input ?? ""}
         classList="w-64"
         disabled={isLoading}
-        onChange={setInput}
+        onChange={(input) => onChange({ type: query.type, input })}
         onEnter={onSubmit}
       />
-      <Dropdown items={dnsTypes} value={type} disabled={isLoading} onChange={setType} />
+      <Dropdown
+        items={dnsTypes}
+        value={query.type}
+        disabled={isLoading}
+        onChange={(type) => onChange({ input: query.input, type })}
+      />
       <Button onClick={clearCache} disabled={isLoading}>
         Clear Cache
       </Button>

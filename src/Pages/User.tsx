@@ -4,7 +4,7 @@ import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
-import { getPropertiesWrapper, getMembershipFromAdUser } from "../Helper/postProcessors";
+import { getPropertiesWrapper, getMembershipFromAdObject } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
 import AdInputBar from "../Components/InputBars/InputAd";
@@ -46,7 +46,7 @@ export default function UserPage() {
         Server: query.domain,
         Properties: "*",
       },
-      postProcessor: [getPropertiesWrapper, getMembershipFromAdUser],
+      postProcessor: [getPropertiesWrapper, getMembershipFromAdObject],
       callback: [setAttributes, setMemberOf],
     });
     setIsLoading(false);
