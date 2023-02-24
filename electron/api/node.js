@@ -20,10 +20,10 @@ const getModuleVersion = async (_event) => {
 
   try {
     const outputAzureAD = await ps.invoke(
-      "Get-Module -ListAvailable -Name AzureAD | ConvertTo-Json -Compress",
+      "Get-Module -ListAvailable -Name AzureAD | Select-Object -First 1 | ConvertTo-Json -Compress",
     );
     const outputAD = await ps.invoke(
-      "Get-Module -ListAvailable -Name ActiveDirectory | ConvertTo-Json -Compress",
+      "Get-Module -ListAvailable -Name ActiveDirectory | Select-Object -First 1 | ConvertTo-Json -Compress",
     );
 
     const formatVersion = ({ Version }) => {
