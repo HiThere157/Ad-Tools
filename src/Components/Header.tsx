@@ -23,7 +23,7 @@ export default function Header() {
   }, []);
 
   return (
-    <div
+    <header
       style={{ gridArea: "header" }}
       className="winbar-drag-region select-none flex justify-between border-b-2 dark:bg-lightBg dark:border-elFlatBorder"
     >
@@ -49,6 +49,6 @@ export default function Header() {
         <TableOfContents />
         <WinControl />
       </div>
-    </div>
+    </header>
   );
 }
