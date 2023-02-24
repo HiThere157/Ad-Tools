@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
@@ -33,9 +33,29 @@ export default function SearchPage() {
     if (!isAdvanced) return `Name -like "${query.input}"`;
 
     return Object.entries(searchFilter)
+      .filter(([key, value]) => value)
       .map(([key, value]) => `${key} -like "${value}"`)
       .join(" -and ");
   };
+
+  const getAllProperties = (existing: ColumnDefinition[]) => {
+    return [...existing.map((column) => column.key), ...Object.keys(searchFilter)].join(",");
+  };
+
+  const getAllColumns = (existing: ColumnDefinition[]) => {
+    return [
+      ...existing,
+      ...Object.keys(searchFilter).map((filter) => {
+        return { key: filter, title: filter };
+      }),
+    ];
+  };
+
+  useEffect(() => {
+    if (isAdvanced) {
+      setQuery({ input: "", domain: query.domain });
+    }
+  }, [isAdvanced]);
 
   const runQuery = async () => {
     setIsLoading(true);
@@ -45,7 +65,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
-          Properties: columns.user.map((column) => column.key).join(","),
+          Properties: getAllProperties(columns.user),
         },
         postProcessor: makeToList,
         callback: setUsers,
@@ -55,7 +75,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
-          Properties: columns.group.map((column) => column.key).join(","),
+          Properties: getAllProperties(columns.group),
         },
         postProcessor: makeToList,
         callback: setGroups,
@@ -65,7 +85,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
-          Properties: columns.computer.map((column) => column.key).join(","),
+          Properties: getAllProperties(columns.computer),
         },
         postProcessor: makeToList,
         callback: setComputers,
@@ -105,7 +125,7 @@ export default function SearchPage() {
         <Table
           title="Users"
           name={usersKey}
-          columns={columns.user}
+          columns={getAllColumns(columns.user)}
           data={users}
           onRedirect={(entry: { Name?: string }) => {
             redirect("user", { input: entry.Name, domain: query.domain });
@@ -115,7 +135,7 @@ export default function SearchPage() {
         <Table
           title="Groups"
           name={groupsKey}
-          columns={columns.group}
+          columns={getAllColumns(columns.group)}
           data={groups}
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
@@ -125,7 +145,7 @@ export default function SearchPage() {
         <Table
           title="Computers"
           name={computersKey}
-          columns={columns.computer}
+          columns={getAllColumns(columns.computer)}
           data={computers}
           onRedirect={(entry: { Name?: string }) => {
             redirect("computer", { input: entry.Name, domain: query.domain });
