@@ -21,7 +21,7 @@ function getExtensionsFromAadUser(Adbject: { ExtensionProperty: PSResult }): PSR
   return getPropertiesWrapper(Adbject.ExtensionProperty);
 }
 
-function getMembershipFromAdUser(AdObject: {
+function getMembershipFromAdObject(AdObject: {
   MemberOf: string[];
   PrimaryGroup: string;
 }): { Name: string; DistinguishedName: string }[] {
@@ -139,7 +139,7 @@ export {
   getPropertiesWrapper,
   getWMIPropertiesWrapper,
   getExtensionsFromAadUser,
-  getMembershipFromAdUser,
+  getMembershipFromAdObject,
   replaceASCIIArray,
   prepareDNSResult,
   replacePrinterStatus,

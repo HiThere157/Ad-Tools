@@ -6,7 +6,7 @@ import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import {
   getPropertiesWrapper,
-  getMembershipFromAdUser,
+  getMembershipFromAdObject,
   prepareDNSResult,
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
@@ -63,7 +63,7 @@ export default function ComputerPage() {
           Server: query.domain,
           Properties: "*",
         },
-        postProcessor: [getPropertiesWrapper, getMembershipFromAdUser],
+        postProcessor: [getPropertiesWrapper, getMembershipFromAdObject],
         callback: [setAttributes, setMemberOf],
       }),
     ]);

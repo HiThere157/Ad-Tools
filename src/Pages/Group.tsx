@@ -6,7 +6,7 @@ import { columns } from "../Config/default";
 import { makeAPICall } from "../Helper/makeAPICall";
 import {
   getPropertiesWrapper,
-  getMembershipFromAdUser,
+  getMembershipFromAdObject,
   makeToList,
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
@@ -55,7 +55,7 @@ export default function GroupPage() {
           Server: query.domain,
           Properties: "*",
         },
-        postProcessor: [getPropertiesWrapper, getMembershipFromAdUser],
+        postProcessor: [getPropertiesWrapper, getMembershipFromAdObject],
         callback: [setAttributes, setMemberOf],
       }),
       makeAPICall<PSResult[]>({
