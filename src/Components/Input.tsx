@@ -3,6 +3,7 @@ type InputProps = {
   value: string;
   classList?: string;
   disabled?: boolean;
+  placeholder?: string;
   onChange: (value: string) => any;
   onEnter?: () => any;
 };
@@ -11,6 +12,7 @@ export default function Input({
   value,
   classList = "",
   disabled = false,
+  placeholder,
   onChange,
   onEnter = () => {},
 }: InputProps) {
@@ -36,6 +38,7 @@ export default function Input({
         onChange={(event) => onChange(event.target.value)}
         onKeyDown={onKeyDown}
         disabled={disabled}
+        placeholder={placeholder}
       />
     </div>
   );

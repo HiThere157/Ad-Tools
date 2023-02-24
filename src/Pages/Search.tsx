@@ -55,6 +55,7 @@ export default function SearchPage() {
     if (isAdvanced) {
       setQuery({ input: "", domain: query.domain });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdvanced]);
 
   const runQuery = async () => {
@@ -120,7 +121,9 @@ export default function SearchPage() {
           isLocked={isLoading}
         />
       )}
+
       <Hint hint="Hint: wildcard (*) is possible. (Eg.: *kochda7 => kochda7, adm_kochda7)" />
+
       <TableLayout>
         <Table
           title="Users"

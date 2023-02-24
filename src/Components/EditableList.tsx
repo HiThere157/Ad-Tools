@@ -10,8 +10,14 @@ type EditableListProps = {
   items: string[];
   onChange: (newItems: string[]) => any;
   isLocked?: boolean;
+  placeholder?: string;
 };
-export default function EditableList({ items, onChange, isLocked = false }: EditableListProps) {
+export default function EditableList({
+  items,
+  onChange,
+  isLocked = false,
+  placeholder,
+}: EditableListProps) {
   const [newItem, setNewItem] = useState<string>("");
   const [editingIndex, setEditingIndex] = useState<number>(-1);
 
@@ -100,6 +106,7 @@ export default function EditableList({ items, onChange, isLocked = false }: Edit
               onChange={setNewItem}
               onEnter={addItem}
               disabled={isLocked}
+              placeholder={placeholder}
             ></Input>
           </td>
           <td>
