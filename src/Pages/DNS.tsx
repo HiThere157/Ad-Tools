@@ -7,10 +7,10 @@ import { makeAPICall } from "../Helper/makeAPICall";
 import { prepareDNSResult } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
-import DnsInputBar from "../Components/InputBars/InputDns";
-import TableLayout from "../Layouts/TableLayout";
 import Button from "../Components/Button";
+import DnsInputBar from "../Components/InputBars/InputDns";
 import Title from "../Components/Title";
+import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 

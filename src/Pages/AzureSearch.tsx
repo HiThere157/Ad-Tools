@@ -3,9 +3,9 @@ import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
+import { isAuthenticated } from "../Helper/azureAuth";
 import { makeAPICall } from "../Helper/makeAPICall";
 import { makeToList } from "../Helper/postProcessors";
-import { isAuthenticated } from "../Helper/azureAuth";
 import { redirect } from "../Helper/redirects";
 
 import AzureLogin from "../Components/Popups/AzureLogin";

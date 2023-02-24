@@ -8,12 +8,12 @@ import { makeToList } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
 import AdInputBar from "../Components/InputBars/InputAd";
-import TableLayout from "../Layouts/TableLayout";
-import Table from "../Components/Table/Table";
-import ScrollPosition from "../Components/ScrollPosition";
 import Checkbox from "../Components/Checkbox";
 import AdvancedFilters from "../Components/InputBars/AdvancedFilters";
 import Hint from "../Components/InputBars/Hint";
+import TableLayout from "../Layouts/TableLayout";
+import Table from "../Components/Table/Table";
+import ScrollPosition from "../Components/ScrollPosition";
 
 export default function SearchPage() {
   const p = useLocation().pathname.substring(1);

@@ -3,23 +3,23 @@ import { useLocation } from "react-router-dom";
 import { useSessionStorage } from "../Hooks/useStorage";
 
 import { columns } from "../Config/default";
+import { isAuthenticated } from "../Helper/azureAuth";
 import { makeAPICall } from "../Helper/makeAPICall";
 import {
   getPropertiesWrapper,
   getExtensionsFromAadUser,
   makeToList,
 } from "../Helper/postProcessors";
-import { isAuthenticated } from "../Helper/azureAuth";
 import { redirect } from "../Helper/redirects";
 
+import Button from "../Components/Button";
 import AzureLogin from "../Components/Popups/AzureLogin";
 import AadInputBar from "../Components/InputBars/InputAad";
-import TableLayout from "../Layouts/TableLayout";
-import Button from "../Components/Button";
 import Title from "../Components/Title";
+import Hint from "../Components/InputBars/Hint";
+import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
-import Hint from "../Components/InputBars/Hint";
 
 import { BsWindows } from "react-icons/bs";
 

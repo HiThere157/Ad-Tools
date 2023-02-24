@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 
 import { electronAPI } from "../Helper/makeAPICall";
 
-import ScrollPosition from "../Components/ScrollPosition";
 import Release from "../Components/Release/Release";
+import ScrollPosition from "../Components/ScrollPosition";
 
 import { PulseLoader } from "react-spinners";
 import { BsExclamationOctagon } from "react-icons/bs";
