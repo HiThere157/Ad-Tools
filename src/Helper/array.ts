@@ -32,6 +32,10 @@ class ResultArray {
     this.array = this.array.filter((entry) => {
       let isMatch = true;
       Object.entries(parsedFilter).forEach(([key, value]) => {
+        // the filter key is not present on the entry, skip it
+        // __selected__ is never present on an entry, exclude it
+        if (key !== "__selected__" && !Object.keys(entry).includes(key)) return;
+
         // if __selected__ key is present in filter, check selected values
         // prevent regex check after
         if (key === "__selected__" && typeof entry.__id__ === "number") {

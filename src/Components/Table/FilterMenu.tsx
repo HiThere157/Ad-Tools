@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "../../Hooks/useStorage";
 
-import Checkbox from "../Checkbox";
-import Input from "../Input";
-import Dropdown from "../Dropdown";
 import Button from "../Button";
 import Title from "../Title";
+import Dropdown from "../Dropdown";
+import Input from "../Input";
+import Checkbox from "../Checkbox";
+import Hint from "../InputBars/Hint";
 
 import { BsFillPencilFill, BsPlusLg, BsFillTrashFill } from "react-icons/bs";
 
@@ -50,16 +51,14 @@ export default function FilterMenu({
 
   useEffect(() => {
     // is executed on mount, check if no saved filter is selected
-    // and use last unnamed filter
     if (currentSavedFilter === "No Preset") {
+      // preserve state between tab changes
       setFilter(filter);
+      setIsEditing(false);
     } else {
       // when changing saved filters, send filter update
       setFilter(savedFilters[currentSavedFilter] ?? {});
     }
-
-    // if filter reset from ActionMenu, disable editing
-    if (currentSavedFilter === "No Preset") setIsEditing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSavedFilter]);
 
@@ -101,12 +100,23 @@ export default function FilterMenu({
     setIsEditing(true);
   };
 
+  // add remove filter from the saved filters
   const removeSavedFilter = () => {
     const newSavedFilters = { ...savedFilters };
     delete newSavedFilters[currentSavedFilter];
     setSavedFilters(newSavedFilters);
+
+    // exit to unnamed filter after, override current filter
     setCurrentSavedFilter("No Preset");
+    setFilter({});
     setIsEditing(false);
+  };
+
+  const updateCurrentSavedFilter = (newFilter: string) => {
+    setCurrentSavedFilter(newFilter);
+
+    // the current filter should be cleared when exiting a saved filter
+    if (newFilter === "No Preset") setFilter({});
   };
 
   return (
@@ -127,7 +137,7 @@ export default function FilterMenu({
               <Dropdown
                 value={currentSavedFilter}
                 items={[...Object.keys(savedFilters), "No Preset"]}
-                onChange={setCurrentSavedFilter}
+                onChange={updateCurrentSavedFilter}
               />
             )}
             {currentSavedFilter !== "No Preset" && (
@@ -193,6 +203,39 @@ export default function FilterMenu({
                   </tr>
                 );
               })}
+
+              {Object.keys(filter)
+                .filter((key) => key !== "__selected__")
+                .some((key) => !columns.map((column) => column.key).includes(key)) && (
+                <tr>
+                  <td colSpan={2}>
+                    <hr className="my-1 dark:border-elFlatBorder"></hr>
+
+                    <Hint hint="Invalid Filters are ignored:" slim={true} />
+                  </td>
+                </tr>
+              )}
+
+              {Object.keys(filter)
+                .filter((key) => key !== "__selected__")
+                .filter((key) => !columns.map((column) => column.key).includes(key))
+                .map((key, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <span className="mr-1 whitespace-nowrap">{key}:</span>
+                      </td>
+                      <td>
+                        <Input
+                          value={filter[key]}
+                          onChange={(filterString: string) => updateFilter(key, filterString)}
+                          classList="min-w-[10rem]"
+                          disabled={!isEditing}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </div>
