@@ -216,7 +216,7 @@ export default function FilterMenu({
                   <td colSpan={2}>
                     <hr className="my-1 dark:border-elFlatBorder"></hr>
 
-                    <Hint hint="Invalid Filters are ignored:" slim={true} />
+                    <Hint hint="Invalid Filters are ignored:" />
                   </td>
                 </tr>
               )}

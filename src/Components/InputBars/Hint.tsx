@@ -1,10 +1,10 @@
 type HintProps = {
   hint: string;
-  slim?: boolean;
+  classList?: string;
 };
-export default function Hint({ hint, slim = false }: HintProps) {
+export default function Hint({ hint, classList = "" }: HintProps) {
   return hint ? (
-    <div className={"ml-1 dark:text-whiteColorAccent " + (!slim ? "mb-3" : "")}>{hint}</div>
+    <div className={"ml-1 dark:text-whiteColorAccent " + classList}>{hint}</div>
   ) : (
     <></>
   );

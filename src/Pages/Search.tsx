@@ -111,7 +111,11 @@ export default function SearchPage() {
         />
       )}
 
-      <Hint hint="Hint: wildcard (*) is possible. (Eg.: *kochda7 => kochda7, adm_kochda7)" />
+      {isAdvanced && <Hint hint="Hint: Leave the Filter empty to add Columns to the Output" />}
+      <Hint
+        hint="Hint: wildcard (*) is possible. (Eg.: *kochda7 => kochda7, adm_kochda7)"
+        classList="mb-3"
+      />
 
       <TableLayout>
         <Table

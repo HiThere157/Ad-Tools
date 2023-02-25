@@ -124,7 +124,10 @@ export default function AzureUserPage() {
           </Button>
         </Title>
       </AadInputBar>
-      <Hint hint="Hint: full user principal name is required (Eg.: kochda7@example.com)" />
+      <Hint
+        hint="Hint: full user principal name is required (Eg.: kochda7@example.com)"
+        classList="mb-3"
+      />
       <TableLayout>
         <Table
           title="User Attributes"
