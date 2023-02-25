@@ -129,7 +129,7 @@ function UpdateManagerBody({
       <div className="flex items-center justify-between">
         <span className="block text-xl ml-1 mr-10">Update Manager</span>
         <Title text="Refresh" position="right">
-          <Button classList="p-1.5" onClick={onRefresh}>
+          <Button classList="p-1.5" onClick={onRefresh} disabled={appStatus === "pending"}>
             <BsArrowRepeat />
           </Button>
         </Title>
