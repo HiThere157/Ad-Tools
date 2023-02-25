@@ -56,7 +56,7 @@ export default function AzureGroupPage() {
       args: {
         SearchString: query.input,
       },
-      selectFields: columns.azureGroup.map((col) => col.key),
+      selectFields: columns.azureGroup,
       postProcessor: makeToList,
       useStaticSession: true,
     });
@@ -86,7 +86,7 @@ export default function AzureGroupPage() {
           ObjectId: firstResult?.ObjectId.toString(),
           All: "1",
         },
-        selectFields: columns.azureUser.map((col) => col.key),
+        selectFields: columns.azureUser,
         postProcessor: makeToList,
         callback: setMembers,
         useStaticSession: true,

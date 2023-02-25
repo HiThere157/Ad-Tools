@@ -13,7 +13,7 @@ import Loader from "./Loader";
 type TableProps = {
   title: string;
   name: string;
-  columns: ColumnDefinition[];
+  columns: string[];
   data: Result<PSResult[]>;
   onRedirect?: (entry: PSResult) => any;
   isLoading?: boolean;
@@ -61,7 +61,7 @@ export default function Table({
     let ret = "";
     data.output?.forEach((entry, index) => {
       if (onlySelected && !selected.includes(index)) return;
-      ret += columns.map((column) => stringify(entry[column.key], false)).join("\u{9}") + "\n";
+      ret += columns.map((column) => stringify(entry[column], false)).join("\u{9}") + "\n";
     });
     navigator.clipboard.writeText(ret);
   };

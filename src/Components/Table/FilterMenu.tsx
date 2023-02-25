@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "../../Hooks/useStorage";
 
+import { columnNames } from "../../Config/default";
+
 import Button from "../Button";
 import Title from "../Title";
 import Dropdown from "../Dropdown";
@@ -12,7 +14,7 @@ import { BsFillPencilFill, BsPlusLg, BsFillTrashFill } from "react-icons/bs";
 
 type FilterMenuProps = {
   isOpen: boolean;
-  columns: ColumnDefinition[];
+  columns: string[];
   filter: Filter;
   setFilter: (newFilter: Filter) => any;
   currentSavedFilter: string;
@@ -65,6 +67,7 @@ export default function FilterMenu({
   // update the filter for the current editing saved filter
   const updateFilter = (key: string, filterString: string) => {
     const newFilter = { ...filter, [key]: filterString.trim() };
+    Object.keys(newFilter).forEach((key) => newFilter[key] === "" && delete newFilter[key]);
 
     if (isEditing) {
       const newSavedFilters = { ...savedFilters };
@@ -190,12 +193,14 @@ export default function FilterMenu({
                 return (
                   <tr key={index}>
                     <td>
-                      <span className="mr-1 whitespace-nowrap">{column.title}:</span>
+                      <span className="mr-1 whitespace-nowrap">
+                        {columnNames[column] ?? column}:
+                      </span>
                     </td>
                     <td>
                       <Input
-                        value={filter[column.key]}
-                        onChange={(filterString: string) => updateFilter(column.key, filterString)}
+                        value={filter[column]}
+                        onChange={(filterString: string) => updateFilter(column, filterString)}
                         classList="min-w-[10rem]"
                         disabled={!isEditing && currentSavedFilter !== "No Preset"}
                       />
@@ -206,7 +211,7 @@ export default function FilterMenu({
 
               {Object.keys(filter)
                 .filter((key) => key !== "__selected__")
-                .some((key) => !columns.map((column) => column.key).includes(key)) && (
+                .some((key) => !columns.includes(key)) && (
                 <tr>
                   <td colSpan={2}>
                     <hr className="my-1 dark:border-elFlatBorder"></hr>
@@ -218,12 +223,12 @@ export default function FilterMenu({
 
               {Object.keys(filter)
                 .filter((key) => key !== "__selected__")
-                .filter((key) => !columns.map((column) => column.key).includes(key))
+                .filter((key) => !columns.includes(key))
                 .map((key, index) => {
                   return (
                     <tr key={index}>
                       <td>
-                        <span className="mr-1 whitespace-nowrap">{key}:</span>
+                        <span className="mr-1 whitespace-nowrap">{columnNames[key] ?? key}:</span>
                       </td>
                       <td>
                         <Input

@@ -71,7 +71,7 @@ export default function WMIPage() {
           ClassName: "Win32_Product",
           ComputerName: `${query.input}.${query.domain}`,
         },
-        selectFields: columns.software.map((column) => column.key),
+        selectFields: columns.software,
         postProcessor: makeToList,
         callback: setSoftware,
       }),

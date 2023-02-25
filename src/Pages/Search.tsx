@@ -38,23 +38,12 @@ export default function SearchPage() {
       .join(" -and ");
   };
 
-  const getAllProperties = (existing: ColumnDefinition[]) => {
-    return [...existing.map((column) => column.key), ...Object.keys(searchFilter)].join(",");
-  };
-
-  const getAllColumns = (existing: ColumnDefinition[]) => {
-    return [
-      ...existing,
-      ...Object.keys(searchFilter).map((filter) => {
-        return { key: filter, title: filter };
-      }),
-    ];
+  const getAllColumns = (existing: string[]) => {
+    return [...existing, ...Object.keys(searchFilter)];
   };
 
   useEffect(() => {
-    if (isAdvanced) {
-      setQuery({ input: "", domain: query.domain });
-    }
+    if (isAdvanced) setQuery({ input: "", domain: query.domain });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdvanced]);
 
@@ -66,7 +55,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
-          Properties: getAllProperties(columns.user),
+          Properties: getAllColumns(columns.user).join(","),
         },
         postProcessor: makeToList,
         callback: setUsers,
@@ -76,7 +65,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
-          Properties: getAllProperties(columns.group),
+          Properties: getAllColumns(columns.group).join(","),
         },
         postProcessor: makeToList,
         callback: setGroups,
@@ -86,7 +75,7 @@ export default function SearchPage() {
         args: {
           Filter: getFilterString(),
           Server: query.domain,
-          Properties: getAllProperties(columns.computer),
+          Properties: getAllColumns(columns.computer).join(","),
         },
         postProcessor: makeToList,
         callback: setComputers,

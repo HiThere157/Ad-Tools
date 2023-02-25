@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { columnNames } from "../../Config/default";
 import { ResultArray } from "../../Helper/array";
 
 import Button from "../Button";
@@ -11,7 +12,7 @@ import { BsCaretDownFill } from "react-icons/bs";
 
 type TableElementProps = {
   entries?: PSResult[];
-  columns: ColumnDefinition[];
+  columns: string[];
   sortDesc: boolean;
   sortedColumn: string;
   filter: Filter;
@@ -98,15 +99,14 @@ export default function TableElement({
                     disabled:opacity-100 !border-0 rounded-none
                     flex items-center justify-between py-1 px-4 w-full
                   "
-                  onClick={() => onHeaderClick(column.key)}
-                  disabled={column.sortable === false}
+                  onClick={() => onHeaderClick(column)}
                 >
-                  <span>{column.title}</span>
+                  <span>{columnNames[column] ?? column}</span>
                   <BsCaretDownFill
                     className={
                       "ml-2 text-base " +
                       (sortDesc ? " " : "rotate-180 ") +
-                      (sortedColumn === column.key ? "scale-100" : "scale-0")
+                      (sortedColumn === column ? "scale-100" : "scale-0")
                     }
                   />
                 </Button>
@@ -131,7 +131,7 @@ export default function TableElement({
               {columns.map((column, index) => {
                 return (
                   <td key={index} className="relative group px-2 dark:border-elFlatBorder border">
-                    <TableCell text={entry[column.key]} />
+                    <TableCell text={entry[column]} />
                     <RedirectButton
                       isVisible={!!onRedirect}
                       onClick={() => {
