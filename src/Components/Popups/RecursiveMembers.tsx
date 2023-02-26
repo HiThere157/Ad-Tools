@@ -67,6 +67,7 @@ function Member({ query, type, depth }: MemberProps) {
 
   useEffect(() => {
     if (type === "group") runQuery()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (type !== "group") return <div>{query.input}</div>
