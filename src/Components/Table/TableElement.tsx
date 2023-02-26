@@ -95,10 +95,7 @@ export default function TableElement({
             return (
               <th key={index} className="p-0 dark:border-elFlatBorder border">
                 <Button
-                  classList="
-                    disabled:opacity-100 !border-0 rounded-none
-                    flex items-center justify-between py-1 px-4 w-full
-                  "
+                  classList="border-0 rounded-none flex items-center justify-between py-1 px-4 w-full"
                   onClick={() => onHeaderClick(column)}
                 >
                   <span>{columnNames[column] ?? column}</span>

@@ -12,6 +12,7 @@ import {
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
+import RecursiveMembers from "../Components/Popups/RecursiveMembers";
 import Button from "../Components/Button";
 import AdInputBar from "../Components/InputBars/InputAd";
 import Title from "../Components/Title";
@@ -19,13 +20,14 @@ import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
+import { BsExclamationCircle, BsListNested } from "react-icons/bs";
 import { VscAzure } from "react-icons/vsc";
-import { BsExclamationCircle } from "react-icons/bs";
 
 export default function GroupPage() {
   const p = useLocation().pathname.substring(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useSessionStorage<AdQuery>(`${p}_query`, {});
+  const [showRecursiveMembers, setShowRecursiveMembers] = useState<boolean>(false);
 
   const [attribs, setAttributes, attribsKey] = useSessionStorage<Result<PSResult[]>>(
     `${p}_attribs`,
@@ -95,6 +97,13 @@ export default function GroupPage() {
 
   return (
     <article>
+      <RecursiveMembers
+        query={query}
+        isOpen={showRecursiveMembers}
+        onExit={() => {
+          setShowRecursiveMembers(false);
+        }}
+      />
       <AdInputBar
         label="Group:"
         isLoading={isLoading}
@@ -102,6 +111,16 @@ export default function GroupPage() {
         onChange={setQuery}
         onSubmit={runQuery}
       >
+        <Title text="Show Recursive Members" position="bottom">
+          <Button
+            classList="p-1"
+            onClick={() => {
+              setShowRecursiveMembers(true);
+            }}
+          >
+            <BsListNested />
+          </Button>
+        </Title>
         <Title text="Show Azure Group Page" position="bottom">
           <Button
             classList="p-1"

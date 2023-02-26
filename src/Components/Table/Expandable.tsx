@@ -21,9 +21,13 @@ export default function Expandable({ children, canExpand = true }: ExpandablePro
             </Button>
 
             {isOpen && (
-              <Button classList="p-0 my-1 flex-grow" onClick={() => setIsOpen(!isOpen)}></Button>
+              <Button
+                classList="p-0 my-1 flex-grow opacity-50"
+                onClick={() => setIsOpen(!isOpen)}
+              ></Button>
             )}
           </div>
+
           {isOpen ? (
             children
           ) : (
