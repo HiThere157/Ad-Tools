@@ -32,10 +32,6 @@ async function makeAPICall<T>({
   const postProcessorList = makeToList(postProcessor);
   const callBackList = makeToList(callback);
 
-  callBackList.forEach((callback) => {
-    callback({ output: [] });
-  });
-
   try {
     const result = await electronAPI?.executeCommand<T>({
       command,

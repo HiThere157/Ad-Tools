@@ -61,6 +61,12 @@ export default function GroupPage() {
     setReQuery(false);
     setIsLoading(true);
 
+    setAttributes({ output: [] });
+    setMemberOfFallback({ output: [] });
+    setMembersFallback({ output: [] });
+    setMemberOf({ output: [] });
+    setMembers({ output: [] });
+
     await Promise.all([
       makeAPICall<PSResult[]>({
         command: "Get-ADGroup",

@@ -53,6 +53,11 @@ export default function ComputerPage() {
     setReQuery(false);
     setIsLoading(true);
 
+    setDNS({ output: [] });
+    setAttributes({ output: [] });
+    setMemberOfFallback({ output: [] });
+    setMemberOf({ output: [] });
+
     await Promise.all([
       makeAPICall<PSResult[]>({
         command: "Resolve-DnsName",

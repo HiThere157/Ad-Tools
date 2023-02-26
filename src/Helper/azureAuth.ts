@@ -26,14 +26,4 @@ async function azureLogin(): Promise<boolean> {
   return !result.error;
 }
 
-// async function azureLogout(): Promise<boolean> {
-//   const result = await makeAPICall({
-//     command: "Disconnect-AzureAD",
-//     useStaticSession: true,
-//     json: false,
-//   });
-
-//   return !result.error;
-// }
-
 export { isAuthenticated, azureLogin };

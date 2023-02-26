@@ -50,6 +50,10 @@ export default function SearchPage() {
   const runQuery = async () => {
     setIsLoading(true);
 
+    setUsers({ output: [] });
+    setGroups({ output: [] });
+    setComputers({ output: [] });
+
     await Promise.all([
       makeAPICall<PSResult[]>({
         command: "Get-ADUser",

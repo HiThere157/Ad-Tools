@@ -50,6 +50,10 @@ export default function UserPage() {
     setReQuery(false);
     setIsLoading(true);
 
+    setAttributes({ output: [] });
+    setMemberOfFallback({ output: [] });
+    setMemberOf({ output: [] });
+
     await Promise.all([
       makeAPICall<PSResult[]>({
         command: "Get-ADUser",

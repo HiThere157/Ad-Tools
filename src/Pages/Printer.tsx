@@ -24,6 +24,8 @@ export default function PrinterPage() {
   const runQuery = async () => {
     setIsLoading(true);
 
+    setPrinters({ output: [] });
+
     await makeAPICall<PSResult[]>({
       command: "Get-Printer",
       args: {

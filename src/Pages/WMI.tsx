@@ -45,6 +45,11 @@ export default function WMIPage() {
     setReQuery(false);
     setIsLoading(true);
 
+    setMonitors({ output: [] });
+    setSysinfo({ output: [] });
+    setSoftware({ output: [] });
+    setBios({ output: [] });
+
     await Promise.all([
       makeAPICall<PSResult[]>({
         command: "Get-WmiObject",
