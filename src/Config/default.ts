@@ -23,7 +23,7 @@ const columnNames: { [key: string]: string } = {
   DeviceOSType: "Operating System",
   AccountEnabled: "Enabled",
   IsManaged: "MDM",
-  ApproximateLastLogonTimeStamp: "Last Logon",
+  ApproximateLastLogonTimeStamp: "Approximate Last Logon",
 
   __friendlyType__: "Type",
   __result__: "Result",
