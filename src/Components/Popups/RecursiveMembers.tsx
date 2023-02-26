@@ -6,8 +6,9 @@ import { makeToList } from "../../Helper/postProcessors";
 import Popup from "./Popup";
 import Button from "../Button";
 
-import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { PulseLoader } from "react-spinners";
+import { FiChevronUp, FiChevronDown } from "react-icons/fi";
+import { BsExclamationOctagon } from "react-icons/bs";
 
 type RecursiveMembersProps = {
   query: AdQuery;
@@ -17,7 +18,7 @@ type RecursiveMembersProps = {
 export default function RecursiveMembers({ query, isOpen, onExit }: RecursiveMembersProps) {
   return (
     <Popup
-      title={"Group: " + query.input}
+      title={"Group: " + (query.input ?? "")}
       className="w-[50%] min-w-[35rem] top-[8%] max-h-[85%] overflow-auto"
       isOpen={isOpen}
       onExit={onExit}
@@ -33,7 +34,7 @@ type MemberProps = {
   depth: number;
 };
 function Member({ query, type, depth }: MemberProps) {
-  const [members, setMembers] = useState<{ query: AdQuery; type: string }[]>([]);
+  const [members, setMembers] = useState<Result<{ query: AdQuery; type: string }[]>>({});
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
@@ -41,7 +42,12 @@ function Member({ query, type, depth }: MemberProps) {
   const runQuery = async () => {
     setIsLoading(true);
 
-    setMembers([]);
+    setMembers({ output: [] });
+
+    if (depth > 20) {
+      setMembers({ error: "Max depth exceeded." });
+      return;
+    }
 
     await makeAPICall<PSResult[]>({
       command: "Get-ADGroupMember",
@@ -51,16 +57,17 @@ function Member({ query, type, depth }: MemberProps) {
       },
       postProcessor: makeToList,
       callback: (result: Result<PSResult[]>) => {
-        setMembers(
-          result.output
+        setMembers({
+          output: result.output
             ?.map((result) => {
               return {
                 query: { input: result.Name?.toString(), domain: query.domain?.toString() },
                 type: result.ObjectClass?.toString(),
               };
             })
-            .sort((result) => (result.type === "group" ? 1 : -1)) ?? [],
-        );
+            .sort((result) => (result.type === "group" ? 1 : -1)),
+          error: result.error,
+        });
       },
     });
 
@@ -95,9 +102,18 @@ function Member({ query, type, depth }: MemberProps) {
           </div>
 
           <div className="w-full">
-            {isLoading && <PulseLoader size="7px" color="#208CF0" speedMultiplier={0.75} />}
+            {isLoading && !members.error && (
+              <PulseLoader size="7px" color="#208CF0" speedMultiplier={0.75} />
+            )}
 
-            {members.map((member, index) => (
+            {members.error && (
+              <div className="flex items-center space-x-2 text-redColor">
+                <BsExclamationOctagon className="text-lg flex-shrink-0" />
+                <span>{members.error}</span>
+              </div>
+            )}
+
+            {members.output?.map((member, index) => (
               <Member key={index} query={member.query} type={member.type} depth={depth + 1} />
             ))}
           </div>
