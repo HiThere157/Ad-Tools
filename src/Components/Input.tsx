@@ -1,7 +1,7 @@
 type InputProps = {
   label?: string;
   value: string;
-  classList?: string;
+  className?: string;
   disabled?: boolean;
   placeholder?: string;
   onChange: (value: string) => any;
@@ -10,7 +10,7 @@ type InputProps = {
 export default function Input({
   label = "",
   value,
-  classList = "",
+  className = "",
   disabled = false,
   placeholder,
   onChange,
@@ -32,7 +32,7 @@ export default function Input({
           "bg-elFlatBg hover:bg-elFlatAccentBg active:bg-elFlatActiveBg " +
           // border styling
           "border-2 border-elFlatBorder hover:border-elFlatAccentBorder focus-within:border-elFlatActiveBorder " +
-          classList
+          className
         }
         value={value ?? ""}
         onChange={(event) => onChange(event.target.value)}

@@ -97,7 +97,7 @@ export default function EditableObject({
               <td>
                 <Title text="Edit Entry" position="bottom">
                   <Button
-                    classList="p-1.5 text-xs"
+                    className="p-1.5 text-xs"
                     highlight={editingIndex === index}
                     onClick={() => {
                       setEditingIndex(index === editingIndex ? -1 : index);
@@ -110,7 +110,7 @@ export default function EditableObject({
 
                 <Title text="Remove Entry" position="bottom">
                   <Button
-                    classList="p-1.5 text-xs ml-1"
+                    className="p-1.5 text-xs ml-1"
                     onClick={() => {
                       removeAttrib(key);
                     }}
@@ -147,7 +147,7 @@ export default function EditableObject({
           </td>
           <td className="flex">
             <Title text="Add Entry" position="bottom">
-              <Button classList="p-1.5 text-xs" onClick={addAttrib} disabled={isLocked}>
+              <Button className="p-1.5 text-xs" onClick={addAttrib} disabled={isLocked}>
                 <BsPlusLg />
               </Button>
             </Title>

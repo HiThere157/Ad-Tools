@@ -41,7 +41,7 @@ export default function MessageElement({ message }: MessageProps) {
     >
       {getTypeInfo()[1]}
       <span className="text-lg">{message.message}</span>
-      <Button classList="p-1.5 text-xs" onClick={closeMessage}>
+      <Button className="p-1.5 text-xs" onClick={closeMessage}>
         <BsXLg />
       </Button>
     </div>

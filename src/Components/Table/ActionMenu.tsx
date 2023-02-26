@@ -45,26 +45,26 @@ export default function ActionMenu({
   return (
     <div className="flex flex-col gap-y-1">
       <Title text="Filter Menu" position="right">
-        <Button classList="p-1.5" onClick={onFilter} highlight={isFilterHighlighted}>
+        <Button className="p-1.5" onClick={onFilter} highlight={isFilterHighlighted}>
           <BsFunnel />
         </Button>
       </Title>
 
       <Title text="Reset Table" position="right">
-        <Button classList="p-1.5" onClick={onResetTable}>
+        <Button className="p-1.5" onClick={onResetTable}>
           <BsArrowCounterclockwise />
         </Button>
       </Title>
 
       <Title text="Copy All" position="right">
-        <Button classList="p-1.5" onClick={onCopyClick} highlight={isCopyHighlighted}>
+        <Button className="p-1.5" onClick={onCopyClick} highlight={isCopyHighlighted}>
           <BsClipboard />
         </Button>
       </Title>
 
       <Title text="Copy Selection" position="right">
         <Button
-          classList="p-1.5"
+          className="p-1.5"
           onClick={onCopySelectionClick}
           highlight={isCopySelectionHighlighted}
         >

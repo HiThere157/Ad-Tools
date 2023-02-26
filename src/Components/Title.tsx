@@ -2,15 +2,15 @@ type TitleProps = {
   children: React.ReactNode;
   text: string;
   position: "right" | "bottom" | "top";
-  classList?: string;
+  className?: string;
 };
-export default function Title({ children, text, position, classList = "" }: TitleProps) {
+export default function Title({ children, text, position, className = "" }: TitleProps) {
   const containerClasses = "absolute peer-hover:scale-100 scale-0 z-[15]";
   const accentClasses = "absolute h-2 w-2 rounded-sm bg-elBg rotate-45";
   const textClasses = "rounded bg-elBg text-sm px-1.5 whitespace-pre";
 
   return (
-    <div className={"relative inline-block" + classList}>
+    <div className={"relative inline-block" + className}>
       <div className="inline-block peer align-middle">{children}</div>
       {position === "right" && (
         <div

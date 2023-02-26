@@ -97,13 +97,13 @@ export default function ComputerPage() {
           onSubmit={runQuery}
         >
           <Title text="Show WMI Page" position="bottom">
-            <Button classList="p-1" onClick={() => redirect("wmi", query)}>
+            <Button className="p-1" onClick={() => redirect("wmi", query)}>
               <BsCpu />
             </Button>
           </Title>
           <Title text="Show Azure Device Page" position="bottom">
             <Button
-              classList="p-1"
+              className="p-1"
               onClick={() => {
                 redirect("azureDevice", { input: query.input });
               }}

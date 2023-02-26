@@ -146,7 +146,7 @@ export default function FilterMenu({
             {currentSavedFilter !== "No Preset" && (
               <Title text="Edit Preset" position="bottom">
                 <Button
-                  classList="p-1.5 text-xs ml-1"
+                  className="p-1.5 text-xs ml-1"
                   highlight={isEditing}
                   onClick={() => {
                     setIsEditing(!isEditing);
@@ -158,13 +158,13 @@ export default function FilterMenu({
             )}
             {isEditing ? (
               <Title text="Delete Preset" position="bottom">
-                <Button classList="p-1.5 text-xs ml-1" onClick={removeSavedFilter}>
+                <Button className="p-1.5 text-xs ml-1" onClick={removeSavedFilter}>
                   <BsFillTrashFill />
                 </Button>
               </Title>
             ) : (
               <Title text="Create Preset" position="bottom">
-                <Button classList="p-1.5 text-xs ml-1" onClick={addSavedFilter}>
+                <Button className="p-1.5 text-xs ml-1" onClick={addSavedFilter}>
                   <BsPlusLg />
                 </Button>
               </Title>
@@ -201,7 +201,7 @@ export default function FilterMenu({
                       <Input
                         value={filter[column]}
                         onChange={(filterString: string) => updateFilter(column, filterString)}
-                        classList="min-w-[10rem]"
+                        className="min-w-[10rem]"
                         disabled={!isEditing && currentSavedFilter !== "No Preset"}
                       />
                     </td>
@@ -234,7 +234,7 @@ export default function FilterMenu({
                         <Input
                           value={filter[key]}
                           onChange={(filterString: string) => updateFilter(key, filterString)}
-                          classList="min-w-[10rem]"
+                          className="min-w-[10rem]"
                           disabled={!isEditing}
                         />
                       </td>

@@ -64,7 +64,7 @@ function DropdownBody({ items, onSelection }: DropdownBodyProps) {
         return (
           <Button
             key={index}
-            classList={
+            className={
               "rounded-none whitespace-nowrap min-h-[1.5em] " + (index !== 0 ? "border-t-0" : "")
             }
             onClick={() => onSelection(item)}

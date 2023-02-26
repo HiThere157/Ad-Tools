@@ -22,7 +22,7 @@ export default function AadInputBar({
       <Input
         label={label}
         value={query.input ?? ""}
-        classList="w-64"
+        className="w-64"
         disabled={isLoading}
         onChange={(input) => onChange({ input })}
         onEnter={onSubmit}

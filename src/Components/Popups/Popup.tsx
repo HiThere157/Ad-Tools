@@ -6,10 +6,10 @@ type PopupProps = {
   children: React.ReactNode;
   isOpen: boolean;
   title: string;
-  classOverride?: string;
+  className?: string;
   onExit: () => any;
 };
-export default function Popup({ children, isOpen, title, classOverride = "", onExit }: PopupProps) {
+export default function Popup({ children, isOpen, title, className = "", onExit }: PopupProps) {
   return (
     <>
       {isOpen && (
@@ -20,13 +20,12 @@ export default function Popup({ children, isOpen, title, classOverride = "", onE
           />
           <div
             className={
-              "absolute container top-1/4 left-1/2 translate-x-[-50%] w-[25rem] py-1 " +
-              classOverride
+              "absolute container top-1/4 left-1/2 translate-x-[-50%] w-[25rem] py-1 " + className
             }
           >
             <div className="flex justify-between items-center">
               <h1 className="text-2xl font-bold mx-2">{title}</h1>
-              <Button classList="p-1.5" onClick={onExit}>
+              <Button className="p-1.5" onClick={onExit}>
                 <BsXLg />
               </Button>
             </div>

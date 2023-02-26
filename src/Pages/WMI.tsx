@@ -100,7 +100,7 @@ export default function WMIPage() {
           onSubmit={runQuery}
         >
           <Title text="Show Computer Page" position="bottom">
-            <Button classList="p-1" onClick={() => redirect("computer", query)}>
+            <Button className="p-1" onClick={() => redirect("computer", query)}>
               <BsDisplay />
             </Button>
           </Title>

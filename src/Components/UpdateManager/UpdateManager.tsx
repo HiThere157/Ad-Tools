@@ -94,7 +94,7 @@ export default function UpdateManager() {
 
   return (
     <div ref={ref} className="z-[20]">
-      <WinButton classList="relative" onClick={() => setIsOpen(!isOpen)}>
+      <WinButton className="relative" onClick={() => setIsOpen(!isOpen)}>
         <BsDownload />
         {appStatus && appStatus !== "upToDate" && (
           <BsCircleFill className="absolute top-0.5 right-1 text-xs text-redColor" />
@@ -130,7 +130,7 @@ function UpdateManagerBody({
         <span className="block text-xl ml-1 mr-10">Update Manager</span>
         <Title text="Refresh" position="right">
           <Button
-            classList="p-1.5"
+            className="p-1.5"
             onClick={onRefresh}
             disabled={appStatus === "pending" || !appStatus}
           >

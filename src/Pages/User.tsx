@@ -86,7 +86,7 @@ export default function UserPage() {
       >
         <Title text="Show Azure User Page" position="bottom">
           <Button
-            classList="p-1"
+            className="p-1"
             onClick={() => {
               redirect("azureUser", { input: `${query.input}@${query.domain}` });
             }}

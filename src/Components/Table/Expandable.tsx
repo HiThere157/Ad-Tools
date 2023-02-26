@@ -16,13 +16,13 @@ export default function Expandable({ children, canExpand = true }: ExpandablePro
       {canExpand ? (
         <div className="flex gap-x-2">
           <div className="flex flex-col gap-y-1 items-center my-1">
-            <Button classList="p-1" onClick={() => setIsOpen(!isOpen)}>
+            <Button className="p-1" onClick={() => setIsOpen(!isOpen)}>
               {isOpen ? <BsArrowsAngleContract /> : <BsArrowsAngleExpand />}
             </Button>
 
             {isOpen && (
               <Button
-                classList="p-0 my-1 flex-grow opacity-50"
+                className="p-0 my-1 flex-grow opacity-50"
                 onClick={() => setIsOpen(!isOpen)}
               ></Button>
             )}

@@ -49,7 +49,7 @@ export default function DnsInputBar({
       <Input
         label={label}
         value={query.input ?? ""}
-        classList="w-64"
+        className="w-64"
         disabled={isLoading}
         onChange={(input) => onChange({ type: query.type, input })}
         onEnter={onSubmit}

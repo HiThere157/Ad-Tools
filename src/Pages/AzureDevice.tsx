@@ -102,7 +102,7 @@ export default function AzureDevicePage() {
       >
         <Title text="Show AD Computer Page" position="bottom">
           <Button
-            classList="p-1"
+            className="p-1"
             onClick={() => {
               redirect("computer", { input: query.input });
             }}

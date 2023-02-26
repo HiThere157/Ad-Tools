@@ -16,7 +16,7 @@ export default function DownloadStatus({ status }: DownloadStatusProps) {
       );
     case "pending":
       return (
-        <Title classList="h-[19px]" text="Downloading" position="right">
+        <Title className="h-[19px]" text="Downloading" position="right">
           <ClipLoader size="19px" color="#208CF0" speedMultiplier={0.5} />
         </Title>
       );

@@ -116,7 +116,7 @@ export default function AzureUserPage() {
       >
         <Title text="Show AD User Page" position="bottom">
           <Button
-            classList="p-1"
+            className="p-1"
             onClick={() => {
               redirect("user", { input: query.input?.split("@")[0] });
             }}
@@ -127,7 +127,7 @@ export default function AzureUserPage() {
       </AadInputBar>
       <Hint
         hint="Hint: full user principal name is required (Eg.: kochda7@example.com)"
-        classList="mb-3"
+        className="mb-3"
       />
       <TableLayout>
         <Table

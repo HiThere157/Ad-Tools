@@ -124,7 +124,7 @@ export default function AzureGroupPage() {
       >
         <Title text="Show AD Group Page" position="bottom">
           <Button
-            classList="p-1"
+            className="p-1"
             onClick={() => {
               redirect("group", { input: query.input });
             }}

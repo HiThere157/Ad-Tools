@@ -18,7 +18,7 @@ export default function RecursiveMembers({ query, isOpen, onExit }: RecursiveMem
   return (
     <Popup
       title={"Group: " + query.input}
-      classOverride="w-[50%] min-w-[35rem] top-[8%] max-h-[85%] overflow-auto"
+      className="w-[50%] min-w-[35rem] top-[8%] max-h-[85%] overflow-auto"
       isOpen={isOpen}
       onExit={onExit}
     >
@@ -77,7 +77,7 @@ function Member({ query, type, depth }: MemberProps) {
   return (
     <div>
       <Button
-        classList="flex items-center w-full my-1 border-0 text-whiteColorAccent"
+        className="flex items-center w-full my-1 border-0 text-whiteColorAccent"
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
         <div className="text-xl mr-1">{isCollapsed ? <FiChevronDown /> : <FiChevronUp />}</div>
@@ -89,7 +89,7 @@ function Member({ query, type, depth }: MemberProps) {
         <div className="flex flex-row">
           <div className="mx-3">
             <Button
-              classList="p-0 h-full opacity-50"
+              className="p-0 h-full opacity-50"
               onClick={() => setIsCollapsed(!isCollapsed)}
             />
           </div>

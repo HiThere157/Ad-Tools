@@ -40,7 +40,7 @@ export default function AdInputBar({
       <Input
         label={label}
         value={query.input ?? ""}
-        classList="w-64"
+        className="w-64"
         disabled={isLoading || isBlocked}
         onChange={(input) => onChange({ domain: query.domain, input })}
         onEnter={onSubmit}

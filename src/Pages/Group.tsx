@@ -113,7 +113,7 @@ export default function GroupPage() {
       >
         <Title text="Show Recursive Members" position="bottom">
           <Button
-            classList="p-1"
+            className="p-1"
             onClick={() => {
               setShowRecursiveMembers(true);
             }}
@@ -123,7 +123,7 @@ export default function GroupPage() {
         </Title>
         <Title text="Show Azure Group Page" position="bottom">
           <Button
-            classList="p-1"
+            className="p-1"
             onClick={() => {
               redirect("azureGroup", { input: query.input });
             }}

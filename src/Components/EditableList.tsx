@@ -73,7 +73,7 @@ export default function EditableList({
               <td>
                 <Title text="Edit Entry" position="bottom">
                   <Button
-                    classList="p-1.5 text-xs"
+                    className="p-1.5 text-xs"
                     highlight={editingIndex === index}
                     onClick={() => {
                       setEditingIndex(index === editingIndex ? -1 : index);
@@ -86,7 +86,7 @@ export default function EditableList({
 
                 <Title text="Remove Entry" position="bottom">
                   <Button
-                    classList="p-1.5 text-xs ml-1"
+                    className="p-1.5 text-xs ml-1"
                     onClick={() => {
                       removeItem(index);
                     }}
@@ -111,7 +111,7 @@ export default function EditableList({
           </td>
           <td>
             <Title text="Add Entry" position="bottom">
-              <Button classList="p-1.5 text-xs" onClick={addItem} disabled={isLocked}>
+              <Button className="p-1.5 text-xs" onClick={addItem} disabled={isLocked}>
                 <BsPlusLg />
               </Button>
             </Title>

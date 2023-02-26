@@ -26,7 +26,7 @@ export default function NavBar() {
       className="select-none flex flex-col overflow-auto bg-lightBg"
     >
       <Button
-        classList="flex justify-center py-0.5 rounded-none text-xl"
+        className="flex justify-center py-0.5 rounded-none text-xl"
         theme="colorOnHover"
         onClick={() => {
           setIsOpen(!isOpen);
