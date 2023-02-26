@@ -49,6 +49,7 @@ export default function SearchPage() {
 
   const runQuery = async () => {
     setIsLoading(true);
+
     await Promise.all([
       makeAPICall<PSResult[]>({
         command: "Get-ADUser",
@@ -81,6 +82,7 @@ export default function SearchPage() {
         callback: setComputers,
       }),
     ]);
+
     setIsLoading(false);
   };
 

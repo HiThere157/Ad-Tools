@@ -8,6 +8,7 @@ import {
   getPropertiesWrapper,
   getMembershipFromAdObject,
   prepareDNSResult,
+  makeToList,
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
@@ -19,7 +20,7 @@ import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
-import { BsCpu } from "react-icons/bs";
+import { BsCpu, BsExclamationCircle } from "react-icons/bs";
 import { VscAzure } from "react-icons/vsc";
 
 export default function ComputerPage() {
@@ -34,6 +35,11 @@ export default function ComputerPage() {
   );
   const [memberOf, setMemberOf, memberOfKey] = useSessionStorage<Result<PSResult[]>>(
     `${p}_memberOf`,
+    {},
+  );
+
+  const [memberOfFallback, setMemberOfFallback] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_memberOfFallback`,
     {},
   );
 
@@ -64,7 +70,16 @@ export default function ComputerPage() {
           Properties: "*",
         },
         postProcessor: [getPropertiesWrapper, getMembershipFromAdObject],
-        callback: [setAttributes, setMemberOf],
+        callback: [setAttributes, setMemberOfFallback],
+      }),
+      makeAPICall<PSResult[]>({
+        command: "Get-ADPrincipalGroupMembership",
+        args: {
+          Identity: query.input,
+          Server: query.domain,
+        },
+        postProcessor: makeToList,
+        callback: setMemberOf,
       }),
     ]);
 
@@ -111,13 +126,23 @@ export default function ComputerPage() {
         <Table
           title="Group Memberships"
           name={memberOfKey}
-          columns={columns.membership}
-          data={memberOf}
+          columns={memberOf.error ? columns.limited : columns.group}
+          data={memberOf.error ? memberOfFallback : memberOf}
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
           }}
           isLoading={isLoading}
-        />
+        >
+          {memberOf.error && (
+            <Title
+              text={`Get-ADPrincipalGroupMembership returned an Error.
+            Falling back to MemberOf Property`}
+              position="top"
+            >
+              <BsExclamationCircle className="text-xl dark:text-orangeColor" />
+            </Title>
+          )}
+        </Table>
       </TableLayout>
       <ScrollPosition name={p} />
     </article>

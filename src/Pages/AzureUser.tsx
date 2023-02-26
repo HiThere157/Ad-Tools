@@ -94,6 +94,7 @@ export default function AzureUserPage() {
       callback: setDevices,
       useStaticSession: true,
     });
+
     setIsLoading(false);
   };
 

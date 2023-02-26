@@ -23,6 +23,7 @@ export default function PrinterPage() {
 
   const runQuery = async () => {
     setIsLoading(true);
+
     await makeAPICall<PSResult[]>({
       command: "Get-Printer",
       args: {
@@ -31,6 +32,7 @@ export default function PrinterPage() {
       postProcessor: replacePrinterStatus,
       callback: setPrinters,
     });
+
     setIsLoading(false);
   };
 

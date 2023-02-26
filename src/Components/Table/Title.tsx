@@ -7,6 +7,7 @@ type TitleProps = {
   nFiltered: number;
   isTableOpen: boolean;
   setTableOpen: (isOpen: boolean) => void;
+  children?: React.ReactNode;
 };
 export default function Title({
   title,
@@ -15,6 +16,7 @@ export default function Title({
   nFiltered,
   isTableOpen,
   setTableOpen,
+  children,
 }: TitleProps) {
   return (
     <div className="flex mb-1 ml-1">
@@ -22,10 +24,14 @@ export default function Title({
         {isTableOpen ? <FiChevronUp /> : <FiChevronDown />}
       </button>
       <div className="flex items-baseline">
-        <button className="mr-2 outline-none" onClick={() => setTableOpen(!isTableOpen)}>
+        <button
+          className="flex items-center gap-2 mr-2 outline-none"
+          onClick={() => setTableOpen(!isTableOpen)}
+        >
           <h2 className="text-2xl font-bold" style={{ scrollMarginTop: "60px" }}>
             {title}
           </h2>
+          {children}
         </button>
         <span className="dark:text-whiteColorAccent mr-1">
           {n} {n === 1 ? "Result" : "Results"}

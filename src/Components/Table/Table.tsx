@@ -17,6 +17,7 @@ type TableProps = {
   data: Result<PSResult[]>;
   onRedirect?: (entry: PSResult) => any;
   isLoading?: boolean;
+  children?: React.ReactNode;
 };
 export default function Table({
   title,
@@ -25,6 +26,7 @@ export default function Table({
   data,
   onRedirect,
   isLoading = false,
+  children,
 }: TableProps) {
   const [isVisible, setIsVisible] = useSessionStorage<boolean>(`${name}_visible`, true);
 
@@ -75,7 +77,9 @@ export default function Table({
         nFiltered={filteredCount}
         isTableOpen={isVisible}
         setTableOpen={setIsVisible}
-      />
+      >
+        {children}
+      </Title>
       {isVisible && (
         <div className="flex gap-x-1">
           <ActionMenu

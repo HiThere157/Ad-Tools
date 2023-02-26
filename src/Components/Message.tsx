@@ -28,7 +28,7 @@ export default function MessageElement({ message }: MessageProps) {
       case "info":
         return ["dark:border-x-elAccentBg", <BsCheckCircle />];
       case "warning":
-        return ["dark:border-x-redColor", <BsExclamationOctagon />];
+        return ["dark:border-x-orangeColor", <BsExclamationOctagon />];
     }
   };
 

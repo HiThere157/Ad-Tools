@@ -3,6 +3,9 @@ module.exports = {
     args: ["Identity", "Filter", "Server", "Properties"],
     charWhitelist: [","],
   },
+  "Get-ADPrincipalGroupMembership": {
+    args: ["Identity", "Server"],
+  },
   "Get-ADGroup": {
     args: ["Identity", "Filter", "Server", "Properties"],
     charWhitelist: [","],

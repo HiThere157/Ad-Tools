@@ -4,6 +4,7 @@ const columnNames: { [key: string]: string } = {
   key: "Key",
   value: "Value",
 
+  DistinguishedName: "Distinguished Name",
   ObjectClass: "Type",
   DisplayName: "Display Name",
   OperatingSystem: "Operating System",
@@ -39,7 +40,7 @@ const columns: { [key: string]: string[] } = {
 
   // AD Columns
   member: ["Name", "ObjectClass"],
-  membership: ["Name"],
+  limited: ["Name", "DistinguishedName"],
   user: ["Name", "DisplayName", "Department"],
   group: ["Name", "Description"],
   computer: ["Name", "OperatingSystem"],

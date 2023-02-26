@@ -8,6 +8,7 @@ import {
   getPropertiesWrapper,
   getMembershipFromAdObject,
   makeToList,
+  getMembersFromAdGroup,
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
@@ -19,6 +20,7 @@ import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
 import { VscAzure } from "react-icons/vsc";
+import { BsExclamationCircle } from "react-icons/bs";
 
 export default function GroupPage() {
   const p = useLocation().pathname.substring(1);
@@ -38,6 +40,15 @@ export default function GroupPage() {
     {},
   );
 
+  const [memberOfFallback, setMemberOfFallback] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_memberOfFallback`,
+    {},
+  );
+  const [membersFallback, setMembersFallback] = useSessionStorage<Result<PSResult[]>>(
+    `${p}_membersFallback`,
+    {},
+  );
+
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
     if (reQuery) runQuery();
@@ -47,6 +58,7 @@ export default function GroupPage() {
   const runQuery = async () => {
     setReQuery(false);
     setIsLoading(true);
+
     await Promise.all([
       makeAPICall<PSResult[]>({
         command: "Get-ADGroup",
@@ -55,8 +67,17 @@ export default function GroupPage() {
           Server: query.domain,
           Properties: "*",
         },
-        postProcessor: [getPropertiesWrapper, getMembershipFromAdObject],
-        callback: [setAttributes, setMemberOf],
+        postProcessor: [getPropertiesWrapper, getMembershipFromAdObject, getMembersFromAdGroup],
+        callback: [setAttributes, setMemberOfFallback, setMembersFallback],
+      }),
+      makeAPICall<PSResult[]>({
+        command: "Get-ADPrincipalGroupMembership",
+        args: {
+          Identity: query.input,
+          Server: query.domain,
+        },
+        postProcessor: makeToList,
+        callback: setMemberOf,
       }),
       makeAPICall<PSResult[]>({
         command: "Get-ADGroupMember",
@@ -68,6 +89,7 @@ export default function GroupPage() {
         callback: setMembers,
       }),
     ]);
+
     setIsLoading(false);
   };
 
@@ -102,8 +124,8 @@ export default function GroupPage() {
         <Table
           title="Members"
           name={membersKey}
-          columns={columns.member}
-          data={members}
+          columns={members.error ? columns.limited : columns.member}
+          data={members.error ? membersFallback : members}
           onRedirect={(entry: { Name?: string; ObjectClass?: string }) => {
             if (!entry.ObjectClass) return;
             if (!["group", "user", "computer"].includes(entry.ObjectClass)) return;
@@ -114,18 +136,38 @@ export default function GroupPage() {
             if (entry.ObjectClass === "group") window.location.reload();
           }}
           isLoading={isLoading}
-        />
+        >
+          {members.error && (
+            <Title
+              text={`Get-ADGroupMember returned an Error.
+            Falling back to Members Property`}
+              position="top"
+            >
+              <BsExclamationCircle className="text-xl dark:text-orangeColor" />
+            </Title>
+          )}
+        </Table>
         <Table
           title="Group Memberships"
           name={memberOfKey}
-          columns={columns.membership}
-          data={memberOf}
+          columns={memberOf.error ? columns.limited : columns.group}
+          data={memberOf.error ? memberOfFallback : memberOf}
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
             window.location.reload();
           }}
           isLoading={isLoading}
-        />
+        >
+          {memberOf.error && (
+            <Title
+              text={`Get-ADPrincipalGroupMembership returned an Error.
+            Falling back to MemberOf Property`}
+              position="top"
+            >
+              <BsExclamationCircle className="text-xl dark:text-orangeColor" />
+            </Title>
+          )}
+        </Table>
       </TableLayout>
       <ScrollPosition name={p} />
     </article>

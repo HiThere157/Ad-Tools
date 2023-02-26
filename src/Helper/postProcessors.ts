@@ -38,6 +38,20 @@ function getMembershipFromAdObject(AdObject: {
   });
 }
 
+function getMembersFromAdGroup(AdGroup: {
+  Members: string[];
+}): { Name: string; DistinguishedName: string }[] {
+  const getCN = (dn: string) => {
+    const cn = dn.split(",").filter((unit) => unit.startsWith("CN="))[0];
+    return cn?.split("=")[1] ?? "";
+  };
+
+  const Members = [...AdGroup.Members];
+  return Members.map((member) => {
+    return { Name: getCN(member), DistinguishedName: member };
+  });
+}
+
 function replaceASCIIArray(MonitorWMI: PSResult | PSResult[]): PSResult[] {
   const keysToReplace = ["UserFriendlyName", "SerialNumberID"];
 
@@ -140,6 +154,7 @@ export {
   getWMIPropertiesWrapper,
   getExtensionsFromAadUser,
   getMembershipFromAdObject,
+  getMembersFromAdGroup,
   replaceASCIIArray,
   prepareDNSResult,
   replacePrinterStatus,

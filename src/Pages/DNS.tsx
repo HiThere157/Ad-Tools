@@ -28,6 +28,7 @@ export default function DnsPage() {
 
   const runQuery = async () => {
     setIsLoading(true);
+
     await makeAPICall<PSResult[]>({
       command: "Resolve-DnsName",
       args: {
@@ -37,6 +38,7 @@ export default function DnsPage() {
       postProcessor: prepareDNSResult,
       callback: setResults,
     });
+
     setIsLoading(false);
   };
 

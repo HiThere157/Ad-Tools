@@ -72,6 +72,7 @@ export default function AzureSearchPage() {
       callback: setDevices,
       useStaticSession: true,
     });
+
     setIsLoading(false);
   };
 

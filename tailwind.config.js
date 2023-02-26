@@ -10,6 +10,7 @@ module.exports = {
       whiteColor: "#F0F0F0",
       whiteColorAccent: "#A0A0A0",
       redColor: "#B92828",
+      orangeColor: "#FFA500",
       greenColor: "#56db56",
 
       elBg: "#272727",
