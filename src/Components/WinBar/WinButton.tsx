@@ -8,7 +8,7 @@ export default function WinButton({ children, classList = "", onClick }: WinButt
     <button
       tabIndex={-1}
       className={
-        "px-3 py-2 outline-none dark:bg-elBg dark:enabled:hover:bg-elAccentBg dark:enabled:active:bg-elActiveBg " +
+        "px-3 py-2 outline-none bg-elBg enabled:hover:bg-elAccentBg enabled:active:bg-elActiveBg " +
         classList
       }
       onClick={onClick}

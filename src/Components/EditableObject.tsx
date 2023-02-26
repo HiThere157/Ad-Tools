@@ -69,7 +69,7 @@ export default function EditableObject({
                     />
                   </td>
                   <td>
-                    <span className="dark:text-foregroundAccent mx-2">:</span>
+                    <span className="text-foregroundAccent mx-2">:</span>
                   </td>
                   <td>
                     <Input
@@ -87,7 +87,7 @@ export default function EditableObject({
                     <span>{key}</span>
                   </td>
                   <td>
-                    <span className="dark:text-foregroundAccent mx-2">:</span>
+                    <span className="text-foregroundAccent mx-2">:</span>
                   </td>
                   <td>
                     <span>{value}</span>
@@ -134,7 +134,7 @@ export default function EditableObject({
             />
           </td>
           <td>
-            <span className="dark:text-foregroundAccent mx-2">:</span>
+            <span className="text-foregroundAccent mx-2">:</span>
           </td>
           <td>
             <Input

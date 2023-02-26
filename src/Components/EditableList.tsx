@@ -50,7 +50,7 @@ export default function EditableList({
           return (
             <tr key={index}>
               <td>
-                <span className="dark:text-whiteColorAccent">{index + 1}:</span>
+                <span className="text-whiteColorAccent">{index + 1}:</span>
               </td>
               {index === editingIndex ? (
                 <td>

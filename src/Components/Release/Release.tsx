@@ -37,11 +37,11 @@ export default function Release({
 
         <Link className="flex items-center gap-2" href={author.html_url}>
           <img className="h-8 rounded-lg" src={author.avatar_url} alt="author profile"></img>
-          <span className="dark:text-whiteColorAccent">{author.login}</span>
+          <span className="text-whiteColorAccent">{author.login}</span>
         </Link>
       </div>
 
-      <hr className="my-1.5 dark:border-elFlatBorder" />
+      <hr className="my-1.5 border-elFlatBorder" />
 
       <div className="flex items-center text-xs text-whiteColorAccent ml-1">
         <div className="flex items-center gap-1">
@@ -69,7 +69,7 @@ export default function Release({
         {body ? (
           <ReactMarkdown>{body}</ReactMarkdown>
         ) : (
-          <span className="block dark:text-whiteColorAccent my-1">No Release Notes provided</span>
+          <span className="block text-whiteColorAccent my-1">No Release Notes provided</span>
         )}
       </div>
     </div>

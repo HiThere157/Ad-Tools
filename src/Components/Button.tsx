@@ -19,19 +19,19 @@ export default function Button({
       className={
         "control border-2 " +
         (theme === "flat"
-          ? "dark:bg-elBg dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:active:border-elFlatActiveBorder "
+          ? "bg-elBg hover:bg-elFlatAccentBg active:bg-elFlatActiveBg border-elFlatBorder hover:border-elFlatAccentBorder active:border-elFlatActiveBorder "
           : " ") +
         (theme === "colorOnHover"
-          ? "dark:bg-elBg dark:hover:bg-elAccentBg dark:active:bg-elActiveBg dark:border-elBg dark:hover:border-elAccentBg dark:active:border-elActiveBg "
+          ? "bg-elBg hover:bg-elAccentBg active:bg-elActiveBg border-elBg hover:border-elAccentBg active:border-elActiveBg "
           : " ") +
         (theme === "color"
-          ? "dark:bg-elAccentBg dark:hover:bg-elActiveBg dark:active:bg-elDarkerActiveBg dark:border-elAccentBg dark:hover:border-elActiveBg dark:active:border-elDarkerActiveBg "
+          ? "bg-elAccentBg hover:bg-elActiveBg active:bg-elDarkerActiveBg border-elAccentBg hover:border-elActiveBg active:border-elDarkerActiveBg "
           : " ") +
         (theme === "invisible"
-          ? "dark:bg-transparent dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:active:border-elFlatActiveBorder "
+          ? "bg-transparent hover:bg-elFlatAccentBg active:bg-elFlatActiveBg border-elFlatBorder hover:border-elFlatAccentBorder active:border-elFlatActiveBorder "
           : " ") +
         // highlight styling
-        (highlight ? "dark:!border-elAccentBg " : " ") +
+        (highlight ? "!border-elAccentBg " : " ") +
         classList
       }
       onClick={() => onClick()}

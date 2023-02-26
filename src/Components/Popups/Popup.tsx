@@ -15,7 +15,7 @@ export default function Popup({ children, isOpen, title, classOverride = "", onE
       {isOpen && (
         <div className="[&>*]:z-[50]">
           <div
-            className="absolute top-0 bottom-0 left-0 right-0 opacity-80 dark:bg-darkBg"
+            className="absolute top-0 bottom-0 left-0 right-0 opacity-80 bg-darkBg"
             onClick={onExit}
           />
           <div
@@ -30,7 +30,7 @@ export default function Popup({ children, isOpen, title, classOverride = "", onE
                 <BsXLg />
               </Button>
             </div>
-            <hr className="my-1 dark:border-elFlatBorder"></hr>
+            <hr className="my-1 border-elFlatBorder"></hr>
             <div>{children}</div>
           </div>
         </div>

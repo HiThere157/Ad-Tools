@@ -33,7 +33,7 @@ type MemberProps = {
   depth: number;
 };
 function Member({ query, type, depth }: MemberProps) {
-  const [members, setMembers] = useState<{ query: AdQuery, type: string }[]>([]);
+  const [members, setMembers] = useState<{ query: AdQuery; type: string }[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
@@ -52,12 +52,14 @@ function Member({ query, type, depth }: MemberProps) {
       postProcessor: makeToList,
       callback: (result: Result<PSResult[]>) => {
         setMembers(
-          result.output?.map((result) => {
-            return {
-              query: { input: result.Name?.toString(), domain: query.domain?.toString() },
-              type: result.ObjectClass?.toString(),
-            };
-          }).sort((result) => result.type === "group" ? 1 : -1) ?? [],
+          result.output
+            ?.map((result) => {
+              return {
+                query: { input: result.Name?.toString(), domain: query.domain?.toString() },
+                type: result.ObjectClass?.toString(),
+              };
+            })
+            .sort((result) => (result.type === "group" ? 1 : -1)) ?? [],
         );
       },
     });
@@ -66,18 +68,19 @@ function Member({ query, type, depth }: MemberProps) {
   };
 
   useEffect(() => {
-    if (type === "group") runQuery()
+    if (type === "group") runQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (type !== "group") return <div>{query.input}</div>
+  if (type !== "group") return <div>{query.input}</div>;
 
   return (
     <div>
-      <Button classList="flex items-center w-full my-1 border-0 text-whiteColorAccent" onClick={() => setIsCollapsed(!isCollapsed)}>
-        <div className="text-xl mr-1">
-          {isCollapsed ? <FiChevronDown /> : <FiChevronUp />}
-        </div>
+      <Button
+        classList="flex items-center w-full my-1 border-0 text-whiteColorAccent"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+      >
+        <div className="text-xl mr-1">{isCollapsed ? <FiChevronDown /> : <FiChevronUp />}</div>
 
         <span>{query.input}</span>
       </Button>
@@ -85,13 +88,14 @@ function Member({ query, type, depth }: MemberProps) {
       {!isCollapsed && (
         <div className="flex flex-row">
           <div className="mx-3">
-            <Button classList="p-0 h-full opacity-50" onClick={() => setIsCollapsed(!isCollapsed)} />
+            <Button
+              classList="p-0 h-full opacity-50"
+              onClick={() => setIsCollapsed(!isCollapsed)}
+            />
           </div>
 
           <div className="w-full">
-            {isLoading && (
-              <PulseLoader size="7px" color="#208CF0" speedMultiplier={0.75} />
-            )}
+            {isLoading && <PulseLoader size="7px" color="#208CF0" speedMultiplier={0.75} />}
 
             {members.map((member, index) => (
               <Member key={index} query={member.query} type={member.type} depth={depth + 1} />
@@ -99,6 +103,6 @@ function Member({ query, type, depth }: MemberProps) {
           </div>
         </div>
       )}
-    </div >
+    </div>
   );
 }

@@ -29,9 +29,9 @@ export default function Input({
         className={
           "control w-full " +
           // background styling
-          "dark:bg-elFlatBg dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg " +
+          "bg-elFlatBg hover:bg-elFlatAccentBg active:bg-elFlatActiveBg " +
           // border styling
-          "border-2 dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:focus-within:border-elFlatActiveBorder " +
+          "border-2 border-elFlatBorder hover:border-elFlatAccentBorder focus-within:border-elFlatActiveBorder " +
           classList
         }
         value={value ?? ""}

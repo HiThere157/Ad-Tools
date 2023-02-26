@@ -84,16 +84,16 @@ export default function TableElement({
 
   return (
     <table className="w-full whitespace-nowrap">
-      <thead className="dark:bg-elBg">
-        <tr className="dark:border-elFlatBorder border-b-2">
-          <th className="px-2 dark:border-elFlatBorder border-y">
+      <thead className="bg-elBg">
+        <tr className="border-elFlatBorder border-b-2">
+          <th className="px-2 border-elFlatBorder border-y">
             <div className="flex justify-center">
               <Checkbox checked={getMainCheckStatus()} onChange={onMainCheck} />
             </div>
           </th>
           {columns.map((column, index) => {
             return (
-              <th key={index} className="p-0 dark:border-elFlatBorder border">
+              <th key={index} className="p-0 border-elFlatBorder border">
                 <Button
                   classList="border-0 rounded-none flex items-center justify-between py-1 px-4 w-full"
                   onClick={() => onHeaderClick(column)}
@@ -116,8 +116,8 @@ export default function TableElement({
       <tbody>
         {getFinalEntries().map((entry) => {
           return (
-            <tr key={entry.__id__} className="dark:hover:bg-lightBg">
-              <td className="relative group px-2 dark:border-elFlatBorder border-y">
+            <tr key={entry.__id__} className="hover:bg-lightBg">
+              <td className="relative group px-2 border-elFlatBorder border-y">
                 <Checkbox
                   checked={selected.includes(entry.__id__ ?? -1)}
                   onChange={() => {
@@ -127,7 +127,7 @@ export default function TableElement({
               </td>
               {columns.map((column, index) => {
                 return (
-                  <td key={index} className="relative group px-2 dark:border-elFlatBorder border">
+                  <td key={index} className="relative group px-2 border-elFlatBorder border">
                     <TableCell text={entry[column]} />
                     <RedirectButton
                       isVisible={!!onRedirect}

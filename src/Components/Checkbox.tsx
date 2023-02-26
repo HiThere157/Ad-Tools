@@ -29,10 +29,10 @@ export default function Checkbox({
         className={
           "control flex items-center h-5 w-5 p-1 " +
           // background styling
-          "dark:bg-elFlatBg dark:hover:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg " +
+          "bg-elFlatBg hover:bg-elFlatAccentBg active:bg-elFlatActiveBg " +
           // border styling
-          "border-2 dark:border-elFlatBorder dark:hover:border-elFlatAccentBorder dark:active:border-elFlatActiveBorder " +
-          "dark:text-elAccentBg " +
+          "border-2 border-elFlatBorder hover:border-elFlatAccentBorder active:border-elFlatActiveBorder " +
+          "text-elAccentBg " +
           (disabled ? "opacity-50 cursor-not-allowed" : "") +
           classList
         }

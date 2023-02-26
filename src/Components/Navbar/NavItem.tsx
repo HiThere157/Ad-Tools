@@ -14,8 +14,8 @@ export default function NavItem({ to, icon, text, isOpen }: NavItemProps) {
       className={({ isActive }) =>
         "control mb-1 " +
         (isActive
-          ? "dark:bg-elAccentBg"
-          : "dark:hover:bg-elFlatAccentBg dark:focus:bg-elFlatAccentBg dark:active:bg-elFlatActiveBg")
+          ? "bg-elAccentBg"
+          : "hover:bg-elFlatAccentBg focus:bg-elFlatAccentBg active:bg-elFlatActiveBg")
       }
     >
       <div className="flex flex-row items-center p-1">

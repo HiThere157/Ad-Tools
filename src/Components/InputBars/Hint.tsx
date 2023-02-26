@@ -3,9 +3,5 @@ type HintProps = {
   classList?: string;
 };
 export default function Hint({ hint, classList = "" }: HintProps) {
-  return hint ? (
-    <div className={"ml-1 dark:text-whiteColorAccent " + classList}>{hint}</div>
-  ) : (
-    <></>
-  );
+  return hint ? <div className={"ml-1 text-whiteColorAccent " + classList}>{hint}</div> : <></>;
 }

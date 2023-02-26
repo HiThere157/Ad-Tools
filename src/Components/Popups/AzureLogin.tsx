@@ -86,7 +86,7 @@ function LoginFrame({ children, isNoteOpen, onCancel, onSubmit }: LoginFrameProp
       </div>
 
       {isNoteOpen && (
-        <span className="mt-2 text-center dark:text-redColor">
+        <span className="mt-2 text-center text-redColor">
           login popup opened.
           <br />
           (check behind other windows aswell)

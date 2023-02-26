@@ -33,11 +33,11 @@ export default function Title({
           </h2>
           {children}
         </button>
-        <span className="dark:text-whiteColorAccent mr-1">
+        <span className="text-whiteColorAccent mr-1">
           {n} {n === 1 ? "Result" : "Results"}
         </span>
         {(nSelected !== 0 || nFiltered !== 0) && (
-          <span className="dark:text-whiteColorAccent">
+          <span className="text-whiteColorAccent">
             ({nSelected !== 0 && `${nSelected} Selected`}
             {nSelected !== 0 && nFiltered !== 0 && ", "}
             {nFiltered !== 0 && `${nFiltered} Hidden`})

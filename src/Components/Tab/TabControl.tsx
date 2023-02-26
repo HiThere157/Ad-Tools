@@ -44,8 +44,7 @@ export default function TabControl({ children, defaultIndex, onChange }: TabCont
               </Button>
               <div
                 className={
-                  (index === selectedIndex ? "dark:bg-elAccentBg " : "dark:bg-elFlatBorder ") +
-                  "h-1"
+                  (index === selectedIndex ? "bg-elAccentBg " : "bg-elFlatBorder ") + "h-1"
                 }
               ></div>
             </div>

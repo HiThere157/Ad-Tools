@@ -139,7 +139,7 @@ export default function ComputerPage() {
             Falling back to MemberOf Property`}
               position="top"
             >
-              <BsExclamationCircle className="text-xl dark:text-orangeColor" />
+              <BsExclamationCircle className="text-xl text-orangeColor" />
             </Title>
           )}
         </Table>

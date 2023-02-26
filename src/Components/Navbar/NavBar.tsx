@@ -23,7 +23,7 @@ export default function NavBar() {
   return (
     <nav
       style={{ gridArea: "navbar" }}
-      className="select-none flex flex-col overflow-auto dark:bg-lightBg"
+      className="select-none flex flex-col overflow-auto bg-lightBg"
     >
       <Button
         classList="flex justify-center py-0.5 rounded-none text-xl"
@@ -41,7 +41,7 @@ export default function NavBar() {
         <NavItem to="/computer" icon={<BsDisplay />} text="Computer" isOpen={isOpen} />
         <NavItem to="/wmi" icon={<BsCpu />} text="WMI" isOpen={isOpen} />
         <NavItem to="/printer" icon={<BsPrinterFill />} text="Printers" isOpen={isOpen} />
-        <hr className="my-2 dark:border-elFlatBorder" />
+        <hr className="my-2 border-elFlatBorder" />
         <NavItem to="/azureSearch" icon={<BsSearch />} text="Azure Search" isOpen={isOpen} />
         <NavItem
           to="/azureUser"
@@ -51,9 +51,9 @@ export default function NavBar() {
         />
         <NavItem to="/azureGroup" icon={<BsPeopleFill />} text="Azure Group" isOpen={isOpen} />
         <NavItem to="/azureDevice" icon={<BsLaptop />} text="Azure Device" isOpen={isOpen} />
-        <hr className="my-2 dark:border-elFlatBorder" />
+        <hr className="my-2 border-elFlatBorder" />
         <NavItem to="/dns" icon={<BsServer />} text="DNS" isOpen={isOpen} />
-        <hr className="my-2 dark:border-elFlatBorder" />
+        <hr className="my-2 border-elFlatBorder" />
         <NavItem to="/history" icon={<BsClockHistory />} text="History" isOpen={isOpen} />
         <NavItem to="/settings" icon={<BsGearFill />} text="Settings" isOpen={isOpen} />
       </div>
