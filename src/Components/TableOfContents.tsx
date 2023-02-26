@@ -56,7 +56,7 @@ function TableOfContentsBody({ headings, activeIndex }: TableOfContentsBodyProps
   return (
     <div className="container absolute right-0 w-max mt-1 p-1">
       <span className="block text-xl mx-1">Table of Contents</span>
-      <hr className="my-1 border-elFlatBorder"></hr>
+      <hr className="my-1 border-elFlatBorder" />
       <div className="flex flex-col px-1">
         {headings.map((heading, index) => {
           return (

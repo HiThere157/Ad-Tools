@@ -46,7 +46,7 @@ export default function TabControl({ children, defaultIndex, onChange }: TabCont
                 className={
                   (index === selectedIndex ? "bg-elAccentBg " : "bg-elFlatBorder ") + "h-1"
                 }
-              ></div>
+              />
             </div>
           );
         })}

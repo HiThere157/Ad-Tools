@@ -36,7 +36,7 @@ export default function Release({
         </Link>
 
         <Link className="flex items-center gap-2" href={author.html_url}>
-          <img className="h-8 rounded-lg" src={author.avatar_url} alt="author profile"></img>
+          <img className="h-8 rounded-lg" src={author.avatar_url} alt="author profile" />
           <span className="text-whiteColorAccent">{author.login}</span>
         </Link>
       </div>

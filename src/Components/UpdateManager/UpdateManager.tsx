@@ -139,7 +139,7 @@ function UpdateManagerBody({
         </Title>
       </div>
 
-      <hr className="my-1 border-elFlatBorder"></hr>
+      <hr className="my-1 border-elFlatBorder" />
 
       <div className="flex items-center justify-between mx-1">
         <div className="flex items-baseline">
@@ -149,7 +149,7 @@ function UpdateManagerBody({
         <DownloadStatus status={appStatus} />
       </div>
 
-      <hr className="my-1 border-elFlatBorder"></hr>
+      <hr className="my-1 border-elFlatBorder" />
 
       <div className="flex items-center justify-between mx-1">
         <div className="flex items-baseline">

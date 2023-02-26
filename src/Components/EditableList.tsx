@@ -107,7 +107,7 @@ export default function EditableList({
               onEnter={addItem}
               disabled={isLocked}
               placeholder={placeholder}
-            ></Input>
+            />
           </td>
           <td>
             <Title text="Add Entry" position="bottom">

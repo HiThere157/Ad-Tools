@@ -24,7 +24,7 @@ export default function Expandable({ children, canExpand = true }: ExpandablePro
               <Button
                 className="p-0 my-1 flex-grow opacity-50"
                 onClick={() => setIsOpen(!isOpen)}
-              ></Button>
+              />
             )}
           </div>
 

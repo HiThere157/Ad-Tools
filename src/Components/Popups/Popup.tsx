@@ -29,7 +29,7 @@ export default function Popup({ children, isOpen, title, className = "", onExit 
                 <BsXLg />
               </Button>
             </div>
-            <hr className="my-1 border-elFlatBorder"></hr>
+            <hr className="my-1 border-elFlatBorder" />
             <div>{children}</div>
           </div>
         </div>

@@ -171,7 +171,7 @@ export default function FilterMenu({
             )}
           </div>
 
-          <hr className="my-1 border-elFlatBorder"></hr>
+          <hr className="my-1 border-elFlatBorder" />
 
           <table className="border-separate border-spacing-0.5 w-full">
             <tbody>
@@ -214,7 +214,7 @@ export default function FilterMenu({
                 .some((key) => !columns.includes(key)) && (
                 <tr>
                   <td colSpan={2}>
-                    <hr className="my-1 border-elFlatBorder"></hr>
+                    <hr className="my-1 border-elFlatBorder" />
 
                     <Hint hint="Invalid Filters are ignored:" />
                   </td>
