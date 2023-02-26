@@ -88,9 +88,9 @@ export default function AzureDevicePage() {
     <article>
       <AzureLogin
         isOpen={loginPopup}
-        onExit={() => {
+        onExit={(loggedIn?: boolean) => {
           setLoginPopup(false);
-          runQuery();
+          if (loggedIn) runQuery();
         }}
       />
       <AadInputBar

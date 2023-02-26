@@ -13,7 +13,7 @@ import TabControl from "../Tab/TabControl";
 
 type AzureLoginProps = {
   isOpen: boolean;
-  onExit: () => any;
+  onExit: (loggedIn?: boolean) => any;
 };
 export default function AzureLogin({ isOpen, onExit }: AzureLoginProps) {
   const { setState } = useGlobalState();
@@ -39,7 +39,7 @@ export default function AzureLogin({ isOpen, onExit }: AzureLoginProps) {
     }
 
     setIsNoteOpen(false);
-    onExit();
+    onExit(true);
   };
 
   return (

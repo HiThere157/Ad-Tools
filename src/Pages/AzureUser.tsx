@@ -102,9 +102,9 @@ export default function AzureUserPage() {
     <article>
       <AzureLogin
         isOpen={loginPopup}
-        onExit={() => {
+        onExit={(loggedIn?: boolean) => {
           setLoginPopup(false);
-          runQuery();
+          if (loggedIn) runQuery();
         }}
       />
       <AadInputBar
