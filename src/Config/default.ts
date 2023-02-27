@@ -18,6 +18,7 @@ const columnNames: { [key: string]: string } = {
   JobCount: "Job Count",
   DriverName: "Driver Name",
 
+  ObjectType: "Type",
   UserPrincipalName: "User Principal Name",
 
   DeviceOSType: "Operating System",
@@ -53,6 +54,7 @@ const columns: { [key: string]: string[] } = {
   printer: ["Name", "Location", "__friendlyStatus__", "Comment", "JobCount", "DriverName"],
 
   // AAD Columns
+  azureMember: ["UserPrincipalName", "DisplayName", "ObjectType"],
   azureUser: ["UserPrincipalName", "DisplayName", "Department"],
   azureGroup: ["DisplayName", "Description"],
   azureDevice: [

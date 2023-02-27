@@ -85,7 +85,7 @@ export default function AzureGroupPage() {
           ObjectId: firstResult?.ObjectId?.toString(),
           All: "1",
         },
-        selectFields: columns.azureUser,
+        selectFields: columns.azureMember,
         postProcessor: makeToList,
         callback: setMembers,
         useStaticSession: true,
@@ -143,12 +143,19 @@ export default function AzureGroupPage() {
         <Table
           title="Members"
           name={membersKey}
-          columns={columns.azureUser}
+          columns={columns.azureMember}
           data={members}
-          onRedirect={(entry: { UserPrincipalName?: string }) => {
-            redirect("azureUser", {
-              input: entry.UserPrincipalName,
-            });
+          onRedirect={(entry: {
+            UserPrincipalName?: string;
+            DisplayName?: string;
+            ObjectType?: string;
+          }) => {
+            if (!entry.ObjectType) return;
+            if (!["Group", "User", "Device"].includes(entry.ObjectType)) return;
+            redirect(`azure${entry.ObjectType}`, {
+              input: entry.UserPrincipalName ?? entry.DisplayName,
+            })
+            if (entry.ObjectType === "Group") window.location.reload();
           }}
           isLoading={isLoading}
         />
