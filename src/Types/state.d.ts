@@ -1,7 +1,7 @@
 type Message = {
   timestamp?: number;
   timeoutId?: NodeJS.Timeout;
-  type: "info" | "error" | "warning";
+  type: "info" | "error";
   message: string;
   key?: string;
   timer?: number;

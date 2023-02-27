@@ -20,7 +20,7 @@ import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
-import { BsExclamationCircle, BsListNested } from "react-icons/bs";
+import { BsExclamationOctagon, BsListNested } from "react-icons/bs";
 import { VscAzure } from "react-icons/vsc";
 
 export default function GroupPage() {
@@ -42,10 +42,6 @@ export default function GroupPage() {
     {},
   );
 
-  const [memberOfFallback, setMemberOfFallback] = useSessionStorage<Result<PSResult[]>>(
-    `${p}_memberOfFallback`,
-    {},
-  );
   const [membersFallback, setMembersFallback] = useSessionStorage<Result<PSResult[]>>(
     `${p}_membersFallback`,
     {},
@@ -62,7 +58,6 @@ export default function GroupPage() {
     setIsLoading(true);
 
     setAttributes({ output: [] });
-    setMemberOfFallback({ output: [] });
     setMembersFallback({ output: [] });
     setMemberOf({ output: [] });
     setMembers({ output: [] });
@@ -76,16 +71,7 @@ export default function GroupPage() {
           Properties: "*",
         },
         postProcessor: [getPropertiesWrapper, getMembershipFromAdObject, getMembersFromAdGroup],
-        callback: [setAttributes, setMemberOfFallback, setMembersFallback],
-      }),
-      makeAPICall<PSResult[]>({
-        command: "Get-ADPrincipalGroupMembership",
-        args: {
-          Identity: query.input,
-          Server: query.domain,
-        },
-        postProcessor: makeToList,
-        callback: setMemberOf,
+        callback: [setAttributes, setMemberOf, setMembersFallback],
       }),
       makeAPICall<PSResult[]>({
         command: "Get-ADGroupMember",
@@ -168,31 +154,21 @@ export default function GroupPage() {
             Falling back to Members Property`}
               position="top"
             >
-              <BsExclamationCircle className="text-xl text-orangeColor" />
+              <BsExclamationOctagon className="text-xl text-redColor" />
             </Title>
           )}
         </Table>
         <Table
           title="Group Memberships"
           name={memberOfKey}
-          columns={memberOf.error ? columns.limited : columns.group}
-          data={memberOf.error ? memberOfFallback : memberOf}
+          columns={columns.limited}
+          data={memberOf}
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
             window.location.reload();
           }}
           isLoading={isLoading}
-        >
-          {memberOf.error && (
-            <Title
-              text={`Get-ADPrincipalGroupMembership returned an Error.
-            Falling back to MemberOf Property`}
-              position="top"
-            >
-              <BsExclamationCircle className="text-xl text-orangeColor" />
-            </Title>
-          )}
-        </Table>
+        />
       </TableLayout>
       <ScrollPosition name={p} />
     </article>

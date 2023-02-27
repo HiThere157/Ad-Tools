@@ -40,7 +40,7 @@ const columns: { [key: string]: string[] } = {
 
   // AD Columns
   member: ["Name", "ObjectClass"],
-  limited: ["Name", "DistinguishedName"],
+  limited: ["Name"],
   user: ["Name", "DisplayName", "Department"],
   group: ["Name", "Description"],
   computer: ["Name", "OperatingSystem"],

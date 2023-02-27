@@ -8,7 +8,6 @@ import {
   getPropertiesWrapper,
   getMembershipFromAdObject,
   prepareDNSResult,
-  makeToList,
 } from "../Helper/postProcessors";
 import { redirect } from "../Helper/redirects";
 
@@ -20,7 +19,7 @@ import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";
 
-import { BsCpu, BsExclamationCircle } from "react-icons/bs";
+import { BsCpu } from "react-icons/bs";
 import { VscAzure } from "react-icons/vsc";
 
 export default function ComputerPage() {
@@ -38,11 +37,6 @@ export default function ComputerPage() {
     {},
   );
 
-  const [memberOfFallback, setMemberOfFallback] = useSessionStorage<Result<PSResult[]>>(
-    `${p}_memberOfFallback`,
-    {},
-  );
-
   const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
   useEffect(() => {
     if (reQuery) runQuery();
@@ -55,7 +49,6 @@ export default function ComputerPage() {
 
     setDNS({ output: [] });
     setAttributes({ output: [] });
-    setMemberOfFallback({ output: [] });
     setMemberOf({ output: [] });
 
     await Promise.all([
@@ -75,16 +68,7 @@ export default function ComputerPage() {
           Properties: "*",
         },
         postProcessor: [getPropertiesWrapper, getMembershipFromAdObject],
-        callback: [setAttributes, setMemberOfFallback],
-      }),
-      makeAPICall<PSResult[]>({
-        command: "Get-ADPrincipalGroupMembership",
-        args: {
-          Identity: query.input,
-          Server: query.domain,
-        },
-        postProcessor: makeToList,
-        callback: setMemberOf,
+        callback: [setAttributes, setMemberOf],
       }),
     ]);
 
@@ -131,23 +115,13 @@ export default function ComputerPage() {
         <Table
           title="Group Memberships"
           name={memberOfKey}
-          columns={memberOf.error ? columns.limited : columns.group}
-          data={memberOf.error ? memberOfFallback : memberOf}
+          columns={columns.limited}
+          data={memberOf}
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
           }}
           isLoading={isLoading}
-        >
-          {memberOf.error && (
-            <Title
-              text={`Get-ADPrincipalGroupMembership returned an Error.
-            Falling back to MemberOf Property`}
-              position="top"
-            >
-              <BsExclamationCircle className="text-xl text-orangeColor" />
-            </Title>
-          )}
-        </Table>
+        />
       </TableLayout>
       <ScrollPosition name={p} />
     </article>
