@@ -26,7 +26,6 @@ type ElectronAPI = Window &
 /** whitelist filters **/
 type Command =
   | "Get-ADUser"
-  | "Get-ADPrincipalGroupMembership"
   | "Get-ADGroup"
   | "Get-ADGroupMember"
   | "Get-ADComputer"
