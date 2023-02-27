@@ -74,7 +74,7 @@ export default function AzureGroupPage() {
       await makeAPICall<PSResult[]>({
         command: "Get-AzureADGroup",
         args: {
-          ObjectId: firstResult?.ObjectId.toString(),
+          ObjectId: firstResult?.ObjectId?.toString(),
         },
         postProcessor: getPropertiesWrapper,
         callback: setAttributes,
@@ -83,7 +83,7 @@ export default function AzureGroupPage() {
       await makeAPICall<PSResult[]>({
         command: "Get-AzureADGroupMember",
         args: {
-          ObjectId: firstResult?.ObjectId.toString(),
+          ObjectId: firstResult?.ObjectId?.toString(),
           All: "1",
         },
         selectFields: columns.azureUser,

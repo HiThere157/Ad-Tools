@@ -67,7 +67,7 @@ export default function AzureDevicePage() {
       await makeAPICall<PSResult[]>({
         command: "Get-AzureADDevice",
         args: {
-          ObjectId: firstResult?.ObjectId.toString(),
+          ObjectId: firstResult?.ObjectId?.toString(),
         },
         postProcessor: getPropertiesWrapper,
         callback: setAttributes,
