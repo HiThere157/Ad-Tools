@@ -56,7 +56,6 @@ export default function AzureGroupPage() {
       args: {
         SearchString: query.input,
       },
-      selectFields: columns.azureGroup,
       postProcessor: makeToList,
       useStaticSession: true,
     });
