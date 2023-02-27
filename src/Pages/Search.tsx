@@ -34,7 +34,7 @@ export default function SearchPage() {
 
     return Object.entries(searchFilter)
       .filter(([key, value]) => value)
-      .map(([key, value]) => `${key} -like "${value}"`)
+      .map(([key, value]) => `${key} -${value.includes("*") ? "like" : "eq"} "${value}"`)
       .join(" -and ");
   };
 

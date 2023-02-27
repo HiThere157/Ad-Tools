@@ -154,7 +154,7 @@ export default function AzureGroupPage() {
             if (!["Group", "User", "Device"].includes(entry.ObjectType)) return;
             redirect(`azure${entry.ObjectType}`, {
               input: entry.UserPrincipalName ?? entry.DisplayName,
-            })
+            });
             if (entry.ObjectType === "Group") window.location.reload();
           }}
           isLoading={isLoading}
