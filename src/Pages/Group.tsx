@@ -148,7 +148,7 @@ export default function GroupPage() {
           }}
           isLoading={isLoading}
         >
-          {members.error && (
+          {members.error && !membersFallback.error && (
             <Title
               text={`Get-ADGroupMember returned an Error.
             Falling back to Members Property`}
