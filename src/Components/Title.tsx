@@ -10,7 +10,7 @@ export default function Title({ children, text, position, className = "" }: Titl
   const textClasses = "rounded bg-elBg text-sm px-1.5 whitespace-pre";
 
   return (
-    <div className={"relative inline-block" + className}>
+    <div className={"relative inline-block " + className}>
       <div className="inline-block peer align-middle">{children}</div>
       {position === "right" && (
         <div
