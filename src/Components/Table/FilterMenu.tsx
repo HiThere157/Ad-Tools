@@ -5,7 +5,7 @@ import { columnNames } from "../../Config/default";
 
 import Button from "../Button";
 import Title from "../Title";
-import Dropdown from "../Dropdown";
+import Dropdown from "../Dropdown/Dropdown";
 import Input from "../Input";
 import Checkbox from "../Checkbox";
 import Hint from "../InputBars/Hint";

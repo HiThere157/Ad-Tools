@@ -27,12 +27,11 @@ export default function Checkbox({
     <div className="flex items-center">
       <label
         className={
-          "control flex items-center h-5 w-5 p-1 " +
+          "control flex items-center h-5 w-5 p-1 text-elAccentBg" +
           // background styling
           "bg-elFlatBg hover:bg-elFlatAccentBg active:bg-elFlatActiveBg " +
           // border styling
           "border-2 border-elFlatBorder hover:border-elFlatAccentBorder active:border-elFlatActiveBorder " +
-          "text-elAccentBg " +
           (disabled ? "opacity-50 cursor-not-allowed" : "") +
           className
         }

@@ -8,6 +8,7 @@ const columnNames: { [key: string]: string } = {
   ObjectClass: "Type",
   DisplayName: "Display Name",
   OperatingSystem: "Operating System",
+  __domain__: "Domain",
 
   UserFriendlyName: "Name",
   SerialNumberID: "Serial Number",

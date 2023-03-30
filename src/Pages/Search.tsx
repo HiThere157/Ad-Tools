@@ -38,8 +38,11 @@ export default function SearchPage() {
       .join(" -and ");
   };
 
-  const getAllColumns = (existing: string[]) => {
-    return [...existing, ...Object.keys(searchFilter)];
+  const getAllColumns = (existing: string[], isTable: boolean = false) => {
+    const properties = [...existing, ...Object.keys(searchFilter)];
+
+    if (isTable && query.domain?.includes(",")) return ["__domain__", ...properties];
+    return properties;
   };
 
   useEffect(() => {
@@ -47,45 +50,80 @@ export default function SearchPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdvanced]);
 
+  const aggregateResults = (
+    currentResult: Result<PSResult[]>,
+    newResult: Result<PSResult[]>,
+    domain: string,
+  ): Result<PSResult[]> => {
+    if (newResult.error || currentResult.error) {
+      return { error: `${currentResult.error}; ${newResult.error}`, output: [] };
+    }
+
+    const newOutput = (newResult.output ?? []).map((result) => {
+      return { __domain__: domain, ...result };
+    });
+
+    return { output: [...(currentResult.output ?? []), ...newOutput] };
+  };
+
   const runQuery = async () => {
     setIsLoading(true);
 
-    setUsers({ output: [] });
-    setGroups({ output: [] });
-    setComputers({ output: [] });
+    let resultsUsers: Result<PSResult[]> = { output: [] };
+    let resultsGroups: Result<PSResult[]> = { output: [] };
+    let resultsComputers: Result<PSResult[]> = { output: [] };
 
-    await Promise.all([
-      makeAPICall<PSResult[]>({
-        command: "Get-ADUser",
-        args: {
-          Filter: getFilterString(),
-          Server: query.domain,
-          Properties: getAllColumns(columns.user).join(","),
-        },
-        postProcessor: makeToList,
-        callback: setUsers,
-      }),
-      makeAPICall<PSResult[]>({
-        command: "Get-ADGroup",
-        args: {
-          Filter: getFilterString(),
-          Server: query.domain,
-          Properties: getAllColumns(columns.group).join(","),
-        },
-        postProcessor: makeToList,
-        callback: setGroups,
-      }),
-      makeAPICall<PSResult[]>({
-        command: "Get-ADComputer",
-        args: {
-          Filter: getFilterString(),
-          Server: query.domain,
-          Properties: getAllColumns(columns.computer).join(","),
-        },
-        postProcessor: makeToList,
-        callback: setComputers,
-      }),
-    ]);
+    setUsers(resultsUsers);
+    setGroups(resultsGroups);
+    setComputers(resultsComputers);
+
+    // InputAd returns domains separated with , when multiDomain is enabled
+    const queries = query.domain?.split(",").map((domain) => {
+      return [
+        makeAPICall<PSResult[]>({
+          command: "Get-ADUser",
+          args: {
+            Filter: getFilterString(),
+            Server: domain,
+            Properties: getAllColumns(columns.user).join(","),
+          },
+          postProcessor: makeToList,
+          callback: (result: Result<PSResult[]>) => {
+            resultsUsers = aggregateResults(resultsUsers, result, domain);
+          },
+        }),
+        makeAPICall<PSResult[]>({
+          command: "Get-ADGroup",
+          args: {
+            Filter: getFilterString(),
+            Server: domain,
+            Properties: getAllColumns(columns.group).join(","),
+          },
+          postProcessor: makeToList,
+          callback: (result: Result<PSResult[]>) => {
+            resultsGroups = aggregateResults(resultsGroups, result, domain);
+          },
+        }),
+        makeAPICall<PSResult[]>({
+          command: "Get-ADComputer",
+          args: {
+            Filter: getFilterString(),
+            Server: domain,
+            Properties: getAllColumns(columns.computer).join(","),
+          },
+          postProcessor: makeToList,
+          callback: (result: Result<PSResult[]>) => {
+            resultsComputers = aggregateResults(resultsComputers, result, domain);
+          },
+        }),
+      ];
+    });
+
+    await Promise.all(queries?.flat() || []);
+
+    setUsers(resultsUsers);
+    setGroups(resultsGroups);
+    setComputers(resultsComputers);
 
     setIsLoading(false);
   };
@@ -97,6 +135,7 @@ export default function SearchPage() {
         isLoading={isLoading}
         isBlocked={isAdvanced}
         query={query}
+        multiDomain={true}
         onChange={setQuery}
         onSubmit={runQuery}
       >
@@ -127,7 +166,7 @@ export default function SearchPage() {
         <Table
           title="Users"
           name={usersKey}
-          columns={getAllColumns(columns.user)}
+          columns={getAllColumns(columns.user, true)}
           data={users}
           onRedirect={(entry: { Name?: string }) => {
             redirect("user", { input: entry.Name, domain: query.domain });
@@ -137,7 +176,7 @@ export default function SearchPage() {
         <Table
           title="Groups"
           name={groupsKey}
-          columns={getAllColumns(columns.group)}
+          columns={getAllColumns(columns.group, true)}
           data={groups}
           onRedirect={(entry: { Name?: string }) => {
             redirect("group", { input: entry.Name, domain: query.domain });
@@ -147,7 +186,7 @@ export default function SearchPage() {
         <Table
           title="Computers"
           name={computersKey}
-          columns={getAllColumns(columns.computer)}
+          columns={getAllColumns(columns.computer, true)}
           data={computers}
           onRedirect={(entry: { Name?: string }) => {
             redirect("computer", { input: entry.Name, domain: query.domain });

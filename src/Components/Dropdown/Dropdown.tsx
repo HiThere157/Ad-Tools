@@ -1,23 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 
-import Button from "./Button";
+import Button from "../Button";
 
 import { BsCaretDownFill } from "react-icons/bs";
 
 type DropdownProps = {
   items: string[];
   value: string | undefined;
-  placeholder?: string;
   disabled?: boolean;
   onChange: (value: string) => any;
 };
-export default function Dropdown({
-  items,
-  value,
-  placeholder = "",
-  disabled = false,
-  onChange,
-}: DropdownProps) {
+export default function Dropdown({ items, value, disabled = false, onChange }: DropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -42,7 +35,7 @@ export default function Dropdown({
     <div ref={ref} className="w-max z-[10]">
       <Button onClick={() => setIsOpen(!isOpen)} disabled={disabled}>
         <div className="flex items-center h-6">
-          {value || placeholder}
+          {value}
           <BsCaretDownFill className={"ml-2 text-base " + (isOpen ? "rotate-180" : "")} />
         </div>
       </Button>
@@ -59,7 +52,7 @@ type DropdownBodyProps = {
 };
 function DropdownBody({ items, onSelection }: DropdownBodyProps) {
   return (
-    <div className="absolute flex flex-col min-w-full rounded overflow-hidden mt-1">
+    <div className="absolute flex flex-col rounded overflow-hidden mt-1">
       {items.map((item, index) => {
         return (
           <Button
@@ -69,7 +62,7 @@ function DropdownBody({ items, onSelection }: DropdownBodyProps) {
             }
             onClick={() => onSelection(item)}
           >
-            {item || "No Domain"}
+            {item}
           </Button>
         );
       })}

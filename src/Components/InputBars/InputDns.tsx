@@ -6,7 +6,7 @@ import { useGlobalState } from "../../Hooks/useGlobalState";
 import { addMessage } from "../../Helper/handleMessage";
 
 import Input from "../Input";
-import Dropdown from "../Dropdown";
+import Dropdown from "../Dropdown/Dropdown";
 import Button from "../Button";
 
 type DnsInputBarProps = {

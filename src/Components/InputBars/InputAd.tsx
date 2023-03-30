@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { getDomains } from "../../Helper/getSavedConfig";
 
 import Input from "../Input";
-import Dropdown from "../Dropdown";
+import Dropdown from "../Dropdown/Dropdown";
+import MultiDropdown from "../Dropdown/MultiDropdown";
 import Button from "../Button";
 
 type AdInputBarProps = {
@@ -11,6 +12,7 @@ type AdInputBarProps = {
   isLoading: boolean;
   isBlocked?: boolean;
   query: AdQuery;
+  multiDomain?: boolean;
   onChange: (query: AdQuery) => any;
   onSubmit: () => any;
   children?: React.ReactNode;
@@ -20,6 +22,7 @@ export default function AdInputBar({
   isLoading,
   isBlocked = false,
   query,
+  multiDomain = false,
   onChange,
   onSubmit,
   children,
@@ -45,13 +48,26 @@ export default function AdInputBar({
         onChange={(input) => onChange({ domain: query.domain, input })}
         onEnter={onSubmit}
       />
-      <Dropdown
-        items={domains}
-        value={query.domain}
-        placeholder="No Domain"
-        disabled={isLoading}
-        onChange={(domain) => onChange({ input: query.input, domain })}
-      />
+      {multiDomain ? (
+        <MultiDropdown
+          items={domains}
+          values={query.domain?.split(",")}
+          disabled={isLoading}
+          onChange={(domains) =>
+            onChange({
+              input: query.input,
+              domain: domains.length === 0 ? undefined : domains.join(","),
+            })
+          }
+        />
+      ) : (
+        <Dropdown
+          items={domains}
+          value={query.domain}
+          disabled={isLoading}
+          onChange={(domain) => onChange({ input: query.input, domain })}
+        />
+      )}
       <Button onClick={onSubmit} disabled={isLoading}>
         Run
       </Button>
