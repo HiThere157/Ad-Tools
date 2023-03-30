@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
 import Button from "../Button";
+import DropdownBody from "./DropdownBody";
 
 import { BsCaretDownFill } from "react-icons/bs";
 
@@ -42,30 +43,6 @@ export default function Dropdown({ items, value, disabled = false, onChange }: D
       <div className={isOpen ? "scale-100" : "scale-0"}>
         <DropdownBody items={items} onSelection={changeSelectedItem} />
       </div>
-    </div>
-  );
-}
-
-type DropdownBodyProps = {
-  items: string[];
-  onSelection: (value: string) => any;
-};
-function DropdownBody({ items, onSelection }: DropdownBodyProps) {
-  return (
-    <div className="absolute flex flex-col rounded overflow-hidden mt-1">
-      {items.map((item, index) => {
-        return (
-          <Button
-            key={index}
-            className={
-              "rounded-none whitespace-nowrap min-h-[1.5em] " + (index !== 0 ? "border-t-0" : "")
-            }
-            onClick={() => onSelection(item)}
-          >
-            {item}
-          </Button>
-        );
-      })}
     </div>
   );
 }
