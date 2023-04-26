@@ -45,6 +45,7 @@ export default function AdInputBar({
         value={query.input ?? ""}
         className="w-64"
         disabled={isLoading || isBlocked}
+        placeholder={isBlocked ? "Use Filter Menu below" : ""}
         onChange={(input) => onChange({ domain: query.domain, input })}
         onEnter={onSubmit}
       />
