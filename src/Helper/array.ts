@@ -1,7 +1,7 @@
 import stringify from "./stringify";
 
 class ResultArray {
-  constructor(public array: ({ __id__?: number } & PSResult)[]) { }
+  constructor(public array: ({ __id__?: number } & PSResult)[]) {}
 
   tagArray = () => {
     // add a unique __id__ field to every entry. used to track selected entries
@@ -36,7 +36,6 @@ class ResultArray {
             isMatch = false;
             return;
           }
-
         } else {
           // the filter key is not present on the entry, skip it
           if (!Object.keys(entry).includes(key)) return;
@@ -48,7 +47,10 @@ class ResultArray {
             .split("|")
             .map((value: string) => {
               const wildcard = value.replace(/[.+^${}()|[\]\\]/g, "\\$&");
-              const regex = new RegExp(`^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`, "i");
+              const regex = new RegExp(
+                `^${wildcard.replace(/\*/g, ".*").replace(/\?/g, ".")}$`,
+                "i",
+              );
               return regex.test(stringify(entry[key], false));
             })
             .some((match) => match);
