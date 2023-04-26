@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocalStorage, useSessionStorage } from "../../Hooks/useStorage";
 
+import { columnNames } from "../../Config/default";
 import stringify from "../../Helper/stringify";
 
 import TableElement from "./TableElement";
@@ -60,7 +61,8 @@ export default function Table({
   };
 
   const copyToClip = (onlySelected: boolean) => {
-    let ret = "";
+    let ret = columns.map((column) => columnNames[column] ?? column).join("\u{9}") + "\n";
+
     data.output?.forEach((entry, index) => {
       if (onlySelected && !selected.includes(index)) return;
       ret += columns.map((column) => stringify(entry[column], false)).join("\u{9}") + "\n";
