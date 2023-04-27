@@ -65,6 +65,7 @@ export default function EditableObject({
                       onChange={(value: string) => {
                         keyChange(key, value);
                       }}
+                      onEnter={() => setEditingIndex(-1)}
                       disabled={isLocked}
                     />
                   </td>
@@ -77,6 +78,7 @@ export default function EditableObject({
                       onChange={(value: string) => {
                         attribChange(key, value);
                       }}
+                      onEnter={() => setEditingIndex(-1)}
                       disabled={isLocked}
                     />
                   </td>
