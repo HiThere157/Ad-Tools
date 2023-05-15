@@ -210,7 +210,7 @@ export default function FilterMenu({
               })}
 
               {Object.keys(filter)
-                .filter((key) => key !== "__selected__")
+                .filter((key) => !["__selected__", "__highlight__"].includes(key))
                 .some((key) => !columns.includes(key)) && (
                 <tr>
                   <td colSpan={2}>
@@ -222,7 +222,7 @@ export default function FilterMenu({
               )}
 
               {Object.keys(filter)
-                .filter((key) => key !== "__selected__")
+                .filter((key) => !["__selected__", "__highlight__"].includes(key))
                 .filter((key) => !columns.includes(key))
                 .map((key, index) => {
                   return (
