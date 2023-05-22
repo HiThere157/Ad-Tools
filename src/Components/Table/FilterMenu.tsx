@@ -175,20 +175,22 @@ export default function FilterMenu({
 
       <table className="border-separate border-spacing-0.5 w-full">
         <tbody>
-          <tr>
-            <td>
-              <span className="mr-1">Selected:</span>
-            </td>
-            <td>
-              <Checkbox
-                checked={filter.__selected__ === "true"}
-                onChange={() =>
-                  updateFilter("__selected__", filter.__selected__ !== "true" ? "true" : "")
-                }
-                disabled={!isEditing && currentSavedFilter !== "No Preset"}
-              />
-            </td>
-          </tr>
+          {currentSavedFilter === "No Preset" && (
+            <tr>
+              <td>
+                <span className="mr-1">Selected:</span>
+              </td>
+              <td>
+                <Checkbox
+                  checked={filter.__selected__ === "true"}
+                  onChange={() =>
+                    updateFilter("__selected__", filter.__selected__ !== "true" ? "true" : "")
+                  }
+                  disabled={!isEditing && currentSavedFilter !== "No Preset"}
+                />
+              </td>
+            </tr>
+          )}
           {columns.map((column, index) => {
             return (
               <tr key={index}>
@@ -210,14 +212,14 @@ export default function FilterMenu({
           {Object.keys(filter)
             .filter((key) => !["__selected__"].includes(key))
             .some((key) => !columns.includes(key)) && (
-            <tr>
-              <td colSpan={2}>
-                <hr className="my-1 border-elFlatBorder" />
+              <tr>
+                <td colSpan={2}>
+                  <hr className="my-1 border-elFlatBorder" />
 
-                <Hint hint="Invalid Filters are ignored:" />
-              </td>
-            </tr>
-          )}
+                  <Hint hint="Invalid Filters are ignored:" />
+                </td>
+              </tr>
+            )}
 
           {Object.keys(filter)
             .filter((key) => !["__selected__"].includes(key))
