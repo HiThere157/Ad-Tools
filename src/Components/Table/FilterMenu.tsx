@@ -122,129 +122,138 @@ export default function FilterMenu({
     if (newFilter === "No Preset") setFilter({});
   };
 
-  return (
-    <>
-      {isOpen && (
-        <div className="container py-1">
-          <div className="flex items-center mb-2">
-            <span className="ml-1 mr-2">Preset:</span>
-            {isEditing ? (
+  return !isOpen ? (
+    <></>
+  ) : (
+    <div className="container py-1">
+      <div className="flex items-center mb-2">
+        <span className="ml-1 mr-2">Preset:</span>
+        {isEditing ? (
+          <Input
+            value={currentSavedFilter}
+            onChange={changeSavedFilterName}
+            onEnter={() => {
+              setIsEditing(!isEditing);
+            }}
+          />
+        ) : (
+          <Dropdown
+            value={currentSavedFilter}
+            items={[...Object.keys(savedFilters), "No Preset"]}
+            onChange={updateCurrentSavedFilter}
+          />
+        )}
+        {currentSavedFilter !== "No Preset" && (
+          <Title text="Edit Preset" position="bottom">
+            <Button
+              className="p-1.5 text-xs ml-1"
+              highlight={isEditing}
+              onClick={() => {
+                setIsEditing(!isEditing);
+              }}
+            >
+              <BsFillPencilFill />
+            </Button>
+          </Title>
+        )}
+        {isEditing ? (
+          <Title text="Delete Preset" position="bottom">
+            <Button className="p-1.5 text-xs ml-1" onClick={removeSavedFilter}>
+              <BsFillTrashFill />
+            </Button>
+          </Title>
+        ) : (
+          <Title text="Create Preset" position="bottom">
+            <Button className="p-1.5 text-xs ml-1" onClick={addSavedFilter}>
+              <BsPlusLg />
+            </Button>
+          </Title>
+        )}
+      </div>
+
+      <hr className="my-1 border-elFlatBorder" />
+
+      <table className="border-separate border-spacing-0.5 w-full">
+        <tbody>
+          <tr>
+            <td>
+              <span className="mr-1">Selected:</span>
+            </td>
+            <td>
+              <Checkbox
+                checked={filter.__selected__ === "true"}
+                onChange={() =>
+                  updateFilter("__selected__", filter.__selected__ !== "true" ? "true" : "")
+                }
+                disabled={!isEditing && currentSavedFilter !== "No Preset"}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span className="mr-1">Highlight:</span>
+            </td>
+            <td>
               <Input
-                value={currentSavedFilter}
-                onChange={changeSavedFilterName}
-                onEnter={() => {
-                  setIsEditing(!isEditing);
-                }}
+                value={filter.__highlight__ ?? ""}
+                onChange={(filterString: string) => updateFilter("__highlight__", filterString)}
+                className="min-w-[10rem]"
+                disabled={!isEditing && currentSavedFilter !== "No Preset"}
               />
-            ) : (
-              <Dropdown
-                value={currentSavedFilter}
-                items={[...Object.keys(savedFilters), "No Preset"]}
-                onChange={updateCurrentSavedFilter}
-              />
-            )}
-            {currentSavedFilter !== "No Preset" && (
-              <Title text="Edit Preset" position="bottom">
-                <Button
-                  className="p-1.5 text-xs ml-1"
-                  highlight={isEditing}
-                  onClick={() => {
-                    setIsEditing(!isEditing);
-                  }}
-                >
-                  <BsFillPencilFill />
-                </Button>
-              </Title>
-            )}
-            {isEditing ? (
-              <Title text="Delete Preset" position="bottom">
-                <Button className="p-1.5 text-xs ml-1" onClick={removeSavedFilter}>
-                  <BsFillTrashFill />
-                </Button>
-              </Title>
-            ) : (
-              <Title text="Create Preset" position="bottom">
-                <Button className="p-1.5 text-xs ml-1" onClick={addSavedFilter}>
-                  <BsPlusLg />
-                </Button>
-              </Title>
-            )}
-          </div>
-
-          <hr className="my-1 border-elFlatBorder" />
-
-          <table className="border-separate border-spacing-0.5 w-full">
-            <tbody>
-              <tr>
+            </td>
+          </tr>
+          {columns.map((column, index) => {
+            return (
+              <tr key={index}>
                 <td>
-                  <span className="mr-1">Selected:</span>
+                  <span className="mr-1 whitespace-nowrap">{columnNames[column] ?? column}:</span>
                 </td>
                 <td>
-                  <Checkbox
-                    checked={filter.__selected__ === "true"}
-                    onChange={() =>
-                      updateFilter("__selected__", filter.__selected__ !== "true" ? "true" : "")
-                    }
+                  <Input
+                    value={filter[column]}
+                    onChange={(filterString: string) => updateFilter(column, filterString)}
+                    className="min-w-[10rem]"
                     disabled={!isEditing && currentSavedFilter !== "No Preset"}
                   />
                 </td>
               </tr>
-              {columns.map((column, index) => {
-                return (
-                  <tr key={index}>
-                    <td>
-                      <span className="mr-1 whitespace-nowrap">
-                        {columnNames[column] ?? column}:
-                      </span>
-                    </td>
-                    <td>
-                      <Input
-                        value={filter[column]}
-                        onChange={(filterString: string) => updateFilter(column, filterString)}
-                        className="min-w-[10rem]"
-                        disabled={!isEditing && currentSavedFilter !== "No Preset"}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
+            );
+          })}
 
-              {Object.keys(filter)
-                .filter((key) => !["__selected__", "__highlight__"].includes(key))
-                .some((key) => !columns.includes(key)) && (
-                <tr>
-                  <td colSpan={2}>
-                    <hr className="my-1 border-elFlatBorder" />
+          {Object.keys(filter)
+            .filter((key) => !["__selected__", "__highlight__"].includes(key))
+            .some((key) => !columns.includes(key)) && (
+            <tr>
+              <td colSpan={2}>
+                <hr className="my-1 border-elFlatBorder" />
 
-                    <Hint hint="Invalid Filters are ignored:" />
+                <Hint hint="Invalid Filters are ignored:" />
+              </td>
+            </tr>
+          )}
+
+          {Object.keys(filter)
+            .filter((key) => !["__selected__", "__highlight__"].includes(key))
+            .filter((key) => !columns.includes(key))
+            .map((key, index) => {
+              return (
+                <tr key={index}>
+                  <td>
+                    <span className="mr-1 whitespace-nowrap">{columnNames[key] ?? key}:</span>
+                  </td>
+                  <td>
+                    <Input
+                      value={filter[key]}
+                      onChange={(filterString: string) => updateFilter(key, filterString)}
+                      className="min-w-[10rem]"
+                      disabled={!isEditing}
+                    />
                   </td>
                 </tr>
-              )}
-
-              {Object.keys(filter)
-                .filter((key) => !["__selected__", "__highlight__"].includes(key))
-                .filter((key) => !columns.includes(key))
-                .map((key, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>
-                        <span className="mr-1 whitespace-nowrap">{columnNames[key] ?? key}:</span>
-                      </td>
-                      <td>
-                        <Input
-                          value={filter[key]}
-                          onChange={(filterString: string) => updateFilter(key, filterString)}
-                          className="min-w-[10rem]"
-                          disabled={!isEditing}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </>
+              );
+            })}
+        </tbody>
+      </table>
+    </div>
   );
 }
