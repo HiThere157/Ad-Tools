@@ -30,9 +30,6 @@ class ResultArray {
 
       // loop through every filter key
       Object.entries(filter).forEach(([key, value]) => {
-        // if __highlight__ key is present, ignore it
-        if (key === "__highlight__") return;
-
         if (key === "__selected__" && typeof entry.__id__ === "number") {
           // if __selected__ key is present in filter, check selected values
           if (!selected.includes(entry.__id__)) {

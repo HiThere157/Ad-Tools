@@ -46,23 +46,6 @@ export default function TableElement({
       .filterArray(selected, filter).array;
   };
 
-  const getHighlightColor = (entry: PSResult) => {
-    const entries = Object.values(entry);
-    const highlightRules = filter.__highlight__?.split(";") ?? [];
-
-    for (const highlight of highlightRules) {
-      const [matcher, color] = highlight.split(":");
-      const matcherEntries = matcher.split(",");
-
-      // if each entry is present in the entry, return the color
-      if (matcherEntries.every((matcherEntry) => entries.includes(matcherEntry))) {
-        return color;
-      }
-    }
-
-    return undefined;
-  };
-
   const toggleSelected = (id: number) => {
     const newSelected = [...selected];
     // check if the entry id is already present the selected entries
@@ -135,7 +118,6 @@ export default function TableElement({
           return (
             <tr
               key={entry.__id__}
-              style={{ color: getHighlightColor(entry) }}
               className="hover:bg-lightBg"
             >
               <td className="relative group px-2 border-elFlatBorder border-y">

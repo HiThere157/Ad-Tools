@@ -189,19 +189,6 @@ export default function FilterMenu({
               />
             </td>
           </tr>
-          <tr>
-            <td>
-              <span className="mr-1">Highlight:</span>
-            </td>
-            <td>
-              <Input
-                value={filter.__highlight__ ?? ""}
-                onChange={(filterString: string) => updateFilter("__highlight__", filterString)}
-                className="min-w-[10rem]"
-                disabled={!isEditing && currentSavedFilter !== "No Preset"}
-              />
-            </td>
-          </tr>
           {columns.map((column, index) => {
             return (
               <tr key={index}>
@@ -221,7 +208,7 @@ export default function FilterMenu({
           })}
 
           {Object.keys(filter)
-            .filter((key) => !["__selected__", "__highlight__"].includes(key))
+            .filter((key) => !["__selected__"].includes(key))
             .some((key) => !columns.includes(key)) && (
             <tr>
               <td colSpan={2}>
@@ -233,7 +220,7 @@ export default function FilterMenu({
           )}
 
           {Object.keys(filter)
-            .filter((key) => !["__selected__", "__highlight__"].includes(key))
+            .filter((key) => !["__selected__"].includes(key))
             .filter((key) => !columns.includes(key))
             .map((key, index) => {
               return (
