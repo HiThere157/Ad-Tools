@@ -29,6 +29,12 @@ export default function SearchPage() {
     {},
   );
 
+  const [reQuery, setReQuery] = useSessionStorage<boolean>(`${p}_reQuery`, false);
+  useEffect(() => {
+    if (reQuery) runQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reQuery]);
+
   const getFilterString = () => {
     if (!isAdvanced) return `Name -like "${query.input}"`;
 
@@ -67,6 +73,7 @@ export default function SearchPage() {
   };
 
   const runQuery = async () => {
+    setReQuery(false);
     setIsLoading(true);
 
     let resultsUsers: Result<PSResult[]> = { output: [] };

@@ -31,6 +31,9 @@ type Command =
   | "Get-ADComputer"
   | "Get-WmiObject"
   | "Resolve-DnsName"
+  | "Get-ADObject"
+  | "Get-ADDomainController"
+  | "Get-ADReplicationAttributeMetadata"
   | "Get-Printer"
   | "Clear-DnsClientCache"
   | "Disconnect-AzureAD"
@@ -50,6 +53,9 @@ type CommandArgs = {
   Name?: string;
   ClassName?: string;
   Namespace?: string;
+  DomainName?: string;
+  Discover?: string;
+  Object?: string;
   ComputerName?: string;
   Type?: string;
   ObjectId?: string;

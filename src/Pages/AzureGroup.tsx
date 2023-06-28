@@ -68,40 +68,40 @@ export default function AzureGroupPage() {
     }
 
     const firstResult = (await groups.output?.[0])?.[0];
-
-    if (firstResult?.DisplayName === query.input) {
-      await makeAPICall<PSResult[]>({
-        command: "Get-AzureADGroup",
-        args: {
-          ObjectId: firstResult?.ObjectId?.toString(),
-        },
-        postProcessor: getPropertiesWrapper,
-        callback: setAttributes,
-        useStaticSession: true,
+    if (firstResult?.DisplayName !== query.input) {
+      setAttributes({
+        output: [],
+        error: `No Group found with Identifier "${query.input}"`,
       });
-      await makeAPICall<PSResult[]>({
-        command: "Get-AzureADGroupMember",
-        args: {
-          ObjectId: firstResult?.ObjectId?.toString(),
-          All: "1",
-        },
-        selectFields: columns.azureMember,
-        postProcessor: makeToList,
-        callback: setMembers,
-        useStaticSession: true,
+      setMembers({
+        output: [],
+        error: `No Group found with Identifier "${query.input}"`,
       });
       setIsLoading(false);
       return;
     }
 
-    setAttributes({
-      output: [],
-      error: `No Group found with Identifier "${query.input}"`,
+    await makeAPICall<PSResult[]>({
+      command: "Get-AzureADGroup",
+      args: {
+        ObjectId: firstResult?.ObjectId?.toString(),
+      },
+      postProcessor: getPropertiesWrapper,
+      callback: setAttributes,
+      useStaticSession: true,
     });
-    setMembers({
-      output: [],
-      error: `No Group found with Identifier "${query.input}"`,
+    await makeAPICall<PSResult[]>({
+      command: "Get-AzureADGroupMember",
+      args: {
+        ObjectId: firstResult?.ObjectId?.toString(),
+        All: "1",
+      },
+      selectFields: columns.azureMember,
+      postProcessor: makeToList,
+      callback: setMembers,
+      useStaticSession: true,
     });
+
     setIsLoading(false);
   };
 

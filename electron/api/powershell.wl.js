@@ -20,6 +20,15 @@ module.exports = {
   "Resolve-DnsName": {
     args: ["Name", "Type"],
   },
+  "Get-ADObject": {
+    args: ["Filter", "Server"],
+  },
+  "Get-ADDomainController": {
+    args: ["DomainName", "Discover"],
+  },
+  "Get-ADReplicationAttributeMetadata": {
+    args: ["Object", "Server"],
+  },
   "Get-Printer": {
     args: ["ComputerName"],
   },

@@ -10,6 +10,10 @@ const columnNames: { [key: string]: string } = {
   OperatingSystem: "Operating System",
   __domain__: "Domain",
 
+  LastOriginatingChangeTime: "Last Change",
+  AttributeName: "Attribute Name",
+  AttributeValue: "Attribute Value",
+
   UserFriendlyName: "Name",
   SerialNumberID: "Serial Number",
   YearOfManufacture: "Production Year",
@@ -50,6 +54,9 @@ const columns: { [key: string]: string[] } = {
   // WMI Columns
   monitor: ["UserFriendlyName", "SerialNumberID", "YearOfManufacture"],
   software: ["Name", "Vendor", "Version", "IdentifyingNumber"],
+
+  // Replication Columns
+  replication: ["LastOriginatingChangeTime", "AttributeName", "AttributeValue"],
 
   // General Columns
   printer: ["Name", "Location", "__friendlyStatus__", "Comment", "JobCount", "DriverName"],

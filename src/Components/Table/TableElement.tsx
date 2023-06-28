@@ -116,10 +116,7 @@ export default function TableElement({
       <tbody>
         {getFinalEntries().map((entry) => {
           return (
-            <tr
-              key={entry.__id__}
-              className="hover:bg-lightBg"
-            >
+            <tr key={entry.__id__} className="hover:bg-lightBg">
               <td className="relative group px-2 border-elFlatBorder border-y">
                 <Checkbox
                   checked={selected.includes(entry.__id__ ?? -1)}

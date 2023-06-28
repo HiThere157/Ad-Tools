@@ -212,14 +212,14 @@ export default function FilterMenu({
           {Object.keys(filter)
             .filter((key) => !["__selected__"].includes(key))
             .some((key) => !columns.includes(key)) && (
-              <tr>
-                <td colSpan={2}>
-                  <hr className="my-1 border-elFlatBorder" />
+            <tr>
+              <td colSpan={2}>
+                <hr className="my-1 border-elFlatBorder" />
 
-                  <Hint hint="Invalid Filters are ignored:" />
-                </td>
-              </tr>
-            )}
+                <Hint hint="Invalid Filters are ignored:" />
+              </td>
+            </tr>
+          )}
 
           {Object.keys(filter)
             .filter((key) => !["__selected__"].includes(key))

@@ -9,6 +9,7 @@ import {
   BsPeopleFill,
   BsDisplay,
   BsCpu,
+  BsDiagram3Fill,
   BsPrinterFill,
   BsLaptop,
   BsServer,
@@ -40,6 +41,7 @@ export default function NavBar() {
         <NavItem to="/group" icon={<BsPeopleFill />} text="Group" isOpen={isOpen} />
         <NavItem to="/computer" icon={<BsDisplay />} text="Computer" isOpen={isOpen} />
         <NavItem to="/wmi" icon={<BsCpu />} text="WMI" isOpen={isOpen} />
+        <NavItem to="/replication" icon={<BsDiagram3Fill />} text="Replication" isOpen={isOpen} />
         <NavItem to="/printer" icon={<BsPrinterFill />} text="Printers" isOpen={isOpen} />
         <hr className="my-2 border-elFlatBorder" />
         <NavItem to="/azureSearch" icon={<BsSearch />} text="Azure Search" isOpen={isOpen} />

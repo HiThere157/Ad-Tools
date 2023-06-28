@@ -14,6 +14,7 @@ import UserPage from "./Pages/User";
 import GroupPage from "./Pages/Group";
 import ComputerPage from "./Pages/Computer";
 import WMIPage from "./Pages/WMI";
+import ReplicationPage from "./Pages/Replication";
 import PrinterPage from "./Pages/Printer";
 import AzureSearchPage from "./Pages/AzureSearch";
 import AzureUserPage from "./Pages/AzureUser";
@@ -36,6 +37,7 @@ root.render(
             <Route path="/group" element={<GroupPage />} />
             <Route path="/computer" element={<ComputerPage />} />
             <Route path="/wmi" element={<WMIPage />} />
+            <Route path="/replication" element={<ReplicationPage />} />
             <Route path="/printer" element={<PrinterPage />} />
             <Route path="/azureSearch" element={<AzureSearchPage />} />
             <Route path="/azureUser" element={<AzureUserPage />} />
