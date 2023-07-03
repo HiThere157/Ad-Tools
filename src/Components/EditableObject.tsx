@@ -10,12 +10,14 @@ type EditableObjectProps = {
   object: { [key: string]: string };
   onChange: Function;
   isLocked?: boolean;
+  type?: { key?: "text" | "color"; value?: "text" | "color" };
   placeholder?: { key: string; value: string };
 };
 export default function EditableObject({
   object,
   onChange,
   isLocked = false,
+  type,
   placeholder,
 }: EditableObjectProps) {
   const [newKey, setNewKey] = useState("");
@@ -61,6 +63,7 @@ export default function EditableObject({
                 <>
                   <td>
                     <Input
+                      type={type?.key}
                       value={key}
                       onChange={(value: string) => {
                         keyChange(key, value);
@@ -74,6 +77,7 @@ export default function EditableObject({
                   </td>
                   <td>
                     <Input
+                      type={type?.value}
                       value={value}
                       onChange={(value: string) => {
                         attribChange(key, value);
@@ -92,7 +96,11 @@ export default function EditableObject({
                     <span className="text-foregroundAccent mx-2">:</span>
                   </td>
                   <td>
-                    <span>{value}</span>
+                    {type?.value === "color" ? (
+                      <div className="w-12 h-6 rounded-sm" style={{ backgroundColor: value }} />
+                    ) : (
+                      <span>{value}</span>
+                    )}
                   </td>
                 </>
               )}
@@ -128,6 +136,7 @@ export default function EditableObject({
         <tr>
           <td>
             <Input
+              type={type?.key}
               value={newKey}
               onChange={setNewKey}
               onEnter={addAttrib}
@@ -140,6 +149,7 @@ export default function EditableObject({
           </td>
           <td>
             <Input
+              type={type?.value}
               value={newValue}
               onChange={setNewValue}
               onEnter={addAttrib}

@@ -126,3 +126,4 @@ type DnsQuery = {
 };
 
 type Filter = { [key: string]: string };
+type ColorSettings = { [key: string]: string };

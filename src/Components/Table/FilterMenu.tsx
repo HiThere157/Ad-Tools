@@ -125,7 +125,7 @@ export default function FilterMenu({
   return !isOpen ? (
     <></>
   ) : (
-    <div className="container py-1">
+    <div className="container w-full py-1">
       <div className="flex items-center mb-2">
         <span className="ml-1 mr-2">Preset:</span>
         {isEditing ? (

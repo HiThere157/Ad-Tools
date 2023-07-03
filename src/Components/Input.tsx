@@ -4,6 +4,7 @@ type InputProps = {
   className?: string;
   disabled?: boolean;
   placeholder?: string;
+  type?: "text" | "color";
   onChange: (value: string) => any;
   onEnter?: () => any;
 };
@@ -13,6 +14,7 @@ export default function Input({
   className = "",
   disabled = false,
   placeholder,
+  type = "text",
   onChange,
   onEnter = () => {},
 }: InputProps) {
@@ -28,12 +30,14 @@ export default function Input({
       <input
         className={
           "control w-full " +
+          (type === "color" ? "p-0 " : "") +
           // background styling
           "bg-elFlatBg hover:bg-elFlatAccentBg active:bg-elFlatActiveBg " +
           // border styling
           "border-2 border-elFlatBorder hover:border-elFlatAccentBorder focus-within:border-elFlatActiveBorder " +
           className
         }
+        type={type}
         value={value ?? ""}
         onChange={(event) => onChange(event.target.value)}
         onKeyDown={onKeyDown}

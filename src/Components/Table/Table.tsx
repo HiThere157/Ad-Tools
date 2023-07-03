@@ -7,6 +7,7 @@ import stringify from "../../Helper/stringify";
 import TableElement from "./TableElement";
 import ActionMenu from "./ActionMenu";
 import FilterMenu from "./FilterMenu";
+import ColorMenu from "./ColorMenu";
 import ErrorMessage from "./ErrorMessage";
 import Title from "./Title";
 import Loader from "./Loader";
@@ -33,6 +34,11 @@ export default function Table({
 
   const [sortedColumn, setSortedColumn] = useSessionStorage<string>(`${name}_sortedColumn`, "");
   const [sortDesc, setSortDesc] = useSessionStorage<boolean>(`${name}_sortDesc`, true);
+
+  const [colorSettings, setColorSettings] = useLocalStorage<ColorSettings>(
+    `${name}_colorSettings`,
+    {},
+  );
 
   const [filter, setFilter] = useSessionStorage<Filter>(`${name}_filter`, {});
   const [currentSavedFilter, setCurrentSavedFilter] = useLocalStorage<string>(
@@ -91,14 +97,23 @@ export default function Table({
             onFilter={() => setIsFilterOpen(!isFilterOpen)}
             isFilterHighlighted={Object.keys(filter).length !== 0}
           />
-          <FilterMenu
-            isOpen={isFilterOpen}
-            columns={columns}
-            filter={filter}
-            setFilter={setFilter}
-            currentSavedFilter={currentSavedFilter}
-            setCurrentSavedFilter={setCurrentSavedFilter}
-          />
+
+          <div className="flex flex-col gap-1">
+            <FilterMenu
+              isOpen={isFilterOpen}
+              columns={columns}
+              filter={filter}
+              setFilter={setFilter}
+              currentSavedFilter={currentSavedFilter}
+              setCurrentSavedFilter={setCurrentSavedFilter}
+            />
+            <ColorMenu
+              isOpen={isFilterOpen}
+              colorSettings={colorSettings}
+              setColorSettings={setColorSettings}
+            />
+          </div>
+
           <div className="border-2 border-elFlatBorder rounded h-fit min-h-[4rem] overflow-auto">
             <TableElement
               entries={data.output}
@@ -107,6 +122,7 @@ export default function Table({
               sortedColumn={sortedColumn}
               filter={filter}
               onFilter={setFilteredCount}
+              colorSettings={colorSettings}
               selected={selected}
               onSelectedChange={setSelected}
               onHeaderClick={updateSortArguments}

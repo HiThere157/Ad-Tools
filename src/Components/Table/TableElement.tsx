@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import { columnNames } from "../../Config/default";
 import { ResultArray } from "../../Helper/array";
+import stringify from "../../Helper/stringify";
 
 import Button from "../Button";
 import Checkbox from "../Checkbox";
@@ -17,6 +18,7 @@ type TableElementProps = {
   sortedColumn: string;
   filter: Filter;
   onFilter: (n: number) => any;
+  colorSettings: ColorSettings;
   selected: number[];
   onSelectedChange: (newSelected: number[]) => any;
   onHeaderClick: (header: string) => any;
@@ -29,6 +31,7 @@ export default function TableElement({
   sortedColumn,
   filter,
   onFilter,
+  colorSettings,
   selected,
   onSelectedChange,
   onHeaderClick,
@@ -82,6 +85,21 @@ export default function TableElement({
     }
   };
 
+  const getRowColor = (entry: PSResult) => {
+    for (const [pattern, color] of Object.entries(colorSettings)) {
+      const patterns = pattern.split(",");
+      const entryValues = Object.values(entry).map((v) => stringify(v));
+
+      console.log(patterns, entryValues);
+
+      if (patterns.every((p) => entryValues.includes(p))) {
+        // color + transparency
+        return color + "70";
+      }
+    }
+    return "transparent";
+  };
+
   return (
     <table className="w-full whitespace-nowrap">
       <thead className="bg-elBg">
@@ -116,7 +134,11 @@ export default function TableElement({
       <tbody>
         {getFinalEntries().map((entry) => {
           return (
-            <tr key={entry.__id__} className="hover:bg-lightBg">
+            <tr
+              key={entry.__id__}
+              className="hover:bg-lightBg"
+              style={{ backgroundColor: getRowColor(entry) }}
+            >
               <td className="relative group px-2 border-elFlatBorder border-y">
                 <Checkbox
                   checked={selected.includes(entry.__id__ ?? -1)}
