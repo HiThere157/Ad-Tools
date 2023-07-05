@@ -23,11 +23,14 @@ export default function Table({ id, title, result }: TableProps) {
         isCollapsed={config.isCollapsed}
         setIsCollapsed={(isCollapsed) => setConfig({ ...config, isCollapsed })}
       />
-      <Pagination
-        total={result?.data?.length ?? 0}
-        pagination={config.pagination}
-        setPagination={(pagination) => setConfig({ ...config, pagination })}
-      />
+
+      {!config.isCollapsed && (
+        <Pagination
+          total={result?.data?.length ?? 0}
+          pagination={config.pagination}
+          setPagination={(pagination) => setConfig({ ...config, pagination })}
+        />
+      )}
     </section>
   );
 }

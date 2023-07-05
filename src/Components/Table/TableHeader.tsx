@@ -1,4 +1,4 @@
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiChevronRight, FiChevronDown } from "react-icons/fi";
 
 type TableHeaderProps = {
   title: string;
@@ -22,7 +22,7 @@ export default function TableHeader({
         className="flex items-center gap-1 text-2xl"
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
-        <span>{isCollapsed ? <FiChevronDown /> : <FiChevronUp />}</span>
+        <span>{isCollapsed ? <FiChevronRight /> : <FiChevronDown />}</span>
 
         <h2 className="font-bold">{title}</h2>
       </button>
