@@ -1,3 +1,5 @@
+import UserPage from "../Pages/User";
+
 import {
   BsClockHistory,
   BsCpu,
@@ -39,7 +41,7 @@ export const navigationLinks: NavigationLinkMeta[][] = [
       href: "/user",
       text: "User",
       icon: <BsPersonLinesFill />,
-      page: <div>UserPage</div>,
+      page: <UserPage />,
     },
     {
       href: "/group",

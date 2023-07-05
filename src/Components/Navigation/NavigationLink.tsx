@@ -12,14 +12,14 @@ export default function NavigationLink({ text, href, icon, isExpanded }: Navigat
       draggable="false"
       to={href}
       className={({ isActive }) =>
-        `mx-2 my-0.5 flex items-center gap-1 rounded py-0.5 pl-1 pr-2 ${
+        `mx-2 my-0.5 flex items-center gap-2 rounded px-2 py-0.5 ${
           isActive
             ? "bg-primaryAccent hover:bg-primaryActive"
             : "bg-light hover:bg-secondaryAccent active:bg-secondaryActive"
         }`
       }
     >
-      <div className="px-1 text-xl">{icon}</div>
+      <div className="text-xl">{icon}</div>
       {isExpanded && <span>{text}</span>}
     </NavLink>
   );
