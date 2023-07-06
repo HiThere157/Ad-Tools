@@ -25,11 +25,17 @@ function useStorage<T>(
   return [storedValue, setValue];
 }
 
-function useSessionStorage<T>(key: string, initialValue: any): [T, (value: T) => void, string] {
+function useSessionStorage<T>(
+  key: string,
+  initialValue: any,
+): [T, (value: T) => void, string] {
   return [...useStorage<T>(window.sessionStorage, key, initialValue), key];
 }
 
-function useLocalStorage<T>(key: string, initialValue: any): [T, (value: T) => void, string] {
+function useLocalStorage<T>(
+  key: string,
+  initialValue: any,
+): [T, (value: T) => void, string] {
   return [...useStorage<T>(window.localStorage, key, initialValue), key];
 }
 

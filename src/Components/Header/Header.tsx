@@ -9,7 +9,12 @@ export default function Header() {
       className="flex select-none items-center border-b-2 border-border bg-light"
     >
       <NavLink draggable="false" className="flex items-center" to="/">
-        <img draggable="false" src="./icon.svg" alt="AD Tools Logo" className="mx-3 h-6" />
+        <img
+          draggable="false"
+          src="./icon.svg"
+          alt="AD Tools Logo"
+          className="mx-3 h-6"
+        />
         <span className="text-xl font-bold">AD Tools</span>
       </NavLink>
 

@@ -6,7 +6,12 @@ type NavigationLinkProps = {
   icon: React.ReactNode;
   isExpanded: boolean;
 };
-export default function NavigationLink({ text, href, icon, isExpanded }: NavigationLinkProps) {
+export default function NavigationLink({
+  text,
+  href,
+  icon,
+  isExpanded,
+}: NavigationLinkProps) {
   return (
     <NavLink
       draggable="false"

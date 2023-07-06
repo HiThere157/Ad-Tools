@@ -6,7 +6,7 @@ import Pagination from "./Pagination";
 type TableProps = {
   id: string;
   title: string;
-  result: ApiResult<PSResult>;
+  result: Loadable<PSResult>;
 };
 export default function Table({ id, title, result }: TableProps) {
   const [config, setConfig] = useSessionStorage<TableConfig>(id, defaultTableConfig);

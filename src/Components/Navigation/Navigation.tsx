@@ -8,10 +8,16 @@ import NavigationLink from "./NavigationLink";
 import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
 
 export default function Navigation() {
-  const [isExpanded, setIsExpanded] = useLocalStorage<boolean>("main_isNavigationExpanded", true);
+  const [isExpanded, setIsExpanded] = useLocalStorage<boolean>(
+    "main_isNavigationExpanded",
+    true,
+  );
 
   return (
-    <nav style={{ gridArea: "nav" }} className="flex select-none flex-col overflow-auto bg-light">
+    <nav
+      style={{ gridArea: "nav" }}
+      className="flex select-none flex-col overflow-auto bg-light"
+    >
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className="mb-1 flex h-7 w-full items-center justify-center bg-primary hover:bg-primaryAccent active:bg-primaryActive"

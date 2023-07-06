@@ -3,7 +3,11 @@ type HeaderButtonProps = {
   className?: string;
   onClick?: () => void;
 };
-export default function HeaderButton({ children, className, onClick }: HeaderButtonProps) {
+export default function HeaderButton({
+  children,
+  className,
+  onClick,
+}: HeaderButtonProps) {
   return (
     <button
       tabIndex={-1}

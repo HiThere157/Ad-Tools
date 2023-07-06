@@ -1,4 +1,4 @@
-type ApiResult<T> = null | {
+type Loadable<T> = null | {
   data?: T;
   error?: string;
 };
