@@ -16,9 +16,8 @@ export default function Pagination({
   return (
     <div>
       <label className="flex items-center gap-1">
-        <span>Page size</span>
+        <span>Page size:</span>
         <Dropdown
-          type="single"
           items={[10, 20, 50, 100].map((size) => size.toString())}
           value={pagination.pageSize.toString()}
           onChange={(value) =>
