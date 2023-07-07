@@ -1,3 +1,5 @@
+import { twMerge } from "tailwind-merge";
+
 type HeaderButtonProps = {
   children: React.ReactNode;
   className?: string;
@@ -11,7 +13,10 @@ export default function HeaderButton({
   return (
     <button
       tabIndex={-1}
-      className={`bg-primary px-3 py-2 hover:bg-primaryAccent active:bg-primaryActive ${className}`}
+      className={twMerge(
+        "bg-primary px-3 py-2 hover:bg-primaryAccent active:bg-primaryActive",
+        className,
+      )}
       onClick={onClick}
     >
       {children}

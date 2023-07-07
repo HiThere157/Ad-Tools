@@ -11,3 +11,9 @@ export const defaultTableConfig: TableConfig = {
   selectedRowIds: [],
   selectedColumns: [],
 };
+
+export const defaultTableCount: TableCount = {
+  total: 0,
+  selected: 0,
+  filtered: 0,
+};

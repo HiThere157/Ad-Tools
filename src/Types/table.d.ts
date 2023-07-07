@@ -3,7 +3,7 @@ type TableConfig = {
   sort: SortConfig;
   filter: FilterConfig;
   pagination: PaginationConfig;
-  selectedRowIds: string[];
+  selectedRowIds: number[];
   selectedColumns: string[];
 };
 

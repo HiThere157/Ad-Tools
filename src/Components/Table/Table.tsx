@@ -1,14 +1,15 @@
 import { useState } from "react";
 
 import { useSessionStorage } from "../../Hooks/useStorage";
-import { defaultTableConfig } from "../../Config/default";
+import { defaultTableConfig, defaultTableCount } from "../../Config/default";
 
 import TableHeader from "./TableHeader";
 import Pagination from "./Pagination";
+import TableElement from "./TableElement";
+import Dropdown from "../Dropdown/Dropdown";
 import Button from "../Button";
 
 import { BsLayoutThreeColumns, BsFunnel, BsClipboard } from "react-icons/bs";
-import TableElement from "./TableElement";
 
 type TableProps = {
   id: string;
@@ -17,11 +18,7 @@ type TableProps = {
 };
 export default function Table({ id, title, result }: TableProps) {
   const [config, setConfig] = useSessionStorage<TableConfig>(id, defaultTableConfig);
-  const [count, setCount] = useState<TableCount>({
-    total: 0,
-    selected: 0,
-    filtered: 0,
-  });
+  const [count, setCount] = useState<TableCount>(defaultTableCount);
 
   config.selectedColumns = ["test", "test", "test", "test", "test", "test"];
 
@@ -51,9 +48,13 @@ export default function Table({ id, title, result }: TableProps) {
             <Button theme="secondary" className="h-7 px-1" onClick={() => {}}>
               <BsFunnel />
             </Button>
-            <Button theme="secondary" className="h-7 px-1" onClick={() => {}}>
+            <Dropdown
+              className="h-7 px-1"
+              items={["Copy All", "Copy Selection"]}
+              onChange={() => {}}
+            >
               <BsClipboard />
-            </Button>
+            </Dropdown>
           </div>
 
           <TableElement
@@ -61,12 +62,6 @@ export default function Table({ id, title, result }: TableProps) {
             config={config}
             setConfig={setConfig}
             setCount={setCount}
-          />
-
-          <Pagination
-            total={result?.data?.length ?? 0}
-            pagination={config.pagination}
-            setPagination={(pagination) => setConfig({ ...config, pagination })}
           />
         </div>
       )}

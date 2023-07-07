@@ -22,7 +22,7 @@ export default function Pagination({
   }
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-1">
       <label className="flex items-center gap-1">
         <span>Page size:</span>
         <Dropdown
@@ -32,8 +32,9 @@ export default function Pagination({
         />
       </label>
 
-      <span>
-        {pagination.page * pagination.pageSize} -{" "}
+      <span className="px-2">
+        {pagination.page * pagination.pageSize}
+        {" - "}
         {Math.min((pagination.page + 1) * pagination.pageSize, total)} of {total}
       </span>
 

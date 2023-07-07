@@ -4,5 +4,14 @@ type Loadable<T> = null | {
 };
 
 type PSResult = {
-  [key: string]: any;
+  __id__: number;
+  [key: string]: JSONValue;
 }[];
+
+type JSONValue =
+  | string
+  | number
+  | boolean
+  | null
+  | { [x: string]: JSONValue }
+  | Array<JSONValue>;

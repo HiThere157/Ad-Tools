@@ -3,7 +3,11 @@ export default {
   content: ["./src/**/*.tsx", "./index.html"],
   darkMode: "class",
   theme: {
-    extend: {},
+    extend: {
+      dropShadow: {
+        custom: "0 0px 10px rgba(0, 0, 0, 0.7)",
+      },
+    },
     colors: {
       dark: "#1a1a1a",
       light: "#1d1d1d",

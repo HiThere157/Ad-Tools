@@ -8,12 +8,12 @@ export default function UserPage() {
         title="User Memberships"
         result={{
           data: [
-            { test: "test" },
-            { test: "test" },
-            { test: "test" },
-            { test: "test" },
-            { test: "test" },
-            { test: "test" },
+            { __id__: 1, test: "test" },
+            { __id__: 2, test: "test" },
+            { __id__: 3, test: "test" },
+            { __id__: 4, test: "test" },
+            { __id__: 5, test: "test" },
+            { __id__: 6, test: "test" },
           ],
         }}
       />
