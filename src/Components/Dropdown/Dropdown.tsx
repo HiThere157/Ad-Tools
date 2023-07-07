@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+
+import { useClickAway } from "../../Hooks/useClickAway";
 
 import Button from "../Button";
 
@@ -10,10 +12,13 @@ type DropdownProps = {
   onChange: (value: string) => void;
 };
 export default function Dropdown({ items, value, onChange }: DropdownProps) {
+  const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  useClickAway(ref, () => setIsOpen(false));
+
   return (
-    <div className="relative z-[10] w-fit">
+    <div ref={ref} className="relative z-[10] w-fit">
       <Button
         theme="secondary"
         className="flex items-center gap-2"
@@ -23,23 +28,25 @@ export default function Dropdown({ items, value, onChange }: DropdownProps) {
         <BsCaretDownFill className={isOpen ? "rotate-180" : ""} />
       </Button>
 
-      {isOpen && (
-        <div className="absolute mt-0.5 w-full overflow-hidden rounded border-2 border-border bg-primary">
-          {items.map((item, index) => (
-            <Button
-              key={index}
-              theme="secondary"
-              className="w-full rounded-none border-0 text-right"
-              onClick={() => {
-                onChange(item);
-                setIsOpen(false);
-              }}
-            >
-              {item}
-            </Button>
-          ))}
-        </div>
-      )}
+      <div
+        className={
+          "absolute mt-0.5 w-full overflow-hidden rounded border-2 border-border bg-primary " +
+          (!isOpen ? "hidden" : "")
+        }
+      >
+        {items.map((item, index) => (
+          <button
+            key={index}
+            className="w-full bg-secondary hover:bg-secondaryAccent active:bg-secondaryActive"
+            onClick={() => {
+              onChange(item);
+              setIsOpen(false);
+            }}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

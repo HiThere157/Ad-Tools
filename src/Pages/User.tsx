@@ -7,7 +7,14 @@ export default function UserPage() {
         id="user"
         title="User Memberships"
         result={{
-          data: [],
+          data: [
+            { test: "test" },
+            { test: "test" },
+            { test: "test" },
+            { test: "test" },
+            { test: "test" },
+            { test: "test" },
+          ],
         }}
       />
     </div>

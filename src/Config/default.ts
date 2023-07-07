@@ -3,6 +3,7 @@ export const defaultTableConfig: TableConfig = {
   sort: {
     sortDirection: "asc",
   },
+  filter: [],
   pagination: {
     page: 0,
     pageSize: 50,

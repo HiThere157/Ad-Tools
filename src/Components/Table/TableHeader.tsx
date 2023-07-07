@@ -2,11 +2,7 @@ import { FiChevronRight, FiChevronDown } from "react-icons/fi";
 
 type TableHeaderProps = {
   title: string;
-  count: {
-    total: number;
-    selected: number;
-    filtered: number;
-  };
+  count: TableCount;
   isCollapsed: boolean;
   setIsCollapsed: (isCollapsed: boolean) => void;
 };
