@@ -15,7 +15,7 @@ type TableElementProps = {
 export default function TableElement({ result, config, setConfig }: TableElementProps) {
   // Parameters that are used to process the result before displaying it
   const { sort, filter, pagination } = config;
-  const [processedResult, setProcessedResult] = useState<PSResult>(result?.data ?? []);
+  let processedResult = result?.data ?? [];
 
   // Parameters that are used to display the result
   const { selectedRowIds, selectedColumns } = config;
@@ -63,7 +63,7 @@ export default function TableElement({ result, config, setConfig }: TableElement
   }, [selectedRowIds]);
 
   // Update processedResult when result, sort, filter or pagination changes
-  useMemo(() => {
+  processedResult = useMemo(() => {
     let newResult = result?.data ?? [];
 
     // Sort
@@ -80,7 +80,7 @@ export default function TableElement({ result, config, setConfig }: TableElement
     });
     if (sort.sortDirection === "desc") newResult = newResult.reverse();
 
-    setProcessedResult(newResult);
+    return newResult;
   }, [result, sort, filter, pagination]);
 
   return (
