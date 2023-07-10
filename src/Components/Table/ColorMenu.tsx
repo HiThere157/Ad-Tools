@@ -1,4 +1,5 @@
 import EditableObject from "../EditableObject";
+import Hint from "../Hint";
 
 type ColorMenuProps = {
   isOpen: boolean;
@@ -16,6 +17,8 @@ export default function ColorMenu({ isOpen, colorSettings, setColorSettings }: C
         type={{ value: "color" }}
         placeholder={{ key: "Pattern", value: "Color" }}
       />
+
+      <Hint hint="Separate multiple values with a pipe ( | )." />
     </div>
   );
 }

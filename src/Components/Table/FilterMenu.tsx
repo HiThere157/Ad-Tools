@@ -8,7 +8,7 @@ import Title from "../Title";
 import Dropdown from "../Dropdown/Dropdown";
 import Input from "../Input";
 import Checkbox from "../Checkbox";
-import Hint from "../InputBars/Hint";
+import Hint from "../Hint";
 
 import { BsFillPencilFill, BsPlusLg, BsFillTrashFill } from "react-icons/bs";
 
@@ -208,6 +208,12 @@ export default function FilterMenu({
               </tr>
             );
           })}
+
+          <tr>
+            <td colSpan={2}>
+              <Hint hint="Separate multiple values with a pipe ( | )." />
+            </td>
+          </tr>
 
           {Object.keys(filter)
             .filter((key) => !["__selected__"].includes(key))

@@ -10,7 +10,7 @@ import { redirect } from "../Helper/redirects";
 import AdInputBar from "../Components/InputBars/InputAd";
 import Checkbox from "../Components/Checkbox";
 import AdvancedFilters from "../Components/InputBars/AdvancedFilters";
-import Hint from "../Components/InputBars/Hint";
+import Hint from "../Components/Hint";
 import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";

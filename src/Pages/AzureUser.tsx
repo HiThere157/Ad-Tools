@@ -16,7 +16,7 @@ import Button from "../Components/Button";
 import AzureLogin from "../Components/Popups/AzureLogin";
 import AadInputBar from "../Components/InputBars/InputAad";
 import Title from "../Components/Title";
-import Hint from "../Components/InputBars/Hint";
+import Hint from "../Components/Hint";
 import TableLayout from "../Layouts/TableLayout";
 import Table from "../Components/Table/Table";
 import ScrollPosition from "../Components/ScrollPosition";

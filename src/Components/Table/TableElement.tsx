@@ -87,7 +87,7 @@ export default function TableElement({
 
   const getRowColor = (entry: PSResult) => {
     for (const [pattern, color] of Object.entries(colorSettings)) {
-      const patterns = pattern.split(",");
+      const patterns = pattern.split("|");
       const entryValues = Object.values(entry).map((v) => stringify(v));
 
       console.log(patterns, entryValues);
