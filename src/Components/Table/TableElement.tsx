@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { stringify } from "../../Helper/string";
 
@@ -63,7 +63,7 @@ export default function TableElement({ result, config, setConfig }: TableElement
   }, [selectedRowIds]);
 
   // Update processedResult when result, sort, filter or pagination changes
-  useEffect(() => {
+  useMemo(() => {
     let newResult = result?.data ?? [];
 
     // Sort
