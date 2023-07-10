@@ -105,30 +105,32 @@ export default function EditableObject({
                 </>
               )}
               <td>
-                <Title text="Edit Entry" position="bottom">
-                  <Button
-                    className="p-1.5 text-xs"
-                    highlight={editingIndex === index}
-                    onClick={() => {
-                      setEditingIndex(index === editingIndex ? -1 : index);
-                    }}
-                    disabled={isLocked}
-                  >
-                    <BsFillPencilFill />
-                  </Button>
-                </Title>
+                <div className="flex items-center gap-1">
+                  <Title text="Edit Entry" position="bottom">
+                    <Button
+                      className="p-1.5 text-xs"
+                      highlight={editingIndex === index}
+                      onClick={() => {
+                        setEditingIndex(index === editingIndex ? -1 : index);
+                      }}
+                      disabled={isLocked}
+                    >
+                      <BsFillPencilFill />
+                    </Button>
+                  </Title>
 
-                <Title text="Remove Entry" position="bottom">
-                  <Button
-                    className="p-1.5 text-xs ml-1"
-                    onClick={() => {
-                      removeAttrib(key);
-                    }}
-                    disabled={isLocked}
-                  >
-                    <BsXLg />
-                  </Button>
-                </Title>
+                  <Title text="Remove Entry" position="bottom">
+                    <Button
+                      className="p-1.5 text-xs"
+                      onClick={() => {
+                        removeAttrib(key);
+                      }}
+                      disabled={isLocked}
+                    >
+                      <BsXLg />
+                    </Button>
+                  </Title>
+                </div>
               </td>
             </tr>
           );

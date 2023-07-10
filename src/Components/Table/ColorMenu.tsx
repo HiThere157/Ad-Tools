@@ -18,7 +18,7 @@ export default function ColorMenu({ isOpen, colorSettings, setColorSettings }: C
         placeholder={{ key: "Pattern", value: "Color" }}
       />
 
-      <Hint hint="Separate multiple values with a pipe ( | )." />
+      <Hint hint="Separate multiple search values per row with a pipe ( | )." />
     </div>
   );
 }

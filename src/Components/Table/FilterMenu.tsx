@@ -211,7 +211,7 @@ export default function FilterMenu({
 
           <tr>
             <td colSpan={2}>
-              <Hint hint="Separate multiple values with a pipe ( | )." />
+              <Hint hint="Separate multiple search values with a pipe ( | )." />
             </td>
           </tr>
 
