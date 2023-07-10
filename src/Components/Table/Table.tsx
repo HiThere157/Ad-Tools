@@ -9,7 +9,7 @@ import TableElement from "./TableElement";
 import Dropdown from "../Dropdown/Dropdown";
 import Button from "../Button";
 
-import { BsLayoutThreeColumns, BsFunnel, BsClipboard } from "react-icons/bs";
+import { BsLayoutThreeColumns, BsFunnel, BsPalette, BsClipboard } from "react-icons/bs";
 
 type TableProps = {
   id: string;
@@ -20,7 +20,7 @@ export default function Table({ id, title, result }: TableProps) {
   const [config, setConfig] = useSessionStorage<TableConfig>(id, defaultTableConfig);
   const [count, setCount] = useState<TableCount>(defaultTableCount);
 
-  config.selectedColumns = ["test", "test", "test", "test", "test", "test"];
+  config.selectedColumns = ["test", "test1", "test2"];
 
   return (
     <section>
@@ -47,6 +47,9 @@ export default function Table({ id, title, result }: TableProps) {
             </Button>
             <Button theme="secondary" className="h-7 px-1" onClick={() => {}}>
               <BsFunnel />
+            </Button>
+            <Button theme="secondary" className="h-7 px-1" onClick={() => {}}>
+              <BsPalette />
             </Button>
             <Dropdown
               className="h-7 px-1"

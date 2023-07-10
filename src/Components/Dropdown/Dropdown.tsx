@@ -46,7 +46,10 @@ export default function Dropdown({
         {items.map((item, index) => (
           <button
             key={index}
-            className="w-full whitespace-nowrap bg-secondary px-2 hover:bg-secondaryAccent active:bg-secondaryActive"
+            className={
+              "w-full whitespace-nowrap border-border bg-secondary px-2 hover:bg-secondaryAccent active:bg-secondaryActive " +
+              (index !== 0 ? "border-t" : "")
+            }
             onClick={() => {
               onChange(item);
               setIsOpen(false);

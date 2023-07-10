@@ -1,7 +1,7 @@
 export const defaultTableConfig: TableConfig = {
   isCollapsed: false,
   sort: {
-    sortDirection: "asc",
+    sortDirection: "desc",
   },
   filter: [],
   pagination: {

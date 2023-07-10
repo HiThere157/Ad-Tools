@@ -16,7 +16,6 @@ export default function Pagination({
   function setPage(deltaPage: 1 | -1) {
     setPagination({ ...pagination, page: pagination.page + deltaPage });
   }
-
   function setPageSize(pageSize: number) {
     setPagination({ page: 0, pageSize });
   }

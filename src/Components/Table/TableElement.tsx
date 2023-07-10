@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { stringify } from "../../Helper/string";
+
 import Checkbox from "../Checkbox";
 
 import { BsCaretDownFill } from "react-icons/bs";
@@ -20,6 +22,23 @@ export default function TableElement({ result, config, setConfig }: TableElement
   const [isMainCheckChecked, setIsMainCheckChecked] = useState<boolean | undefined>(
     false,
   );
+
+  function toggleSort(column: string) {
+    if (sort.sortedColumn === column) {
+      return setConfig({
+        ...config,
+        sort: {
+          ...sort,
+          sortDirection: sort.sortDirection === "asc" ? "desc" : "asc",
+        },
+      });
+    }
+
+    setConfig({
+      ...config,
+      sort: { ...sort, sortedColumn: column, sortDirection: "desc" },
+    });
+  }
 
   function toggleSelect(checked: boolean, id: number) {
     const newSelectedRowIds = checked
@@ -43,6 +62,27 @@ export default function TableElement({ result, config, setConfig }: TableElement
     }
   }, [selectedRowIds]);
 
+  // Update processedResult when result, sort, filter or pagination changes
+  useEffect(() => {
+    let newResult = result?.data ?? [];
+
+    // Sort
+    newResult = [...newResult].sort((a, b) => {
+      // if a column is selected, sort by that column
+      if (sort.sortedColumn) {
+        return stringify(a[sort.sortedColumn]).localeCompare(
+          stringify(b[sort.sortedColumn]),
+        );
+      }
+
+      // else sort by id
+      return a.__id__ - b.__id__;
+    });
+    if (sort.sortDirection === "desc") newResult = newResult.reverse();
+
+    setProcessedResult(newResult);
+  }, [result, sort, filter, pagination]);
+
   return (
     <div className="overflow-hidden rounded border-2 border-border">
       <table className="w-full">
@@ -54,7 +94,10 @@ export default function TableElement({ result, config, setConfig }: TableElement
 
             {selectedColumns.map((column, index) => (
               <th key={index} className="border-s border-border p-0">
-                <button className="w-full px-2 text-start hover:bg-secondaryAccent active:bg-secondaryActive">
+                <button
+                  className="flex w-full items-center justify-between px-2 text-start hover:bg-secondaryAccent active:bg-secondaryActive"
+                  onClick={() => toggleSort(column)}
+                >
                   {column}
                   <BsCaretDownFill
                     className={
@@ -86,7 +129,7 @@ export default function TableElement({ result, config, setConfig }: TableElement
 
               {selectedColumns.map((column, index) => (
                 <td key={index} className="border-s border-border px-2">
-                  {JSON.stringify(row[column])}
+                  {stringify(row[column])}
                 </td>
               ))}
             </tr>
