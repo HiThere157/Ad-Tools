@@ -1,4 +1,4 @@
-import UserPage from "../Pages/User";
+import User from "../Pages/User";
 
 import {
   BsClockHistory,
@@ -11,18 +11,10 @@ import {
   BsPeopleFill,
   BsPersonLinesFill,
   BsPrinterFill,
-  BsSearch,
   BsServer,
 } from "react-icons/bs";
 
-type NavigationLinkMeta = {
-  href: string;
-  text: string;
-  icon: React.ReactNode;
-  page: React.ReactNode;
-  isHidden?: boolean;
-};
-export const navigationLinks: NavigationLinkMeta[][] = [
+export const navigationLinks: NavigationLink[][] = [
   [
     {
       href: "/",
@@ -32,16 +24,10 @@ export const navigationLinks: NavigationLinkMeta[][] = [
       isHidden: true,
     },
     {
-      href: "/search",
-      text: "Search",
-      icon: <BsSearch />,
-      page: <div>SearchPage</div>,
-    },
-    {
       href: "/user",
       text: "User",
       icon: <BsPersonLinesFill />,
-      page: <UserPage />,
+      page: <User />,
     },
     {
       href: "/group",
@@ -83,12 +69,6 @@ export const navigationLinks: NavigationLinkMeta[][] = [
     },
   ],
   [
-    {
-      href: "/azureSearch",
-      text: "Azure Search",
-      icon: <BsSearch />,
-      page: <div>AzureSearchPage</div>,
-    },
     {
       href: "/azureUser",
       text: "Azure User",

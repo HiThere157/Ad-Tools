@@ -29,15 +29,9 @@ export default function Navigation() {
         <React.Fragment key={groupIndex}>
           {groupIndex !== 0 && <hr className="mx-1 my-1.5 border-border" />}
 
-          {group.map(({ href, text, icon, isHidden }, linkIndex) =>
-            isHidden ? null : (
-              <NavigationLink
-                key={linkIndex}
-                href={href}
-                text={text}
-                icon={icon}
-                isExpanded={isExpanded}
-              />
+          {group.map((link, linkIndex) =>
+            link.isHidden ? null : (
+              <NavigationLink key={linkIndex} link={link} isExpanded={isExpanded} />
             ),
           )}
         </React.Fragment>

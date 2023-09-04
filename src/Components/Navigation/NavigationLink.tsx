@@ -1,17 +1,12 @@
 import { NavLink } from "react-router-dom";
 
 type NavigationLinkProps = {
-  text: string;
-  href: string;
-  icon: React.ReactNode;
+  link: NavigationLink;
   isExpanded: boolean;
 };
-export default function NavigationLink({
-  text,
-  href,
-  icon,
-  isExpanded,
-}: NavigationLinkProps) {
+export default function NavigationLink({ link, isExpanded }: NavigationLinkProps) {
+  const { href, text, icon } = link;
+
   return (
     <NavLink
       draggable="false"
