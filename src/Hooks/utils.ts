@@ -1,27 +1,21 @@
 import { useSessionStorage } from "./useStorage";
 
-// This is a hook that will return the query and a function to set the query for a specific page and tab
-export function useQuery<T>(page: string, tabId: number) {
-  // get all queries from this page
-  const [query, setQuery] = useSessionStorage<Record<number, T>>(`query_${page}`, {});
+// This is a hook that will return the state for a specific tab on a page, and a helpful function to set it
+export function useTabState<T>(key: string, tabId:number) {
+  const [state, setState] = useSessionStorage<Record<number, T>>(key, {});
 
-  // get the query for this tab and
-  // create a function to set the query for this tab
-  const thisQuery = query[tabId] as T | undefined;
-  const setThisQuery = (newQuery: T) => {
-    setQuery({
-      ...query,
-      [tabId]: newQuery,
+  const thisState = state[tabId] as T | undefined;
+  const setThisState = (newState: T) => {
+    setState({
+      ...state,
+      [tabId]: newState,
     });
   };
 
-  return {
-    query: thisQuery,
-    setQuery: setThisQuery,
-  };
+  return [thisState, setThisState] as const;
 }
 
-// This is a hook that will return the current tab, all tabs, and functions to set them for a specific page
+// This is a hook is a helpful function to get all necessary state for a page with tabs
 export function useTabs(page: string) {
   const [activeTab, setActiveTab] = useSessionStorage<number>(`activeTab_${page}`, 0);
   const [tabs, setTabs] = useSessionStorage<Tab[]>(`tabs_${page}`, [{ id: 0, title: "Untitled" }]);

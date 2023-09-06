@@ -1,5 +1,5 @@
 type Loadable<T> = null | {
-  data?: T;
+  result?: T;
   error?: string;
 };
 
