@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 
 type ButtonProps = {
   children: React.ReactNode;
-  theme: "primary" | "secondary";
+  theme: "primary" | "secondary" | "secondary-outline";
   className?: string;
   disabled?: boolean;
   onClick: () => void;
@@ -22,8 +22,11 @@ export default function Button({
             ? "border-primary bg-primary hover:border-primaryAccent hover:bg-primaryAccent active:border-primaryActive active:bg-primaryActive "
             : " ") +
           (theme === "secondary"
-            ? "border-border bg-secondary hover:border-borderAccent hover:bg-secondaryAccent active:border-borderActive active:bg-secondaryActive"
+            ? "border-primary bg-primary hover:border-secondaryAccent hover:bg-secondaryAccent active:border-secondaryActive active:bg-secondaryActive"
             : ""),
+        theme === "secondary-outline"
+          ? "border-border bg-secondary hover:border-borderAccent hover:bg-secondaryAccent active:border-borderActive active:bg-secondaryActive"
+          : "",
         className,
       )}
       onClick={onClick}

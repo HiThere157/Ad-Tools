@@ -9,7 +9,7 @@ import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
 
 export default function Navigation() {
   const [isExpanded, setIsExpanded] = useLocalStorage<boolean>(
-    "main_isNavigationExpanded",
+    "preferences_isNavigationExpanded",
     true,
   );
 

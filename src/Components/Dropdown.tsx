@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { useClickAway } from "../../Hooks/useClickAway";
+import { useClickAway } from "../Hooks/useClickAway";
 
-import Button from "../Button";
+import Button from "./Button";
 
 import { BsCaretDownFill } from "react-icons/bs";
 
@@ -29,7 +29,7 @@ export default function Dropdown({
   return (
     <div ref={ref} className="relative z-[10] drop-shadow-custom">
       <Button
-        theme="secondary"
+        theme="secondary-outline"
         className={twMerge("flex items-center gap-2", className)}
         onClick={() => setIsOpen(!isOpen)}
       >
