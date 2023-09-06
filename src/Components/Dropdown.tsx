@@ -14,22 +14,15 @@ type DropdownProps = {
   onChange: (value: string) => void;
   className?: string;
 };
-export default function Dropdown({
-  children,
-  items,
-  value,
-  onChange,
-  className,
-}: DropdownProps) {
+export default function Dropdown({ children, items, value, onChange, className }: DropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useClickAway(ref, () => setIsOpen(false));
 
   return (
-    <div ref={ref} className="relative z-[10] drop-shadow-custom">
+    <div ref={ref} className="relative z-[10]">
       <Button
-        theme="secondary-outline"
         className={twMerge("flex items-center gap-2", className)}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -39,7 +32,7 @@ export default function Dropdown({
 
       <div
         className={
-          "absolute right-0 mt-0.5 w-fit overflow-hidden rounded border-2 border-border bg-primary " +
+          "absolute right-0 mt-0.5 w-fit overflow-hidden rounded border-2 border-border bg-primary drop-shadow-custom " +
           (!isOpen ? "hidden" : "")
         }
       >

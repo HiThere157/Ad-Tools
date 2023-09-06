@@ -1,31 +1,26 @@
-import { useSessionStorage } from "../../Hooks/useStorage";
-
 import Tab from "./Tab";
 
 import { BsPlus } from "react-icons/bs";
 
 type TabsProps = {
-  currentPath: string;
-  currentTab: number;
-  setCurrentTab: (tab: number) => void;
+  activeTab: number;
+  setActiveTab: (tab: number) => void;
+  tabs: Tab[];
+  setTabs: (tabs: Tab[]) => void;
 };
-export default function Tabs({ currentPath, currentTab, setCurrentTab }: TabsProps) {
-  const [tabs, setTabs] = useSessionStorage<Tab[]>(`tabs_${currentPath}`, [
-    { id: 0, title: "Default" },
-  ]);
-
+export default function Tabs({ activeTab, setActiveTab, tabs, setTabs }: TabsProps) {
   const addTab = () => {
     const id = new Date().getTime();
-    setTabs([...tabs, { id, title: "New" }]);
-    setCurrentTab(id);
+    setTabs([...tabs, { id, title: "Untitled" }]);
+    setActiveTab(id);
   };
 
   const removeTab = (id: number) => {
     const newTabs = tabs.filter((tab) => tab.id !== id);
     setTabs(newTabs);
 
-    if (currentTab === id) {
-      setCurrentTab(newTabs[newTabs.length - 1].id);
+    if (activeTab === id) {
+      setActiveTab(newTabs[newTabs.length - 1].id);
     }
   };
 
@@ -35,8 +30,8 @@ export default function Tabs({ currentPath, currentTab, setCurrentTab }: TabsPro
         <Tab
           key={index}
           tab={tab}
-          isActive={tab.id === currentTab}
-          onChange={() => setCurrentTab(tab.id)}
+          isActive={tab.id === activeTab}
+          onChange={() => setActiveTab(tab.id)}
           onRemove={() => removeTab(tab.id)}
         />
       ))}

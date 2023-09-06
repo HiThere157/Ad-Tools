@@ -21,9 +21,7 @@ export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
     <div className="relative">
       <button
         className={`min-w-[8rem] rounded-t py-0.5 pe-12 ps-2 text-start ${
-          isActive
-            ? "bg-dark"
-            : "bg-primary hover:bg-secondaryAccent active:bg-secondaryActive"
+          isActive ? "bg-dark" : "bg-primary hover:bg-secondaryAccent active:bg-secondaryActive"
         }`}
         onMouseDown={handleMouseDown}
       >

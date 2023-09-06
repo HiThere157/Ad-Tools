@@ -1,15 +1,23 @@
-import { useSessionStorage } from "../Hooks/useStorage";
+import { useQuery, useTabs } from "../Hooks/utils";
 
 import Tabs from "../Components/Tabs/Tabs";
+import AdQuery from "../Components/Query/AdQuery";
 
+const page = "user";
 export default function User() {
-  const page = "user";
-  const [tab, setTab] = useSessionStorage<number>(`tab_${page}`, 0);
+  const { activeTab, setActiveTab, tabs, setTabs, setTabTitle } = useTabs(page);
+  const { query, setQuery } = useQuery<AdQuery>(page, activeTab);
+
+  const runQuery = () => {
+    setTabTitle(query?.filter?.name?.trim() || "Untitled");
+
+  };
 
   return (
     <div>
-      <Tabs currentPath={page} currentTab={tab} setCurrentTab={setTab} />
-      <h1>User</h1>
+      <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} setTabs={setTabs} />
+
+      <AdQuery query={query ?? {}} setQuery={setQuery} onSubmit={runQuery} />
     </div>
   );
 }
