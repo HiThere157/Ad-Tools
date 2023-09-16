@@ -16,6 +16,10 @@ export default function Tabs({ activeTab, setActiveTab, tabs, setTabs }: TabsPro
   };
 
   const removeTab = (id: number) => {
+    if (tabs.length === 1) {
+      return;
+    }
+
     const newTabs = tabs.filter((tab) => tab.id !== id);
     setTabs(newTabs);
 

@@ -11,13 +11,13 @@ type PSResult = {
 type JSONValue = string | number | boolean | null | { [x: string]: JSONValue } | Array<JSONValue>;
 
 type AdQuery = {
-  filter?: Record<string, string | undefined>;
-  server?: string;
+  filter: Record<string, string | undefined>;
+  server: string;
 };
 type AadQuery = {
-  searchString?: string;
+  searchString: string;
 };
 type DnsQuery = {
-  target?: string;
-  filter?: string;
+  target: string;
+  filter: string;
 };

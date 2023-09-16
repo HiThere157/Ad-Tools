@@ -12,7 +12,7 @@ export default function TableElement({ data, columns }: TableElementProps) {
         <thead className="bg-primary">
           <tr className="border-b-2 border-border">
             <th className="px-2">
-              <Checkbox checked={false} onChange={() => { }} />
+              <Checkbox checked={false} onChange={() => {}} />
             </th>
 
             {columns.map((column, index) => (
@@ -27,10 +27,7 @@ export default function TableElement({ data, columns }: TableElementProps) {
           {data?.result?.map((row) => (
             <tr key={row.__id__}>
               <td className="px-2">
-                <Checkbox
-                  checked={false}
-                  onChange={()=>{}}
-                />
+                <Checkbox checked={false} onChange={() => {}} />
               </td>
 
               {columns.map((column, index) => (
