@@ -1,16 +1,27 @@
 type DataSet<T> = {
   key: string;
   title: string;
-  timestamp: string;
+  timestamp: number;
+  executionTime: number;
   data: T;
   columns: string[];
 };
 
 type TableConfig = {
-  isCollapsed?: boolean;
-  filter?: Record<string, string | undefined>;
-  sortColumn?: string;
-  sortDirection?: "asc" | "desc";
-  pageSize?: number;
-  pageIndex?: number;
+  isCollapsed: boolean;
+  filters: Filter[];
+  hiddenColumns: string[];
+  sort: SortConfig;
+  selected: number[];
+  pageSize: number;
+  pageIndex: number;
+};
+type SortConfig = {
+  column: string;
+  direction: "asc" | "desc";
+};
+type Filter = {
+  column: string;
+  value: string;
+  operator: string;
 };

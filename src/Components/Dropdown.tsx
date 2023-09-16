@@ -10,29 +10,44 @@ import { BsCaretDownFill } from "react-icons/bs";
 type DropdownProps = {
   children?: React.ReactNode;
   items: string[];
-  value?: string;
+  value: string;
   onChange: (value: string) => void;
+  replacer?: (text: string) => string;
   className?: string;
 };
-export default function Dropdown({ children, items, value, onChange, className }: DropdownProps) {
+export default function Dropdown({
+  children,
+  items,
+  value,
+  onChange,
+  replacer,
+  className,
+}: DropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useClickAway(ref, () => setIsOpen(false));
 
   return (
-    <div ref={ref} className="relative z-[10]">
+    <div ref={ref} className="relative">
       <Button
-        className={twMerge("flex items-center gap-2", className)}
+        className={twMerge("flex min-h-[1.75rem] items-center gap-2", className)}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {children ?? value}
-        {!children && <BsCaretDownFill className={isOpen ? "rotate-180" : ""} />}
+        {/* If children is defined, use that, otherwise use the current value and a caret */}
+        {children ? (
+          children
+        ) : (
+          <>
+            <span className="min-w-[0.5rem]">{replacer?.(value) ?? value}</span>
+            <BsCaretDownFill className={isOpen ? "rotate-180" : ""} />
+          </>
+        )}
       </Button>
 
       <div
         className={
-          "absolute right-0 mt-0.5 w-fit overflow-hidden rounded border-2 border-border bg-primary drop-shadow-custom " +
+          "absolute right-0 z-10 mt-0.5 w-fit overflow-hidden rounded border-2 border-border bg-primary drop-shadow-custom " +
           (!isOpen ? "hidden" : "")
         }
       >
@@ -48,7 +63,7 @@ export default function Dropdown({ children, items, value, onChange, className }
               setIsOpen(false);
             }}
           >
-            {item}
+            {replacer?.(item) ?? item}
           </button>
         ))}
       </div>

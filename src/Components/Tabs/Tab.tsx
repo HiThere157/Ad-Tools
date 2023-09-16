@@ -9,21 +9,16 @@ type TabProps = {
 export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
   const { title } = tab;
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // right click
-    if (e.button === 0) onChange();
-
-    // middle click
-    if (e.button === 1) onRemove();
-  };
-
   return (
     <div className="relative">
       <button
         className={`min-w-[8rem] rounded-t py-0.5 pe-12 ps-2 text-start ${
           isActive ? "bg-dark" : "bg-primary hover:bg-secondaryAccent active:bg-secondaryActive"
         }`}
-        onMouseDown={handleMouseDown}
+        onClick={() => onChange()}
+        onMouseUp={(e) => {
+          if (e.button === 1) onRemove();
+        }}
       >
         {title}
       </button>

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 
 import { BsCheckLg, BsDashLg } from "react-icons/bs";
 
@@ -8,21 +8,19 @@ type CheckboxProps = {
 };
 export default function Checkbox({ checked, onChange }: CheckboxProps) {
   const ref = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.indeterminate = checked === undefined;
-    }
-  }, [checked]);
+  if (ref.current) {
+    ref.current.indeterminate = checked === undefined;
+  }
 
   return (
     <label
       className={
-        "flex h-5 w-5 items-center rounded border-2 p-1 " +
+        "flex h-5 w-5 cursor-pointer items-center rounded border-2 p-0.5 " +
         "border-border bg-secondary text-primaryAccent hover:border-borderAccent hover:bg-secondaryAccent active:border-borderActive active:bg-secondaryActive"
       }
     >
-      {checked && <BsCheckLg className="m-0 scale-150" />}
-      {checked === undefined && <BsDashLg className="m-0 scale-150" />}
+      {checked && <BsCheckLg className="scale-150" />}
+      {checked === undefined && <BsDashLg className="scale-150" />}
       <input
         ref={ref}
         type="checkbox"

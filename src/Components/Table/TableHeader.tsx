@@ -1,4 +1,4 @@
-import { FiChevronUp } from "react-icons/fi";
+import { FiChevronDown } from "react-icons/fi";
 
 type TableHeaderProps = {
   title: string;
@@ -13,9 +13,9 @@ export default function TableHeader({
   setIsCollapsed,
 }: TableHeaderProps) {
   return (
-    <div className="m-1 flex gap-1">
-      <button className="text-2xl" onClick={() => setIsCollapsed(!isCollapsed)}>
-        <FiChevronUp className={isCollapsed ? "rotate-180" : ""} />
+    <div className="flex gap-1">
+      <button className="mt-1 text-2xl" onClick={() => setIsCollapsed(!isCollapsed)}>
+        <FiChevronDown className={isCollapsed ? "rotate-180" : ""} />
       </button>
 
       <div className="flex items-baseline gap-2">

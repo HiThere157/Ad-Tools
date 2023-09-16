@@ -1,5 +1,5 @@
 import { useTabs, useTabState } from "../Hooks/utils";
-import { tableConfig } from "../Config/default";
+import { adQuery, tableConfig } from "../Config/default";
 
 import Tabs from "../Components/Tabs/Tabs";
 import AdQuery from "../Components/Query/AdQuery";
@@ -23,7 +23,8 @@ export default function User() {
     const searchResult: DataSet<Loadable<PSResult>> = {
       key: `${page}_search`,
       title: "Search",
-      timestamp: Date.now().toString(),
+      timestamp: Date.now(),
+      executionTime: 1337,
       data: {
         result: [
           {
@@ -31,16 +32,20 @@ export default function User() {
             username: "test",
             attrib1: "testattrib1",
             attrib2: "testattrib2",
+            numeric: 1,
+            numeric2: 2,
           },
           {
             __id__: 2,
             username: "test2",
             attrib1: "testattrib21",
             attrib2: "testattrib22",
+            numeric: 2,
+            numeric2: 1,
           },
         ],
       },
-      columns: ["username", "attrib1", "attrib2"],
+      columns: ["username", "attrib1", "attrib2", "numeric", "numeric2"],
     };
 
     setDataSets([searchResult]);
@@ -50,9 +55,9 @@ export default function User() {
     <div>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} setTabs={setTabs} />
 
-      <AdQuery query={query} setQuery={setQuery} onSubmit={runQuery} />
-
       <div className="mx-2">
+        <AdQuery query={query ?? adQuery} setQuery={setQuery} onSubmit={runQuery} />
+
         {dataSets?.map((dataSet) => (
           <Table
             key={dataSet.key}
