@@ -8,8 +8,8 @@ type AdQueryProps = {
   onSubmit: () => void;
 };
 export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
-  const servers = ["domain1", "domain2", "domain3"];
-  const { filter, server } = query;
+  const availableServers = ["domain1", "domain2", "domain3"];
+  const { filter, servers } = query;
 
   return (
     <div className="flex items-center gap-1 p-2">
@@ -26,10 +26,10 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
       </label>
 
       <Dropdown
-        items={servers}
-        value={server}
-        onChange={(server) => {
-          setQuery({ ...query, server });
+        items={availableServers}
+        value={servers}
+        onChangeMulti={(servers) => {
+          setQuery({ ...query, servers });
         }}
       />
 

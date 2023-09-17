@@ -14,11 +14,10 @@ type TableProps = {
 export default function Table({ dataSet, config, setConfig }: TableProps) {
   const { timestamp, title, data, columns } = dataSet;
   const { isCollapsed, filters, hiddenColumns, sort, selected } = config;
-
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
-    <section className="flex w-fit flex-col gap-1">
+    <section className="flex w-fit min-w-[35rem] flex-col gap-1">
       <div className="ms-1 flex items-center justify-between">
         <TableHeader
           title={title}
@@ -29,14 +28,15 @@ export default function Table({ dataSet, config, setConfig }: TableProps) {
         <TableActions
           onReset={() => setConfig(tableConfig)}
           onFilterMenu={() => setIsFilterOpen(!isFilterOpen)}
+          columns={columns}
+          hiddenColumns={hiddenColumns}
+          setHiddenColumns={(hiddenColumns) => setConfig({ ...config, hiddenColumns })}
         />
       </div>
 
       {isFilterOpen && (
         <TableFilterMenu
           columns={columns}
-          hiddenColumns={hiddenColumns}
-          setHiddenColumns={(hiddenColumns) => setConfig({ ...config, hiddenColumns })}
           filters={filters}
           setFilters={(filters) => setConfig({ ...config, filters })}
         />
@@ -46,6 +46,7 @@ export default function Table({ dataSet, config, setConfig }: TableProps) {
         <TableElement
           data={data?.result ?? []}
           columns={columns.filter((column) => !hiddenColumns.includes(column))}
+          filters={filters}
           sort={sort}
           setSort={(sort) => setConfig({ ...config, sort })}
           selected={selected}

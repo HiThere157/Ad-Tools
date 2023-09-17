@@ -20,7 +20,7 @@ type SortConfig = {
   column: string;
   direction: "asc" | "desc";
 };
-type Filter = {
+type TableFilter = {
   column: string;
   value: string;
   operator: string;

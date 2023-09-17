@@ -12,7 +12,7 @@ type JSONValue = string | number | boolean | null | { [x: string]: JSONValue } |
 
 type AdQuery = {
   filter: Record<string, string | undefined>;
-  server: string;
+  servers: string[];
 };
 type AadQuery = {
   searchString: string;

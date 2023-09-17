@@ -2,7 +2,7 @@ export const adQuery: AdQuery = {
   filter: {
     name: "",
   },
-  server: "",
+  servers: [""],
 };
 
 export const tableFilter: TableFilter = {

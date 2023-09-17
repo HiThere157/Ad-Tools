@@ -28,11 +28,13 @@ export default function TableFilter({
         value={column}
         onChange={(column) => setFilter({ ...filter, column })}
         replacer={friendly}
+        className="w-full"
       />
       <Dropdown
         items={operators}
         value={operator}
         onChange={(operator) => setFilter({ ...filter, operator })}
+        className="w-full"
       />
       <Input value={value} onChange={() => setFilter({ ...filter, value })} />
       <Button className="p-1 text-red" onClick={removeFilter}>

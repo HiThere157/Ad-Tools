@@ -16,7 +16,7 @@ export default function Checkbox({ checked, onChange }: CheckboxProps) {
     <label
       className={
         "flex h-5 w-5 cursor-pointer items-center rounded border-2 p-0.5 " +
-        "border-border bg-secondary text-primaryAccent hover:border-borderAccent hover:bg-secondaryAccent active:border-borderActive active:bg-secondaryActive"
+        "border-border bg-dark text-primaryAccent hover:border-borderAccent hover:bg-secondaryAccent active:border-borderActive active:bg-secondaryActive"
       }
     >
       {checked && <BsCheckLg className="scale-150" />}

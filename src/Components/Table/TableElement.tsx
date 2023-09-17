@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 
-import { stringify } from "../../Helper/string";
+import { filterData, sortData } from "../../Helper/array";
 import { friendly } from "../../Config/lookup";
+import { stringify } from "../../Helper/string";
 
 import Checkbox from "../Checkbox";
 
@@ -10,6 +11,7 @@ import { BsCaretDownFill } from "react-icons/bs";
 type TableElementProps = {
   data: PSResult;
   columns: string[];
+  filters: TableFilter[];
   sort: SortConfig;
   setSort: (sort: SortConfig) => void;
   selected: number[];
@@ -18,6 +20,7 @@ type TableElementProps = {
 export default function TableElement({
   data,
   columns,
+  filters,
   sort,
   setSort,
   selected,
@@ -35,19 +38,13 @@ export default function TableElement({
     return false;
   }, [data, selected]);
 
+  const filteredData = useMemo(() => {
+    return filterData(data, filters);
+  }, [data, filters]);
+
   const sortedData = useMemo(() => {
-    const sortedData = [...data];
-
-    sortedData.sort((a, b) => {
-      if (sort.direction === "desc") {
-        [a, b] = [b, a];
-      }
-
-      return stringify(a[sort.column]).localeCompare(stringify(b[sort.column]));
-    });
-
-    return sortedData;
-  }, [data, sort]);
+    return sortData(filteredData, sort);
+  }, [filteredData, sort]);
 
   const onSort = (column: string) => {
     if (sort.column === column) {

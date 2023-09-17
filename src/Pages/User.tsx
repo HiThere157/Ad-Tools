@@ -31,7 +31,6 @@ export default function User() {
             __id__: 1,
             username: "test",
             attrib1: "testattrib1",
-            attrib2: "testattrib2",
             numeric: 1,
             numeric2: 2,
           },
@@ -39,13 +38,12 @@ export default function User() {
             __id__: 2,
             username: "test2",
             attrib1: "testattrib21",
-            attrib2: "testattrib22",
             numeric: 2,
             numeric2: 1,
           },
         ],
       },
-      columns: ["username", "attrib1", "attrib2", "numeric", "numeric2"],
+      columns: ["username", "attrib1", "numeric", "numeric2"],
     };
 
     setDataSets([searchResult]);
