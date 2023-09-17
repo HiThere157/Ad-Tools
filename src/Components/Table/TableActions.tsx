@@ -1,13 +1,22 @@
+import { useState } from "react";
+
 import { friendly } from "../../Config/lookup";
 
 import Button from "../Button";
 import Dropdown from "../Dropdown";
 
-import { BsArrowCounterclockwise, BsFunnel, BsLayoutThreeColumns } from "react-icons/bs";
+import {
+  BsFunnel,
+  BsLayoutThreeColumns,
+  BsArrowCounterclockwise,
+  BsClipboard,
+} from "react-icons/bs";
 
 type TableActionsProps = {
   onReset: () => void;
   onFilterMenu: () => void;
+  onCopy: (onlySelection: boolean) => void;
+  filters: TableFilter[];
   columns: string[];
   hiddenColumns: string[];
   setHiddenColumns: (hiddenColumns: string[]) => void;
@@ -15,30 +24,53 @@ type TableActionsProps = {
 export default function TableActions({
   onReset,
   onFilterMenu,
+  onCopy,
+  filters,
   columns,
   hiddenColumns,
   setHiddenColumns,
 }: TableActionsProps) {
+  const [hasCopied, setHasCopied] = useState(false);
+
   const invertHiddenColumns = (hiddenColumns: string[]) => {
     return columns.filter((column) => !hiddenColumns.includes(column));
   };
 
   return (
-    <div className="flex gap-1">
-      <Button className="p-1" onClick={onReset}>
-        <BsArrowCounterclockwise />
-      </Button>
-      <Button className="p-1" onClick={onFilterMenu}>
+    <div className="flex flex-col gap-1">
+      <Button
+        className={"p-1 " + (filters.length !== 0 ? "!border-primaryAccent" : "")}
+        onClick={onFilterMenu}
+      >
         <BsFunnel />
       </Button>
       <Dropdown
         items={columns}
         value={invertHiddenColumns(hiddenColumns)}
-        onChangeMulti={(hiddenColumns) => setHiddenColumns(invertHiddenColumns(hiddenColumns))}
+        onChangeMulti={(hiddenColumns) => {
+          if (hiddenColumns.length === 0) return;
+          setHiddenColumns(invertHiddenColumns(hiddenColumns));
+        }}
         replacer={friendly}
-        className="p-1"
+        className={"p-1 " + (hiddenColumns.length !== 0 ? "!border-primaryAccent" : "")}
       >
         <BsLayoutThreeColumns />
+      </Dropdown>
+      <Button className="p-1" onClick={onReset}>
+        <BsArrowCounterclockwise />
+      </Button>
+
+      <Dropdown
+        items={["Copy All", "Copy Selection"]}
+        value={""}
+        onChange={(scope) => {
+          onCopy(scope === "Copy Selection");
+          setHasCopied(true);
+          setTimeout(() => setHasCopied(false), 2000);
+        }}
+        className={"p-1 " + (hasCopied ? "!border-primaryAccent" : "")}
+      >
+        <BsClipboard />
       </Dropdown>
     </div>
   );

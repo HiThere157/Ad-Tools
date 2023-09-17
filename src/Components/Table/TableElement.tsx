@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-import { filterData, sortData } from "../../Helper/array";
 import { friendly } from "../../Config/lookup";
 import { stringify } from "../../Helper/string";
 
@@ -11,40 +10,32 @@ import { BsCaretDownFill } from "react-icons/bs";
 type TableElementProps = {
   data: PSResult;
   columns: string[];
-  filters: TableFilter[];
   sort: SortConfig;
   setSort: (sort: SortConfig) => void;
+  allRowIds: number[];
   selected: number[];
   setSelected: (selected: number[]) => void;
 };
 export default function TableElement({
   data,
   columns,
-  filters,
   sort,
   setSort,
+  allRowIds,
   selected,
   setSelected,
 }: TableElementProps) {
   const mainCheckState = useMemo(() => {
-    const rowsSelected = data.map((row) => selected.includes(row.__id__));
+    const rowsSelected = allRowIds.map((id) => selected.includes(id));
 
     // If all rows are selected, return true
-    if (rowsSelected.every((row) => row)) return true;
+    if (rowsSelected.every((row) => row) && data.length != 0) return true;
     // If some rows are selected, return undefined
     if (rowsSelected.some((row) => row)) return undefined;
 
     // If no rows are selected, return false
     return false;
   }, [data, selected]);
-
-  const filteredData = useMemo(() => {
-    return filterData(data, filters);
-  }, [data, filters]);
-
-  const sortedData = useMemo(() => {
-    return sortData(filteredData, sort);
-  }, [filteredData, sort]);
 
   const onSort = (column: string) => {
     if (sort.column === column) {
@@ -73,31 +64,23 @@ export default function TableElement({
   };
 
   const onAllSelect = () => {
-    const rowsIds = data.map((row) => row.__id__);
-
     if (mainCheckState) {
-      // All rows are selected, so we deselect all visible rows
-      setSelected(selected.filter((selectedId) => !rowsIds.includes(selectedId)));
+      // All rows are selected, so we deselect all rows
+      setSelected([]);
     }
 
-    if (mainCheckState === false) {
-      // No visible rows are selected, so we add all visible rows to the selection
-      setSelected([...selected, ...rowsIds]);
-    }
-
-    if (mainCheckState === undefined) {
-      // Some visible rows are selected, so we deselect all visible rows
-      // before re-selecting all visible rows - to prevent double selection
-      setSelected([...selected.filter((selectedId) => !rowsIds.includes(selectedId)), ...rowsIds]);
+    if (!mainCheckState) {
+      // No or some rows are selected, so we add all rows to the selection
+      setSelected(allRowIds);
     }
   };
 
   return (
-    <div className="overflow-hidden rounded border-2 border-border">
+    <div className="min-h-[3.5rem] overflow-hidden rounded border-2 border-border">
       <table className="w-full">
         <thead className="bg-primary">
           <tr className="border-b-2 border-border">
-            <th className="px-2">
+            <th className="w-6 px-2">
               <Checkbox checked={mainCheckState} onChange={onAllSelect} />
             </th>
 
@@ -119,7 +102,7 @@ export default function TableElement({
         </thead>
 
         <tbody>
-          {sortedData.map((row) => (
+          {data.map((row) => (
             <tr key={row.__id__}>
               <td className="border-t border-border px-2">
                 <Checkbox

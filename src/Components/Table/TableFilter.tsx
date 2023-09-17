@@ -18,8 +18,7 @@ export default function TableFilter({
   setFilter,
   removeFilter,
 }: TableFilterProps) {
-  const operators = ["is", "is not", "in", "not in"];
-  const { column, operator, value } = filter;
+  const { column, value } = filter;
 
   return (
     <>
@@ -30,13 +29,7 @@ export default function TableFilter({
         replacer={friendly}
         className="w-full"
       />
-      <Dropdown
-        items={operators}
-        value={operator}
-        onChange={(operator) => setFilter({ ...filter, operator })}
-        className="w-full"
-      />
-      <Input value={value} onChange={() => setFilter({ ...filter, value })} />
+      <Input value={value} onChange={(value) => setFilter({ ...filter, value })} />
       <Button className="p-1 text-red" onClick={removeFilter}>
         <BsTrashFill />
       </Button>

@@ -8,7 +8,6 @@ export const adQuery: AdQuery = {
 export const tableFilter: TableFilter = {
   column: "",
   value: "",
-  operator: "is",
 };
 
 export const tableConfig: TableConfig = {
@@ -20,6 +19,8 @@ export const tableConfig: TableConfig = {
     direction: "asc",
   },
   selected: [],
-  pageSize: 50,
-  pageIndex: 0,
+  pagination: {
+    size: 25,
+    page: 0,
+  },
 };

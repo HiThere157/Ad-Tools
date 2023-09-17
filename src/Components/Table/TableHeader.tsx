@@ -2,16 +2,18 @@ import { FiChevronDown } from "react-icons/fi";
 
 type TableHeaderProps = {
   title: string;
-  resultCount: number;
+  count?: ResultCount;
   isCollapsed: boolean;
   setIsCollapsed: (isCollapsed: boolean) => void;
 };
 export default function TableHeader({
   title,
-  resultCount,
+  count,
   isCollapsed,
   setIsCollapsed,
 }: TableHeaderProps) {
+  const { total, selected, filtered } = count ?? {};
+
   return (
     <div className="flex gap-1">
       <button className="mt-1 text-2xl" onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -25,9 +27,21 @@ export default function TableHeader({
           </h2>
         </button>
 
-        <span className="text-grey">
-          {resultCount} {resultCount === 1 ? "Result" : "Results"}
-        </span>
+        {count && (
+          <>
+            <span className="text-grey">
+              {total} {total === 1 ? "Result" : "Results"}
+            </span>
+
+            {(selected !== 0 || filtered !== 0) && (
+              <span className="text-grey">
+                ({selected !== 0 && `${selected} Selected`}
+                {selected !== 0 && filtered !== 0 && ", "}
+                {filtered !== 0 && `${filtered} Hidden`})
+              </span>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
