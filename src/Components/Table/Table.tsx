@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 
 import { tableConfig } from "../../Config/default";
 import { friendly } from "../../Config/lookup";
-import { filterData, sortData } from "../../Helper/array";
+import { filterData, sortData, paginateData } from "../../Helper/array";
 import { stringify } from "../../Helper/string";
 
 import TableHeader from "./TableHeader";
@@ -31,10 +31,7 @@ export default function Table({ dataSet, config, setConfig }: TableProps) {
   }, [filteredResult, sort]);
 
   const paginationResult = useMemo(() => {
-    return sortedResult.slice(
-      pagination.page * pagination.size,
-      (pagination.page + 1) * pagination.size,
-    );
+    return paginateData(sortedResult, pagination);
   }, [sortedResult, pagination]);
 
   useEffect(() => {

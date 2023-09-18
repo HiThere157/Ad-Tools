@@ -18,11 +18,21 @@ export function filterData(data: PSResult, filters: TableFilter[]) {
 }
 
 export function sortData(data: PSResult, sort: SortConfig) {
+  const { column, direction } = sort;
+
   return [...data].sort((a, b) => {
-    if (sort.direction === "desc") {
+    if (direction === "desc") {
       [a, b] = [b, a];
     }
 
-    return stringify(a[sort.column]).localeCompare(stringify(b[sort.column]));
+    return stringify(a[column]).localeCompare(stringify(b[column]));
   });
+}
+
+export function paginateData(data: PSResult, pagination: PaginationConfig) {
+  const { page, size } = pagination;
+
+  if (size === -1) return data;
+
+  return data.slice(page * size, (page + 1) * size);
 }

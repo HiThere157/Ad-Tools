@@ -25,46 +25,51 @@ export default function TablePagination({
 
   return (
     <div className="flex items-center gap-1">
-      <Button
-        onClick={() => setPagination({ ...pagination, page: 0 })}
-        disabled={page <= 0}
-        className={className}
-      >
-        <BsChevronDoubleLeft />
-      </Button>
-      <Button
-        onClick={() => setPagination({ ...pagination, page: page - 1 })}
-        disabled={page <= 0}
-        className={className}
-      >
-        <BsChevronLeft />
-      </Button>
+      {size !== -1 && (
+        <>
+          <Button
+            onClick={() => setPagination({ ...pagination, page: 0 })}
+            disabled={page <= 0}
+            className={className}
+          >
+            <BsChevronDoubleLeft />
+          </Button>
+          <Button
+            onClick={() => setPagination({ ...pagination, page: page - 1 })}
+            disabled={page <= 0}
+            className={className}
+          >
+            <BsChevronLeft />
+          </Button>
 
-      <span className="px-2 text-sm">
-        {page + 1}/{maxPage + 1}
-      </span>
+          <span className="px-2 text-sm">
+            {page + 1}/{maxPage + 1}
+          </span>
 
-      <Button
-        onClick={() => setPagination({ ...pagination, page: page + 1 })}
-        disabled={page >= maxPage}
-        className={className}
-      >
-        <BsChevronRight />
-      </Button>
-      <Button
-        onClick={() => setPagination({ ...pagination, page: maxPage })}
-        disabled={page >= maxPage}
-        className={className}
-      >
-        <BsChevronDoubleRight />
-      </Button>
+          <Button
+            onClick={() => setPagination({ ...pagination, page: page + 1 })}
+            disabled={page >= maxPage}
+            className={className}
+          >
+            <BsChevronRight />
+          </Button>
+          <Button
+            onClick={() => setPagination({ ...pagination, page: maxPage })}
+            disabled={page >= maxPage}
+            className={className}
+          >
+            <BsChevronDoubleRight />
+          </Button>
+        </>
+      )}
 
       <Dropdown
-        items={["10", "25", "100", "500"]}
+        items={["10", "50", "250", "-1"]}
         value={size.toString()}
         onChange={(sizeString) => {
           setPagination({ ...pagination, size: Number(sizeString) });
         }}
+        replacer={(value) => (value === "-1" ? "All" : value)}
         className="h-6 min-h-[unset] bg-dark px-1"
       />
     </div>
