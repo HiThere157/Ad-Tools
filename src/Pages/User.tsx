@@ -26,29 +26,13 @@ export default function User() {
       timestamp: Date.now(),
       executionTime: 1337,
       data: {
-        result: [
-          {
-            __id__: 1,
-            username: "test",
-            attrib1: "testattrib1",
-            numeric: Math.random() * 1000,
-            numeric2: Math.random() * 1000,
-          },
-          {
-            __id__: 2,
-            username: "test2",
-            attrib1: "testattrib21",
-            numeric: Math.random() * 1000,
-            numeric2: Math.random() * 1000,
-          },
-          {
-            __id__: 3,
-            username: "test2",
-            attrib1: "testattrib21",
-            numeric: Math.random() * 1000,
-            numeric2: Math.random() * 1000,
-          },
-        ],
+        result: [...Array(100).keys()].map((i) => ({
+          __id__: i,
+          username: `test${i}`,
+          attrib1: `testattrib${i}`,
+          numeric: Math.random() * 1000,
+          numeric2: Math.random() * 1000,
+        })),
       },
       columns: ["username", "attrib1", "numeric", "numeric2"],
     };
@@ -60,7 +44,7 @@ export default function User() {
     <div>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} setTabs={setTabs} />
 
-      <div className="mx-2">
+      <div className="mx-2 mb-20">
         <AdQuery query={query ?? adQuery} setQuery={setQuery} onSubmit={runQuery} />
 
         {dataSets?.map((dataSet) => (

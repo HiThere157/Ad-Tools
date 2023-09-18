@@ -20,7 +20,7 @@ export const tableConfig: TableConfig = {
   },
   selected: [],
   pagination: {
-    size: 25,
+    size: 10,
     page: 0,
   },
 };

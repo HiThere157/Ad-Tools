@@ -73,9 +73,9 @@ export default function Table({ dataSet, config, setConfig }: TableProps) {
           setIsCollapsed={(isCollapsed) => setConfig({ ...config, isCollapsed })}
         />
 
-        {count && count.total !== 0 && !isCollapsed && (
+        {count && count.total > 25 && !isCollapsed && (
           <TablePagination
-            count={count.total}
+            count={count.total - count.filtered}
             pagination={pagination}
             setPagination={(pagination) => setConfig({ ...config, pagination })}
           />
@@ -113,23 +113,23 @@ export default function Table({ dataSet, config, setConfig }: TableProps) {
               setSelected={(selected) => setConfig({ ...config, selected })}
             />
 
-            {count && count.total !== 0 && (
-              <div className="ms-1 flex justify-between">
-                <div className="text-xs leading-[0.65rem] text-grey">
-                  {timestamp && executionTime && (
-                    <span>
-                      {new Date(timestamp).toLocaleTimeString("de-de")} - {executionTime}ms
-                    </span>
-                  )}
-                </div>
+            <div className="ms-1 flex justify-between">
+              <div className="text-xs leading-[0.65rem] text-grey">
+                {timestamp && executionTime && (
+                  <span>
+                    {new Date(timestamp).toLocaleTimeString("de-de")} - {executionTime}ms
+                  </span>
+                )}
+              </div>
 
+              {count && count.total > 25 && (
                 <TablePagination
-                  count={count.total}
+                  count={count.total - count.filtered}
                   pagination={pagination}
                   setPagination={(pagination) => setConfig({ ...config, pagination })}
                 />
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       )}

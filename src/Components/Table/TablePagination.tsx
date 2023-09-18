@@ -60,7 +60,7 @@ export default function TablePagination({
       </Button>
 
       <Dropdown
-        items={["25", "100", "500", "1000"]}
+        items={["10", "25", "100", "500"]}
         value={size.toString()}
         onChange={(sizeString) => {
           setPagination({ ...pagination, size: Number(sizeString) });
