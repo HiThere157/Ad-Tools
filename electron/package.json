@@ -1,0 +1,22 @@
+{
+  "name": "ad-tools",
+  "version": "0.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HiThere157/Ad-Tools.git"
+  },
+  "author": "David K",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HiThere157/Ad-Tools/issues"
+  },
+  "homepage": "https://github.com/HiThere157/Ad-Tools#readme",
+  "devDependencies": {
+    "electron": "^26.2.1"
+  }
+}
