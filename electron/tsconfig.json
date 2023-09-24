@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}

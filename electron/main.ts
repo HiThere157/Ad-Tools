@@ -1,5 +1,7 @@
-const { app, shell, BrowserWindow } = require("electron");
-const path = require("path");
+import { app, shell, BrowserWindow, ipcMain } from "electron";
+import path = require("path");
+
+import { invokePSCommand } from "./api/powershell";
 
 app.whenReady().then(() => {
   const window = new BrowserWindow({
@@ -8,6 +10,9 @@ app.whenReady().then(() => {
     backgroundColor: "#1A1A1A",
     titleBarStyle: "hidden",
     icon: path.join(__dirname, "assets/icon32.png"),
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+    },
   });
 
   window.removeMenu();
@@ -26,6 +31,9 @@ app.whenReady().then(() => {
     shell.openExternal(url);
     return { action: "deny" };
   });
+
+  // Handle API requests
+  ipcMain.handle("ps:invokePSCommand", invokePSCommand);
 });
 
 app.on("window-all-closed", () => {

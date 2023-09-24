@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react()],
   base: "./",
   build: {
-    outDir: "electron/web",
+    outDir: "electron/build/web",
   },
 });

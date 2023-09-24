@@ -2,9 +2,9 @@
   "name": "ad-tools",
   "version": "0.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "build/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "npx tsc && electron ."
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/HiThere157/Ad-Tools#readme",
   "devDependencies": {
-    "electron": "^26.2.1"
+    "electron": "^26.2.1",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "node-powershell": "^5.0.1"
