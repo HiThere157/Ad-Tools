@@ -3,12 +3,17 @@ type Loadable<T> = null | {
   error?: string;
 };
 
-type JSONValue = string | number | boolean | null | { [x: string]: JSONValue } | Array<JSONValue>;
-
+type JSONValue = string | number | boolean | null | { [key: string]: JSONValue } | Array<JSONValue>;
 type PSResult = {
   __id__: number;
-  [key: string]: JSONValue;
+  [key: string]: JSONValue | undefined;
 }[];
+type PSDataSet = {
+  timestamp?: number;
+  executionTime?: number;
+  data: Loadable<PSResult>;
+  columns: string[];
+};
 
 type InvokePSCommandRequest = {
   useGlobalSession: boolean;

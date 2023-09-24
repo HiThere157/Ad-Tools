@@ -10,19 +10,17 @@ export default function User() {
   const { activeTab, setActiveTab, tabs, setTabs } = useTabs(page);
 
   const [query, setQuery] = useTabState<AdQuery>(`query_${page}`, activeTab);
-  const [dataSets, setDataSets] = useTabState<DataSet<Loadable<PSResult>>[]>(
+  const [dataSets, setDataSets] = useTabState<PartialRecord<string, PSDataSet>>(
     `dataSets_${page}`,
     activeTab,
   );
-  const [tableConfigs, setTableConfigs] = useTabState<Record<string, TableConfig | undefined>>(
+  const [tableConfigs, setTableConfigs] = useTabState<PartialRecord<string, TableConfig>>(
     `tableConfigs_${page}`,
     activeTab,
   );
 
   const runQuery = () => {
-    const searchResult: DataSet<Loadable<PSResult>> = {
-      key: `${page}_search`,
-      title: "Search",
+    const searchResult: PSDataSet = {
       timestamp: Date.now(),
       executionTime: 1337,
       data: {
@@ -37,7 +35,10 @@ export default function User() {
       columns: ["username", "attrib1", "numeric", "numeric2"],
     };
 
-    setDataSets([searchResult]);
+    setDataSets({
+      ...dataSets,
+      table1: searchResult,
+    });
   };
 
   return (
@@ -47,19 +48,16 @@ export default function User() {
       <div className="mx-2 mb-20">
         <AdQuery query={query ?? adQuery} setQuery={setQuery} onSubmit={runQuery} />
 
-        {dataSets?.map((dataSet) => (
-          <Table
-            key={dataSet.key}
-            dataSet={dataSet}
-            config={tableConfigs?.[dataSet.key] ?? tableConfig}
-            setConfig={(config) => {
-              setTableConfigs({
-                ...tableConfigs,
-                [dataSet.key]: config,
-              });
-            }}
-          />
-        ))}
+        {/* <Table
+          dataSet={dataSets?.["table1"]}
+          config={tableConfigs?.["table1"] ?? tableConfig}
+          setConfig={(config) => {
+            setTableConfigs({
+              ...tableConfigs,
+              table1: config,
+            });
+          }}
+        /> */}
       </div>
     </div>
   );

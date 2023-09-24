@@ -9,7 +9,7 @@ const globalSession = createPSSession();
 export const invokePSCommand = async (
   _event: Electron.IpcMainInvokeEvent,
   { useGlobalSession, command, fields }: InvokePSCommandRequest,
-): Promise<Loadable<JSONValue>> => {
+): Promise<Loadable<PSResult>> => {
   // If the command should use the global session, use it
   const session = useGlobalSession ? globalSession : createPSSession();
 
@@ -26,7 +26,9 @@ export const invokePSCommand = async (
     if (!result) return {};
 
     // If the command returns JSON, parse it and return the result
-    return { result: JSON.parse(output.raw) as JSONValue };
+
+    //////////////////////////////////////// TODO: return only array and tag it with __id__ ////////////////////////////////////////
+    return { result: JSON.parse(output.raw) as PSResult };
   } catch (error) {
     // If the command returns an error, return the error
     return { error: (error as Error).toString().split("At line:1")[0] };

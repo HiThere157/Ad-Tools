@@ -1,4 +1,4 @@
-export const friendlyNames: Record<string, string | undefined> = {
+export const friendlyNames: PartialRecord<string, string> = {
   username: "Username",
   attrib1: "Attribute 1",
   attrib2: "Attribute 2",

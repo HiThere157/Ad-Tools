@@ -1,5 +1,5 @@
 type AdQuery = {
-  filter: Record<string, string | undefined>;
+  filter: PartialRecord<string, string>;
   servers: string[];
 };
 type AadQuery = {

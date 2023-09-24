@@ -12,12 +12,13 @@ import TableElement from "./TableElement";
 import TablePagination from "./TablePagination";
 
 type TableProps = {
-  dataSet: DataSet<Loadable<PSResult>>;
+  title: string;
+  dataSet: PSDataSet;
   config: TableConfig;
   setConfig: (config: TableConfig) => void;
 };
-export default function Table({ dataSet, config, setConfig }: TableProps) {
-  const { timestamp, executionTime, title, data, columns } = dataSet;
+export default function Table({ dataSet, title, config, setConfig }: TableProps) {
+  const { timestamp, executionTime, data, columns } = dataSet;
   const { isCollapsed, filters, hiddenColumns, sort, selected, pagination } = config;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [count, setCount] = useState<ResultCount>();

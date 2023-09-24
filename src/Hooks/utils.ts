@@ -2,7 +2,7 @@ import { useSessionStorage } from "./useStorage";
 
 // This is a hook that will return the state for a specific tab on a page, and a helpful function to set it
 export function useTabState<T>(key: string, tabId: number) {
-  const [state, setState] = useSessionStorage<Record<number, T | undefined>>(key, {});
+  const [state, setState] = useSessionStorage<PartialRecord<number, T>>(key, {});
 
   const thisState = state[tabId];
   const setThisState = (newState: T) => {
