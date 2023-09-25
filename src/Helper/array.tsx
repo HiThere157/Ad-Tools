@@ -1,6 +1,6 @@
 import { stringify } from "./string";
 
-export function filterData(data: PSResult, filters: TableFilter[]) {
+export function filterData(data: PSResult[], filters: TableFilter[]) {
   return data.filter((row) => {
     return filters.every((filter) => {
       // If the filter value is empty, we return true
@@ -17,7 +17,7 @@ export function filterData(data: PSResult, filters: TableFilter[]) {
   });
 }
 
-export function sortData(data: PSResult, sort: SortConfig) {
+export function sortData(data: PSResult[], sort: SortConfig) {
   const { column, direction } = sort;
 
   return [...data].sort((a, b) => {
@@ -29,7 +29,7 @@ export function sortData(data: PSResult, sort: SortConfig) {
   });
 }
 
-export function paginateData(data: PSResult, pagination: PaginationConfig) {
+export function paginateData(data: PSResult[], pagination: PaginationConfig) {
   const { page, size } = pagination;
 
   if (size === -1) return data;

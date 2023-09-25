@@ -24,7 +24,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
   const [count, setCount] = useState<ResultCount>();
 
   const filteredResult = useMemo(() => {
-    return filterData(data?.result ?? [], filters);
+    return filterData(data, filters);
   }, [data, filters]);
 
   const sortedResult = useMemo(() => {
@@ -36,13 +36,11 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
   }, [sortedResult, pagination]);
 
   useEffect(() => {
-    if (data?.result) {
-      setCount({
-        total: data.result.length,
-        filtered: data.result.length - filteredResult.length,
-        selected: selected.length,
-      });
-    }
+    setCount({
+      total: data.length,
+      filtered: data.length - filteredResult.length,
+      selected: selected.length,
+    });
   }, [data, filteredResult, selected]);
 
   const exportAsCSV = (onlySelection: boolean) => {
@@ -50,7 +48,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
     const csvColumns = columns.filter((column) => !hiddenColumns.includes(column));
     let csv = csvColumns.map(friendly).join("\u{9}") + "\n";
 
-    data?.result?.forEach((entry) => {
+    data.forEach((entry) => {
       // Skip if not selected and onlySelection is true
       if (onlySelection && !selected.includes(entry.__id__)) return;
 
@@ -67,7 +65,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
         <TableHeader
           title={title}
           count={count}
-          isCollapsed={isCollapsed ?? false}
+          isCollapsed={isCollapsed}
           setIsCollapsed={(isCollapsed) => setConfig({ ...config, isCollapsed })}
         />
 
@@ -106,7 +104,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
               columns={columns.filter((column) => !hiddenColumns.includes(column))}
               sort={sort}
               setSort={(sort) => setConfig({ ...config, sort })}
-              allRowIds={data?.result?.map((row) => row.__id__) ?? []}
+              allRowIds={data.map((row) => row.__id__) ?? []}
               selected={selected}
               setSelected={(selected) => setConfig({ ...config, selected })}
             />

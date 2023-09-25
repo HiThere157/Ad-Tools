@@ -4,14 +4,16 @@ type Loadable<T> = null | {
 };
 
 type JSONValue = string | number | boolean | null | { [key: string]: JSONValue } | Array<JSONValue>;
-type PSResult = {
-  __id__: number;
+type RawPSResult = {
   [key: string]: JSONValue | undefined;
-}[];
+};
+type PSResult = RawPSResult & {
+  __id__: number;
+};
 type PSDataSet = {
-  timestamp?: number;
-  executionTime?: number;
-  data: Loadable<PSResult>;
+  timestamp: number;
+  executionTime: number;
+  data: PSResult[];
   columns: string[];
 };
 

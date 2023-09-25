@@ -8,7 +8,7 @@ import Checkbox from "../Checkbox";
 import { BsCaretDownFill } from "react-icons/bs";
 
 type TableElementProps = {
-  data: PSResult;
+  data: PSResult[];
   columns: string[];
   sort: SortConfig;
   setSort: (sort: SortConfig) => void;

@@ -10,7 +10,7 @@ export default function User() {
   const { activeTab, setActiveTab, tabs, setTabs } = useTabs(page);
 
   const [query, setQuery] = useTabState<AdQuery>(`query_${page}`, activeTab);
-  const [dataSets, setDataSets] = useTabState<PartialRecord<string, PSDataSet>>(
+  const [dataSets, setDataSets] = useTabState<PartialRecord<string, Loadable<PSDataSet>>>(
     `dataSets_${page}`,
     activeTab,
   );
@@ -20,25 +20,8 @@ export default function User() {
   );
 
   const runQuery = () => {
-    const searchResult: PSDataSet = {
-      timestamp: Date.now(),
-      executionTime: 1337,
-      data: {
-        result: [...Array(100).keys()].map((i) => ({
-          __id__: i,
-          username: `test${i}`,
-          attrib1: `testattrib${i}`,
-          numeric: Math.random() * 1000,
-          numeric2: Math.random() * 1000,
-        })),
-      },
-      columns: ["username", "attrib1", "numeric", "numeric2"],
-    };
 
-    setDataSets({
-      ...dataSets,
-      table1: searchResult,
-    });
+
   };
 
   return (
@@ -48,7 +31,8 @@ export default function User() {
       <div className="mx-2 mb-20">
         <AdQuery query={query ?? adQuery} setQuery={setQuery} onSubmit={runQuery} />
 
-        {/* <Table
+        <Table
+          title="Table 1"
           dataSet={dataSets?.["table1"]}
           config={tableConfigs?.["table1"] ?? tableConfig}
           setConfig={(config) => {
@@ -57,7 +41,7 @@ export default function User() {
               table1: config,
             });
           }}
-        /> */}
+        />
       </div>
     </div>
   );

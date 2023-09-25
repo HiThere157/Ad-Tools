@@ -15,6 +15,7 @@ type DropdownProps = {
   onChangeMulti?: (value: string[]) => void;
   replacer?: (text: string) => string;
   className?: string;
+  disabled?: boolean;
 };
 export default function Dropdown({
   children,
@@ -24,6 +25,7 @@ export default function Dropdown({
   onChangeMulti,
   replacer,
   className,
+  disabled,
 }: DropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -66,6 +68,7 @@ export default function Dropdown({
       <Button
         className={twMerge("flex min-h-[1.75rem] items-center gap-2", className)}
         onClick={() => setIsOpen(!isOpen)}
+        disabled={disabled}
       >
         {/* If children is defined, use that, otherwise use the current value and a caret */}
         {children ? (
