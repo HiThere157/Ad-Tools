@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "build",
+    "skipLibCheck": true,
 
     /* Linting */
     "strict": true,
