@@ -45,6 +45,11 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
     });
   }, [data, filteredResult, selected]);
 
+  // Reset pagination when filters or sort change
+  useEffect(() => {
+    setConfig({ ...config, pagination: { ...config.pagination, page: 0 } });
+  }, [dataSet, filters, sort]);
+
   const exportAsCSV = (onlySelection: boolean) => {
     // Add the header row to the CSV
     const csvColumns = columns.filter((column) => !hiddenColumns.includes(column));
@@ -92,7 +97,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
             setHiddenColumns={(hiddenColumns) => setConfig({ ...config, hiddenColumns })}
           />
 
-          <div className="flex flex-grow min-w-0 flex-col gap-1">
+          <div className="flex min-w-0 flex-grow flex-col gap-1">
             {isFilterOpen && (
               <TableFilterMenu
                 columns={columns}

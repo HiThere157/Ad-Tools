@@ -33,9 +33,9 @@ export default function User() {
       const result = await electronWindow.electronAPI.invokePSCommand(request);
       setDataSets({
         ...dataSets,
-        "table1": result,
+        table1: result,
       });
-      console.log(result)
+      console.log(result);
     })();
   };
 
