@@ -28,6 +28,7 @@ export default function TableFilter({
         onChange={(column) => setFilter({ ...filter, column })}
         replacer={friendly}
         className="w-full"
+        disabled={columns.length === 0}
       />
       <Input value={value} onChange={(value) => setFilter({ ...filter, value })} />
       <Button className="p-1 text-red" onClick={removeFilter}>

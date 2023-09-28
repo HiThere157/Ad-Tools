@@ -76,7 +76,7 @@ export default function TableElement({
   };
 
   return (
-    <div className="min-h-[3.5rem] overflow-hidden rounded border-2 border-border">
+    <div className="min-h-[3.5rem] overflow-x-auto rounded border-2 border-border">
       <table className="w-full">
         <thead className="bg-primary">
           <tr className="border-b-2 border-border">

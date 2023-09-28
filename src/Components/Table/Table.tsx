@@ -13,12 +13,12 @@ import TablePagination from "./TablePagination";
 
 type TableProps = {
   title: string;
-  dataSet: PSDataSet;
+  dataSet?: Loadable<PSDataSet>;
   config: TableConfig;
   setConfig: (config: TableConfig) => void;
 };
 export default function Table({ dataSet, title, config, setConfig }: TableProps) {
-  const { timestamp, executionTime, data, columns } = dataSet;
+  const { timestamp, executionTime, data = [], columns = [] } = dataSet?.result ?? {};
   const { isCollapsed, filters, hiddenColumns, sort, selected, pagination } = config;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [count, setCount] = useState<ResultCount>();
@@ -36,6 +36,8 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
   }, [sortedResult, pagination]);
 
   useEffect(() => {
+    if (!dataSet?.result) return;
+
     setCount({
       total: data.length,
       filtered: data.length - filteredResult.length,
@@ -60,7 +62,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
   };
 
   return (
-    <section className="w-fit min-w-[35rem]">
+    <section className="w-fit min-w-[35rem] max-w-full">
       <div className="ms-1 flex justify-between">
         <TableHeader
           title={title}
@@ -90,7 +92,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
             setHiddenColumns={(hiddenColumns) => setConfig({ ...config, hiddenColumns })}
           />
 
-          <div className="flex flex-grow flex-col gap-1">
+          <div className="flex flex-grow min-w-0 flex-col gap-1">
             {isFilterOpen && (
               <TableFilterMenu
                 columns={columns}
@@ -108,25 +110,27 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
               selected={selected}
               setSelected={(selected) => setConfig({ ...config, selected })}
             />
-
-            <div className="ms-1 flex justify-between">
-              <div className="text-xs leading-[0.65rem] text-grey">
-                {timestamp && executionTime && (
-                  <span>
-                    {new Date(timestamp).toLocaleTimeString("de-de")} - {executionTime}ms
-                  </span>
-                )}
-              </div>
-
-              {count && count.total > 25 && (
-                <TablePagination
-                  count={count.total - count.filtered}
-                  pagination={pagination}
-                  setPagination={(pagination) => setConfig({ ...config, pagination })}
-                />
-              )}
-            </div>
           </div>
+        </div>
+      )}
+
+      {!isCollapsed && (
+        <div className="ms-10 mt-1 flex justify-between">
+          <div className="text-xs leading-[0.65rem] text-grey">
+            {timestamp && executionTime && (
+              <span>
+                {new Date(timestamp).toLocaleTimeString("de-de")} - {executionTime}ms
+              </span>
+            )}
+          </div>
+
+          {count && count.total > 25 && (
+            <TablePagination
+              count={count.total - count.filtered}
+              pagination={pagination}
+              setPagination={(pagination) => setConfig({ ...config, pagination })}
+            />
+          )}
         </div>
       )}
     </section>

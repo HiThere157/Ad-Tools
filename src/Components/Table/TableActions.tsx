@@ -53,13 +53,10 @@ export default function TableActions({
         }}
         replacer={friendly}
         className={"p-1 " + (hiddenColumns.length !== 0 ? "!border-primaryAccent" : "")}
+        disabled={columns.length === 0}
       >
         <BsLayoutThreeColumns />
       </Dropdown>
-      <Button className="p-1" onClick={onReset}>
-        <BsArrowCounterclockwise />
-      </Button>
-
       <Dropdown
         items={["Copy All", "Copy Selection"]}
         value={""}
@@ -69,9 +66,13 @@ export default function TableActions({
           setTimeout(() => setHasCopied(false), 2000);
         }}
         className={"p-1 " + (hasCopied ? "!border-primaryAccent" : "")}
+        disabled={columns.length === 0}
       >
         <BsClipboard />
       </Dropdown>
+      <Button className="p-1" onClick={onReset}>
+        <BsArrowCounterclockwise />
+      </Button>
     </div>
   );
 }
