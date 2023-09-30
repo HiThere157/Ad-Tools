@@ -22,3 +22,5 @@ type InvokePSCommandRequest = {
   fields?: string[];
   useGlobalSession?: boolean;
 };
+
+type WindowState = "minimize" | "maximize_restore" | "close";

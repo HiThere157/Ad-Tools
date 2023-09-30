@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from "electron";
 import path = require("path");
 
 import { invokePSCommand } from "./api/powershell";
+import { changeWindowState } from "./api/win";
 
 app.whenReady().then(() => {
   const window = new BrowserWindow({
@@ -34,6 +35,11 @@ app.whenReady().then(() => {
 
   // Handle API requests
   ipcMain.handle("ps:invokePSCommand", invokePSCommand);
+
+  // Handle window state changes
+  ipcMain.on("win:changeWindowState", (_event, state: WindowState) => {
+    changeWindowState(window, state);
+  });
 });
 
 app.on("window-all-closed", () => {

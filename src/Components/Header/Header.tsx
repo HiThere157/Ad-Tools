@@ -6,9 +6,9 @@ export default function Header() {
   return (
     <header
       style={{ gridArea: "header" }}
-      className="flex select-none items-center border-b-2 border-border bg-light"
+      className="winbar-drag-region flex select-none items-center border-b-2 border-border bg-light"
     >
-      <NavLink draggable="false" className="flex items-center" to="/">
+      <NavLink draggable="false" className="winbar-no-drag flex items-center" to="/">
         <img draggable="false" src="./icon.svg" alt="AD Tools Logo" className="mx-3 h-6" />
         <span className="text-xl font-bold">AD Tools</span>
       </NavLink>

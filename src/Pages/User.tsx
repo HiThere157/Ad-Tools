@@ -22,16 +22,36 @@ export default function User() {
 
   const runQuery = () => {
     (async () => {
+      // Reset data
+      setDataSets({
+        table1: null,
+      });
+
       const request = {
         useGlobalSession: false,
         command: "Get-Process",
         fields: ["Name", "Id", "SessionId", "Path"],
       };
-
       const response = await invokePSCommand(request);
+
+      // Update data
       setDataSets({
         ...dataSets,
         table1: response,
+      });
+
+      // Reset pagination and selection
+      const config = tableConfigs?.["table1"] ?? tableConfig;
+      setTableConfigs({
+        ...tableConfigs,
+        table1: {
+          ...config,
+          selected: [],
+          pagination: {
+            ...config.pagination,
+            page: 0,
+          },
+        },
       });
     })();
   };
