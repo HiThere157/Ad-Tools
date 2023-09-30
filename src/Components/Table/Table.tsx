@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 
 import { tableConfig } from "../../Config/default";
 import { friendly } from "../../Config/lookup";
@@ -26,7 +26,6 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
 
   const { isCollapsed, filters, hiddenColumns, sort, selected, pagination } = config;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [count, setCount] = useState<ResultCount>();
 
   const filteredResult = useMemo(() => {
     return filterData(data, filters);
@@ -40,14 +39,15 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
     return paginateData(sortedResult, pagination);
   }, [sortedResult, pagination]);
 
-  useEffect(() => {
-    if (!dataSet?.result) return;
+  const count: ResultCount | undefined = useMemo(() => {
+    // Only show count if acutal data is available
+    if (!result) return undefined;
 
-    setCount({
+    return {
       total: data.length,
       filtered: data.length - filteredResult.length,
       selected: selected.length,
-    });
+    };
   }, [data, filteredResult, selected]);
 
   const exportAsCSV = (onlySelection: boolean) => {
