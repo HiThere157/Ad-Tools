@@ -108,7 +108,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
               />
             )}
 
-            <div className="min-h-[5rem] overflow-x-auto rounded border-2 border-border">
+            <div className="min-h-[5.5rem] overflow-x-auto rounded border-2 border-border">
               <TableElement
                 data={paginationResult}
                 columns={columns.filter((column) => !hiddenColumns.includes(column))}
@@ -122,27 +122,25 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
               {isLoading && <TableLoader />}
               {error && <TableError error={error} />}
             </div>
-          </div>
-        </div>
-      )}
 
-      {!isCollapsed && (
-        <div className="ms-10 mt-1 flex justify-between">
-          <div className="text-xs leading-[0.65rem] text-grey">
-            {timestamp && executionTime && (
-              <span>
-                {new Date(timestamp).toLocaleTimeString("de-de")} - {executionTime}ms
-              </span>
-            )}
-          </div>
+            <div className="ms-0.5 flex justify-between">
+              <div className="text-xs leading-[0.65rem] text-grey">
+                {timestamp && executionTime !== undefined && (
+                  <span>
+                    {new Date(timestamp).toLocaleTimeString("de-de")} - {executionTime}ms
+                  </span>
+                )}
+              </div>
 
-          {count && count.total > 25 && (
-            <TablePagination
-              count={count.total - count.filtered}
-              pagination={pagination}
-              setPagination={(pagination) => setConfig({ ...config, pagination })}
-            />
-          )}
+              {count && count.total > 25 && (
+                <TablePagination
+                  count={count.total - count.filtered}
+                  pagination={pagination}
+                  setPagination={(pagination) => setConfig({ ...config, pagination })}
+                />
+              )}
+            </div>
+          </div>
         </div>
       )}
     </section>
