@@ -76,52 +76,50 @@ export default function TableElement({
   };
 
   return (
-    <div className="min-h-[3.5rem] overflow-x-auto rounded border-2 border-border">
-      <table className="w-full">
-        <thead className="bg-primary">
-          <tr className="border-b-2 border-border">
-            <th className="w-6 px-2">
-              <Checkbox checked={mainCheckState} onChange={onAllSelect} />
+    <table className="w-full">
+      <thead className="bg-primary">
+        <tr className="border-b-2 border-border">
+          <th className="w-6 px-2 py-1">
+            <Checkbox checked={mainCheckState} onChange={onAllSelect} />
+          </th>
+
+          {columns.map((column, index) => (
+            <th key={index} className="border-s border-border px-2">
+              <button
+                className="flex w-full items-center justify-between gap-2"
+                onClick={() => onSort(column)}
+              >
+                {friendly(column)}
+
+                {sort.column === column && (
+                  <BsCaretDownFill className={sort.direction === "asc" ? "rotate-180" : ""} />
+                )}
+              </button>
             </th>
+          ))}
+        </tr>
+      </thead>
+
+      <tbody>
+        {data.map((row) => (
+          <tr key={row.__id__}>
+            <td className="border-t border-border px-2">
+              <Checkbox
+                checked={selected.includes(row.__id__)}
+                onChange={() => {
+                  onSelect(row.__id__);
+                }}
+              />
+            </td>
 
             {columns.map((column, index) => (
-              <th key={index} className="border-s border-border px-2">
-                <button
-                  className="flex w-full items-center justify-between gap-2"
-                  onClick={() => onSort(column)}
-                >
-                  {friendly(column)}
-
-                  {sort.column === column && (
-                    <BsCaretDownFill className={sort.direction === "asc" ? "rotate-180" : ""} />
-                  )}
-                </button>
-              </th>
+              <td key={index} className="border-s border-t border-border px-2">
+                {stringify(row[column])}
+              </td>
             ))}
           </tr>
-        </thead>
-
-        <tbody>
-          {data.map((row) => (
-            <tr key={row.__id__}>
-              <td className="border-t border-border px-2">
-                <Checkbox
-                  checked={selected.includes(row.__id__)}
-                  onChange={() => {
-                    onSelect(row.__id__);
-                  }}
-                />
-              </td>
-
-              {columns.map((column, index) => (
-                <td key={index} className="border-s border-t border-border px-2">
-                  {stringify(row[column])}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
   );
 }

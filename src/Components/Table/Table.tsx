@@ -10,6 +10,8 @@ import TableActions from "./TableActions";
 import TableFilterMenu from "./TableFilterMenu";
 import TableElement from "./TableElement";
 import TablePagination from "./TablePagination";
+import TableLoader from "./TableLoader";
+import TableError from "./TableError";
 
 type TableProps = {
   title: string;
@@ -18,7 +20,10 @@ type TableProps = {
   setConfig: (config: TableConfig) => void;
 };
 export default function Table({ dataSet, title, config, setConfig }: TableProps) {
-  const { timestamp, executionTime, data = [], columns = [] } = dataSet?.result ?? {};
+  const { result, error, timestamp, executionTime } = dataSet ?? {};
+  const { data = [], columns = [] } = result ?? {};
+  const isLoading = dataSet === null;
+
   const { isCollapsed, filters, hiddenColumns, sort, selected, pagination } = config;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [count, setCount] = useState<ResultCount>();
@@ -44,11 +49,6 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
       selected: selected.length,
     });
   }, [data, filteredResult, selected]);
-
-  // Reset pagination when filters or sort change
-  useEffect(() => {
-    setConfig({ ...config, pagination: { ...config.pagination, page: 0 } });
-  }, [dataSet, filters, sort]);
 
   const exportAsCSV = (onlySelection: boolean) => {
     // Add the header row to the CSV
@@ -102,19 +102,26 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
               <TableFilterMenu
                 columns={columns}
                 filters={filters}
-                setFilters={(filters) => setConfig({ ...config, filters })}
+                setFilters={(filters) => {
+                  setConfig({ ...config, filters, pagination: { ...config.pagination, page: 0 } });
+                }}
               />
             )}
 
-            <TableElement
-              data={paginationResult}
-              columns={columns.filter((column) => !hiddenColumns.includes(column))}
-              sort={sort}
-              setSort={(sort) => setConfig({ ...config, sort })}
-              allRowIds={data.map((row) => row.__id__) ?? []}
-              selected={selected}
-              setSelected={(selected) => setConfig({ ...config, selected })}
-            />
+            <div className="min-h-[5rem] overflow-x-auto rounded border-2 border-border">
+              <TableElement
+                data={paginationResult}
+                columns={columns.filter((column) => !hiddenColumns.includes(column))}
+                sort={sort}
+                setSort={(sort) => setConfig({ ...config, sort })}
+                allRowIds={data.map((row) => row.__id__) ?? []}
+                selected={selected}
+                setSelected={(selected) => setConfig({ ...config, selected })}
+              />
+
+              {isLoading && <TableLoader />}
+              {error && <TableError error={error} />}
+            </div>
           </div>
         </div>
       )}

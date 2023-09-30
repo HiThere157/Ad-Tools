@@ -1,10 +1,10 @@
 import { useTabs, useTabState } from "../Hooks/utils";
 import { adQuery, tableConfig } from "../Config/default";
-import { ElectronAPI } from "../../electron/preload";
 
 import Tabs from "../Components/Tabs/Tabs";
 import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
+import { invokePSCommand } from "../Helper/api";
 
 export default function User() {
   const page = "user";
@@ -21,8 +21,6 @@ export default function User() {
   );
 
   const runQuery = () => {
-    const electronWindow = window as Window & typeof globalThis & { electronAPI: ElectronAPI };
-
     (async () => {
       const request = {
         useGlobalSession: false,
@@ -30,12 +28,11 @@ export default function User() {
         fields: ["Name", "Id", "SessionId", "Path"],
       };
 
-      const result = await electronWindow.electronAPI.invokePSCommand(request);
+      const response = await invokePSCommand(request);
       setDataSets({
         ...dataSets,
-        table1: result,
+        table1: response,
       });
-      console.log(result);
     })();
   };
 
