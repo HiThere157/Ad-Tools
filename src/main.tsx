@@ -14,8 +14,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <HashRouter>
       <RootLayout>
         <Routes>
-          {navigationLinks.flat().map((link, index) => (
-            <Route key={index} path={link.href} element={link.page} />
+          {navigationLinks.flat().map((link, linkIndex) => (
+            <Route key={linkIndex} path={link.href} element={link.page} />
           ))}
         </Routes>
       </RootLayout>

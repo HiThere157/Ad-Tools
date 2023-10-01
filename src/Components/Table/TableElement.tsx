@@ -83,8 +83,8 @@ export default function TableElement({
             <Checkbox checked={mainCheckState} onChange={onAllSelect} />
           </th>
 
-          {columns.map((column, index) => (
-            <th key={index} className="border-s border-border px-2">
+          {columns.map((column, columnIndex) => (
+            <th key={columnIndex} className="border-s border-border px-2">
               <button
                 className="flex w-full items-center justify-between gap-2"
                 onClick={() => onSort(column)}
@@ -112,8 +112,8 @@ export default function TableElement({
               />
             </td>
 
-            {columns.map((column, index) => (
-              <td key={index} className="border-s border-t border-border px-2">
+            {columns.map((column, columnIndex) => (
+              <td key={columnIndex} className="border-s border-t border-border px-2">
                 {stringify(row[column])}
               </td>
             ))}

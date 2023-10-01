@@ -111,6 +111,7 @@ export const navigationLinks: NavigationLink[][] = [
       icon: <BsJoystick />,
       page: <Tetris />,
       isHidden: true,
+      isEasterEgg: true,
     },
   ],
 ];

@@ -14,17 +14,17 @@ export default function TableFilterMenu({ columns, filters, setFilters }: TableF
   return (
     <div className="flex items-end gap-1 rounded border-2 border-border p-2">
       <div className="grid flex-grow grid-cols-[auto_1fr_auto] items-center gap-1">
-        {filters.map((filter, index) => (
+        {filters.map((filter, filterIndex) => (
           <TableFilter
-            key={index}
+            key={filterIndex}
             columns={columns}
             filter={filter}
             setFilter={(filter) => {
               const newFilters = [...filters];
-              newFilters[index] = filter;
+              newFilters[filterIndex] = filter;
               setFilters(newFilters);
             }}
-            removeFilter={() => setFilters(filters.filter((_, i) => i !== index))}
+            removeFilter={() => setFilters(filters.filter((_, i) => i !== filterIndex))}
           />
         ))}
       </div>

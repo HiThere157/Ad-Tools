@@ -4,4 +4,5 @@ type NavigationLink = {
   icon: React.ReactNode;
   page: React.ReactNode;
   isHidden?: boolean;
+  isEasterEgg?: boolean;
 };

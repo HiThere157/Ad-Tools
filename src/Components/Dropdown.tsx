@@ -87,12 +87,12 @@ export default function Dropdown({
           (!isOpen ? "hidden" : "")
         }
       >
-        {items.map((item, index) => (
+        {items.map((item, itemIndex) => (
           <button
-            key={index}
+            key={itemIndex}
             className={
               "flex w-full items-center gap-2 whitespace-nowrap border-border bg-secondary px-2 hover:bg-secondaryAccent active:bg-secondaryActive " +
-              (index !== 0 ? "border-t" : "")
+              (itemIndex !== 0 ? "border-t" : "")
             }
             onClick={() => onItemSelect(item)}
           >

@@ -111,9 +111,9 @@ function overlayPiece(board: CellTypes[][], piece: PositionedPiece) {
   let rotatedShape = deepCopy(shape);
   for (let i = 0; i < rotation; i++) {
     rotatedShape = deepCopy(
-      rotatedShape.map((row, y) => {
-        return row.map((_, x) => {
-          return rotatedShape[shape.length - 1 - x][y];
+      rotatedShape.map((row, rowIndex) => {
+        return row.map((_, cellIndex) => {
+          return rotatedShape[shape.length - 1 - cellIndex][rowIndex];
         });
       }),
     );
@@ -385,17 +385,15 @@ function HeldPiece({ heldPiece }: HeldPieceProps) {
           {piece?.shape
             .filter((row) => !row.every((cell) => cell === 0))
             .flat()
-            .map((cell, j) => {
-              return (
-                <div
-                  key={j}
-                  className="aspect-square h-5"
-                  style={{
-                    backgroundColor: cell ? piece.color : "transparent",
-                  }}
-                />
-              );
-            })}
+            .map((cell, cellIndex) => (
+              <div
+                key={cellIndex}
+                className="aspect-square h-5"
+                style={{
+                  backgroundColor: cell ? piece.color : "transparent",
+                }}
+              />
+            ))}
         </div>
       </div>
     </div>
@@ -450,18 +448,16 @@ function Board({ board }: BoardProps) {
       className="grid w-fit rounded border-2 border-border"
       style={{ gridTemplateColumns: `repeat(${width}, 1fr)` }}
     >
-      {board.flat().map((cell, i) => {
-        return (
-          <div
-            key={i}
-            className="aspect-square border border-border"
-            style={{
-              height: `${90 / height}vh`,
-              backgroundColor: cell ? pieces[cell]?.color : "transparent",
-            }}
-          />
-        );
-      })}
+      {board.flat().map((cell, cellIndex) => (
+        <div
+          key={cellIndex}
+          className="aspect-square border border-border"
+          style={{
+            height: `${90 / height}vh`,
+            backgroundColor: cell ? pieces[cell]?.color : "transparent",
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -477,33 +473,29 @@ function Queue({ queue }: QueueProps) {
       <span className="text-2xl font-bold text-grey">Queue</span>
 
       <div className="flex flex-col items-center">
-        {queuedPieces.map((piece, i) => {
-          return (
-            <div key={i} className="mx-2 flex h-20 w-20 items-center justify-center">
-              <div
-                className="grid"
-                style={{
-                  gridTemplateColumns: `repeat(${piece.shape.length}, 1fr)`,
-                }}
-              >
-                {piece.shape
-                  .filter((row) => !row.every((cell) => cell === 0))
-                  .flat()
-                  .map((cell, j) => {
-                    return (
-                      <div
-                        key={j}
-                        className="aspect-square h-5"
-                        style={{
-                          backgroundColor: cell ? piece.color : "transparent",
-                        }}
-                      />
-                    );
-                  })}
-              </div>
+        {queuedPieces.map((piece, pieceIndex) => (
+          <div key={pieceIndex} className="mx-2 flex h-20 w-20 items-center justify-center">
+            <div
+              className="grid"
+              style={{
+                gridTemplateColumns: `repeat(${piece.shape.length}, 1fr)`,
+              }}
+            >
+              {piece.shape
+                .filter((row) => !row.every((cell) => cell === 0))
+                .flat()
+                .map((cell, cellIndex) => (
+                  <div
+                    key={cellIndex}
+                    className="aspect-square h-5"
+                    style={{
+                      backgroundColor: cell ? piece.color : "transparent",
+                    }}
+                  />
+                ))}
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </div>
   );

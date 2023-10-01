@@ -4,7 +4,7 @@ function makeToArray<T>(value: T | T[]): T[] {
   return Array.isArray(value) ? value : [value];
 }
 function tagArray(array: RawPSResult[]): PSResult[] {
-  return array.map((item, index) => ({ ...item, __id__: index }));
+  return array.map((item, itemIndex) => ({ ...item, __id__: itemIndex }));
 }
 
 function createPSSession() {

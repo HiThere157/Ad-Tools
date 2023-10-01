@@ -30,9 +30,9 @@ export default function Tabs({ activeTab, setActiveTab, tabs, setTabs }: TabsPro
 
   return (
     <div className="flex items-center gap-0.5 bg-light px-2 pt-1">
-      {tabs.map((tab, index) => (
+      {tabs.map((tab, tabIndex) => (
         <Tab
-          key={index}
+          key={tabIndex}
           tab={tab}
           isActive={tab.id === activeTab}
           onChange={() => setActiveTab(tab.id)}
