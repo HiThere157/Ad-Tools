@@ -17,8 +17,8 @@ export function useTabState<T>(key: string, tabId: number) {
 
 // This is a hook is a helpful function to get all necessary state for a page with tabs
 export function useTabs(page: string) {
-  const [activeTab, setActiveTab] = useSessionStorage<number>(`activeTab_${page}`, 0);
-  const [tabs, setTabs] = useSessionStorage<Tab[]>(`tabs_${page}`, [{ id: 0, title: "Untitled" }]);
+  const [activeTab, setActiveTab] = useSessionStorage<number>(`${page}_activeTab`, 0);
+  const [tabs, setTabs] = useSessionStorage<Tab[]>(`${page}_tabs`, [{ id: 0, title: "Untitled" }]);
 
   return {
     activeTab,

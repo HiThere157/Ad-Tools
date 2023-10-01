@@ -9,3 +9,7 @@
 .winbar-no-drag {
   -webkit-app-region: no-drag;
 }
+
+kbd {
+  @apply flex rounded-sm border border-border px-2 py-0.5 font-mono;
+}

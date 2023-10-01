@@ -10,13 +10,13 @@ export default function User() {
   const page = "user";
   const { activeTab, setActiveTab, tabs, setTabs } = useTabs(page);
 
-  const [query, setQuery] = useTabState<AdQuery>(`query_${page}`, activeTab);
+  const [query, setQuery] = useTabState<AdQuery>(`${page}_query`, activeTab);
   const [dataSets, setDataSets] = useTabState<PartialRecord<string, Loadable<PSDataSet>>>(
-    `dataSets_${page}`,
+    `${page}_dataSets`,
     activeTab,
   );
   const [tableConfigs, setTableConfigs] = useTabState<PartialRecord<string, TableConfig>>(
-    `tableConfigs_${page}`,
+    `${page}_tableConfigs`,
     activeTab,
   );
 
