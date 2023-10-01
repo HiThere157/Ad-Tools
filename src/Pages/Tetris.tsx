@@ -199,6 +199,7 @@ export default function Tetris() {
     if (isClipping) {
       setBoard(createBoard());
       setScore(0);
+      setHeldPiece({ isLocked: false });
     }
 
     return overlayedBoard;
