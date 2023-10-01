@@ -1,24 +1,29 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useSessionStorage, useLocalStorage } from "../Hooks/useStorage";
 
-import { BsArrowDown, BsArrowLeft, BsArrowRight, BsArrowUp } from "react-icons/bs";
+import { BsArrowDown, BsArrowLeft, BsArrowRight, BsArrowUp, BsLockFill } from "react-icons/bs";
+import { type } from "os";
 
-type PieceTypes = "o" | "i" | "s" | "z" | "l" | "j" | "t";
-type CellTypes = PieceTypes | "";
+type PieceType = "o" | "i" | "s" | "z" | "l" | "j" | "t";
+type CellTypes = PieceType | "";
 type Piece = {
   shape: number[][];
   color: string;
 };
 
 type PositionedPiece = {
-  pieceType: PieceTypes;
+  pieceType: PieceType;
   position: { x: number; y: number };
   rotation: 0 | 1 | 2 | 3;
+};
+type HeldPiece = {
+  pieceType?: PieceType;
+  isLocked: boolean;
 };
 
 type ActionTypes = "MOVE_LEFT" | "MOVE_RIGHT" | "MOVE_DOWN" | "ROTATE" | "DROP";
 
-const pieces: Record<PieceTypes, Piece> = {
+const pieces: Record<PieceType, Piece> = {
   o: {
     shape: [
       [1, 1],
@@ -84,12 +89,12 @@ function createBoard(): CellTypes[][] {
   return Array.from(Array(height), () => new Array(width).fill(""));
 }
 
-function newPiece(): PositionedPiece {
-  const pieceTypes = Object.keys(pieces) as PieceTypes[];
+function newPiece(type?: PieceType): PositionedPiece {
+  const pieceTypes = Object.keys(pieces) as PieceType[];
   const randomPieceType = pieceTypes[Math.floor(Math.random() * pieceTypes.length)];
 
   return {
-    pieceType: randomPieceType,
+    pieceType: type ?? randomPieceType,
     position: { x: Math.floor(width / 2) - 2, y: 0 },
     rotation: 0,
   };
@@ -183,6 +188,9 @@ export default function Tetris() {
     "tetris_queue",
     new Array(5).fill(null).map(() => newPiece()),
   );
+  const [heldPiece, setHeldPiece] = useSessionStorage<HeldPiece>("tetris_heldPiece", {
+    isLocked: false,
+  });
 
   const overlayedBoard = useMemo(() => {
     const { isClipping, overlayedBoard } = overlayPiece(board, currentPiece);
@@ -220,6 +228,8 @@ export default function Tetris() {
 
     setBoard(clearedBoard);
     nextPiece();
+
+    setHeldPiece({ ...heldPiece, isLocked: false });
   }
 
   function action(type: ActionTypes) {
@@ -294,6 +304,19 @@ export default function Tetris() {
       case "p":
         setIsPaused(!isPaused);
         break;
+      case "h":
+        if (heldPiece.isLocked) break;
+
+        // Hold the current piece
+        setHeldPiece({ pieceType: currentPiece.pieceType, isLocked: true });
+
+        // If there is a held piece, swap it with the current piece
+        if (heldPiece.pieceType) {
+          setCurrentPiece(newPiece(heldPiece.pieceType));
+        } else {
+          nextPiece();
+        }
+        break;
     }
   }
 
@@ -312,103 +335,189 @@ export default function Tetris() {
 
   return (
     <div className="relative flex items-start justify-center gap-2 p-4">
-      {isPaused && (
-        <div className="absolute left-0 top-1/3 flex w-full justify-center bg-primary p-3">
-          <span className="text-5xl">Paused</span>
-        </div>
-      )}
+      {isPaused && <PausedBanner />}
 
-      <div className="flex flex-col items-center gap-1 rounded border-2 border-border p-2">
-        <span className="text-2xl font-bold text-grey">Controls</span>
-
-        <div className="grid grid-cols-[auto_1fr] items-center justify-items-center gap-x-2 gap-y-1">
-          <kbd>
-            <BsArrowDown className="text-xl" />
-          </kbd>
-          <span>Move Down</span>
-
-          <kbd>
-            <BsArrowLeft className="text-xl" />
-          </kbd>
-          <span>Move Left</span>
-
-          <kbd>
-            <BsArrowRight className="text-xl" />
-          </kbd>
-          <span>Move Right</span>
-
-          <kbd>
-            <BsArrowUp className="text-xl" />
-          </kbd>
-          <span>Rotate</span>
-
-          <kbd>P</kbd>
-          <span>Pause</span>
-
-          <kbd>Space</kbd>
-          <span>Drop</span>
-        </div>
+      <div className="flex flex-col gap-2">
+        <HeldPiece heldPiece={heldPiece} />
+        <Controls />
       </div>
 
-      <div
-        className="grid w-fit rounded border-2 border-border"
-        style={{ gridTemplateColumns: `repeat(${width}, 1fr)` }}
-      >
-        {overlayedBoard.flat().map((cell, i) => {
+      <Board board={overlayedBoard} />
+
+      <div className="flex flex-col gap-2">
+        <Queue queue={queue} />
+
+        <Score label="Score" value={score} />
+        <Score label="Best" value={highScore} />
+      </div>
+    </div>
+  );
+}
+
+function PausedBanner() {
+  return (
+    <div className="absolute left-0 top-1/3 flex w-full justify-center bg-primary p-3">
+      <span className="text-5xl">Paused</span>
+    </div>
+  );
+}
+
+type HeldPieceProps = {
+  heldPiece: HeldPiece;
+};
+function HeldPiece({ heldPiece }: HeldPieceProps) {
+  const { pieceType, isLocked } = heldPiece;
+  const piece = pieceType ? pieces[pieceType] : null;
+
+  return (
+    <div className="relative flex flex-col items-center gap-1 rounded border-2 border-border p-2">
+      <span className="text-2xl font-bold text-grey">Hold</span>
+
+      {isLocked && <BsLockFill className="absolute bottom-2 right-2 text-2xl text-grey" />}
+
+      <div className="mx-2 flex h-20 w-20 items-center justify-center">
+        <div
+          className="grid"
+          style={{
+            gridTemplateColumns: `repeat(${piece?.shape.length}, 1fr)`,
+          }}
+        >
+          {piece?.shape
+            .filter((row) => !row.every((cell) => cell === 0))
+            .flat()
+            .map((cell, j) => {
+              return (
+                <div
+                  key={j}
+                  className="aspect-square h-5"
+                  style={{
+                    backgroundColor: cell ? piece.color : "transparent",
+                  }}
+                />
+              );
+            })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Controls() {
+  return (
+    <div className="flex flex-col items-center gap-2 rounded border-2 border-border p-2">
+      <span className="text-2xl font-bold text-grey">Controls</span>
+
+      <div className="grid grid-cols-[auto_1fr] items-center justify-items-center gap-x-2 gap-y-1">
+        <kbd>
+          <BsArrowDown className="text-xl" />
+        </kbd>
+        <span>Move Down</span>
+
+        <kbd>
+          <BsArrowLeft className="text-xl" />
+        </kbd>
+        <span>Move Left</span>
+
+        <kbd>
+          <BsArrowRight className="text-xl" />
+        </kbd>
+        <span>Move Right</span>
+
+        <kbd>
+          <BsArrowUp className="text-xl" />
+        </kbd>
+        <span>Rotate</span>
+
+        <kbd>H</kbd>
+        <span>Hold</span>
+
+        <kbd>P</kbd>
+        <span>Pause</span>
+
+        <kbd>Space</kbd>
+        <span>Drop</span>
+      </div>
+    </div>
+  );
+}
+
+type BoardProps = {
+  board: CellTypes[][];
+};
+function Board({ board }: BoardProps) {
+  return (
+    <div
+      className="grid w-fit rounded border-2 border-border"
+      style={{ gridTemplateColumns: `repeat(${width}, 1fr)` }}
+    >
+      {board.flat().map((cell, i) => {
+        return (
+          <div
+            key={i}
+            className="aspect-square border border-border"
+            style={{
+              height: `${90 / height}vh`,
+              backgroundColor: cell ? pieces[cell]?.color : "transparent",
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+type QueueProps = {
+  queue: PositionedPiece[];
+};
+function Queue({ queue }: QueueProps) {
+  const queuedPieces = queue.map((piece) => pieces[piece.pieceType]);
+
+  return (
+    <div className="flex flex-col items-center gap-1 rounded border-2 border-border p-2">
+      <span className="text-2xl font-bold text-grey">Queue</span>
+
+      <div className="flex flex-col items-center">
+        {queuedPieces.map((piece, i) => {
           return (
-            <div
-              key={i}
-              className="aspect-square border border-border"
-              style={{
-                height: `${90 / height}vh`,
-                backgroundColor: cell ? pieces[cell]?.color : "transparent",
-              }}
-            />
+            <div key={i} className="mx-2 flex h-20 w-20 items-center justify-center">
+              <div
+                className="grid"
+                style={{
+                  gridTemplateColumns: `repeat(${piece.shape.length}, 1fr)`,
+                }}
+              >
+                {piece.shape
+                  .filter((row) => !row.every((cell) => cell === 0))
+                  .flat()
+                  .map((cell, j) => {
+                    return (
+                      <div
+                        key={j}
+                        className="aspect-square h-5"
+                        style={{
+                          backgroundColor: cell ? piece.color : "transparent",
+                        }}
+                      />
+                    );
+                  })}
+              </div>
+            </div>
           );
         })}
       </div>
+    </div>
+  );
+}
 
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col items-center rounded border-2 border-border">
-          {queue.map((piece, i) => {
-            return (
-              <div key={i} className="mx-2 flex h-20 w-20 items-center justify-center">
-                <div
-                  className="grid"
-                  style={{
-                    gridTemplateColumns: `repeat(${pieces[piece.pieceType].shape.length}, 1fr)`,
-                  }}
-                >
-                  {pieces[piece.pieceType].shape
-                    .filter((row) => !row.every((cell) => cell === 0))
-                    .flat()
-                    .map((cell, j) => {
-                      return (
-                        <div
-                          key={j}
-                          className="aspect-square h-5"
-                          style={{
-                            backgroundColor: cell ? pieces[piece.pieceType].color : "transparent",
-                          }}
-                        />
-                      );
-                    })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="flex flex-col items-center gap-1 rounded border-2 border-border p-2 font-bold">
-          <span className="text-2xl text-grey">Score</span>
-          <span className="text-4xl">{score}</span>
-        </div>
-
-        <div className="flex flex-col items-center gap-1 rounded border-2 border-border p-2 font-bold">
-          <span className="text-2xl text-grey">Best</span>
-          <span className="text-4xl">{highScore}</span>
-        </div>
-      </div>
+type ScoreProps = {
+  label: string;
+  value: number;
+};
+function Score({ label, value }: ScoreProps) {
+  return (
+    <div className="flex flex-col items-center gap-1 rounded border-2 border-border p-2 font-bold">
+      <span className="text-2xl text-grey">{label}</span>
+      <span className="text-4xl">{value}</span>
     </div>
   );
 }
