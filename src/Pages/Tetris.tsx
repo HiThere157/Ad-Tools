@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef } from "react";
 import { useSessionStorage, useLocalStorage } from "../Hooks/useStorage";
 
 import { BsArrowDown, BsArrowLeft, BsArrowRight, BsArrowUp, BsLockFill } from "react-icons/bs";
-import { type } from "os";
 
 type PieceType = "o" | "i" | "s" | "z" | "l" | "j" | "t";
 type CellTypes = PieceType | "";
