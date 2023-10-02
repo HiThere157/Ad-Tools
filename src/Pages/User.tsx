@@ -1,10 +1,10 @@
 import { useTabs, useTabState } from "../Hooks/utils";
 import { adQuery, tableConfig } from "../Config/default";
+import { invokePSCommand } from "../Helper/api";
 
 import Tabs from "../Components/Tabs/Tabs";
 import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
-import { invokePSCommand } from "../Helper/api";
 
 export default function User() {
   const page = "user";
@@ -60,7 +60,7 @@ export default function User() {
     <div>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} setTabs={setTabs} />
 
-      <div className="mx-2 mb-20">
+      <div className="mx-2">
         <AdQuery query={query ?? adQuery} setQuery={setQuery} onSubmit={runQuery} />
 
         <Table

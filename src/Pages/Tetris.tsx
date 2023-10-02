@@ -334,7 +334,7 @@ export default function Tetris() {
   }, [currentPiece, board, isPaused]);
 
   return (
-    <div className="relative flex items-start justify-center gap-2 p-2">
+    <div className="relative m-2 flex items-start justify-center gap-2">
       {isPaused && <PausedBanner />}
 
       <div className="flex flex-col gap-2">

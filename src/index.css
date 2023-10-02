@@ -13,3 +13,9 @@
 kbd {
   @apply flex rounded-sm border border-border px-2 py-0.5 font-mono;
 }
+
+ul {
+  margin-left: 1rem;
+  list-style-type: disc;
+  line-height: 0.75rem;
+}

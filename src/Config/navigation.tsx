@@ -1,5 +1,6 @@
-import Tetris from "../Pages/Tetris";
+import Home from "../Pages/Home";
 import User from "../Pages/User";
+import Tetris from "../Pages/Tetris";
 
 import {
   BsClockHistory,
@@ -22,7 +23,7 @@ export const navigationLinks: NavigationLink[][] = [
       href: "/",
       text: "Home",
       icon: <BsFillMapFill />,
-      page: <div>HomePage</div>,
+      page: <Home />,
       isHidden: true,
     },
     {
