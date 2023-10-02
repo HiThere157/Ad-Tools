@@ -4,7 +4,10 @@
   "description": "",
   "main": "build/main.js",
   "scripts": {
-    "start": "npx tsc && electron ."
+    "copy:assets": "npx copyfiles ./assets/* ./build/",
+    "start": "npx tsc && npm run copy:assets && electron .",
+    "dist": "npx tsc && npm run copy:assets && electron-builder --dir",
+    "pack": "npx tsc && npm run copy:assets && electron-builder"
   },
   "repository": {
     "type": "git",
@@ -16,8 +19,26 @@
     "url": "https://github.com/HiThere157/Ad-Tools/issues"
   },
   "homepage": "https://github.com/HiThere157/Ad-Tools#readme",
+  "build": {
+    "appId": "ad-tools",
+    "icon": "./assets/icon256.png",
+    "files": [
+      "build/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "./assets/icon64.ico"
+    }
+  },
   "devDependencies": {
+    "copyfiles": "^2.4.1",
     "electron": "^26.2.1",
+    "electron-builder": "^24.6.4",
     "typescript": "^5.2.2"
   },
   "dependencies": {

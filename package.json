@@ -8,6 +8,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "start": "npm run build && cd electron && npm run start",
+    "dist": "npm run build && cd electron && npm run dist",
+    "pack": "npm run build && cd electron && npm run pack",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "prettier": "prettier -w ."
   },
