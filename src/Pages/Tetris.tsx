@@ -334,7 +334,7 @@ export default function Tetris() {
   }, [currentPiece, board, isPaused]);
 
   return (
-    <div className="relative flex items-start justify-center gap-2 p-4">
+    <div className="relative flex items-start justify-center gap-2 p-2">
       {isPaused && <PausedBanner />}
 
       <div className="flex flex-col gap-2">
@@ -375,7 +375,7 @@ function HeldPiece({ heldPiece }: HeldPieceProps) {
 
       {isLocked && <BsLockFill className="absolute bottom-2 right-2 text-2xl text-grey" />}
 
-      <div className="mx-2 flex h-20 w-20 items-center justify-center">
+      <div className="mx-2 flex aspect-square h-[9vh] items-center justify-center">
         <div
           className="grid"
           style={{
@@ -388,7 +388,7 @@ function HeldPiece({ heldPiece }: HeldPieceProps) {
             .map((cell, cellIndex) => (
               <div
                 key={cellIndex}
-                className="aspect-square h-5"
+                className="aspect-square h-[2.25vh]"
                 style={{
                   backgroundColor: cell ? piece.color : "transparent",
                 }}
@@ -474,7 +474,10 @@ function Queue({ queue }: QueueProps) {
 
       <div className="flex flex-col items-center">
         {queuedPieces.map((piece, pieceIndex) => (
-          <div key={pieceIndex} className="mx-2 flex h-20 w-20 items-center justify-center">
+          <div
+            key={pieceIndex}
+            className="mx-2 flex aspect-square h-[9vh] items-center justify-center"
+          >
             <div
               className="grid"
               style={{
@@ -487,7 +490,7 @@ function Queue({ queue }: QueueProps) {
                 .map((cell, cellIndex) => (
                   <div
                     key={cellIndex}
-                    className="aspect-square h-5"
+                    className="aspect-square h-[2.25vh]"
                     style={{
                       backgroundColor: cell ? piece.color : "transparent",
                     }}

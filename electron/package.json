@@ -1,5 +1,6 @@
 {
   "name": "ad-tools",
+  "productName": "AD Tools",
   "version": "0.0.0",
   "description": "",
   "main": "build/main.js",
