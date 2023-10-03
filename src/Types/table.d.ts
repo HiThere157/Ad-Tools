@@ -3,6 +3,7 @@ type PartialRecord<K extends keyof any, T> = {
 };
 
 type TableConfig = {
+  isFilterOpen: boolean;
   isCollapsed: boolean;
   filters: TableFilter[];
   hiddenColumns: string[];

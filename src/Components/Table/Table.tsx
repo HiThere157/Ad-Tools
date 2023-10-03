@@ -24,8 +24,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
   const { data = [], columns = [] } = result ?? {};
   const isLoading = dataSet === null;
 
-  const { isCollapsed, filters, hiddenColumns, sort, selected, pagination } = config;
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { isFilterOpen, isCollapsed, filters, hiddenColumns, sort, selected, pagination } = config;
 
   const filteredResult = useMemo(() => {
     return filterData(data, filters);
@@ -89,7 +88,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
         <div className="flex gap-1">
           <TableActions
             onReset={() => setConfig(tableConfig)}
-            onFilterMenu={() => setIsFilterOpen(!isFilterOpen)}
+            onFilterMenu={() => setConfig({ ...config, isFilterOpen: !isFilterOpen })}
             onCopy={exportAsCSV}
             filters={filters}
             columns={columns}

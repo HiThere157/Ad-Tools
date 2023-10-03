@@ -11,6 +11,7 @@ export const tableFilter: TableFilter = {
 };
 
 export const tableConfig: TableConfig = {
+  isFilterOpen: false,
   isCollapsed: false,
   filters: [],
   hiddenColumns: [],
