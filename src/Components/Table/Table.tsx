@@ -66,7 +66,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
   };
 
   return (
-    <section className="w-fit min-w-[35rem] max-w-full">
+    <section className="mb-8 w-fit min-w-[35rem] max-w-full">
       <div className="ms-1 flex justify-between">
         <TableHeader
           title={title}

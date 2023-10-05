@@ -5,10 +5,10 @@ export function useTabState<T>(key: string, tabId: number) {
   const [state, setState] = useSessionStorage<PartialRecord<number, T>>(key, {});
 
   const thisState = state[tabId];
-  const setThisState = (newState: T) => {
-    setState({
-      ...state,
-      [tabId]: newState,
+  const setThisState = (newState: T, incremental?: boolean) => {
+    setState((oldState) => {
+      const newStateForTab = incremental ? { ...oldState[tabId], ...newState } : newState;
+      return { ...oldState, [tabId]: newStateForTab };
     });
   };
 
@@ -26,4 +26,20 @@ export function useTabs(page: string) {
     tabs,
     setTabs,
   };
+}
+
+// reset all table "selected" and set "pagination.page" to 0
+export function softResetTables(tableConfigs?: PartialRecord<string, TableConfig>) {
+  const newConfigs = { ...tableConfigs };
+
+  Object.keys(newConfigs).forEach((key) => {
+    const config = newConfigs[key];
+
+    if (config) {
+      config.selected = [];
+      config.pagination.page = 0;
+    }
+  });
+
+  return newConfigs;
 }

@@ -1,4 +1,4 @@
-import { useTabs, useTabState } from "../Hooks/utils";
+import { softResetTables, useTabs, useTabState } from "../Hooks/utils";
 import { adQuery, tableConfig } from "../Config/default";
 import { invokePSCommand } from "../Helper/api";
 import { firsObjectToPSDataSet } from "../Helper/postProcessors";
@@ -23,53 +23,22 @@ export default function User() {
 
   const runQuery = () => {
     (async () => {
-      // Reset data
-      setDataSets({
-        attributes: null,
-        groups: null,
-      });
+      setDataSets({ attributes: null, groups: null });
 
       invokePSCommand({
         command: `Get-AdUser -Identity ${query?.filter?.name} -Properties *`,
       }).then((response) => {
-        setDataSets({
-          ...dataSets,
-          attributes: firsObjectToPSDataSet(response),
-        });
+        setDataSets({ attributes: firsObjectToPSDataSet(response) }, true);
       });
 
       invokePSCommand({
         command: `Get-AdPrincipalGroupMembership -Identity ${query?.filter?.name}`,
         fields: ["Name", "GroupCategory", "DistinguishedName"],
       }).then((response) => {
-        setDataSets({
-          ...dataSets,
-          groups: firsObjectToPSDataSet(response),
-        });
+        setDataSets({ groups: response }, true);
       });
 
-      // Reset pagination and selection
-      const attribConfig = tableConfigs?.["attributes"] ?? tableConfig;
-      const groupConfig = tableConfigs?.["groups"] ?? tableConfig;
-      setTableConfigs({
-        ...tableConfigs,
-        attributes: {
-          ...attribConfig,
-          selected: [],
-          pagination: {
-            ...attribConfig.pagination,
-            page: 0,
-          },
-        },
-        groups: {
-          ...groupConfig,
-          selected: [],
-          pagination: {
-            ...groupConfig.pagination,
-            page: 0,
-          },
-        },
-      });
+      setTableConfigs(softResetTables(tableConfigs));
     })();
   };
 
@@ -82,26 +51,16 @@ export default function User() {
 
         <Table
           title="User Attributes"
-          dataSet={dataSets?.["attributes"]}
-          config={tableConfigs?.["attributes"] ?? tableConfig}
-          setConfig={(config) => {
-            setTableConfigs({
-              ...tableConfigs,
-              attributes: config,
-            });
-          }}
+          dataSet={dataSets?.attributes}
+          config={tableConfigs?.attributes ?? tableConfig}
+          setConfig={(config) => setTableConfigs({ attributes: config }, true)}
         />
 
         <Table
           title="User Groups"
           dataSet={dataSets?.["groups"]}
           config={tableConfigs?.["groups"] ?? tableConfig}
-          setConfig={(config) => {
-            setTableConfigs({
-              ...tableConfigs,
-              groups: config,
-            });
-          }}
+          setConfig={(config) => setTableConfigs({ groups: config }, true)}
         />
       </div>
     </div>
