@@ -1,6 +1,7 @@
 import { useTabs, useTabState } from "../Hooks/utils";
 import { adQuery, tableConfig } from "../Config/default";
 import { invokePSCommand } from "../Helper/api";
+import { firsObjectToPSDataSet } from "../Helper/postProcessors";
 
 import Tabs from "../Components/Tabs/Tabs";
 import AdQuery from "../Components/Query/AdQuery";
@@ -24,31 +25,47 @@ export default function User() {
     (async () => {
       // Reset data
       setDataSets({
-        table1: null,
+        attributes: null,
+        groups: null,
       });
 
-      const request = {
-        useGlobalSession: false,
-        command: "Get-Process",
-        fields: ["Name", "Id", "SessionId", "Path"],
-      };
-      const response = await invokePSCommand(request);
+      invokePSCommand({
+        command: `Get-AdUser -Identity ${query?.filter?.name} -Properties *`,
+      }).then((response) => {
+        setDataSets({
+          ...dataSets,
+          attributes: firsObjectToPSDataSet(response),
+        });
+      });
 
-      // Update data
-      setDataSets({
-        ...dataSets,
-        table1: response,
+      invokePSCommand({
+        command: `Get-AdPrincipalGroupMembership -Identity ${query?.filter?.name}`,
+        fields: ["Name", "GroupCategory", "DistinguishedName"],
+      }).then((response) => {
+        setDataSets({
+          ...dataSets,
+          groups: firsObjectToPSDataSet(response),
+        });
       });
 
       // Reset pagination and selection
-      const config = tableConfigs?.["table1"] ?? tableConfig;
+      const attribConfig = tableConfigs?.["attributes"] ?? tableConfig;
+      const groupConfig = tableConfigs?.["groups"] ?? tableConfig;
       setTableConfigs({
         ...tableConfigs,
-        table1: {
-          ...config,
+        attributes: {
+          ...attribConfig,
           selected: [],
           pagination: {
-            ...config.pagination,
+            ...attribConfig.pagination,
+            page: 0,
+          },
+        },
+        groups: {
+          ...groupConfig,
+          selected: [],
+          pagination: {
+            ...groupConfig.pagination,
             page: 0,
           },
         },
@@ -64,13 +81,25 @@ export default function User() {
         <AdQuery query={query ?? adQuery} setQuery={setQuery} onSubmit={runQuery} />
 
         <Table
-          title="Table 1"
-          dataSet={dataSets?.["table1"]}
-          config={tableConfigs?.["table1"] ?? tableConfig}
+          title="User Attributes"
+          dataSet={dataSets?.["attributes"]}
+          config={tableConfigs?.["attributes"] ?? tableConfig}
           setConfig={(config) => {
             setTableConfigs({
               ...tableConfigs,
-              table1: config,
+              attributes: config,
+            });
+          }}
+        />
+
+        <Table
+          title="User Groups"
+          dataSet={dataSets?.["groups"]}
+          config={tableConfigs?.["groups"] ?? tableConfig}
+          setConfig={(config) => {
+            setTableConfigs({
+              ...tableConfigs,
+              groups: config,
             });
           }}
         />

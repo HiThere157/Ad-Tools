@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 
 import { tableConfig } from "../../Config/default";
 import { friendly } from "../../Config/lookup";

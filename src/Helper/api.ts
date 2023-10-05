@@ -2,13 +2,13 @@ import { ElectronAPI } from "../../electron/preload";
 
 const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
 
-export function invokePSCommand(request: InvokePSCommandRequest) {
+export function invokePSCommand(request: InvokePSCommandRequest): Promise<Loadable<PSDataSet>> {
   if (!electronWindow.electronAPI) {
-    return {
+    return Promise.resolve({
       error: "Electron API not found",
       timestamp: Date.now(),
       executionTime: 0,
-    } as Loadable<PSDataSet>;
+    } as Loadable<PSDataSet>);
   }
 
   return electronWindow.electronAPI.invokePSCommand(request);
