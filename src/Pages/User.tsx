@@ -39,7 +39,6 @@ export default function User() {
       });
 
       setActiveTabTitle(query?.filter?.name || "User");
-
       setTableConfigs(softResetTables(tableConfigs));
     })();
   };

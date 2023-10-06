@@ -7,7 +7,10 @@ export function firsObjectToPSDataSet(dataSet: Loadable<PSDataSet>): Loadable<PS
     return dataSet;
   }
 
-  const entries = Object.entries(result.data[0]);
+  const firstObject: { PropertyNames?: string[] } & PSResult = result.data[0];
+
+  // If the first object has a PropertyNames property, use that as the columns
+  const entries = firstObject?.PropertyNames ?? Object.entries(firstObject);
 
   return {
     ...dataSet,
