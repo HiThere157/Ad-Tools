@@ -4,6 +4,7 @@ import { friendly } from "../../Config/lookup";
 import { stringify } from "../../Helper/string";
 
 import Checkbox from "../Checkbox";
+import TableCell from "./TableCell";
 
 import { BsCaretDownFill } from "react-icons/bs";
 
@@ -113,8 +114,8 @@ export default function TableElement({
             </td>
 
             {columns.map((column, columnIndex) => (
-              <td key={columnIndex} className="border-s border-t border-border px-2">
-                {stringify(row[column])}
+              <td key={columnIndex} className="whitespace-pre border-s border-t border-border px-2">
+                <TableCell content={stringify(row[column])} />
               </td>
             ))}
           </tr>

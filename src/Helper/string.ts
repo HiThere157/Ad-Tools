@@ -3,7 +3,7 @@ export function stringify(any: any): string {
   if (any === null) return "null";
 
   if (typeof any === "object") {
-    return JSON.stringify(any);
+    return JSON.stringify(any, null, 2);
   }
 
   return any.toString();

@@ -20,11 +20,20 @@ export function useTabs(page: string) {
   const [activeTab, setActiveTab] = useSessionStorage<number>(`${page}_activeTab`, 0);
   const [tabs, setTabs] = useSessionStorage<Tab[]>(`${page}_tabs`, [{ id: 0, title: "Untitled" }]);
 
+  const setActiveTabTitle = (title: string) => {
+    setTabs((oldTabs) => {
+      const newTabs = [...oldTabs];
+      newTabs[activeTab].title = title;
+      return newTabs;
+    });
+  };
+
   return {
     activeTab,
     setActiveTab,
     tabs,
     setTabs,
+    setActiveTabTitle,
   };
 }
 

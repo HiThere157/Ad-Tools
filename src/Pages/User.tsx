@@ -9,7 +9,7 @@ import Table from "../Components/Table/Table";
 
 export default function User() {
   const page = "user";
-  const { activeTab, setActiveTab, tabs, setTabs } = useTabs(page);
+  const { activeTab, setActiveTab, tabs, setTabs, setActiveTabTitle } = useTabs(page);
 
   const [query, setQuery] = useTabState<AdQuery>(`${page}_query`, activeTab);
   const [dataSets, setDataSets] = useTabState<PartialRecord<string, Loadable<PSDataSet>>>(
@@ -37,6 +37,8 @@ export default function User() {
       }).then((response) => {
         setDataSets({ groups: response }, true);
       });
+
+      setActiveTabTitle(query?.filter?.name || "User");
 
       setTableConfigs(softResetTables(tableConfigs));
     })();
