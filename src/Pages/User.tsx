@@ -47,7 +47,7 @@ export default function User() {
     <div>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} setTabs={setTabs} />
 
-      <div className="mx-2">
+      <div className="px-2">
         <AdQuery query={query ?? adQuery} setQuery={setQuery} onSubmit={runQuery} />
 
         <Table

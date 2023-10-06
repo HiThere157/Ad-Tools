@@ -22,9 +22,12 @@ export function useTabs(page: string) {
 
   const setActiveTabTitle = (title: string) => {
     setTabs((oldTabs) => {
-      const newTabs = [...oldTabs];
-      newTabs[activeTab].title = title;
-      return newTabs;
+      return oldTabs.map((tab) => {
+        if (tab.id === activeTab) {
+          return { ...tab, title };
+        }
+        return tab;
+      });
     });
   };
 

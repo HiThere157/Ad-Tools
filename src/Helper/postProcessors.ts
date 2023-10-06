@@ -10,13 +10,13 @@ export function firsObjectToPSDataSet(dataSet: Loadable<PSDataSet>): Loadable<PS
   const firstObject: { PropertyNames?: string[] } & PSResult = result.data[0];
 
   // If the first object has a PropertyNames property, use that as the columns
-  const entries = firstObject?.PropertyNames ?? Object.entries(firstObject);
+  const keys = firstObject.PropertyNames ?? Object.keys(firstObject);
 
   return {
     ...dataSet,
     result: {
-      data: entries.map(([key, value], index) => {
-        return { __id__: index, key, value };
+      data: keys.map((key, index) => {
+        return { __id__: index, key, value: firstObject[key] };
       }),
       columns: ["key", "value"],
     },
