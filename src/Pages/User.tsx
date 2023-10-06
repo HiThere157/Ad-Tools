@@ -11,14 +11,16 @@ export default function User() {
   const page = "user";
   const { activeTab, setActiveTab, tabs, setTabs, setActiveTabTitle } = useTabs(page);
 
-  const [query, setQuery] = useTabState<AdQuery>(`${page}_query`, activeTab);
+  const [query, setQuery] = useTabState<AdQuery>(`${page}_query`, activeTab, adQuery);
   const [dataSets, setDataSets] = useTabState<PartialRecord<string, Loadable<PSDataSet>>>(
     `${page}_dataSets`,
     activeTab,
+    {},
   );
   const [tableConfigs, setTableConfigs] = useTabState<PartialRecord<string, TableConfig>>(
     `${page}_tableConfigs`,
     activeTab,
+    {},
   );
 
   const runQuery = () => {
@@ -26,19 +28,19 @@ export default function User() {
       setDataSets({ attributes: null, groups: null });
 
       invokePSCommand({
-        command: `Get-AdUser -Identity ${query?.filter?.name} -Properties *`,
+        command: `Get-AdUser -Identity ${query.filter.name} -Properties *`,
       }).then((response) => {
         setDataSets({ attributes: firsObjectToPSDataSet(response) }, true);
       });
 
       invokePSCommand({
-        command: `Get-AdPrincipalGroupMembership -Identity ${query?.filter?.name}`,
+        command: `Get-AdPrincipalGroupMembership -Identity ${query.filter.name}`,
         fields: ["Name", "GroupCategory", "DistinguishedName"],
       }).then((response) => {
         setDataSets({ groups: response }, true);
       });
 
-      setActiveTabTitle(query?.filter?.name || "User");
+      setActiveTabTitle(query.filter.name || "User");
       setTableConfigs(softResetTables(tableConfigs));
     })();
   };
@@ -48,7 +50,7 @@ export default function User() {
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} setTabs={setTabs} />
 
       <div className="px-2">
-        <AdQuery query={query ?? adQuery} setQuery={setQuery} onSubmit={runQuery} />
+        <AdQuery query={query} setQuery={setQuery} onSubmit={runQuery} />
 
         <Table
           title="User Attributes"
@@ -59,8 +61,8 @@ export default function User() {
 
         <Table
           title="User Groups"
-          dataSet={dataSets?.["groups"]}
-          config={tableConfigs?.["groups"] ?? tableConfig}
+          dataSet={dataSets.groups}
+          config={tableConfigs.groups ?? tableConfig}
           setConfig={(config) => setTableConfigs({ groups: config }, true)}
         />
       </div>
