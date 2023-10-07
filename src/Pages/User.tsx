@@ -1,4 +1,4 @@
-import { softResetTables, useTabs, useTabState } from "../Hooks/utils";
+import { expectMultipleResults, softResetTables, useTabs, useTabState } from "../Hooks/utils";
 import { adQuery, tableConfig } from "../Config/default";
 import { invokePSCommand } from "../Helper/api";
 import { firsObjectToPSDataSet } from "../Helper/postProcessors";
@@ -12,6 +12,7 @@ export default function User() {
   const { activeTab, setActiveTab, tabs, setTabs, setActiveTabTitle } = useTabs(page);
 
   const [query, setQuery] = useTabState<AdQuery>(`${page}_query`, activeTab, adQuery);
+  const shouldPreSelect = expectMultipleResults(query);
   const [dataSets, setDataSets] = useTabState<PartialRecord<string, Loadable<PSDataSet>>>(
     `${page}_dataSets`,
     activeTab,
@@ -23,26 +24,40 @@ export default function User() {
     {},
   );
 
-  const runQuery = () => {
-    (async () => {
-      setDataSets({ attributes: null, groups: null });
+  const runPreQuery = async () => {
+    setDataSets({ search: null });
 
-      invokePSCommand({
-        command: `Get-AdUser -Identity ${query.filter.name} -Properties *`,
-      }).then((response) => {
-        setDataSets({ attributes: firsObjectToPSDataSet(response) }, true);
-      });
+    const fields = ["Name", "DistinguishedName", "Enabled", "SamAccountName", "UserPrincipalName"];
+    invokePSCommand({
+      command: `Get-AdUser -Filter {${query.filter.name}} -Properties ${fields.join(",")}`,
+      fields,
+    }).then((response) => {
+      setDataSets({ search: response });
+    });
 
-      invokePSCommand({
-        command: `Get-AdPrincipalGroupMembership -Identity ${query.filter.name}`,
-        fields: ["Name", "GroupCategory", "DistinguishedName"],
-      }).then((response) => {
-        setDataSets({ groups: response }, true);
-      });
+    setActiveTabTitle("Search Results");
+    setTableConfigs(softResetTables(tableConfigs));
+  };
 
-      setActiveTabTitle(query.filter.name || "User");
-      setTableConfigs(softResetTables(tableConfigs));
-    })();
+  const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
+    // If resetSearch is true, the dataSets.search should be reset -> incremental = false
+    setDataSets({ attributes: null, groups: null }, !resetSearch);
+
+    invokePSCommand({
+      command: `Get-AdUser -Identity ${query.filter.name} -Properties *`,
+    }).then((response) => {
+      setDataSets({ attributes: firsObjectToPSDataSet(response) }, true);
+    });
+
+    invokePSCommand({
+      command: `Get-AdPrincipalGroupMembership -Identity ${query.filter.name}`,
+      fields: ["Name", "GroupCategory", "DistinguishedName"],
+    }).then((response) => {
+      setDataSets({ groups: response }, true);
+    });
+
+    setActiveTabTitle(query.filter.name || "User");
+    setTableConfigs(softResetTables(tableConfigs, ["attributes", "groups"]));
   };
 
   return (
@@ -50,7 +65,28 @@ export default function User() {
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} setTabs={setTabs} />
 
       <div className="px-2">
-        <AdQuery query={query} setQuery={setQuery} onSubmit={runQuery} />
+        <AdQuery
+          query={query}
+          setQuery={setQuery}
+          onSubmit={() => (shouldPreSelect ? runPreQuery() : runQuery(query, true))}
+        />
+
+        {dataSets?.search && (
+          <Table
+            title="Search Results"
+            dataSet={dataSets.search}
+            config={tableConfigs.search ?? tableConfig}
+            setConfig={(config) => setTableConfigs({ search: config }, true)}
+            onRedirect={(row: PSResult & { Name?: string }) => {
+              runQuery({
+                ...query,
+                filter: {
+                  name: row.Name ?? "",
+                },
+              });
+            }}
+          />
+        )}
 
         <Table
           title="User Attributes"

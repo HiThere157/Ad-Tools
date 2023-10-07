@@ -3,10 +3,11 @@ import { useMemo } from "react";
 import { friendly } from "../../Config/lookup";
 import { stringify } from "../../Helper/string";
 
+import Button from "../Button";
 import Checkbox from "../Checkbox";
 import TableCell from "./TableCell";
 
-import { BsCaretDownFill } from "react-icons/bs";
+import { BsCaretDownFill, BsSearch } from "react-icons/bs";
 
 type TableElementProps = {
   data: PSResult[];
@@ -16,6 +17,7 @@ type TableElementProps = {
   allRowIds: number[];
   selected: number[];
   setSelected: (selected: number[]) => void;
+  onRedirect?: (row: PSResult) => void;
 };
 export default function TableElement({
   data,
@@ -25,6 +27,7 @@ export default function TableElement({
   allRowIds,
   selected,
   setSelected,
+  onRedirect,
 }: TableElementProps) {
   const mainCheckState = useMemo(() => {
     const rowsSelected = allRowIds.map((id) => selected.includes(id));
@@ -114,8 +117,22 @@ export default function TableElement({
             </td>
 
             {columns.map((column, columnIndex) => (
-              <td key={columnIndex} className="whitespace-pre border-s border-t border-border px-2">
+              <td
+                key={columnIndex}
+                className="group relative whitespace-pre border-s border-t border-border px-2"
+              >
                 <TableCell content={stringify(row[column])} />
+
+                {onRedirect && (
+                  <Button
+                    className="absolute right-1 top-1/2 hidden h-6 translate-y-[-50%] px-0.5 group-hover:block"
+                    onClick={() => {
+                      onRedirect(row);
+                    }}
+                  >
+                    <BsSearch />
+                  </Button>
+                )}
               </td>
             ))}
           </tr>

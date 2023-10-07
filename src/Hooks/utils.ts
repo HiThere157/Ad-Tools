@@ -41,10 +41,14 @@ export function useTabs(page: string) {
 }
 
 // reset all table "selected" and set "pagination.page" to 0
-export function softResetTables(tableConfigs?: PartialRecord<string, TableConfig>) {
+export function softResetTables(
+  tableConfigs?: PartialRecord<string, TableConfig>,
+  tables?: string[],
+) {
   const newConfigs = { ...tableConfigs };
+  const tableNames = tables ?? Object.keys(newConfigs);
 
-  Object.keys(newConfigs).forEach((key) => {
+  tableNames.forEach((key) => {
     const config = newConfigs[key];
 
     if (config) {
@@ -54,4 +58,13 @@ export function softResetTables(tableConfigs?: PartialRecord<string, TableConfig
   });
 
   return newConfigs;
+}
+
+export function expectMultipleResults(query: AdQuery) {
+  const { filter, servers } = query;
+  const hasNonNameField = Object.keys(filter).some((key) => key !== "name");
+  const hasMultipleServers = servers.length > 1;
+  const hasWildcard = Object.values(filter).some((value) => value?.includes("*"));
+
+  return hasNonNameField || hasMultipleServers || hasWildcard;
 }

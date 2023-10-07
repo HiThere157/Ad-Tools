@@ -18,8 +18,9 @@ type TableProps = {
   dataSet?: Loadable<PSDataSet>;
   config: TableConfig;
   setConfig: (config: TableConfig) => void;
+  onRedirect?: (row: PSResult) => void;
 };
-export default function Table({ dataSet, title, config, setConfig }: TableProps) {
+export default function Table({ dataSet, title, config, setConfig, onRedirect }: TableProps) {
   const { result, error, timestamp, executionTime } = dataSet ?? {};
   const { data = [], columns = [] } = result ?? {};
   const isLoading = dataSet === null;
@@ -116,6 +117,7 @@ export default function Table({ dataSet, title, config, setConfig }: TableProps)
                 allRowIds={data.map((row) => row.__id__) ?? []}
                 selected={selected}
                 setSelected={(selected) => setConfig({ ...config, selected })}
+                onRedirect={onRedirect}
               />
 
               {isLoading && <TableLoader />}
