@@ -17,6 +17,7 @@ export default function MultiInput({
   disabled,
 }: MultiInputProps) {
   const addItem = (item: string) => {
+    if (item === "") return;
     onChange([...value, item]);
   };
 
@@ -32,7 +33,7 @@ export default function MultiInput({
         className,
       )}
     >
-      <div className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap">
         {value.map((item, itemIndex) => (
           <div key={itemIndex} className="relative m-0.5 rounded-full bg-secondary px-2 pe-7">
             <span>{item}</span>

@@ -41,7 +41,8 @@ export default function TableActions({
     <div className="flex flex-col gap-1">
       <Button
         className={
-          "p-1 " + (filters.some((filter) => filter.value !== "") ? "!border-primaryAccent" : "")
+          "p-1 " +
+          (filters.some((filter) => filter.value.length !== 0) ? "!border-primaryAccent" : "")
         }
         onClick={onFilterMenu}
       >
