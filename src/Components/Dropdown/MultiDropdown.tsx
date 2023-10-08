@@ -1,65 +1,50 @@
 import { useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { useClickAway } from "../Hooks/useClickAway";
+import { useClickAway } from "../../Hooks/useClickAway";
 
-import Button from "./Button";
+import Button from "../Button";
 
 import { BsCaretDownFill, BsCheckLg } from "react-icons/bs";
 
-type DropdownProps = {
+type MultiDropdownProps = {
   children?: React.ReactNode;
   items: string[];
-  value: string | string[];
-  onChange?: (value: string) => void;
-  onChangeMulti?: (value: string[]) => void;
+  value: string[];
+  onChange: (value: string[]) => void;
   replacer?: (text: string) => string;
   className?: string;
   disabled?: boolean;
 };
-export default function Dropdown({
+export default function MultiDropdown({
   children,
   items,
   value,
   onChange,
-  onChangeMulti,
   replacer,
   className,
   disabled,
-}: DropdownProps) {
+}: MultiDropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useClickAway(ref, () => setIsOpen(false));
 
-  const getButtonLabel = (value: string | string[]) => {
-    // If value is an array, we join the values with a comma
-    if (typeof value !== "string") {
-      return value
-        .map((value) => {
-          return replacer?.(value) ?? value;
-        })
-        .join(", ");
-    } else {
-      // If value is a string, we return the value
-      return replacer?.(value) ?? value;
-    }
+  const getButtonLabel = (value: string[]) => {
+    return value
+      .map((value) => {
+        return replacer?.(value) ?? value;
+      })
+      .join(", ");
   };
 
   const onItemSelect = (item: string) => {
-    // If value is an array, we handle it as a multi-select dropdown
-    if (typeof value !== "string") {
-      if (value.includes(item)) {
-        // Value already includes item, so we remove it
-        onChangeMulti?.(value.filter((value) => value !== item));
-      } else {
-        // Value does not include item, so we add it
-        onChangeMulti?.([...value, item]);
-      }
+    if (value.includes(item)) {
+      // Value already includes item, so we remove it
+      onChange(value.filter((value) => value !== item));
     } else {
-      // If value is a string, we handle it as a single-select dropdown
-      onChange?.(item);
-      setIsOpen(false);
+      // Value does not include item, so we add it
+      onChange([...value, item]);
     }
   };
 
@@ -96,13 +81,11 @@ export default function Dropdown({
             }
             onClick={() => onItemSelect(item)}
           >
-            {/* If value is an array, we check if the value includes the item to show a checkmark */}
-            {typeof value !== "string" &&
-              (value.includes(item) ? (
-                <BsCheckLg className="scale-125 text-primaryAccent" />
-              ) : (
-                <div className="w-4" />
-              ))}
+            {value.includes(item) ? (
+              <BsCheckLg className="scale-125 text-primaryAccent" />
+            ) : (
+              <div className="w-4" />
+            )}
 
             <span>{replacer?.(item) ?? item}</span>
           </button>

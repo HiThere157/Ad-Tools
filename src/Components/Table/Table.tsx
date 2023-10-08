@@ -86,7 +86,7 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
           setIsCollapsed={(isCollapsed) => updateVolatile({ isCollapsed })}
         />
 
-        {count && count.total > 0 && !isCollapsed && (
+        {count && count.total > 25 && !isCollapsed && (
           <TablePagination
             count={count.total - count.filtered}
             page={page}

@@ -16,7 +16,6 @@ type VolatileTableConfig = {
   selected: number[];
   page: number;
 };
-
 type PersistentTableConfig = {
   pageSize: number;
 };

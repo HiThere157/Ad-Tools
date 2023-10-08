@@ -1,7 +1,7 @@
 import { friendly } from "../../Config/lookup";
 
 import Button from "../Button";
-import Dropdown from "../Dropdown";
+import Dropdown from "../Dropdown/Dropdown";
 import Input from "../Input";
 
 import { BsTrashFill } from "react-icons/bs";

@@ -3,7 +3,8 @@ import { useState } from "react";
 import { friendly } from "../../Config/lookup";
 
 import Button from "../Button";
-import Dropdown from "../Dropdown";
+import Dropdown from "../Dropdown/Dropdown";
+import MultiDropdown from "../Dropdown/MultiDropdown";
 
 import {
   BsFunnel,
@@ -46,10 +47,10 @@ export default function TableActions({
       >
         <BsFunnel />
       </Button>
-      <Dropdown
+      <MultiDropdown
         items={columns}
         value={invertHiddenColumns(hiddenColumns)}
-        onChangeMulti={(hiddenColumns) => {
+        onChange={(hiddenColumns) => {
           if (hiddenColumns.length === 0) return;
           setHiddenColumns(invertHiddenColumns(hiddenColumns));
         }}
@@ -58,7 +59,7 @@ export default function TableActions({
         disabled={columns.length === 0}
       >
         <BsLayoutThreeColumns />
-      </Dropdown>
+      </MultiDropdown>
       <Dropdown
         items={["Copy All", "Copy Selection"]}
         value={""}

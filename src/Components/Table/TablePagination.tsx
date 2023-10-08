@@ -1,4 +1,5 @@
 import Button from "../Button";
+import Dropdown from "../Dropdown/Dropdown";
 
 import {
   BsChevronLeft,
@@ -6,7 +7,6 @@ import {
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
 } from "react-icons/bs";
-import Dropdown from "../Dropdown";
 
 type TablePaginationProps = {
   count: number;
