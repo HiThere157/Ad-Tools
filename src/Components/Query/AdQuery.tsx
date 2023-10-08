@@ -1,5 +1,5 @@
 import Button from "../Button";
-import MultiDropdown from "../Dropdown/MultiDropdown";
+import Dropdown from "../Dropdown/Dropdown";
 import Input from "../Input/Input";
 
 type AdQueryProps = {
@@ -25,11 +25,11 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
         />
       </label>
 
-      <MultiDropdown
+      <Dropdown
         items={availableServers}
-        value={servers}
-        onChange={(servers) => {
-          setQuery({ ...query, servers });
+        value={servers[0]}
+        onChange={(server) => {
+          setQuery({ ...query, servers: [server] });
         }}
       />
 
