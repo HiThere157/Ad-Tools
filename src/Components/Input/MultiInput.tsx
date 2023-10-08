@@ -27,26 +27,28 @@ export default function MultiInput({
   return (
     <div
       className={twMerge(
-        "group flex flex-wrap items-center gap-1 rounded border-2 disabled:opacity-50",
+        "group rounded border-2 disabled:opacity-50",
         "border-border bg-dark focus-within:border-borderActive hover:border-borderAccent",
         className,
       )}
     >
-      {value.map((item, itemIndex) => (
-        <div key={itemIndex} className="relative rounded-full bg-secondary px-2 pe-7">
-          <span>{item}</span>
-          <button
-            className="absolute right-1 top-1/2 translate-y-[-50%] rounded-full text-lg hover:bg-secondaryActive active:bg-primary"
-            onClick={() => removeItem(itemIndex)}
-          >
-            <BsX />
-          </button>
-        </div>
-      ))}
+      <div>
+        {value.map((item, itemIndex) => (
+          <div key={itemIndex} className="relative rounded-full bg-secondary px-2 pe-7">
+            <span>{item}</span>
+            <button
+              className="absolute right-1 top-1/2 translate-y-[-50%] rounded-full text-lg hover:bg-secondaryActive active:bg-primary"
+              onClick={() => removeItem(itemIndex)}
+            >
+              <BsX />
+            </button>
+          </div>
+        ))}
+      </div>
 
       <input
         type="text"
-        className="h-6 flex-grow rounded bg-dark px-2 outline-none focus-within:bg-secondaryActive group-hover:bg-secondaryAccent"
+        className="h-6 w-full rounded bg-dark px-2 outline-none focus-within:bg-secondaryActive group-hover:bg-secondaryAccent"
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             addItem(e.currentTarget.value);
