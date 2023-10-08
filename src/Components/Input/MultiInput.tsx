@@ -32,9 +32,9 @@ export default function MultiInput({
         className,
       )}
     >
-      <div>
+      <div className="flex flex-wrap gap-1">
         {value.map((item, itemIndex) => (
-          <div key={itemIndex} className="relative rounded-full bg-secondary px-2 pe-7">
+          <div key={itemIndex} className="relative m-0.5 rounded-full bg-secondary px-2 pe-7">
             <span>{item}</span>
             <button
               className="absolute right-1 top-1/2 translate-y-[-50%] rounded-full text-lg hover:bg-secondaryActive active:bg-primary"
@@ -48,7 +48,7 @@ export default function MultiInput({
 
       <input
         type="text"
-        className="h-6 w-full rounded bg-dark px-2 outline-none focus-within:bg-secondaryActive group-hover:bg-secondaryAccent"
+        className="w-full rounded bg-dark px-2 outline-none focus-within:bg-secondaryActive group-hover:bg-secondaryAccent"
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             addItem(e.currentTarget.value);

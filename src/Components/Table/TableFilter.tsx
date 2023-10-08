@@ -38,6 +38,7 @@ export default function TableFilter({
           if (type === "is") setFilter({ ...filter, type, value: "" });
           if (type === "in") setFilter({ ...filter, type, value: [] });
         }}
+        className="w-full"
       />
 
       {type === "is" && (
