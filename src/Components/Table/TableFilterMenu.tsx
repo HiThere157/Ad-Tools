@@ -13,7 +13,7 @@ type TableFilterMenuProps = {
 export default function TableFilterMenu({ columns, filters, setFilters }: TableFilterMenuProps) {
   return (
     <div className="flex items-end gap-1 rounded border-2 border-border p-2">
-      <div className="grid flex-grow grid-cols-[auto_1fr_auto] items-center gap-1">
+      <div className="grid flex-grow grid-cols-[auto_auto_1fr_auto] items-start gap-1">
         {filters.map((filter, filterIndex) => (
           <TableFilter
             key={filterIndex}

@@ -24,10 +24,17 @@ type SortConfig = {
   column: string;
   direction: "asc" | "desc";
 };
-type TableFilter = {
-  column: string;
-  value: string;
-};
+type TableFilter =
+  | {
+      type: "is";
+      column: string;
+      value: string;
+    }
+  | {
+      type: "in";
+      column: string;
+      value: string[];
+    };
 
 type ResultCount = {
   total: number;

@@ -1,6 +1,6 @@
 import Button from "../Button";
 import MultiDropdown from "../Dropdown/MultiDropdown";
-import Input from "../Input";
+import Input from "../Input/Input";
 
 type AdQueryProps = {
   query: AdQuery;

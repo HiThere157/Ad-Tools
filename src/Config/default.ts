@@ -6,6 +6,7 @@ export const adQuery: AdQuery = {
 };
 
 export const tableFilter: TableFilter = {
+  type: "is",
   column: "",
   value: "",
 };

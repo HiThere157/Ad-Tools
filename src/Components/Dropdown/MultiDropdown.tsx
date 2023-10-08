@@ -38,7 +38,7 @@ export default function MultiDropdown({
       .join(", ");
   };
 
-  const onItemSelect = (item: string) => {
+  const onItemToggle = (item: string) => {
     if (value.includes(item)) {
       // Value already includes item, so we remove it
       onChange(value.filter((value) => value !== item));
@@ -79,7 +79,7 @@ export default function MultiDropdown({
               "flex w-full items-center gap-2 whitespace-nowrap border-border bg-secondary px-2 hover:bg-secondaryAccent active:bg-secondaryActive " +
               (itemIndex !== 0 ? "border-t" : "")
             }
-            onClick={() => onItemSelect(item)}
+            onClick={() => onItemToggle(item)}
           >
             {value.includes(item) ? (
               <BsCheckLg className="scale-125 text-primaryAccent" />

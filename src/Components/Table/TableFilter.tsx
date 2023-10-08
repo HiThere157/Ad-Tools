@@ -2,7 +2,8 @@ import { friendly } from "../../Config/lookup";
 
 import Button from "../Button";
 import Dropdown from "../Dropdown/Dropdown";
-import Input from "../Input";
+import Input from "../Input/Input";
+import MultiInput from "../Input/MultiInput";
 
 import { BsTrashFill } from "react-icons/bs";
 
@@ -18,7 +19,7 @@ export default function TableFilter({
   setFilter,
   removeFilter,
 }: TableFilterProps) {
-  const { column, value } = filter;
+  const { type, column, value } = filter;
 
   return (
     <>
@@ -30,7 +31,23 @@ export default function TableFilter({
         className="w-full"
         disabled={columns.length === 0}
       />
-      <Input value={value} onChange={(value) => setFilter({ ...filter, value })} />
+      <Dropdown
+        items={["is", "in"]}
+        value={type}
+        onChange={(type) => {
+          if (type === "is") setFilter({ ...filter, type, value: "" });
+          if (type === "in") setFilter({ ...filter, type, value: [] });
+        }}
+      />
+
+      {type === "is" && (
+        <Input value={value} onChange={(value) => setFilter({ ...filter, value })} />
+      )}
+
+      {type === "in" && (
+        <MultiInput value={value} onChange={(value) => setFilter({ ...filter, value })} />
+      )}
+
       <Button className="p-1 text-red" onClick={removeFilter}>
         <BsTrashFill />
       </Button>
