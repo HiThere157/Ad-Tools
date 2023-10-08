@@ -12,9 +12,9 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
   const { filter, servers } = query;
 
   return (
-    <div className="m-2 flex items-center gap-1">
+    <div className="m-2 mb-5 flex items-center gap-1">
       <label className="flex items-center gap-2">
-        <span>Name:</span>
+        <span>Identity:</span>
 
         <Input
           value={filter.name ?? ""}

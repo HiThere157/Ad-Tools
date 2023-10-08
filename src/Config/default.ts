@@ -11,17 +11,19 @@ export const tableFilter: TableFilter = {
 };
 
 export const tableConfig: TableConfig = {
-  isFilterOpen: false,
-  isCollapsed: false,
-  filters: [],
-  hiddenColumns: [],
-  sort: {
-    column: "__id__",
-    direction: "asc",
-  },
-  selected: [],
-  pagination: {
-    size: 10,
+  volatile: {
+    isFilterOpen: false,
+    isCollapsed: false,
+    filters: [],
+    hiddenColumns: [],
+    sort: {
+      column: "__id__",
+      direction: "asc",
+    },
+    selected: [],
     page: 0,
+  },
+  persistent: {
+    pageSize: 10,
   },
 };

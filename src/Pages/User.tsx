@@ -1,4 +1,11 @@
-import { expectMultipleResults, softResetTables, useTabs, useTabState } from "../Hooks/utils";
+import {
+  expectMultipleResults,
+  softResetTables,
+  useTables,
+  useDataSets,
+  useTabs,
+  useTabState,
+} from "../Hooks/utils";
 import { adQuery, tableConfig } from "../Config/default";
 import { invokePSCommand } from "../Helper/api";
 import { firsObjectToPSDataSet } from "../Helper/postProcessors";
@@ -13,16 +20,9 @@ export default function User() {
 
   const [query, setQuery] = useTabState<AdQuery>(`${page}_query`, activeTab, adQuery);
   const shouldPreSelect = expectMultipleResults(query);
-  const [dataSets, setDataSets] = useTabState<PartialRecord<string, Loadable<PSDataSet>>>(
-    `${page}_dataSets`,
-    activeTab,
-    {},
-  );
-  const [tableConfigs, setTableConfigs] = useTabState<PartialRecord<string, TableConfig>>(
-    `${page}_tableConfigs`,
-    activeTab,
-    {},
-  );
+
+  const [tableConfigs, setTableConfigs] = useTables(activeTab, page);
+  const [dataSets, setDataSets] = useDataSets(activeTab, page);
 
   const runPreQuery = async () => {
     setDataSets({ search: null });
@@ -64,42 +64,35 @@ export default function User() {
     <div>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} setTabs={setTabs} />
 
-      <div className="px-2">
+      <div className="px-4 py-2">
         <AdQuery
           query={query}
           setQuery={setQuery}
           onSubmit={() => (shouldPreSelect ? runPreQuery() : runQuery(query, true))}
         />
 
-        {dataSets?.search && (
-          <Table
-            title="Search Results"
-            dataSet={dataSets.search}
-            config={tableConfigs.search ?? tableConfig}
-            setConfig={(config) => setTableConfigs({ search: config }, true)}
-            onRedirect={(row: PSResult & { Name?: string }) => {
-              runQuery({
-                ...query,
-                filter: {
-                  name: row.Name ?? "",
-                },
-              });
-            }}
-          />
-        )}
+        <Table
+          title="Search Results"
+          dataSet={dataSets.search}
+          config={tableConfigs.search ?? tableConfig}
+          setConfig={(config) => setTableConfigs({ ...tableConfigs, search: config })}
+          onRedirect={(row: PSResult & { Name?: string }) => {
+            runQuery({ ...query, filter: { name: row.Name ?? "" } });
+          }}
+        />
 
         <Table
           title="User Attributes"
-          dataSet={dataSets?.attributes}
-          config={tableConfigs?.attributes ?? tableConfig}
-          setConfig={(config) => setTableConfigs({ attributes: config }, true)}
+          dataSet={dataSets.attributes}
+          config={tableConfigs.attributes ?? tableConfig}
+          setConfig={(config) => setTableConfigs({ ...tableConfigs, attributes: config })}
         />
 
         <Table
           title="User Groups"
           dataSet={dataSets.groups}
           config={tableConfigs.groups ?? tableConfig}
-          setConfig={(config) => setTableConfigs({ groups: config }, true)}
+          setConfig={(config) => setTableConfigs({ ...tableConfigs, groups: config })}
         />
       </div>
     </div>

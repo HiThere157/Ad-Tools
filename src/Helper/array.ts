@@ -29,10 +29,8 @@ export function sortData(data: PSResult[], sort: SortConfig) {
   });
 }
 
-export function paginateData(data: PSResult[], pagination: PaginationConfig) {
-  const { page, size } = pagination;
+export function paginateData(data: PSResult[], page: number, pageSize: number) {
+  if (pageSize === -1) return data;
 
-  if (size === -1) return data;
-
-  return data.slice(page * size, (page + 1) * size);
+  return data.slice(page * pageSize, (page + 1) * pageSize);
 }

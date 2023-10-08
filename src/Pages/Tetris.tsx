@@ -370,7 +370,7 @@ function HeldPiece({ heldPiece }: HeldPieceProps) {
   const piece = pieceType ? pieces[pieceType] : null;
 
   return (
-    <div className="relative flex flex-col items-center gap-1 rounded border-2 border-border p-2">
+    <div className="relative flex flex-col items-center gap-1 rounded border-2 border-border px-4 py-2">
       <span className="text-2xl font-bold text-grey">Hold</span>
 
       {isLocked && <BsLockFill className="absolute bottom-2 right-2 text-2xl text-grey" />}

@@ -25,7 +25,9 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
   const { data = [], columns = [] } = result ?? {};
   const isLoading = dataSet === null;
 
-  const { isFilterOpen, isCollapsed, filters, hiddenColumns, sort, selected, pagination } = config;
+  const { volatile, persistent } = config;
+  const { isFilterOpen, isCollapsed, filters, hiddenColumns, sort, selected, page } = volatile;
+  const { pageSize } = persistent;
 
   const filteredResult = useMemo(() => {
     return filterData(data, filters);
@@ -36,8 +38,8 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
   }, [filteredResult, sort]);
 
   const paginationResult = useMemo(() => {
-    return paginateData(sortedResult, pagination);
-  }, [sortedResult, pagination]);
+    return paginateData(sortedResult, page, pageSize);
+  }, [sortedResult, page, pageSize]);
 
   const count: ResultCount | undefined = useMemo(() => {
     // Only show count if acutal data is available
@@ -66,6 +68,14 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
     navigator.clipboard.writeText(csv);
   };
 
+  // Update functions for volatile and persistent config
+  const updateVolatile = (volatileConfig: Partial<VolatileTableConfig>) => {
+    setConfig({ ...config, volatile: { ...volatile, ...volatileConfig } });
+  };
+  const updatePersistent = (persistentConfig: Partial<PersistentTableConfig>) => {
+    setConfig({ ...config, persistent: { ...persistent, ...persistentConfig } });
+  };
+
   return (
     <section className="mb-8 w-fit min-w-[35rem] max-w-full">
       <div className="ms-1 flex justify-between">
@@ -73,14 +83,16 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
           title={title}
           count={count}
           isCollapsed={isCollapsed}
-          setIsCollapsed={(isCollapsed) => setConfig({ ...config, isCollapsed })}
+          setIsCollapsed={(isCollapsed) => updateVolatile({ isCollapsed })}
         />
 
-        {count && count.total > 25 && !isCollapsed && (
+        {count && count.total > 0 && !isCollapsed && (
           <TablePagination
             count={count.total - count.filtered}
-            pagination={pagination}
-            setPagination={(pagination) => setConfig({ ...config, pagination })}
+            page={page}
+            pageSize={pageSize}
+            setPage={(page) => updateVolatile({ page })}
+            setPageSize={(pageSize) => updatePersistent({ pageSize })}
           />
         )}
       </div>
@@ -89,12 +101,12 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
         <div className="flex gap-1">
           <TableActions
             onReset={() => setConfig(tableConfig)}
-            onFilterMenu={() => setConfig({ ...config, isFilterOpen: !isFilterOpen })}
+            onFilterMenu={() => updateVolatile({ isFilterOpen: !isFilterOpen })}
             onCopy={exportAsCSV}
             filters={filters}
             columns={columns}
             hiddenColumns={hiddenColumns}
-            setHiddenColumns={(hiddenColumns) => setConfig({ ...config, hiddenColumns })}
+            setHiddenColumns={(hiddenColumns) => updateVolatile({ hiddenColumns })}
           />
 
           <div className="flex min-w-0 flex-grow flex-col gap-1">
@@ -103,7 +115,7 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
                 columns={columns}
                 filters={filters}
                 setFilters={(filters) => {
-                  setConfig({ ...config, filters, pagination: { ...config.pagination, page: 0 } });
+                  updateVolatile({ filters, page: 0 });
                 }}
               />
             )}
@@ -113,10 +125,10 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
                 data={paginationResult}
                 columns={columns.filter((column) => !hiddenColumns.includes(column))}
                 sort={sort}
-                setSort={(sort) => setConfig({ ...config, sort })}
+                setSort={(sort) => updateVolatile({ sort })}
                 allRowIds={data.map((row) => row.__id__) ?? []}
                 selected={selected}
-                setSelected={(selected) => setConfig({ ...config, selected })}
+                setSelected={(selected) => updateVolatile({ selected })}
                 onRedirect={onRedirect}
               />
 
@@ -136,8 +148,10 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
               {count && count.total > 25 && (
                 <TablePagination
                   count={count.total - count.filtered}
-                  pagination={pagination}
-                  setPagination={(pagination) => setConfig({ ...config, pagination })}
+                  page={page}
+                  pageSize={pageSize}
+                  setPage={(page) => updateVolatile({ page })}
+                  setPageSize={(pageSize) => updatePersistent({ pageSize })}
                 />
               )}
             </div>

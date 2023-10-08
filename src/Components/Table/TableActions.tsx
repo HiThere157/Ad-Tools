@@ -39,7 +39,9 @@ export default function TableActions({
   return (
     <div className="flex flex-col gap-1">
       <Button
-        className={"p-1 " + (filters.length !== 0 ? "!border-primaryAccent" : "")}
+        className={
+          "p-1 " + (filters.some((filter) => filter.value !== "") ? "!border-primaryAccent" : "")
+        }
         onClick={onFilterMenu}
       >
         <BsFunnel />

@@ -3,14 +3,24 @@ type PartialRecord<K extends keyof any, T> = {
 };
 
 type TableConfig = {
+  volatile: VolatileTableConfig;
+  persistent: PersistentTableConfig;
+};
+
+type VolatileTableConfig = {
   isFilterOpen: boolean;
   isCollapsed: boolean;
   filters: TableFilter[];
   hiddenColumns: string[];
   sort: SortConfig;
   selected: number[];
-  pagination: PaginationConfig;
+  page: number;
 };
+
+type PersistentTableConfig = {
+  pageSize: number;
+};
+
 type SortConfig = {
   column: string;
   direction: "asc" | "desc";
@@ -18,10 +28,6 @@ type SortConfig = {
 type TableFilter = {
   column: string;
   value: string;
-};
-type PaginationConfig = {
-  size: number;
-  page: number;
 };
 
 type ResultCount = {
