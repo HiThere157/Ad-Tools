@@ -27,9 +27,9 @@ export default function User() {
   const runPreQuery = async () => {
     setDataSets({ search: null });
 
-    const fields = ["Name", "DistinguishedName", "Enabled", "SamAccountName", "UserPrincipalName"];
+    const fields = ["Name", "Enabled", "SamAccountName", "UserPrincipalName"];
     invokePSCommand({
-      command: `Get-AdUser -Filter {${query.filter.name}} -Properties ${fields.join(",")}`,
+      command: `Get-AdUser -Filter "Name -like '${query.filter.name}'" -Properties ${fields.join(",")}`,
       fields,
     }).then((response) => {
       setDataSets({ search: response });
@@ -71,15 +71,17 @@ export default function User() {
           onSubmit={() => (shouldPreSelect ? runPreQuery() : runQuery(query, true))}
         />
 
-        <Table
-          title="Search Results"
-          dataSet={dataSets.search}
-          config={tableConfigs.search ?? tableConfig}
-          setConfig={(config) => setTableConfigs({ ...tableConfigs, search: config })}
-          onRedirect={(row: PSResult & { Name?: string }) => {
-            runQuery({ ...query, filter: { name: row.Name ?? "" } });
-          }}
-        />
+        {dataSets.search !== undefined && (
+          <Table
+            title="Search Results"
+            dataSet={dataSets.search}
+            config={tableConfigs.search ?? tableConfig}
+            setConfig={(config) => setTableConfigs({ ...tableConfigs, search: config })}
+            onRedirect={(row: PSResult & { Name?: string }) => {
+              runQuery({ ...query, filter: { name: row.Name ?? "" } });
+            }}
+          />
+        )}
 
         <Table
           title="User Attributes"
