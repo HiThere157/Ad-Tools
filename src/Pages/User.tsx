@@ -29,7 +29,9 @@ export default function User() {
 
     const fields = ["Name", "Enabled", "SamAccountName", "UserPrincipalName"];
     invokePSCommand({
-      command: `Get-AdUser -Filter "Name -like '${query.filter.name}'" -Properties ${fields.join(",")}`,
+      command: `Get-AdUser -Filter "Name -like '${query.filter.name}'" -Properties ${fields.join(
+        ",",
+      )}`,
       fields,
     }).then((response) => {
       setDataSets({ search: response });

@@ -29,10 +29,11 @@ export default function Tabs({ activeTab, setActiveTab, tabs, setTabs }: TabsPro
   };
 
   return (
-    <div className="sticky top-0 z-50 flex items-center gap-0.5 bg-light px-2 pt-1">
+    <div className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-2 pt-0.5">
       {tabs.map((tab, tabIndex) => (
         <Tab
           key={tabIndex}
+          index={tabIndex}
           tab={tab}
           isActive={tab.id === activeTab}
           onChange={() => setActiveTab(tab.id)}
@@ -41,7 +42,7 @@ export default function Tabs({ activeTab, setActiveTab, tabs, setTabs }: TabsPro
       ))}
 
       <button
-        className="mx-1 rounded-full text-xl hover:bg-secondaryAccent active:bg-secondaryActive"
+        className="mx-1 rounded-full text-xl hover:bg-secondaryActive active:bg-primary"
         onClick={addTab}
       >
         <BsPlus />

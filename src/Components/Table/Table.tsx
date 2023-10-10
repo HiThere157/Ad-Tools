@@ -77,7 +77,7 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
   };
 
   return (
-    <section className="mb-8 w-fit min-w-[35rem] max-w-full">
+    <section className="mb-7 w-fit min-w-[35rem] max-w-full">
       <div className="ms-1 flex justify-between">
         <TableHeader
           title={title}
