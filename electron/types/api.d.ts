@@ -11,6 +11,7 @@ type RawPSResult = {
 };
 type PSResult = RawPSResult & {
   __id__: number;
+  __highlight__?: string;
 };
 type PSDataSet = {
   data: PSResult[];

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { tableConfig } from "../../Config/default";
 import { friendly } from "../../Config/lookup";
-import { filterData, sortData, paginateData } from "../../Helper/array";
+import { filterData, sortData, paginateData, colorData } from "../../Helper/array";
 import { stringify } from "../../Helper/string";
 
 import TableHeader from "./TableHeader";
@@ -42,6 +42,10 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
   const paginationResult = useMemo(() => {
     return paginateData(sortedResult, page, pageSize);
   }, [sortedResult, page, pageSize]);
+
+  const coloredResult = useMemo(() => {
+    return colorData(paginationResult, highlights);
+  }, [paginationResult, highlights]);
 
   const count: ResultCount | undefined = useMemo(() => {
     // Only show count if acutal data is available
@@ -131,7 +135,7 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
 
             <div className="min-h-[5.5rem] overflow-x-auto rounded border-2 border-border">
               <TableElement
-                data={paginationResult}
+                data={coloredResult}
                 columns={columns.filter((column) => !hiddenColumns.includes(column))}
                 sort={sort}
                 setSort={(sort) => updateVolatile({ sort })}

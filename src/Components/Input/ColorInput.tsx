@@ -10,8 +10,8 @@ export default function ColorInput({ value, onChange, className, disabled }: Col
   return (
     <input
       className={twMerge(
-        "rounded border-2 px-2 outline-none disabled:opacity-50",
-        "border-border bg-dark focus-within:border-borderActive focus-within:bg-secondaryActive hover:border-borderAccent hover:bg-secondaryAccent",
+        "rounded border-2 outline-none disabled:opacity-50",
+        "border-border focus-within:border-borderActive hover:border-borderAccent",
         className,
       )}
       type="color"

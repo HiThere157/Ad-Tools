@@ -8,7 +8,7 @@ import MultiDropdown from "../Dropdown/MultiDropdown";
 
 import {
   BsFunnel,
-  BsFillPaletteFill,
+  BsPalette,
   BsLayoutThreeColumns,
   BsArrowCounterclockwise,
   BsClipboard,
@@ -62,7 +62,7 @@ export default function TableActions({
         }
         onClick={onHighlightMenu}
       >
-        <BsFillPaletteFill />
+        <BsPalette />
       </Button>
       <MultiDropdown
         items={columns}

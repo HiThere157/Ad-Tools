@@ -2,17 +2,17 @@ import { stringify } from "./string";
 
 export function filterData(data: PSResult[], filters: TableFilter[]) {
   return data.filter((row) => {
+    // Loop over all the filters, and check if the row matches all of them
     return filters.every((filter) => {
       if (filter.value.length === 0) return true;
 
+      // If any of the filter values match, the filter matches
       const valueArray = Array.isArray(filter.value) ? filter.value : [filter.value];
       return valueArray.some((filterValue) => {
-        // Get the string value of the column value
-        // Transform the filter value into a regex
-        const value = stringify(row[filter.column]);
         const regexValue = filterValue.replace(/\*/g, ".*");
-
         const regex = new RegExp(`^${regexValue}$`, "i");
+
+        const value = stringify(row[filter.column]);
         return regex.test(value);
       });
     });
@@ -35,4 +35,36 @@ export function paginateData(data: PSResult[], page: number, pageSize: number) {
   if (pageSize === -1) return data;
 
   return data.slice(page * pageSize, (page + 1) * pageSize);
+}
+
+export function colorData(data: PSResult[], highlights: TableHighlight[]) {
+  return data.map((row) => {
+    let highlightColor = "transparent";
+
+    // Only loop over the actual values, not __id__ or __highlight__
+    const rowValues = Object.entries(row)
+      .filter(([key]) => !key.startsWith("__"))
+      .map(([, value]) => value);
+
+    // Loop over the highlights, and check if the row matches the highlight
+    highlights.forEach((highlight) => {
+      const { color, fields } = highlight;
+      if (fields.length === 0) return;
+
+      // If every field matches, the highlight rule matches
+      if (
+        fields.every((field) => {
+          const regexValue = field.replace(/\*/g, ".*");
+          const regex = new RegExp(`^${regexValue}$`, "i");
+
+          // If any of the values match, the field matches
+          return rowValues.some((value) => regex.test(stringify(value)));
+        })
+      ) {
+        highlightColor = color;
+      }
+    });
+
+    return { __highlight__: highlightColor, ...row };
+  });
 }
