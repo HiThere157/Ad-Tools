@@ -29,7 +29,7 @@ export default function Tabs({ activeTab, setActiveTab, tabs, setTabs }: TabsPro
   };
 
   return (
-    <div className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-2 pt-0.5">
+    <div className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-0.5">
       {tabs.map((tab, tabIndex) => (
         <Tab
           key={tabIndex}
