@@ -8,6 +8,7 @@ import MultiDropdown from "../Dropdown/MultiDropdown";
 
 import {
   BsFunnel,
+  BsFillPaletteFill,
   BsLayoutThreeColumns,
   BsArrowCounterclockwise,
   BsClipboard,
@@ -16,8 +17,10 @@ import {
 type TableActionsProps = {
   onReset: () => void;
   onFilterMenu: () => void;
+  onHighlightMenu: () => void;
   onCopy: (onlySelection: boolean) => void;
   filters: TableFilter[];
+  highlights: TableHighlight[];
   columns: string[];
   hiddenColumns: string[];
   setHiddenColumns: (hiddenColumns: string[]) => void;
@@ -25,8 +28,10 @@ type TableActionsProps = {
 export default function TableActions({
   onReset,
   onFilterMenu,
+  onHighlightMenu,
   onCopy,
   filters,
+  highlights,
   columns,
   hiddenColumns,
   setHiddenColumns,
@@ -47,6 +52,17 @@ export default function TableActions({
         onClick={onFilterMenu}
       >
         <BsFunnel />
+      </Button>
+      <Button
+        className={
+          "p-1 " +
+          (highlights.some((highlight) => highlight.fields.length !== 0)
+            ? "!border-primaryAccent"
+            : "")
+        }
+        onClick={onHighlightMenu}
+      >
+        <BsFillPaletteFill />
       </Button>
       <MultiDropdown
         items={columns}

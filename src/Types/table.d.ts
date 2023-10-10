@@ -9,6 +9,7 @@ type TableConfig = {
 
 type VolatileTableConfig = {
   isFilterOpen: boolean;
+  isHighlightOpen: boolean;
   isCollapsed: boolean;
   filters: TableFilter[];
   hiddenColumns: string[];
@@ -18,12 +19,14 @@ type VolatileTableConfig = {
 };
 type PersistentTableConfig = {
   pageSize: number;
+  highlights: TableHighlight[];
 };
 
 type SortConfig = {
   column: string;
   direction: "asc" | "desc";
 };
+
 type TableFilter =
   | {
       type: "is";
@@ -35,6 +38,10 @@ type TableFilter =
       column: string;
       value: string[];
     };
+type TableHighlight = {
+  color: string;
+  fields: string[];
+};
 
 type ResultCount = {
   total: number;

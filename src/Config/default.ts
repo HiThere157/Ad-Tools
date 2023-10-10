@@ -10,10 +10,15 @@ export const tableFilter: TableFilter = {
   column: "",
   value: "",
 };
+export const tableHighlight: TableHighlight = {
+  color: "#000000",
+  fields: [],
+};
 
 export const tableConfig: TableConfig = {
   volatile: {
     isFilterOpen: false,
+    isHighlightOpen: false,
     isCollapsed: false,
     filters: [],
     hiddenColumns: [],
@@ -26,5 +31,6 @@ export const tableConfig: TableConfig = {
   },
   persistent: {
     pageSize: 10,
+    highlights: [],
   },
 };

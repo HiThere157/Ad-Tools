@@ -12,6 +12,7 @@ import TableElement from "./TableElement";
 import TablePagination from "./TablePagination";
 import TableLoader from "./TableLoader";
 import TableError from "./TableError";
+import TableHighlightMenu from "./TableHighlightMenu";
 
 type TableProps = {
   title: string;
@@ -26,8 +27,9 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
   const isLoading = dataSet === null;
 
   const { volatile, persistent } = config;
-  const { isFilterOpen, isCollapsed, filters, hiddenColumns, sort, selected, page } = volatile;
-  const { pageSize } = persistent;
+  const { isFilterOpen, isHighlightOpen } = volatile;
+  const { isCollapsed, filters, hiddenColumns, sort, selected, page } = volatile;
+  const { pageSize, highlights } = persistent;
 
   const filteredResult = useMemo(() => {
     return filterData(data, filters);
@@ -102,9 +104,11 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
           <TableActions
             onReset={() => setConfig(tableConfig)}
             onFilterMenu={() => updateVolatile({ isFilterOpen: !isFilterOpen })}
+            onHighlightMenu={() => updateVolatile({ isHighlightOpen: !isHighlightOpen })}
             onCopy={exportAsCSV}
             filters={filters}
             columns={columns}
+            highlights={highlights}
             hiddenColumns={hiddenColumns}
             setHiddenColumns={(hiddenColumns) => updateVolatile({ hiddenColumns })}
           />
@@ -114,9 +118,14 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
               <TableFilterMenu
                 columns={columns}
                 filters={filters}
-                setFilters={(filters) => {
-                  updateVolatile({ filters, page: 0 });
-                }}
+                setFilters={(filters) => updateVolatile({ filters, page: 0 })}
+              />
+            )}
+
+            {isHighlightOpen && (
+              <TableHighlightMenu
+                highlights={highlights}
+                setHighlights={(highlights) => updatePersistent({ highlights })}
               />
             )}
 
