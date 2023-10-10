@@ -35,8 +35,14 @@ export default function TableFilter({
         items={["is", "in"]}
         value={type}
         onChange={(type) => {
-          if (type === "is") setFilter({ ...filter, type, value: "" });
-          if (type === "in") setFilter({ ...filter, type, value: [] });
+          if (type === "is") {
+            const newValue = Array.isArray(value) ? value.join(",") : "";
+            setFilter({ ...filter, type, value: newValue });
+          }
+          if (type === "in") {
+            const newValue = typeof value === "string" ? value.split(",") : [];
+            setFilter({ ...filter, type, value: newValue });
+          }
         }}
         className="w-full"
       />
