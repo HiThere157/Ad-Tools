@@ -6,7 +6,7 @@ import {
   useTabs,
   useTabState,
 } from "../Hooks/utils";
-import { adQuery, tableConfig } from "../Config/default";
+import { defaultAdQuery, defaultTableConfig } from "../Config/default";
 import { invokePSCommand } from "../Helper/api";
 import { firsObjectToPSDataSet } from "../Helper/postProcessors";
 
@@ -18,7 +18,7 @@ export default function User() {
   const page = "user";
   const { activeTab, setActiveTab, tabs, setTabs, setActiveTabTitle } = useTabs(page);
 
-  const [query, setQuery] = useTabState<AdQuery>(`${page}_query`, activeTab, adQuery);
+  const [query, setQuery] = useTabState<AdQuery>(`${page}_query`, activeTab, defaultAdQuery);
   const shouldPreSelect = expectMultipleResults(query);
 
   const [tableConfigs, setTableConfigs] = useTables(activeTab, page);
@@ -77,7 +77,7 @@ export default function User() {
           <Table
             title="Search Results"
             dataSet={dataSets.search}
-            config={tableConfigs.search ?? tableConfig}
+            config={tableConfigs.search ?? defaultTableConfig}
             setConfig={(config) => setTableConfigs({ ...tableConfigs, search: config })}
             onRedirect={(row: PSResult & { Name?: string }) => {
               runQuery({ ...query, filter: { name: row.Name ?? "" } });
@@ -88,14 +88,14 @@ export default function User() {
         <Table
           title="User Attributes"
           dataSet={dataSets.attributes}
-          config={tableConfigs.attributes ?? tableConfig}
+          config={tableConfigs.attributes ?? defaultTableConfig}
           setConfig={(config) => setTableConfigs({ ...tableConfigs, attributes: config })}
         />
 
         <Table
           title="User Groups"
           dataSet={dataSets.groups}
-          config={tableConfigs.groups ?? tableConfig}
+          config={tableConfigs.groups ?? defaultTableConfig}
           setConfig={(config) => setTableConfigs({ ...tableConfigs, groups: config })}
         />
       </div>
