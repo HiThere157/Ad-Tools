@@ -1,4 +1,4 @@
-import { tableFilter } from "../../Config/default";
+import { defaultTableFilter } from "../../Config/default";
 
 import Button from "../Button";
 import TableFilter from "./TableFilter";
@@ -29,7 +29,7 @@ export default function TableFilterMenu({ columns, filters, setFilters }: TableF
         ))}
       </div>
 
-      <Button className="p-1" onClick={() => setFilters([...filters, tableFilter])}>
+      <Button className="p-1" onClick={() => setFilters([...filters, defaultTableFilter])}>
         <BsPlusLg />
       </Button>
     </div>

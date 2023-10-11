@@ -2,7 +2,9 @@ import { ElectronAPI } from "../../electron/preload";
 
 const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
 
-export function invokePSCommand(request: InvokePSCommandRequest): Promise<Loadable<PSDataSet>> {
+export async function invokePSCommand(
+  request: InvokePSCommandRequest,
+): Promise<Loadable<PSDataSet>> {
   const env = process.env.NODE_ENV;
 
   if (!electronWindow.electronAPI) {
@@ -26,7 +28,7 @@ export function invokePSCommand(request: InvokePSCommandRequest): Promise<Loadab
         },
         timestamp: Date.now(),
         executionTime: 0,
-      } as Loadable<PSDataSet>);
+      });
     }
 
     return Promise.resolve({
@@ -45,4 +47,24 @@ export function changeWindowState(state: WindowState) {
   }
 
   return electronWindow.electronAPI.changeWindowState(state);
+}
+
+let cachedEnvironment: ElectronEnvironment | undefined;
+export async function getEnvironment(): Promise<ElectronEnvironment> {
+  if (!electronWindow.electronAPI) {
+    return Promise.resolve({
+      executingUser: "NOTFOUND\\WEB",
+      dnsSuffixList: [],
+      appVersion: "v0.0.0",
+      appChannel: "stable",
+    });
+  }
+
+  if (cachedEnvironment) {
+    return Promise.resolve(cachedEnvironment);
+  }
+
+  const environment = await electronWindow.electronAPI.getEnvironment();
+  cachedEnvironment = environment;
+  return environment;
 }

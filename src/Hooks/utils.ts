@@ -1,4 +1,4 @@
-import { tableConfig } from "../Config/default";
+import { defaultTableConfig } from "../Config/default";
 import { useLocalStorage, useSessionStorage } from "./useStorage";
 
 // This is a helpful hook to get all necessary state for a page with tabs
@@ -64,8 +64,8 @@ export function useTables(tabId: number, page: string) {
     return {
       ...acc,
       [key]: {
-        volatile: tableConfigs[key] ?? tableConfig.volatile,
-        persistent: persistentTableConfigs[key] ?? tableConfig.persistent,
+        volatile: tableConfigs[key] ?? defaultTableConfig.volatile,
+        persistent: persistentTableConfigs[key] ?? defaultTableConfig.persistent,
       },
     };
   }, {}) as PartialRecord<string, TableConfig>;

@@ -19,6 +19,13 @@ type PSDataSet = {
   columns: string[];
 };
 
+type ElectronEnvironment = {
+  executingUser: string;
+  dnsSuffixList: string[];
+  appVersion: string;
+  appChannel: "beta" | "stable";
+};
+
 type InvokePSCommandRequest = {
   command: string;
   fields?: string[];

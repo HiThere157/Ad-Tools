@@ -1,22 +1,29 @@
-export const adQuery: AdQuery = {
+export const defaultEnvironment: ElectronEnvironment = {
+  executingUser: "",
+  dnsSuffixList: [],
+  appVersion: "",
+  appChannel: "stable",
+};
+
+export const defaultAdQuery: AdQuery = {
   filter: {
     name: "",
   },
   servers: [],
 };
 
-export const tableFilter: TableFilter = {
+export const defaultTableFilter: TableFilter = {
   type: "is",
   column: "",
   value: "",
 };
-export const tableHighlight: TableHighlight = {
+export const defaultTableHighlight: TableHighlight = {
   color: "#000000",
   type: "bg",
   fields: [],
 };
 
-export const tableConfig: TableConfig = {
+export const defaultTableConfig: TableConfig = {
   volatile: {
     isFilterOpen: false,
     isHighlightOpen: false,

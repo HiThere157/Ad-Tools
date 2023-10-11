@@ -7,18 +7,14 @@ function tagArray(array: RawPSResult[]): PSResult[] {
   return array.map((item, itemIndex) => ({ ...item, __id__: itemIndex }));
 }
 
-function createPSSession() {
-  // Create a new session
-  return new PowerShell();
-}
-const globalSession = createPSSession();
+const globalSession = new PowerShell();
 
 export async function invokePSCommand(
   _event: Electron.IpcMainInvokeEvent,
   { useGlobalSession, command, fields }: InvokePSCommandRequest,
 ): Promise<Loadable<PSDataSet>> {
   // If the command should use the global session, use it
-  const session = useGlobalSession ? globalSession : createPSSession();
+  const session = useGlobalSession ? globalSession : new PowerShell();
   const startTimestamp = Date.now();
 
   try {
@@ -28,7 +24,7 @@ export async function invokePSCommand(
     command += ` | ConvertTo-Json -Compress`;
 
     const output = await session.invoke(command);
-    const data = tagArray(makeToArray<RawPSResult>(JSON.parse(output.raw ?? "[]")));
+    const data = tagArray(makeToArray<RawPSResult>(JSON.parse(output.raw || "[]")));
     const endTimestamp = Date.now();
 
     return {

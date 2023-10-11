@@ -1,4 +1,4 @@
-import { tableHighlight } from "../../Config/default";
+import { defaultTableHighlight } from "../../Config/default";
 
 import Button from "../Button";
 import TableHighlight from "./TableHighlight";
@@ -27,7 +27,7 @@ export default function TableHighlightMenu({ highlights, setHighlights }: TableH
         ))}
       </div>
 
-      <Button className="p-1" onClick={() => setHighlights([...highlights, tableHighlight])}>
+      <Button className="p-1" onClick={() => setHighlights([...highlights, defaultTableHighlight])}>
         <BsPlusLg />
       </Button>
     </div>
