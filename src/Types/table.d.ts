@@ -40,6 +40,7 @@ type TableFilter =
     };
 type TableHighlight = {
   color: string;
+  type: "fg" | "bg";
   fields: string[];
 };
 

@@ -2,7 +2,7 @@ import Button from "../Button";
 import ColorInput from "../Input/ColorInput";
 import MultiInput from "../Input/MultiInput";
 
-import { BsTrashFill } from "react-icons/bs";
+import { BsType, BsPaintBucket, BsTrashFill } from "react-icons/bs";
 
 type TableHighlightProps = {
   highlight: TableHighlight;
@@ -14,11 +14,22 @@ export default function TableHighlight({
   setHighlight,
   removeHighlight,
 }: TableHighlightProps) {
-  const { color, fields } = highlight;
+  const { color, type, fields } = highlight;
 
   return (
     <>
       <ColorInput value={color} onChange={(color) => setHighlight({ ...highlight, color })} />
+
+      <Button
+        className="p-1"
+        onClick={() => {
+          setHighlight({ ...highlight, type: type === "bg" ? "fg" : "bg" });
+        }}
+      >
+        {type === "fg" && <BsType />}
+        {type === "bg" && <BsPaintBucket />}
+      </Button>
+
       <MultiInput value={fields} onChange={(fields) => setHighlight({ ...highlight, fields })} />
 
       <Button className="p-1 text-red" onClick={removeHighlight}>

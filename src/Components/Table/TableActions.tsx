@@ -6,16 +6,9 @@ import Button from "../Button";
 import Dropdown from "../Dropdown/Dropdown";
 import MultiDropdown from "../Dropdown/MultiDropdown";
 
-import {
-  BsFunnel,
-  BsPalette,
-  BsLayoutThreeColumns,
-  BsArrowCounterclockwise,
-  BsClipboard,
-} from "react-icons/bs";
+import { BsFunnel, BsPalette, BsLayoutThreeColumns, BsClipboard } from "react-icons/bs";
 
 type TableActionsProps = {
-  onReset: () => void;
   onFilterMenu: () => void;
   onHighlightMenu: () => void;
   onCopy: (onlySelection: boolean) => void;
@@ -26,7 +19,6 @@ type TableActionsProps = {
   setHiddenColumns: (hiddenColumns: string[]) => void;
 };
 export default function TableActions({
-  onReset,
   onFilterMenu,
   onHighlightMenu,
   onCopy,
@@ -90,9 +82,6 @@ export default function TableActions({
       >
         <BsClipboard />
       </Dropdown>
-      <Button className="p-1" onClick={onReset}>
-        <BsArrowCounterclockwise />
-      </Button>
     </div>
   );
 }

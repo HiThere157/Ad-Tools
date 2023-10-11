@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-import { tableConfig } from "../../Config/default";
 import { friendly } from "../../Config/lookup";
 import { filterData, sortData, paginateData, colorData } from "../../Helper/array";
 import { stringify } from "../../Helper/string";
@@ -106,7 +105,6 @@ export default function Table({ dataSet, title, config, setConfig, onRedirect }:
       {!isCollapsed && (
         <div className="flex gap-1">
           <TableActions
-            onReset={() => setConfig(tableConfig)}
             onFilterMenu={() => updateVolatile({ isFilterOpen: !isFilterOpen })}
             onHighlightMenu={() => updateVolatile({ isHighlightOpen: !isHighlightOpen })}
             onCopy={exportAsCSV}

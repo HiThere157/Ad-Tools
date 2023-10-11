@@ -119,7 +119,10 @@ export default function TableElement({
             {columns.map((column, columnIndex) => (
               <td
                 key={columnIndex}
-                style={{ backgroundColor: row.__highlight__ ?? "transparent" }}
+                style={{
+                  backgroundColor: row.__highlight_bg__ ?? "transparent",
+                  color: row.__highlight_fg__ ?? "inherit",
+                }}
                 className="group relative whitespace-pre border-s border-t border-border px-2"
               >
                 <TableCell content={stringify(row[column])} />

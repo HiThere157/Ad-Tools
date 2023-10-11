@@ -12,6 +12,7 @@ export const tableFilter: TableFilter = {
 };
 export const tableHighlight: TableHighlight = {
   color: "#000000",
+  type: "bg",
   fields: [],
 };
 

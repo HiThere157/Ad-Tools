@@ -39,7 +39,8 @@ export function paginateData(data: PSResult[], page: number, pageSize: number) {
 
 export function colorData(data: PSResult[], highlights: TableHighlight[]) {
   return data.map((row) => {
-    let highlightColor = "transparent";
+    let bgColor = "transparent";
+    let fgColor = "inherit";
 
     // Only loop over the actual values, not __id__ or __highlight__
     const rowValues = Object.entries(row)
@@ -61,10 +62,11 @@ export function colorData(data: PSResult[], highlights: TableHighlight[]) {
           return rowValues.some((value) => regex.test(stringify(value)));
         })
       ) {
-        highlightColor = color;
+        if (highlight.type === "fg") fgColor = color;
+        if (highlight.type === "bg") bgColor = color;
       }
     });
 
-    return { __highlight__: highlightColor, ...row };
+    return { __highlight_bg__: bgColor, __highlight_fg__: fgColor, ...row };
   });
 }
