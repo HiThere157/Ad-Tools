@@ -42,7 +42,6 @@ export default function User() {
   };
 
   const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
-    // If resetSearch is true, the dataSets.search should be reset -> incremental = false
     setDataSets({ attributes: null, groups: null }, !resetSearch);
 
     invokePSCommand({
