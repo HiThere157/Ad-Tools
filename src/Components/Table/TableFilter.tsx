@@ -40,7 +40,8 @@ export default function TableFilter({
             setFilter({ ...filter, type, value: newValue });
           }
           if (type === "in") {
-            const newValue = typeof value === "string" ? value.split(",") : [];
+            const newValue =
+              typeof value === "string" && value.trim() !== "" ? value.split(",") : [];
             setFilter({ ...filter, type, value: newValue });
           }
         }}
