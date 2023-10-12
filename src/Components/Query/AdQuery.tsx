@@ -1,3 +1,5 @@
+import { useQueryDomains } from "../../Helper/api";
+
 import Button from "../Button";
 import Dropdown from "../Dropdown/Dropdown";
 import Input from "../Input/Input";
@@ -8,7 +10,7 @@ type AdQueryProps = {
   onSubmit: () => void;
 };
 export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
-  const availableServers = ["domain1", "domain2", "domain3"];
+  const availableServers = useQueryDomains();
   const { filter, servers } = query;
 
   return (
@@ -27,7 +29,7 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
 
       <Dropdown
         items={availableServers}
-        value={servers[0]}
+        value={servers[0] || availableServers[0]}
         onChange={(server) => {
           setQuery({ ...query, servers: [server] });
         }}

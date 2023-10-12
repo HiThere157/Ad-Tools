@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-import { defaultEnvironment } from "../../Config/default";
-import { getEnvironment } from "../../Helper/api";
+import { useEnvironment } from "../../Helper/api";
 
 import WindowControls from "./WindowControls";
 
 export default function Header() {
-  const [env, setEnv] = useState<ElectronEnvironment>(defaultEnvironment);
-
-  useEffect(() => {
-    getEnvironment().then(setEnv);
-  }, []);
+  const env = useEnvironment();
 
   return (
     <header

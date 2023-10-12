@@ -1,14 +1,7 @@
-import { useEffect, useState } from "react";
-
-import { defaultEnvironment } from "../Config/default";
-import { getEnvironment } from "../Helper/api";
+import { useEnvironment } from "../Helper/api";
 
 export default function Footer() {
-  const [env, setEnv] = useState<ElectronEnvironment>(defaultEnvironment);
-
-  useEffect(() => {
-    getEnvironment().then(setEnv);
-  }, []);
+  const env = useEnvironment();
 
   return (
     <footer
