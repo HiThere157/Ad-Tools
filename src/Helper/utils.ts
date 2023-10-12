@@ -34,3 +34,32 @@ export function getPSFilterString(filter: PartialRecord<string, string>) {
     })
     .join(" -and ");
 }
+
+export function mergeResponses(responses: Loadable<PSDataSet>[]) {
+  const mergedData = responses.reduce(
+    (acc, response) => [...acc, ...(response?.result?.data ?? [])],
+    [] as PSResult[],
+  );
+  const mergedColumns =
+    responses.filter((response) => response?.result?.columns !== undefined)[0]?.result?.columns ??
+    [];
+
+  const mergedError = responses
+    .map((response) => response?.error)
+    .filter((error) => error !== undefined)
+    .join("\n");
+  const mergedExecutionTime = Math.max(
+    ...responses.map((response) => response?.executionTime ?? 0),
+  );
+  const mergedTimestamp = Math.max(...responses.map((response) => response?.timestamp ?? 0));
+
+  return {
+    result: {
+      data: mergedData,
+      columns: mergedColumns,
+    },
+    timestamp: mergedTimestamp,
+    executionTime: mergedExecutionTime,
+    error: mergedError,
+  };
+}

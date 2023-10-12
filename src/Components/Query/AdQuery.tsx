@@ -2,6 +2,7 @@ import { useQueryDomains } from "../../Helper/api";
 
 import Button from "../Button";
 import Dropdown from "../Dropdown/Dropdown";
+import MultiDropdown from "../Dropdown/MultiDropdown";
 import Input from "../Input/Input";
 
 type AdQueryProps = {
@@ -32,6 +33,14 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
         value={servers[0] || availableServers[0]}
         onChange={(server) => {
           setQuery({ ...query, servers: [server] });
+        }}
+      />
+
+      <MultiDropdown
+        items={availableServers}
+        value={servers}
+        onChange={(servers) => {
+          setQuery({ ...query, servers });
         }}
       />
 

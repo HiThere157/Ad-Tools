@@ -1,5 +1,10 @@
 import { useTables, useDataSets, useTabs, useTabState } from "../Hooks/utils";
-import { expectMultipleResults, softResetTables, getPSFilterString } from "../Helper/utils";
+import {
+  expectMultipleResults,
+  softResetTables,
+  getPSFilterString,
+  mergeResponses,
+} from "../Helper/utils";
 import { defaultAdQuery, defaultTableConfig } from "../Config/default";
 import { invokePSCommand } from "../Helper/api";
 import { addServerToResult, firsObjectToPSDataSet } from "../Helper/postProcessors";
@@ -29,25 +34,10 @@ export default function User() {
         -Server ${server}
         -Properties ${fields.join(",")}`,
         fields,
-      }).then((response) => addServerToResult(response, server)));
+      }).then((response) => addServerToResult(response, server)),
+    );
 
-    Promise.all(responses).then((responses) => {
-      const mergedData = responses.reduce((acc, response) => [...acc, ...response?.result?.data ?? []], [] as PSResult[]);
-      const mergedColumns = responses.filter((response) => response?.result?.columns !== undefined)[0]?.result?.columns ?? [];
-      const mergedError = responses.map((response) => response?.error).filter((error) => error !== undefined).join("\n");
-      const mergedExecutionTime = Math.max(...responses.map((response) => response?.executionTime ?? 0));
-      const mergedTimestamp = Math.max(...responses.map((response) => response?.timestamp ?? 0));
-
-      setDataSets({ search: {
-        result: {
-          data: mergedData,
-          columns: mergedColumns,
-        },
-        timestamp: mergedTimestamp,
-        executionTime: mergedExecutionTime,
-        error: mergedError,
-      } });
-    });
+    Promise.all(responses).then((responses) => setDataSets({ search: mergeResponses(responses) }));
 
     setActiveTabTitle("Search Results");
     setTableConfigs(softResetTables(tableConfigs));
