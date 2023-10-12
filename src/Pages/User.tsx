@@ -26,14 +26,14 @@ export default function User() {
   const runPreQuery = async () => {
     setDataSets({ search: null });
 
-    const fields = ["Name", "Enabled", "SamAccountName", "UserPrincipalName"];
+    const selectFields = ["Name", "Enabled", "SamAccountName", "UserPrincipalName"];
     const responses = query.servers.map((server) =>
       invokePSCommand({
         command: `Get-AdUser <
         -Filter "${getPSFilterString(query.filter)}"
         -Server ${server}
-        -Properties ${fields.join(",")}`,
-        fields,
+        -Properties ${selectFields.join(",")}`,
+        selectFields,
       }).then((response) => addServerToResult(response, server)),
     );
 
@@ -52,9 +52,12 @@ export default function User() {
       setDataSets({ attributes: firsObjectToPSDataSet(response) }, true);
     });
 
+    const selectFields = ["Name", "GroupCategory", "DistinguishedName"];
     invokePSCommand({
-      command: `Get-AdPrincipalGroupMembership -Identity ${query.filter.Name}`,
-      fields: ["Name", "GroupCategory", "DistinguishedName"],
+      command: `Get-AdPrincipalGroupMembership -Identity ${query.filter.Name} -Server ${
+        query.servers[0]
+      } -Properties ${selectFields.join(",")}`,
+      selectFields,
     }).then((response) => {
       setDataSets({ groups: response }, true);
     });

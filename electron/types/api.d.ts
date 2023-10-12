@@ -27,7 +27,7 @@ type ElectronEnvironment = {
 
 type InvokePSCommandRequest = {
   command: string;
-  fields?: string[];
+  selectFields?: string[];
   useGlobalSession?: boolean;
 };
 

@@ -11,15 +11,15 @@ const globalSession = new PowerShell();
 
 export async function invokePSCommand(
   _event: Electron.IpcMainInvokeEvent,
-  { useGlobalSession, command, fields }: InvokePSCommandRequest,
+  { useGlobalSession, command, selectFields }: InvokePSCommandRequest,
 ): Promise<Loadable<PSDataSet>> {
   // If the command should use the global session, use it
   const session = useGlobalSession ? globalSession : new PowerShell();
   const startTimestamp = Date.now();
 
   try {
-    if (fields) {
-      command += ` | Select-Object ${fields.join(", ")}`;
+    if (selectFields) {
+      command += ` | Select-Object ${selectFields.join(", ")}`;
     }
     command += ` | ConvertTo-Json -Compress`;
 
@@ -30,7 +30,7 @@ export async function invokePSCommand(
     return {
       result: {
         data,
-        columns: fields ?? Object.keys(data[0] ?? {}),
+        columns: selectFields ?? Object.keys(data[0] ?? {}),
       },
       timestamp: endTimestamp,
       executionTime: endTimestamp - startTimestamp,
