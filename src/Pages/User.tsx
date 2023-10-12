@@ -26,7 +26,7 @@ export default function User() {
   const runPreQuery = async () => {
     setDataSets({ search: null });
 
-    const selectFields = ["Name", "Enabled", "SamAccountName", "UserPrincipalName"];
+    const selectFields = ["Name", "Enabled", "SamAccountName", "UserPrincipalName", ...Object.keys(query.filter)];
     const responses = query.servers.map((server) =>
       invokePSCommand({
         command: `Get-AdUser <
