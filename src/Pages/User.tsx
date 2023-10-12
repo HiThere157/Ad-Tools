@@ -4,6 +4,7 @@ import {
   softResetTables,
   getPSFilterString,
   mergeResponses,
+  removeDuplicates,
 } from "../Helper/utils";
 import { defaultAdQuery, defaultTableConfig } from "../Config/default";
 import { invokePSCommand } from "../Helper/api";
@@ -26,7 +27,7 @@ export default function User() {
   const runPreQuery = async () => {
     setDataSets({ search: null });
 
-    const selectFields = ["Name", "DisplayName", "UserPrincipalName", ...Object.keys(query.filter)];
+    const selectFields = removeDuplicates(["Name", "DisplayName"], Object.keys(query.filter));
     const responses = query.servers.map((server) =>
       invokePSCommand({
         command: `Get-AdUser <

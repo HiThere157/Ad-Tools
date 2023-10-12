@@ -63,3 +63,7 @@ export function mergeResponses(responses: Loadable<PSDataSet>[]) {
     error: mergedError,
   };
 }
+
+export function removeDuplicates<T>(...array: T[]) {
+  return [...new Set(array.flat())];
+}
