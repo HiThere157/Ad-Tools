@@ -7,8 +7,9 @@ import { BiGitBranch } from "react-icons/bi";
 
 type ReleaseProps = {
   release: Release;
+  installed: boolean;
 };
-export default function Release({ release }: ReleaseProps) {
+export default function Release({ release, installed }: ReleaseProps) {
   const {
     name,
     body,
@@ -35,7 +36,7 @@ export default function Release({ release }: ReleaseProps) {
           <h2 className="text-2xl font-bold">
             {repository}: {name}
           </h2>
-          <ReleaseChip prerelease={prerelease} latest={latest} installed={false} />
+          <ReleaseChip prerelease={prerelease} latest={latest} installed={installed} />
           <BsBoxArrowUpRight className="hidden text-grey group-hover:block" />
         </a>
 

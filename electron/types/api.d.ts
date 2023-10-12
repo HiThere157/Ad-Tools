@@ -21,7 +21,6 @@ type PSDataSet = {
 
 type ElectronEnvironment = {
   executingUser: string;
-  dnsSuffixList: string[];
   appVersion: string;
   appChannel: "beta" | "stable";
 };

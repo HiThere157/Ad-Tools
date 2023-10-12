@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+import { defaultEnvironment } from "../Config/default";
+import { getEnvironment } from "../Helper/api";
+
 import Release from "../Components/Release/Release";
 
 import { BsExclamationOctagon } from "react-icons/bs";
@@ -8,6 +11,12 @@ import { PulseLoader } from "react-spinners";
 export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Release[] | null>(null);
+
+  const [env, setEnv] = useState<ElectronEnvironment>(defaultEnvironment);
+
+  useEffect(() => {
+    getEnvironment().then(setEnv);
+  }, []);
 
   const fetchReleases = async () => {
     setError(null);
@@ -63,7 +72,11 @@ export default function Home() {
       )}
 
       {result?.map((release, releaseIndex) => (
-        <Release key={releaseIndex} release={release} />
+        <Release
+          key={releaseIndex}
+          release={release}
+          installed={release.tag_name === env.appVersion}
+        />
       ))}
     </div>
   );

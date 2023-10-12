@@ -1,6 +1,5 @@
 export const defaultEnvironment: ElectronEnvironment = {
   executingUser: "",
-  dnsSuffixList: [],
   appVersion: "",
   appChannel: "stable",
 };

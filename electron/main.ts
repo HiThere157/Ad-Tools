@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from "electron";
 import path = require("path");
 
 import { invokePSCommand } from "./api/powershell";
-import { getEnvironment } from "./api/node";
+import { getDnsSuffixList, getEnvironment } from "./api/node";
 import { changeWindowState } from "./api/win";
 
 app.whenReady().then(() => {
@@ -37,6 +37,7 @@ app.whenReady().then(() => {
   // Handle API requests
   ipcMain.handle("ps:invokePSCommand", invokePSCommand);
   ipcMain.handle("node:getEnvironment", getEnvironment);
+  ipcMain.handle("node:getDnsSuffixList", getDnsSuffixList);
 
   // Handle window state changes
   ipcMain.on("win:changeWindowState", (_event, state: WindowState) => {
