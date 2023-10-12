@@ -1,11 +1,5 @@
-import {
-  expectMultipleResults,
-  softResetTables,
-  useTables,
-  useDataSets,
-  useTabs,
-  useTabState,
-} from "../Hooks/utils";
+import { useTables, useDataSets, useTabs, useTabState } from "../Hooks/utils";
+import { expectMultipleResults, softResetTables, getPSFilterString } from "../Helper/utils";
 import { defaultAdQuery, defaultTableConfig } from "../Config/default";
 import { invokePSCommand } from "../Helper/api";
 import { firsObjectToPSDataSet } from "../Helper/postProcessors";
@@ -29,9 +23,10 @@ export default function User() {
 
     const fields = ["Name", "Enabled", "SamAccountName", "UserPrincipalName"];
     invokePSCommand({
-      command: `Get-AdUser -Filter "Name -like '${query.filter.name}'" -Properties ${fields.join(
-        ",",
-      )}`,
+      command: `Get-AdUser <
+        -Filter "${getPSFilterString(query.filter)}"
+        -Server ${query.servers[0]}
+        -Properties ${fields.join(",")}`,
       fields,
     }).then((response) => {
       setDataSets({ search: response });
@@ -45,19 +40,19 @@ export default function User() {
     setDataSets({ attributes: null, groups: null }, !resetSearch);
 
     invokePSCommand({
-      command: `Get-AdUser -Identity ${query.filter.name} -Properties *`,
+      command: `Get-AdUser -Identity ${query.filter.Name} -Server ${query.servers[0]} -Properties *`,
     }).then((response) => {
       setDataSets({ attributes: firsObjectToPSDataSet(response) }, true);
     });
 
     invokePSCommand({
-      command: `Get-AdPrincipalGroupMembership -Identity ${query.filter.name}`,
+      command: `Get-AdPrincipalGroupMembership -Identity ${query.filter.Name}`,
       fields: ["Name", "GroupCategory", "DistinguishedName"],
     }).then((response) => {
       setDataSets({ groups: response }, true);
     });
 
-    setActiveTabTitle(query.filter.name || "User");
+    setActiveTabTitle(query.filter.Name || "User");
     setTableConfigs(softResetTables(tableConfigs, ["attributes", "groups"]));
   };
 
@@ -79,7 +74,7 @@ export default function User() {
             config={tableConfigs.search ?? defaultTableConfig}
             setConfig={(config) => setTableConfigs({ ...tableConfigs, search: config })}
             onRedirect={(row: PSResult & { Name?: string }) => {
-              runQuery({ ...query, filter: { name: row.Name ?? "" } });
+              runQuery({ ...query, filter: { Name: row.Name ?? "" } });
             }}
           />
         )}

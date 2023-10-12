@@ -20,8 +20,8 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
 
         <Input
           value={filter.name ?? ""}
-          onChange={(name) => {
-            setQuery({ ...query, filter: { ...filter, name } });
+          onChange={(Name) => {
+            setQuery({ ...query, filter: { ...filter, Name } });
           }}
           onEnter={onSubmit}
         />
