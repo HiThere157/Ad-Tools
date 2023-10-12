@@ -2,7 +2,7 @@ import { useTables, useDataSets, useTabs, useTabState } from "../Hooks/utils";
 import { expectMultipleResults, softResetTables, getPSFilterString } from "../Helper/utils";
 import { defaultAdQuery, defaultTableConfig } from "../Config/default";
 import { invokePSCommand } from "../Helper/api";
-import { firsObjectToPSDataSet } from "../Helper/postProcessors";
+import { addServerToResult, firsObjectToPSDataSet } from "../Helper/postProcessors";
 
 import Tabs from "../Components/Tabs/Tabs";
 import AdQuery from "../Components/Query/AdQuery";
@@ -22,14 +22,31 @@ export default function User() {
     setDataSets({ search: null });
 
     const fields = ["Name", "Enabled", "SamAccountName", "UserPrincipalName"];
-    invokePSCommand({
-      command: `Get-AdUser <
+    const responses = query.servers.map((server) =>
+      invokePSCommand({
+        command: `Get-AdUser <
         -Filter "${getPSFilterString(query.filter)}"
-        -Server ${query.servers[0]}
+        -Server ${server}
         -Properties ${fields.join(",")}`,
-      fields,
-    }).then((response) => {
-      setDataSets({ search: response });
+        fields,
+      }).then((response) => addServerToResult(response, server)));
+
+    Promise.all(responses).then((responses) => {
+      const mergedData = responses.reduce((acc, response) => [...acc, ...response?.result?.data ?? []], [] as PSResult[]);
+      const mergedColumns = responses.filter((response) => response?.result?.columns !== undefined)[0]?.result?.columns ?? [];
+      const mergedError = responses.map((response) => response?.error).filter((error) => error !== undefined).join("\n");
+      const mergedExecutionTime = Math.max(...responses.map((response) => response?.executionTime ?? 0));
+      const mergedTimestamp = Math.max(...responses.map((response) => response?.timestamp ?? 0));
+
+      setDataSets({ search: {
+        result: {
+          data: mergedData,
+          columns: mergedColumns,
+        },
+        timestamp: mergedTimestamp,
+        executionTime: mergedExecutionTime,
+        error: mergedError,
+      } });
     });
 
     setActiveTabTitle("Search Results");

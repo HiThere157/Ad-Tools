@@ -23,3 +23,24 @@ export function firsObjectToPSDataSet(dataSet: Loadable<PSDataSet>): Loadable<PS
     error,
   };
 }
+
+export function addServerToResult(
+  dataSet: Loadable<PSDataSet>,
+  server: string,
+): Loadable<PSDataSet> {
+  if (dataSet === null) return dataSet;
+
+  const { result, error } = dataSet;
+
+  if (!result || error !== undefined) {
+    return dataSet;
+  }
+
+  return {
+    ...dataSet,
+    result: {
+      data: result.data.map((row) => ({ ...row, _Server: server })),
+      columns: ["_Server", ...result.columns],
+    },
+  };
+}
