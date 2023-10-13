@@ -86,8 +86,8 @@ export default function User() {
             dataSet={dataSets.search}
             config={tableConfigs.search ?? defaultTableConfig}
             setConfig={(config) => setTableConfigs({ ...tableConfigs, search: config })}
-            onRedirect={(row: PSResult & { Name?: string }) => {
-              runQuery({ ...query, filter: { Name: row.Name ?? "" } });
+            onRedirect={(row: PSResult & { Name?: string, _Server?: string }) => {
+              runQuery({ filter: { Name: row.Name ?? "" }, servers: [row._Server ?? ""] });
             }}
           />
         )}
