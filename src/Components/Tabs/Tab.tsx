@@ -1,23 +1,29 @@
-import { BsX } from "react-icons/bs";
+import { BsExclamationCircle, BsPersonFill, BsSearch, BsX } from "react-icons/bs";
+
+import { ClipLoader } from "react-spinners";
 
 type TabProps = {
-  index: number;
   tab: Tab;
   isActive: boolean;
   onChange: () => void;
   onRemove: () => void;
 };
-export default function Tab({ index, tab, isActive, onChange, onRemove }: TabProps) {
+export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
   const { title } = tab;
+
+  const icons: Record<Required<Tab>["icon"], JSX.Element> = {
+    user: <BsPersonFill className="text-primaryAccent" />,
+    search: <BsSearch className="text-primaryAccent" />,
+    loading: <ClipLoader color="#208cf0" speedMultiplier={0.7} size={16} />,
+    error: <BsExclamationCircle className="text-red" />,
+  };
 
   return (
     <div className="relative">
-      {!isActive && index !== 0 && (
-        <div className="absolute bottom-1 left-0 top-1 border-l border-border" />
-      )}
+      {!isActive && <div className="absolute bottom-1 left-0 top-1 border-l border-border" />}
 
       <button
-        className={`min-w-[8rem] rounded-t pe-12 ps-2 pt-0.5 text-start ${
+        className={`flex min-w-[8rem] items-center gap-1.5 rounded-t py-0.5 pe-12 ps-2 ${
           isActive ? "bg-dark" : "bg-primary hover:bg-secondaryAccent active:bg-secondaryActive"
         }`}
         onClick={() => onChange()}
@@ -29,7 +35,9 @@ export default function Tab({ index, tab, isActive, onChange, onRemove }: TabPro
           }
         }}
       >
-        {title}
+        {tab.icon && icons[tab.icon]}
+
+        <span>{title}</span>
       </button>
 
       <button

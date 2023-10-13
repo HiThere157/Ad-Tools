@@ -21,7 +21,7 @@ export default function Navigation() {
           setIsExpanded(!isExpanded);
           setCounter(counter + 1);
         }}
-        className="mb-1 flex h-7 w-full items-center justify-center bg-primary hover:bg-primaryAccent active:bg-primaryActive"
+        className="mb-1 flex h-8 w-full items-center justify-center bg-primary hover:bg-primaryAccent active:bg-primaryActive"
       >
         {isExpanded ? <FiChevronsLeft /> : <FiChevronsRight />}
       </button>

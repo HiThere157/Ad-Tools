@@ -6,11 +6,11 @@ export function useTabs(page: string) {
   const [activeTab, setActiveTab] = useSessionStorage<number>(`${page}_activeTab`, 0);
   const [tabs, setTabs] = useSessionStorage<Tab[]>(`${page}_tabs`, [{ id: 0, title: "Untitled" }]);
 
-  const setActiveTabTitle = (title: string) => {
+  const updateTab = (newTab: Partial<Omit<Tab, "id">>) => {
     setTabs((oldTabs) => {
       return oldTabs.map((tab) => {
         if (tab.id === activeTab) {
-          return { ...tab, title };
+          return { ...tab, ...newTab };
         }
         return tab;
       });
@@ -22,7 +22,7 @@ export function useTabs(page: string) {
     setActiveTab,
     tabs,
     setTabs,
-    setActiveTabTitle,
+    updateTab,
   };
 }
 

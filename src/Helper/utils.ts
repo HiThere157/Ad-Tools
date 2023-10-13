@@ -36,10 +36,12 @@ export function getPSFilterString(filter: PartialRecord<string, string>) {
 }
 
 export function mergeResponses(responses: Loadable<PSDataSet>[]) {
-  const mergedData = responses.reduce(
-    (acc, response) => [...acc, ...(response?.result?.data ?? [])],
-    [] as PSResult[],
-  );
+  const mergedData = responses
+    .reduce((acc, response) => [...acc, ...(response?.result?.data ?? [])], [] as PSResult[])
+    .map((result, index) => {
+      return { ...result, __id__: index };
+    });
+
   const mergedColumns =
     responses.filter((response) => response?.result?.columns !== undefined)[0]?.result?.columns ??
     [];

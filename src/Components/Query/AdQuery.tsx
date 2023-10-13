@@ -1,7 +1,10 @@
+import { useLayoutEffect } from "react";
+
+import { defaultAdQuery } from "../../Config/default";
 import { useQueryDomains } from "../../Helper/api";
 
 import Button from "../Button";
-// import Dropdown from "../Dropdown/Dropdown";
+import Checkbox from "../Checkbox";
 import MultiDropdown from "../Dropdown/MultiDropdown";
 import Input from "../Input/Input";
 
@@ -12,12 +15,18 @@ type AdQueryProps = {
 };
 export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
   const availableServers = useQueryDomains();
-  const { filter, servers } = query;
+  const { isAdvanced, filter, servers } = query;
 
   const beforeSubmit = () => {
-    if(Object.keys(filter).length === 0 || servers.length === 0) return;
+    if (Object.keys(filter).length === 0 || servers.length === 0) return;
     onSubmit();
-  }
+  };
+
+  useLayoutEffect(() => {
+    if (query === defaultAdQuery && availableServers.length > 0) {
+      setQuery({ ...query, servers: [availableServers[0]] });
+    }
+  }, [availableServers]);
 
   return (
     <div className="m-1.5 mb-4 flex items-center gap-1">
@@ -33,14 +42,6 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
         />
       </label>
 
-      {/* <Dropdown
-        items={availableServers}
-        value={servers[0] || availableServers[0]}
-        onChange={(server) => {
-          setQuery({ ...query, servers: [server] });
-        }}
-      /> */}
-
       <MultiDropdown
         items={availableServers}
         value={servers}
@@ -50,6 +51,16 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
       />
 
       <Button onClick={beforeSubmit}>Run</Button>
+
+      <label className="ml-2 flex items-center gap-1.5">
+        <Checkbox
+          checked={isAdvanced}
+          onChange={(isAdvanced) => {
+            setQuery({ ...query, isAdvanced });
+          }}
+        />
+        <span>Advanced</span>
+      </label>
     </div>
   );
 }

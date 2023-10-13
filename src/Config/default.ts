@@ -1,3 +1,8 @@
+export const defaultTab: Tab = {
+  id: 0,
+  title: "Untitled",
+};
+
 export const defaultEnvironment: ElectronEnvironment = {
   executingUser: "",
   appVersion: "",
@@ -5,6 +10,7 @@ export const defaultEnvironment: ElectronEnvironment = {
 };
 
 export const defaultAdQuery: AdQuery = {
+  isAdvanced: false,
   filter: {
     Name: "",
   },

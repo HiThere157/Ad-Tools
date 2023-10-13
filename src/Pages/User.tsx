@@ -16,7 +16,7 @@ import Table from "../Components/Table/Table";
 
 export default function User() {
   const page = "user";
-  const { activeTab, setActiveTab, tabs, setTabs, setActiveTabTitle } = useTabs(page);
+  const { activeTab, setActiveTab, tabs, setTabs, updateTab } = useTabs(page);
 
   const [query, setQuery] = useTabState<AdQuery>(`${page}_query`, activeTab, defaultAdQuery);
   const shouldPreSelect = expectMultipleResults(query);
@@ -38,9 +38,16 @@ export default function User() {
       }).then((response) => addServerToResult(response, server)),
     );
 
-    Promise.all(responses).then((responses) => setDataSets({ search: mergeResponses(responses) }));
+    Promise.all(responses)
+      .then((responses) => {
+        setDataSets({ search: mergeResponses(responses) });
+        updateTab({ icon: "search" });
+      })
+      .catch(() => {
+        updateTab({ icon: "error" });
+      });
 
-    setActiveTabTitle("Search Results");
+    updateTab({ icon: "loading", title: "Search Results" });
     setTableConfigs(softResetTables(tableConfigs));
   };
 
@@ -52,20 +59,29 @@ export default function User() {
         -Identity ${query.filter.Name} \
         -Server ${query.servers[0]} \
         -Properties *`,
-    }).then((response) => {
-      setDataSets({ attributes: firsObjectToPSDataSet(response) }, true);
-    });
+    })
+      .then((response) => {
+        setDataSets({ attributes: firsObjectToPSDataSet(response) }, true);
+        updateTab({ icon: "user" });
+      })
+      .catch(() => {
+        updateTab({ icon: "error" });
+      });
 
     invokePSCommand({
       command: `Get-AdPrincipalGroupMembership \
         -Identity ${query.filter.Name} \
         -Server ${query.servers[0]}`,
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
-    }).then((response) => {
-      setDataSets({ groups: response }, true);
-    });
+    })
+      .then((response) => {
+        setDataSets({ groups: response }, true);
+      })
+      .catch(() => {
+        updateTab({ icon: "error" });
+      });
 
-    setActiveTabTitle(query.filter.Name || "User");
+    updateTab({ icon: "loading", title: query.filter.Name || "User" });
     setTableConfigs(softResetTables(tableConfigs, ["attributes", "groups"]));
   };
 
@@ -86,8 +102,12 @@ export default function User() {
             dataSet={dataSets.search}
             config={tableConfigs.search ?? defaultTableConfig}
             setConfig={(config) => setTableConfigs({ ...tableConfigs, search: config })}
-            onRedirect={(row: PSResult & { Name?: string, _Server?: string }) => {
-              runQuery({ filter: { Name: row.Name ?? "" }, servers: [row._Server ?? ""] });
+            onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
+              runQuery({
+                ...query,
+                filter: { Name: row.Name ?? "" },
+                servers: [row._Server ?? ""],
+              });
             }}
           />
         )}

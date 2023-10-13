@@ -1,3 +1,5 @@
+import { defaultTab } from "../../Config/default";
+
 import Tab from "./Tab";
 
 import { BsPlus } from "react-icons/bs";
@@ -11,14 +13,12 @@ type TabsProps = {
 export default function Tabs({ activeTab, setActiveTab, tabs, setTabs }: TabsProps) {
   const addTab = () => {
     const id = new Date().getTime();
-    setTabs([...tabs, { id, title: "Untitled" }]);
+    setTabs([...tabs, { ...defaultTab, id }]);
     setActiveTab(id);
   };
 
   const removeTab = (id: number) => {
-    if (tabs.length === 1) {
-      return;
-    }
+    if (tabs.length === 1) return;
 
     const newTabs = tabs.filter((tab) => tab.id !== id);
     setTabs(newTabs);
@@ -29,11 +29,10 @@ export default function Tabs({ activeTab, setActiveTab, tabs, setTabs }: TabsPro
   };
 
   return (
-    <div className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-0.5">
+    <div className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-1">
       {tabs.map((tab, tabIndex) => (
         <Tab
           key={tabIndex}
-          index={tabIndex}
           tab={tab}
           isActive={tab.id === activeTab}
           onChange={() => setActiveTab(tab.id)}
