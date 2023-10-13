@@ -1,6 +1,7 @@
 import { ElectronAPI } from "../../electron/preload";
 import { defaultEnvironment } from "../Config/default";
-import { useLocalStorage, useSessionStorage } from "../Hooks/useStorage";
+
+import { useState } from "react";
 
 const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
 
@@ -45,10 +46,7 @@ export function changeWindowState(state: WindowState) {
 }
 
 export function useEnvironment(): ElectronEnvironment {
-  const [env, setEnv] = useSessionStorage<ElectronEnvironment>(
-    "cache_environment",
-    defaultEnvironment,
-  );
+  const [env, setEnv] = useState(defaultEnvironment);
 
   if (!electronWindow.electronAPI) {
     return {
@@ -66,7 +64,7 @@ export function useEnvironment(): ElectronEnvironment {
 }
 
 export function useQueryDomains(): string[] {
-  const [suffixList, setSuffixList] = useLocalStorage<string[]>("preferences_queryDomains", []);
+  const [suffixList, setSuffixList] = useState<string[]>([]);
 
   if (!electronWindow.electronAPI) {
     return ["domain1.com", "domain2.com", "domain3.com"];

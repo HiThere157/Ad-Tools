@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import { useLocalStorage } from "../../Hooks/useStorage";
 import { navigationLinks } from "../../Config/navigation";
 
 import NavigationLink from "./NavigationLink";
@@ -9,10 +8,7 @@ import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
 
 export default function Navigation() {
   const [counter, setCounter] = useState(0);
-  const [isExpanded, setIsExpanded] = useLocalStorage<boolean>(
-    "preferences_isNavigationExpanded",
-    true,
-  );
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <nav style={{ gridArea: "nav" }} className="flex select-none flex-col overflow-auto bg-light">
