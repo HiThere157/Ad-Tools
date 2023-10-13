@@ -14,6 +14,11 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
   const availableServers = useQueryDomains();
   const { filter, servers } = query;
 
+  const beforeSubmit = () => {
+    if(Object.keys(filter).length === 0 || servers.length === 0) return;
+    onSubmit();
+  }
+
   return (
     <div className="m-1.5 mb-4 flex items-center gap-1">
       <label className="flex items-center gap-2">
@@ -24,7 +29,7 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
           onChange={(Name) => {
             setQuery({ ...query, filter: { ...filter, Name } });
           }}
-          onEnter={onSubmit}
+          onEnter={beforeSubmit}
         />
       </label>
 
@@ -44,7 +49,7 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
         }}
       />
 
-      <Button onClick={onSubmit}>Run</Button>
+      <Button onClick={beforeSubmit}>Run</Button>
     </div>
   );
 }

@@ -25,7 +25,6 @@ export default function User() {
   const [dataSets, setDataSets] = useDataSets(activeTab, page);
 
   const runPreQuery = async () => {
-    if (Object.keys(query.filter).length === 0 || query.servers.length === 0) return;
     setDataSets({ search: null });
 
     const selectFields = removeDuplicates(["Name", "DisplayName"], Object.keys(query.filter));
@@ -46,7 +45,6 @@ export default function User() {
   };
 
   const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
-    if (!query.filter.Name || query.servers.length === 0) return;
     setDataSets({ attributes: null, groups: null }, !resetSearch);
 
     invokePSCommand({
