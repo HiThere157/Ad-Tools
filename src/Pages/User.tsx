@@ -25,15 +25,16 @@ export default function User() {
   const [dataSets, setDataSets] = useDataSets(activeTab, page);
 
   const runPreQuery = async () => {
+    if (Object.keys(query.filter).length === 0 || query.servers.length === 0) return;
     setDataSets({ search: null });
 
     const selectFields = removeDuplicates(["Name", "DisplayName"], Object.keys(query.filter));
     const responses = query.servers.map((server) =>
       invokePSCommand({
-        command: `Get-AdUser <
-        -Filter "${getPSFilterString(query.filter)}"
-        -Server ${server}
-        -Properties ${selectFields.join(",")}`,
+        command: `Get-AdUser \
+          -Filter "${getPSFilterString(query.filter)}" \
+          -Server ${server} \
+          -Properties ${selectFields.join(",")}`,
         selectFields,
       }).then((response) => addServerToResult(response, server)),
     );
@@ -45,20 +46,23 @@ export default function User() {
   };
 
   const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
+    if (!query.filter.Name || query.servers.length === 0) return;
     setDataSets({ attributes: null, groups: null }, !resetSearch);
 
     invokePSCommand({
-      command: `Get-AdUser -Identity ${query.filter.Name} -Server ${query.servers[0]} -Properties *`,
+      command: `Get-AdUser \
+        -Identity ${query.filter.Name} \
+        -Server ${query.servers[0]} \
+        -Properties *`,
     }).then((response) => {
       setDataSets({ attributes: firsObjectToPSDataSet(response) }, true);
     });
 
-    const selectFields = ["Name", "GroupCategory", "DistinguishedName"];
     invokePSCommand({
-      command: `Get-AdPrincipalGroupMembership -Identity ${query.filter.Name} -Server ${
-        query.servers[0]
-      } -Properties ${selectFields.join(",")}`,
-      selectFields,
+      command: `Get-AdPrincipalGroupMembership \
+        -Identity ${query.filter.Name} \
+        -Server ${query.servers[0]}`,
+      selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     }).then((response) => {
       setDataSets({ groups: response }, true);
     });

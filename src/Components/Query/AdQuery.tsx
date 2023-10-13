@@ -1,7 +1,7 @@
 import { useQueryDomains } from "../../Helper/api";
 
 import Button from "../Button";
-import Dropdown from "../Dropdown/Dropdown";
+// import Dropdown from "../Dropdown/Dropdown";
 import MultiDropdown from "../Dropdown/MultiDropdown";
 import Input from "../Input/Input";
 
@@ -20,7 +20,7 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
         <span>Identity:</span>
 
         <Input
-          value={filter.name ?? ""}
+          value={filter.Name ?? ""}
           onChange={(Name) => {
             setQuery({ ...query, filter: { ...filter, Name } });
           }}
@@ -28,13 +28,13 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
         />
       </label>
 
-      <Dropdown
+      {/* <Dropdown
         items={availableServers}
         value={servers[0] || availableServers[0]}
         onChange={(server) => {
           setQuery({ ...query, servers: [server] });
         }}
-      />
+      /> */}
 
       <MultiDropdown
         items={availableServers}

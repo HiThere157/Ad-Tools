@@ -20,7 +20,7 @@ export function softResetTables(
 
 export function expectMultipleResults(query: AdQuery) {
   const { filter, servers } = query;
-  const hasNonNameField = Object.keys(filter).some((key) => key !== "name");
+  const hasNonNameField = Object.keys(filter).some((key) => key !== "Name");
   const hasMultipleServers = servers.length > 1;
   const hasWildcard = Object.values(filter).some((value) => value?.includes("*"));
 

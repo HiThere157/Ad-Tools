@@ -5,6 +5,7 @@ export const friendlyNames: PartialRecord<string, string> = {
   SamAccountName: "SAM Account Name",
   UserPrincipalName: "User Principal Name",
   GroupCategory: "Group Category",
+  _Server: "Server",
 };
 
 export function friendly(text: string) {

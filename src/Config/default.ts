@@ -6,7 +6,7 @@ export const defaultEnvironment: ElectronEnvironment = {
 
 export const defaultAdQuery: AdQuery = {
   filter: {
-    name: "",
+    Name: "",
   },
   servers: [],
 };
