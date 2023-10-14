@@ -11,6 +11,7 @@ import {
 } from "redux-persist";
 
 import preferencesReducer from "./preferences";
+import tabsReducer from "./tabs";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +20,7 @@ const persistConfig = {
 };
 const reducer = persistCombineReducers(persistConfig, {
   preferences: preferencesReducer,
+  tabs: tabsReducer,
 });
 
 const store = configureStore({

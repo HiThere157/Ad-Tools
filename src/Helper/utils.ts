@@ -1,21 +1,10 @@
-// reset all table "selected" and set "pagination.page" to 0
-export function softResetTables(
-  tableConfigs?: PartialRecord<string, TableConfig>,
-  tables?: string[],
+export function getPageState<T extends Record<string, PartialRecord<string, any>>>(
+  state: T,
+  page: string,
 ) {
-  const newConfigs = { ...tableConfigs };
-  const tableNames = tables ?? Object.keys(newConfigs);
-
-  tableNames.forEach((key) => {
-    const config = newConfigs[key];
-
-    if (config) {
-      config.volatile.selected = [];
-      config.volatile.page = 0;
-    }
-  });
-
-  return newConfigs;
+  return Object.fromEntries(Object.entries(state).map(([key, value]) => [key, value[page]])) as {
+    [K in keyof T]?: T[K] extends PartialRecord<string, infer U> ? U : T[K];
+  };
 }
 
 export function expectMultipleResults(query: AdQuery) {

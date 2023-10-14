@@ -1,48 +1,45 @@
+import { useDispatch, useSelector } from "react-redux";
+
+import { getPageState } from "../../Helper/utils";
+import { RootState } from "../../Redux/store";
 import { defaultTab } from "../../Config/default";
+import { addTab, changeActiveTab, removeTab } from "../../Redux/tabs";
 
 import Tab from "./Tab";
 
 import { BsPlus } from "react-icons/bs";
 
 type TabsProps = {
-  activeTab: number;
-  setActiveTab: (tab: number) => void;
-  tabs: Tab[];
-  setTabs: (tabs: Tab[]) => void;
+  page: string;
 };
-export default function Tabs({ activeTab, setActiveTab, tabs, setTabs }: TabsProps) {
-  const addTab = () => {
+export default function Tabs({ page }: TabsProps) {
+  const { activeTab, tabs } = useSelector((state: RootState) => getPageState(state.tabs, page));
+  const dispatch = useDispatch();
+
+  if (!tabs) {
     const id = new Date().getTime();
-    setTabs([...tabs, { ...defaultTab, id }]);
-    setActiveTab(id);
-  };
-
-  const removeTab = (id: number) => {
-    if (tabs.length === 1) return;
-
-    const newTabs = tabs.filter((tab) => tab.id !== id);
-    setTabs(newTabs);
-
-    if (activeTab === id) {
-      setActiveTab(newTabs[newTabs.length - 1].id);
-    }
-  };
+    dispatch(addTab({ page, tab: { ...defaultTab, id } }));
+    dispatch(changeActiveTab({ page, tabId: id }));
+  }
 
   return (
-    <div className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-1">
-      {tabs.map((tab, tabIndex) => (
+    <div className="sticky top-0 z-50 flex h-8 flex-wrap items-center gap-0.5 bg-primary px-1 pt-1">
+      {tabs?.map((tab, tabIndex) => (
         <Tab
           key={tabIndex}
           tab={tab}
           isActive={tab.id === activeTab}
-          onChange={() => setActiveTab(tab.id)}
-          onRemove={() => removeTab(tab.id)}
+          onChange={() => dispatch(changeActiveTab({ page, tabId: tab.id }))}
+          onRemove={() => dispatch(removeTab({ page, tabId: tab.id }))}
         />
       ))}
 
       <button
         className="mx-1 rounded-full text-xl hover:bg-secondaryActive active:bg-primary"
-        onClick={addTab}
+        onClick={() => {
+          const id = new Date().getTime();
+          dispatch(addTab({ page, tab: { ...defaultTab, id } }));
+        }}
       >
         <BsPlus />
       </button>

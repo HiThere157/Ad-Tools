@@ -18,7 +18,7 @@ export default function Navigation() {
     <nav style={{ gridArea: "nav" }} className="flex select-none flex-col overflow-auto bg-light">
       <button
         onClick={() => {
-          dispatch(toggleNavBar())
+          dispatch(toggleNavBar());
           setCounter(counter + 1);
         }}
         className="mb-1 flex h-8 w-full items-center justify-center bg-primary hover:bg-primaryAccent active:bg-primaryActive"
