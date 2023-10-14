@@ -18,7 +18,7 @@ export default function Tabs({ page }: TabsProps) {
   const pageActiveTab = activeTab[page] ?? 0;
   const pageTabs = tabs[page] ?? [];
 
-  if (!tabs) {
+  if (pageTabs.length === 0) {
     const id = new Date().getTime();
     dispatch(addTab({ page, tab: { ...defaultTab, id } }));
     dispatch(setActiveTab({ page, tabId: id }));

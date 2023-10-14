@@ -3,8 +3,8 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 const tabsSlice = createSlice({
   name: "tabs",
   initialState: {
-    activeTab: {} as PartialRecord<string, number>,
-    tabs: {} as PartialRecord<string, Tab[]>,
+    activeTab: {} as PageStorage<number>,
+    tabs: {} as PageStorage<Tab[]>,
   },
   reducers: {
     setActiveTab: (state, action: PayloadAction<SetActiveTabAction>) => {

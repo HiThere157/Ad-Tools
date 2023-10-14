@@ -1,7 +1,3 @@
-type PartialRecord<K extends keyof any, T> = {
-  [P in K]?: T;
-};
-
 type TableConfig = {
   volatile: VolatileTableConfig;
   persistent: PersistentTableConfig;

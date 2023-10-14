@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 const queriesSlice = createSlice({
   name: "queries",
   initialState: {
-    query: {} as PartialRecord<string, PartialRecord<number, AdQuery>>,
+    query: {} as TabStorage<AdQuery>,
   },
   reducers: {
     setQuery: (state, action: PayloadAction<SetQueryAction>) => {
