@@ -43,7 +43,7 @@ export default function User() {
     Promise.all(responses)
       .then((responses) => {
         dispatch(setResult({ page, tabId, key: "search", result: mergeResponses(responses) }));
-        dispatch(updateTab({ page, tabId, tab: { icon: "user" } }));
+        dispatch(updateTab({ page, tabId, tab: { icon: "search" } }));
       })
       .catch(() => {
         dispatch(updateTab({ page, tabId, tab: { icon: "error" } }));

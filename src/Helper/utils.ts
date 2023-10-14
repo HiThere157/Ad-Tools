@@ -15,7 +15,7 @@ export function getPSFilterString(filter: PartialRecord<string, string>) {
     .join(" -and ");
 }
 
-export function mergeResponses(responses: Loadable<PSDataSet>[]) {
+export function mergeResponses(responses: Loadable<PSDataSet>[]): Loadable<PSDataSet> {
   const mergedData = responses
     .reduce((acc, response) => [...acc, ...(response?.result?.data ?? [])], [] as PSResult[])
     .map((result, index) => {
@@ -28,8 +28,7 @@ export function mergeResponses(responses: Loadable<PSDataSet>[]) {
 
   const mergedError = responses
     .map((response) => response?.error)
-    .filter((error) => error !== undefined)
-    .join("\n");
+    .filter((error) => error !== undefined);
   const mergedExecutionTime = Math.max(
     ...responses.map((response) => response?.executionTime ?? 0),
   );
@@ -40,9 +39,9 @@ export function mergeResponses(responses: Loadable<PSDataSet>[]) {
       data: mergedData,
       columns: mergedColumns,
     },
+    error: mergedError.length > 0 ? mergedError.join("; ") : undefined,
     timestamp: mergedTimestamp,
     executionTime: mergedExecutionTime,
-    error: mergedError,
   };
 }
 
