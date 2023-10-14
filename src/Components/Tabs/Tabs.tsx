@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "@reduxjs/toolkit";
 
 import { getPageState } from "../../Helper/utils";
 import { RootState } from "../../Redux/store";
@@ -13,7 +14,12 @@ type TabsProps = {
   page: string;
 };
 export default function Tabs({ page }: TabsProps) {
-  const { activeTab, tabs } = useSelector((state: RootState) => getPageState(state.tabs, page));
+  const { activeTab, tabs } = useSelector(
+    createSelector(
+      (state: RootState) => state.tabs,
+      (tabs) => getPageState(tabs, page),
+    ),
+  );
   const dispatch = useDispatch();
 
   if (!tabs) {
