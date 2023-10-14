@@ -1,8 +1,7 @@
-type ChangeTabAction = {
+type SetActiveTabAction = {
   page: string;
   tabId: number;
 };
-
 type AddTabAction = {
   page: string;
   tab: Tab;

@@ -7,7 +7,7 @@ const tabsSlice = createSlice({
     tabs: {} as PartialRecord<string, Tab[]>,
   },
   reducers: {
-    changeActiveTab: (state, action: PayloadAction<ChangeTabAction>) => {
+    setActiveTab: (state, action: PayloadAction<SetActiveTabAction>) => {
       const { page, tabId } = action.payload;
       state.activeTab[page] = tabId;
     },
@@ -33,5 +33,5 @@ const tabsSlice = createSlice({
   },
 });
 
-export const { changeActiveTab, addTab, removeTab } = tabsSlice.actions;
+export const { setActiveTab, addTab, removeTab } = tabsSlice.actions;
 export default tabsSlice.reducer;

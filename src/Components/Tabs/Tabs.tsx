@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPageState } from "../../Helper/utils";
 import { RootState } from "../../Redux/store";
 import { defaultTab } from "../../Config/default";
-import { addTab, changeActiveTab, removeTab } from "../../Redux/tabs";
+import { addTab, setActiveTab, removeTab } from "../../Redux/tabs";
 
 import Tab from "./Tab";
 
@@ -19,7 +19,7 @@ export default function Tabs({ page }: TabsProps) {
   if (!tabs) {
     const id = new Date().getTime();
     dispatch(addTab({ page, tab: { ...defaultTab, id } }));
-    dispatch(changeActiveTab({ page, tabId: id }));
+    dispatch(setActiveTab({ page, tabId: id }));
   }
 
   return (
@@ -29,7 +29,7 @@ export default function Tabs({ page }: TabsProps) {
           key={tabIndex}
           tab={tab}
           isActive={tab.id === activeTab}
-          onChange={() => dispatch(changeActiveTab({ page, tabId: tab.id }))}
+          onChange={() => dispatch(setActiveTab({ page, tabId: tab.id }))}
           onRemove={() => dispatch(removeTab({ page, tabId: tab.id }))}
         />
       ))}
