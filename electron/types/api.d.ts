@@ -5,9 +5,8 @@ type Loadable<T> = null | {
   executionTime: number;
 };
 
-type JSONValue = string | number | boolean | null | { [key: string]: JSONValue } | Array<JSONValue>;
 type RawPSResult = {
-  [key: string]: JSONValue | undefined;
+  [key: string]: any;
 };
 type PSResult = RawPSResult & {
   __id__: number;

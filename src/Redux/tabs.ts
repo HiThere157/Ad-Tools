@@ -1,5 +1,18 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+type SetActiveTabAction = {
+  page: string;
+  tabId: number;
+};
+type AddTabAction = {
+  page: string;
+  tab: Tab;
+};
+type RemoveTabAction = {
+  page: string;
+  tabId: number;
+};
+
 const tabsSlice = createSlice({
   name: "tabs",
   initialState: {

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../Redux/store";
-import { setQuery } from "../Redux/queries";
+import { setQuery } from "../Redux/data";
 import { defaultAdQuery } from "../Config/default";
 
 import AdQuery from "../Components/Query/AdQuery";
@@ -10,7 +10,7 @@ import Tabs from "../Components/Tabs/Tabs";
 export default function User() {
   const page = "user";
   const { activeTab } = useSelector((state: RootState) => state.tabs);
-  const { query } = useSelector((state: RootState) => state.queries);
+  const { query } = useSelector((state: RootState) => state.data);
   const dispatch = useDispatch();
 
   const pageActiveTab = activeTab[page] ?? 0;
