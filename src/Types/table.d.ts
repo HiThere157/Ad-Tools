@@ -1,16 +1,3 @@
-type SetResultAction = {
-  page: string;
-  tabId: number;
-  key: string;
-  result: Loadable<PSDataSet>;
-};
-type SetTableConfigAction = {
-  page: string;
-  tabId: number;
-  key: string;
-  config: VolatileTableConfig;
-};
-
 type TableConfig = {
   volatile: VolatileTableConfig;
   persistent: PersistentTableConfig;
