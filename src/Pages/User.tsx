@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "../Redux/store";
-import { getPageState, getTabState } from "../Helper/utils";
 import { setQuery } from "../Redux/queries";
 import { defaultAdQuery } from "../Config/default";
 
@@ -11,19 +9,12 @@ import Tabs from "../Components/Tabs/Tabs";
 
 export default function User() {
   const page = "user";
-  const { activeTab = 0 } = useSelector(
-    createSelector(
-      (state: RootState) => state.tabs,
-      (tabs) => getPageState(tabs, page),
-    ),
-  );
-  const { query = defaultAdQuery } = useSelector(
-    createSelector(
-      (state: RootState) => state.queries,
-      (queries) => getTabState(queries, page, activeTab),
-    ),
-  );
+  const { activeTab } = useSelector((state: RootState) => state.tabs);
+  const { query } = useSelector((state: RootState) => state.queries);
   const dispatch = useDispatch();
+
+  const pageActiveTab = activeTab[page] ?? 0;
+  const tabQuery = query[page]?.[pageActiveTab] ?? defaultAdQuery;
 
   return (
     <div>
@@ -31,9 +22,9 @@ export default function User() {
 
       <div className="px-4 py-2">
         <AdQuery
-          query={query}
-          setQuery={(query) => dispatch(setQuery({ page, tabId: activeTab, query }))}
-          onSubmit={() => {}}
+          query={tabQuery}
+          setQuery={(query) => dispatch(setQuery({ page, tabId: pageActiveTab, query }))}
+          onSubmit={() => { }}
         />
       </div>
     </div>

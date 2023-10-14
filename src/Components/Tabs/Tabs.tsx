@@ -1,7 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { createSelector } from "@reduxjs/toolkit";
 
-import { getPageState } from "../../Helper/utils";
 import { RootState } from "../../Redux/store";
 import { defaultTab } from "../../Config/default";
 import { addTab, setActiveTab, removeTab } from "../../Redux/tabs";
@@ -14,13 +12,11 @@ type TabsProps = {
   page: string;
 };
 export default function Tabs({ page }: TabsProps) {
-  const { activeTab, tabs } = useSelector(
-    createSelector(
-      (state: RootState) => state.tabs,
-      (tabs) => getPageState(tabs, page),
-    ),
-  );
+  const { activeTab, tabs } = useSelector((state: RootState) => state.tabs);
   const dispatch = useDispatch();
+
+  const pageActiveTab = activeTab[page] ?? 0;
+  const pageTabs = tabs[page] ?? [];
 
   if (!tabs) {
     const id = new Date().getTime();
@@ -30,11 +26,11 @@ export default function Tabs({ page }: TabsProps) {
 
   return (
     <div className="sticky top-0 z-50 flex h-8 flex-wrap items-center gap-0.5 bg-primary px-1 pt-1">
-      {tabs?.map((tab, tabIndex) => (
+      {pageTabs.map((tab, tabIndex) => (
         <Tab
           key={tabIndex}
           tab={tab}
-          isActive={tab.id === activeTab}
+          isActive={tab.id === pageActiveTab}
           onChange={() => dispatch(setActiveTab({ page, tabId: tab.id }))}
           onRemove={() => dispatch(removeTab({ page, tabId: tab.id }))}
         />
