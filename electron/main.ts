@@ -1,11 +1,12 @@
 import { app, shell, BrowserWindow, ipcMain } from "electron";
+import installExtension, { REDUX_DEVTOOLS } from "electron-devtools-installer";
 import path = require("path");
 
 import { invokePSCommand } from "./api/powershell";
 import { getDnsSuffixList, getEnvironment } from "./api/node";
 import { changeWindowState } from "./api/win";
 
-app.whenReady().then(() => {
+app.on("ready", () => {
   const window = new BrowserWindow({
     width: 800,
     height: 600,
@@ -20,13 +21,18 @@ app.whenReady().then(() => {
   window.removeMenu();
   window.loadFile(path.join(__dirname, "web/index.html"));
 
-  // Handle F12 for dev console
+  // Handle F12 for dev console and install Redux DevTools
   window.webContents.on("before-input-event", (event, input) => {
     if (input.key === "F12") {
       window.webContents.openDevTools();
       event.preventDefault();
     }
   });
+  if (getEnvironment().appChannel === "beta") {
+    installExtension(REDUX_DEVTOOLS, {
+      loadExtensionOptions: { allowFileAccess: true },
+    });
+  }
 
   // Open links with target="_blank" in real browser
   window.webContents.setWindowOpenHandler(({ url }) => {
