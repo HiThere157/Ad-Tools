@@ -12,6 +12,7 @@ import {
 
 import preferencesReducer from "./preferences";
 import tabsReducer from "./tabs";
+import queriesReducer from "./queries";
 
 const persistConfig = {
   key: "root",
@@ -21,6 +22,7 @@ const persistConfig = {
 const reducer = persistCombineReducers(persistConfig, {
   preferences: preferencesReducer,
   tabs: tabsReducer,
+  queries: queriesReducer,
 });
 
 const store = configureStore({
