@@ -8,6 +8,11 @@ type AddTabAction = {
   page: string;
   tab: Tab;
 };
+type UpdateTabAction = {
+  page: string;
+  tabId: number;
+  tab: Partial<Tab>;
+};
 type RemoveTabAction = {
   page: string;
   tabId: number;
@@ -32,7 +37,15 @@ const tabsSlice = createSlice({
         state.tabs[page] = [];
       }
 
-      state.tabs[page]?.push(tab);
+      state.tabs[page]!.push(tab);
+    },
+    updateTab: (state, action: PayloadAction<UpdateTabAction>) => {
+      const { page, tabId, tab } = action.payload;
+      const index = state.tabs[page]?.findIndex((tab) => tab.id === tabId);
+
+      if (index !== undefined && index !== -1) {
+        state.tabs[page]![index] = { ...state.tabs[page]![index], ...tab };
+      }
     },
     removeTab: (state, action: PayloadAction<RemoveTabAction>) => {
       const { page, tabId } = action.payload;
@@ -46,5 +59,5 @@ const tabsSlice = createSlice({
   },
 });
 
-export const { setActiveTab, addTab, removeTab } = tabsSlice.actions;
+export const { setActiveTab, addTab, updateTab, removeTab } = tabsSlice.actions;
 export default tabsSlice.reducer;

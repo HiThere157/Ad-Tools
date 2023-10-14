@@ -60,5 +60,5 @@ const dataSlice = createSlice({
   },
 });
 
-export const { setQuery } = dataSlice.actions;
+export const { setQuery, setResult, setTableConfig } = dataSlice.actions;
 export default dataSlice.reducer;
