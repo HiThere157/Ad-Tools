@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../Redux/store";
-import { setQuery, setResult } from "../Redux/data";
+import { setResult } from "../Redux/data";
 import { defaultAdQuery } from "../Config/default";
 import { updateTab } from "../Redux/tabs";
 import {
@@ -15,6 +15,7 @@ import { addServerToResult, firsObjectToPSDataSet } from "../Helper/postProcesso
 
 import AdQuery from "../Components/Query/AdQuery";
 import Tabs from "../Components/Tabs/Tabs";
+import Table from "../Components/Table/Table";
 
 export default function User() {
   const page = "user";
@@ -94,10 +95,16 @@ export default function User() {
 
       <div className="px-4 py-2">
         <AdQuery
-          query={tabQuery}
-          setQuery={(query) => dispatch(setQuery({ page, tabId, query }))}
+          page={page}
+          tabId={tabId}
           onSubmit={() => (expectMultipleResults(tabQuery) ? runPreQuery() : runQuery(tabQuery))}
         />
+
+        {expectMultipleResults(tabQuery) && (
+          <Table page={page} tabId={tabId} key="search" title="Search Results" />
+        )}
+        <Table page={page} tabId={tabId} key="attributes" title="Attributes" />
+        <Table page={page} tabId={tabId} key="groups" title="Groups" />
       </div>
     </div>
   );

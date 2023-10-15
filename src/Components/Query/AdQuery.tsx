@@ -1,7 +1,10 @@
 import { useLayoutEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+import { RootState } from "../../Redux/store";
 import { defaultAdQuery } from "../../Config/default";
 import { useQueryDomains } from "../../Helper/api";
+import { setQuery } from "../../Redux/data";
 
 import Button from "../Button";
 import Checkbox from "../Checkbox";
@@ -9,22 +12,31 @@ import MultiDropdown from "../Dropdown/MultiDropdown";
 import Input from "../Input/Input";
 
 type AdQueryProps = {
-  query: AdQuery;
-  setQuery: (query: AdQuery) => void;
+  page: string;
+  tabId: number;
   onSubmit: () => void;
 };
-export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
+export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
   const availableServers = useQueryDomains();
-  const { isAdvanced, filter, servers } = query;
+
+  const { query } = useSelector((state: RootState) => state.data);
+  const dispatch = useDispatch();
+
+  const tabQuery = query[page]?.[tabId] ?? defaultAdQuery;
+  const { isAdvanced, filter, servers } = tabQuery;
 
   const beforeSubmit = () => {
     if (Object.keys(filter).length === 0 || servers.length === 0) return;
     onSubmit();
   };
 
+  const updateQuery = (query: Partial<AdQuery>) => {
+    dispatch(setQuery({ page, tabId, query: { ...tabQuery, ...query } }));
+  };
+
   useLayoutEffect(() => {
-    if (query === defaultAdQuery && availableServers.length > 0) {
-      setQuery({ ...query, servers: [availableServers[0]] });
+    if (tabQuery === defaultAdQuery && availableServers.length > 0) {
+      updateQuery({ servers: [availableServers[0]] });
     }
   }, [availableServers]);
 
@@ -36,7 +48,7 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
         <Input
           value={filter.Name ?? ""}
           onChange={(Name) => {
-            setQuery({ ...query, filter: { ...filter, Name } });
+            updateQuery({ filter: { Name } });
           }}
           onEnter={beforeSubmit}
         />
@@ -46,7 +58,7 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
         items={availableServers}
         value={servers}
         onChange={(servers) => {
-          setQuery({ ...query, servers });
+          updateQuery({ servers });
         }}
       />
 
@@ -56,7 +68,7 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
         <Checkbox
           checked={isAdvanced}
           onChange={(isAdvanced) => {
-            setQuery({ ...query, isAdvanced });
+            updateQuery({ isAdvanced });
           }}
         />
         <span>Advanced</span>

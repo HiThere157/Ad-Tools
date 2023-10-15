@@ -29,21 +29,20 @@ export const defaultTableHighlight: TableHighlight = {
 };
 
 export const defaultTableConfig: TableConfig = {
-  volatile: {
-    isFilterOpen: false,
-    isHighlightOpen: false,
-    isCollapsed: false,
-    filters: [],
-    hiddenColumns: [],
-    sort: {
-      column: "__id__",
-      direction: "asc",
-    },
-    selected: [],
-    page: 0,
+  isFilterOpen: false,
+  isHighlightOpen: false,
+  isCollapsed: false,
+  filters: [],
+  hiddenColumns: [],
+  sort: {
+    column: "__id__",
+    direction: "asc",
   },
-  persistent: {
-    pageSize: 10,
-    highlights: [],
-  },
+  selected: [],
+  pageIndex: 0,
+};
+
+export const defaultTablePreferences: TablePreferences = {
+  pageSize: 10,
+  highlights: [],
 };

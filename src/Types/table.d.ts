@@ -1,9 +1,4 @@
 type TableConfig = {
-  volatile: VolatileTableConfig;
-  persistent: PersistentTableConfig;
-};
-
-type VolatileTableConfig = {
   isFilterOpen: boolean;
   isHighlightOpen: boolean;
   isCollapsed: boolean;
@@ -11,9 +6,10 @@ type VolatileTableConfig = {
   hiddenColumns: string[];
   sort: SortConfig;
   selected: number[];
-  page: number;
+  pageIndex: number;
 };
-type PersistentTableConfig = {
+
+type TablePreferences = {
   pageSize: number;
   highlights: TableHighlight[];
 };

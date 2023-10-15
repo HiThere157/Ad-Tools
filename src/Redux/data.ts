@@ -15,7 +15,7 @@ type SetTableConfigAction = {
   page: string;
   tabId: number;
   key: string;
-  config: VolatileTableConfig;
+  config: TableConfig;
 };
 
 const dataSlice = createSlice({
@@ -23,7 +23,7 @@ const dataSlice = createSlice({
   initialState: {
     query: {} as TabStorage<AdQuery>,
     results: {} as TabStorage<PartialRecord<string, Loadable<PSDataSet>>>,
-    tableConfigs: {} as TabStorage<PartialRecord<string, VolatileTableConfig>>,
+    tableConfigs: {} as TabStorage<PartialRecord<string, TableConfig>>,
   },
   reducers: {
     setQuery: (state, action: PayloadAction<SetQueryAction>) => {

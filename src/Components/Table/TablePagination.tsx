@@ -11,16 +11,16 @@ import {
 type TablePaginationProps = {
   count: number;
   pageSize: number;
-  page: number;
+  pageIndex: number;
   setPageSize: (pageSize: number) => void;
-  setPage: (page: number) => void;
+  setPageIndex: (pageIndex: number) => void;
 };
 export default function TablePagination({
   count,
   pageSize,
-  page,
+  pageIndex,
   setPageSize,
-  setPage,
+  setPageIndex,
 }: TablePaginationProps) {
   const maxPage = Math.ceil(count / pageSize) - 1;
 
@@ -30,25 +30,33 @@ export default function TablePagination({
     <div className="flex items-center gap-1">
       {pageSize !== -1 && (
         <>
-          <Button onClick={() => setPage(0)} disabled={page <= 0} className={className}>
+          <Button onClick={() => setPageIndex(0)} disabled={pageIndex <= 0} className={className}>
             <BsChevronDoubleLeft />
           </Button>
-          <Button onClick={() => setPage(page - 1)} disabled={page <= 0} className={className}>
+          <Button
+            onClick={() => setPageIndex(pageIndex - 1)}
+            disabled={pageIndex <= 0}
+            className={className}
+          >
             <BsChevronLeft />
           </Button>
 
           <span className="px-2 text-sm">
-            {page + 1}/{maxPage + 1}
+            {pageIndex + 1}/{maxPage + 1}
           </span>
 
           <Button
-            onClick={() => setPage(page + 1)}
-            disabled={page >= maxPage}
+            onClick={() => setPageIndex(pageIndex + 1)}
+            disabled={pageIndex >= maxPage}
             className={className}
           >
             <BsChevronRight />
           </Button>
-          <Button onClick={() => setPage(maxPage)} disabled={page >= maxPage} className={className}>
+          <Button
+            onClick={() => setPageIndex(maxPage)}
+            disabled={pageIndex >= maxPage}
+            className={className}
+          >
             <BsChevronDoubleRight />
           </Button>
         </>
