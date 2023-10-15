@@ -13,6 +13,11 @@ type UpdateTabAction = {
   tabId: number;
   tab: Partial<Tab>;
 };
+type MoveTabAction = {
+  page: string;
+  fromIndex: number;
+  toIndex: number;
+};
 type RemoveTabAction = {
   page: string;
   tabId: number;
@@ -47,6 +52,16 @@ const tabsSlice = createSlice({
         state.tabs[page]![index] = { ...state.tabs[page]![index], ...tab };
       }
     },
+    moveTab: (state, action: PayloadAction<MoveTabAction>) => {
+      const { page, fromIndex, toIndex } = action.payload;
+      const tabs = state.tabs[page];
+
+      if (tabs) {
+        const tab = tabs[fromIndex];
+        tabs.splice(fromIndex, 1);
+        tabs.splice(toIndex, 0, tab);
+      }
+    },
     removeTab: (state, action: PayloadAction<RemoveTabAction>) => {
       const { page, tabId } = action.payload;
       state.tabs[page] = state.tabs[page]?.filter((tab) => tab.id !== tabId);
@@ -59,5 +74,5 @@ const tabsSlice = createSlice({
   },
 });
 
-export const { setActiveTab, addTab, updateTab, removeTab } = tabsSlice.actions;
+export const { setActiveTab, addTab, updateTab, moveTab, removeTab } = tabsSlice.actions;
 export default tabsSlice.reducer;

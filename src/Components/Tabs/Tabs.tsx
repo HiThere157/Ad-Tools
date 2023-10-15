@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { addTab, setActiveTab, removeTab } from "../../Redux/tabs";
+import { addTab, setActiveTab, removeTab, moveTab } from "../../Redux/tabs";
 import { defaultTab } from "../../Config/default";
 
 import Tab from "./Tab";
@@ -25,8 +25,34 @@ export default function Tabs({ page }: TabsProps) {
     dispatch(setActiveTab({ page, tabId: id }));
   }
 
+  const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
+    const sourceTabId = event.dataTransfer.getData("text/plain");
+    const targetTabId = (event.target as HTMLDivElement)
+      .closest("[data-target-tab-id]")
+      ?.getAttribute("data-target-tab-id");
+
+    if (!targetTabId || sourceTabId === targetTabId) return;
+
+    const sourceTabIndex = pageTabs.findIndex((tab) => tab.id.toString() === sourceTabId);
+    const targetTabIndex = pageTabs.findIndex((tab) => tab.id.toString() === targetTabId);
+
+    dispatch(
+      moveTab({
+        page,
+        fromIndex: sourceTabIndex,
+        toIndex: targetTabIndex == -1 ? pageTabs.length - 1 : targetTabIndex,
+      }),
+    );
+  };
+
   return (
-    <div className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-0.5">
+    <div
+      className="sticky top-0 z-50 flex flex-wrap items-center bg-primary px-1 pt-0.5"
+      onDragOver={onDragOver}
+      data-target-tab-id={-1}
+    >
       {pageTabs.map((tab, tabIndex) => (
         <Tab
           key={tabIndex}
