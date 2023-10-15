@@ -27,7 +27,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
 
   // We only want to submit if there is a filter or servers
   const beforeSubmit = () => {
-    if (Object.keys(filter).length === 0 || servers.length === 0) return;
+    if (!Object.values(filter).some((value) => value !== "") || servers.length === 0) return;
     onSubmit();
   };
 
