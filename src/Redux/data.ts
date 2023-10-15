@@ -1,5 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+type SetQueryAction = {
+  page: string;
+  tabId: number;
+  query: AdQuery;
+};
 type SetResultAction = {
   page: string;
   tabId: number;
