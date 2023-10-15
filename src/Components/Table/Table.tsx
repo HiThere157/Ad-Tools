@@ -86,16 +86,14 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
   };
 
   // Update the table config with a partial config
-  const updateConfig = (config: Partial<TableConfig>) => {
+  const updateKeyTableConfig = (config: Partial<TableConfig>) =>
     dispatch(setTableConfig({ page, tabId, name, config: { ...keyTableConfigs, ...config } }));
-  };
 
   // Update the table preferences with a partial preferences
-  const updatePreferences = (persistentConfig: Partial<TablePreferences>) => {
+  const updateKeyTablePreferences = (persistentConfig: Partial<TablePreferences>) =>
     dispatch(
       setTablePreferences({ name, preferences: { ...keyTablePreferences, ...persistentConfig } }),
     );
-  };
 
   return (
     <section className="mb-7 w-fit min-w-[35rem] max-w-full">
@@ -104,7 +102,7 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
           title={title}
           count={count}
           isCollapsed={isCollapsed}
-          setIsCollapsed={(isCollapsed) => updateConfig({ isCollapsed })}
+          setIsCollapsed={(isCollapsed) => updateKeyTableConfig({ isCollapsed })}
         />
 
         {count && count.total > 25 && !isCollapsed && (
@@ -112,8 +110,8 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
             count={count.total - count.filtered}
             pageIndex={pageIndex}
             pageSize={pageSize}
-            setPageIndex={(pageIndex) => updateConfig({ pageIndex })}
-            setPageSize={(pageSize) => updatePreferences({ pageSize })}
+            setPageIndex={(pageIndex) => updateKeyTableConfig({ pageIndex })}
+            setPageSize={(pageSize) => updateKeyTablePreferences({ pageSize })}
           />
         )}
       </div>
@@ -121,14 +119,14 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
       {!isCollapsed && (
         <div className="flex gap-1">
           <TableActions
-            onFilterMenu={() => updateConfig({ isFilterOpen: !isFilterOpen })}
-            onHighlightMenu={() => updateConfig({ isHighlightOpen: !isHighlightOpen })}
+            onFilterMenu={() => updateKeyTableConfig({ isFilterOpen: !isFilterOpen })}
+            onHighlightMenu={() => updateKeyTableConfig({ isHighlightOpen: !isHighlightOpen })}
             onCopy={exportAsCSV}
             filters={filters}
             columns={columns}
             highlights={highlights}
             hiddenColumns={hiddenColumns}
-            setHiddenColumns={(hiddenColumns) => updateConfig({ hiddenColumns })}
+            setHiddenColumns={(hiddenColumns) => updateKeyTableConfig({ hiddenColumns })}
           />
 
           <div className="flex min-w-0 flex-grow flex-col gap-1">
@@ -136,14 +134,14 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
               <TableFilterMenu
                 columns={columns}
                 filters={filters}
-                setFilters={(filters) => updateConfig({ filters, pageIndex: 0 })}
+                setFilters={(filters) => updateKeyTableConfig({ filters, pageIndex: 0 })}
               />
             )}
 
             {isHighlightOpen && (
               <TableHighlightMenu
                 highlights={highlights}
-                setHighlights={(highlights) => updatePreferences({ highlights })}
+                setHighlights={(highlights) => updateKeyTablePreferences({ highlights })}
               />
             )}
 
@@ -152,10 +150,10 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
                 data={coloredResult}
                 columns={columns.filter((column) => !hiddenColumns.includes(column))}
                 sort={sort}
-                setSort={(sort) => updateConfig({ sort })}
+                setSort={(sort) => updateKeyTableConfig({ sort })}
                 allRowIds={data.map((row) => row.__id__) ?? []}
                 selected={selected}
-                setSelected={(selected) => updateConfig({ selected })}
+                setSelected={(selected) => updateKeyTableConfig({ selected })}
                 onRedirect={onRedirect}
               />
 
@@ -177,8 +175,8 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
                   count={count.total - count.filtered}
                   pageIndex={pageIndex}
                   pageSize={pageSize}
-                  setPageIndex={(pageIndex) => updateConfig({ pageIndex })}
-                  setPageSize={(pageSize) => updatePreferences({ pageSize })}
+                  setPageIndex={(pageIndex) => updateKeyTableConfig({ pageIndex })}
+                  setPageSize={(pageSize) => updateKeyTablePreferences({ pageSize })}
                 />
               )}
             </div>

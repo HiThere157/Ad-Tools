@@ -32,14 +32,13 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
   };
 
   // Update the query with a partial query
-  const updateQuery = (query: Partial<AdQuery>) => {
+  const updateTabQuery = (query: Partial<AdQuery>) =>
     dispatch(setQuery({ page, tabId, query: { ...tabQuery, ...query } }));
-  };
 
   // If the default query is selected and the available servers are loaded, select the first server as default
   useLayoutEffect(() => {
     if (tabQuery === defaultAdQuery && availableServers.length > 0) {
-      updateQuery({ servers: [availableServers[0]] });
+      updateTabQuery({ servers: [availableServers[0]] });
     }
   }, [availableServers]);
 
@@ -51,7 +50,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
         <Input
           value={filter.Name ?? ""}
           onChange={(Name) => {
-            updateQuery({ filter: { Name } });
+            updateTabQuery({ filter: { Name } });
           }}
           onEnter={beforeSubmit}
         />
@@ -61,7 +60,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
         items={availableServers}
         value={servers}
         onChange={(servers) => {
-          updateQuery({ servers });
+          updateTabQuery({ servers });
         }}
       />
 
@@ -71,7 +70,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
         <Checkbox
           checked={isAdvanced}
           onChange={(isAdvanced) => {
-            updateQuery({ isAdvanced });
+            updateTabQuery({ isAdvanced });
           }}
         />
         <span>Advanced</span>

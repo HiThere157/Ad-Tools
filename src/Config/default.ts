@@ -1,6 +1,6 @@
 export const defaultTab: Tab = {
   id: 0,
-  title: "Untitled",
+  title: "New Tab",
 };
 
 export const defaultEnvironment: ElectronEnvironment = {
