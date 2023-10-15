@@ -105,7 +105,7 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
           setIsCollapsed={(isCollapsed) => updateKeyTableConfig({ isCollapsed })}
         />
 
-        {count && count.total > 25 && !isCollapsed && (
+        {count && count.total > 10 && !isCollapsed && (
           <TablePagination
             count={count.total - count.filtered}
             pageIndex={pageIndex}
@@ -145,7 +145,7 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
               />
             )}
 
-            <div className="min-h-[5.5rem] overflow-x-auto rounded border-2 border-border">
+            <div className="min-h-[3.7rem] overflow-x-auto rounded border-2 border-border">
               <TableElement
                 data={coloredResult}
                 columns={columns.filter((column) => !hiddenColumns.includes(column))}
@@ -170,7 +170,7 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
                 )}
               </div>
 
-              {count && count.total > 25 && (
+              {count && count.total > 10 && (
                 <TablePagination
                   count={count.total - count.filtered}
                   pageIndex={pageIndex}
