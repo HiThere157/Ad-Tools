@@ -17,6 +17,10 @@ type SetTableConfigAction = {
   name: string;
   config: TableConfig;
 };
+type RemoveTabDataAction = {
+  page: string;
+  tabId: number;
+};
 type SoftResetTableConfigAction = {
   page: string;
   tabId: number;
@@ -48,7 +52,7 @@ const dataSlice = createSlice({
       if (!state.results[page]) {
         state.results[page] = {};
       }
-      if (!state.results[page]![tabId]) {
+      if (!state.results[page]?.[tabId]) {
         state.results[page]![tabId] = {};
       }
 
@@ -61,25 +65,31 @@ const dataSlice = createSlice({
       if (!state.tableConfigs[page]) {
         state.tableConfigs[page] = {};
       }
-      if (!state.tableConfigs[page]![tabId]) {
+      if (!state.tableConfigs[page]?.[tabId]) {
         state.tableConfigs[page]![tabId] = {};
       }
 
       state.tableConfigs[page]![tabId]![name] = config;
     },
+    removeTabData(state, action: PayloadAction<RemoveTabDataAction>) {
+      const { page, tabId } = action.payload;
+
+      // Remove the tab from all the data
+      if(state.query[page]) {
+        delete state.query[page]![tabId];
+      }
+      if(state.results[page]) {
+        delete state.results[page]![tabId];
+      }
+      if(state.tableConfigs[page]) {
+        delete state.tableConfigs[page]![tabId];
+      }
+    },
     softResetTableConfig: (state, action: PayloadAction<SoftResetTableConfigAction>) => {
       const { page, tabId, name } = action.payload;
 
-      // If the page or tab doesn't exist, create it
-      if (!state.tableConfigs[page]) {
-        state.tableConfigs[page] = {};
-      }
-      if (!state.tableConfigs[page]![tabId]) {
-        state.tableConfigs[page]![tabId] = {};
-      }
-
       // Soft-Reset the config if it exists
-      const config = state.tableConfigs[page]![tabId]![name];
+      const config = state.tableConfigs[page]?.[tabId]?.[name];
       if (config) {
         config.selected = [];
         config.pageIndex = 0;
@@ -90,5 +100,6 @@ const dataSlice = createSlice({
   },
 });
 
-export const { setQuery, setResult, setTableConfig, softResetTableConfig } = dataSlice.actions;
+export const { setQuery, setResult, setTableConfig, removeTabData, softResetTableConfig } =
+  dataSlice.actions;
 export default dataSlice.reducer;

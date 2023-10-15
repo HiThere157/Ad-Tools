@@ -37,7 +37,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
 
   // If the default query is selected and the available servers are loaded, select the first server as default
   useLayoutEffect(() => {
-    if (tabQuery === defaultAdQuery && availableServers.length > 0) {
+    if (tabQuery === defaultAdQuery && availableServers.length > 0 && tabId !== 0) {
       updateTabQuery({ servers: [availableServers[0]] });
     }
   }, [availableServers]);

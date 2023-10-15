@@ -145,7 +145,7 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
               />
             )}
 
-            <div className="min-h-[3.7rem] overflow-x-auto rounded border-2 border-border">
+            <div className="overflow-x-auto rounded border-2 border-border">
               <TableElement
                 data={coloredResult}
                 columns={columns.filter((column) => !hiddenColumns.includes(column))}
@@ -157,6 +157,9 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
                 onRedirect={onRedirect}
               />
 
+              {coloredResult.length === 0 && !isLoading && !error && (
+                <div className="min-h-[3rem]" />
+              )}
               {isLoading && <TableLoader />}
               {error && <TableError error={error} />}
             </div>

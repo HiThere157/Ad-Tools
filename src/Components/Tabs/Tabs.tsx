@@ -7,6 +7,7 @@ import { defaultTab } from "../../Config/default";
 import Tab from "./Tab";
 
 import { BsPlus } from "react-icons/bs";
+import { removeTabData } from "../../Redux/data";
 
 type TabsProps = {
   page: string;
@@ -58,7 +59,10 @@ export default function Tabs({ page }: TabsProps) {
           tab={tab}
           isActive={tab.id === pageActiveTab}
           onChange={() => dispatch(setActiveTab({ page, tabId: tab.id }))}
-          onRemove={() => dispatch(removeTab({ page, tabId: tab.id }))}
+          onRemove={() => {
+            dispatch(removeTab({ page, tabId: tab.id }));
+            dispatch(removeTabData({ page, tabId: tab.id }));
+          }}
         />
       ))}
 

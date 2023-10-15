@@ -96,7 +96,7 @@ export default function User() {
         <AdQuery
           page={page}
           tabId={tabId}
-          onSubmit={() => (expectMultipleResults(tabQuery) ? runPreQuery() : runQuery(tabQuery))}
+          onSubmit={() => (expectMultipleResults(tabQuery) ? runPreQuery() : runQuery(tabQuery, true))}
         />
 
         {expectMultipleResults(tabQuery) && (
