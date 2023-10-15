@@ -25,9 +25,7 @@ export default function Tabs({ page }: TabsProps) {
     dispatch(setActiveTab({ page, tabId: id }));
   }
 
-  const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-
+  const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
     const sourceTabId = event.dataTransfer.getData("text/plain");
     const targetTabId = (event.target as HTMLDivElement)
       .closest("[data-target-tab-id]")
@@ -49,8 +47,9 @@ export default function Tabs({ page }: TabsProps) {
 
   return (
     <div
-      className="sticky top-0 z-50 flex flex-wrap items-center bg-primary px-1 pt-0.5"
-      onDragOver={onDragOver}
+      className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-0.5"
+      onDrop={onDrop}
+      onDragOver={(e) => e.preventDefault()}
       data-target-tab-id={-1}
     >
       {pageTabs.map((tab, tabIndex) => (
