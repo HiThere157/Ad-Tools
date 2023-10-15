@@ -17,6 +17,11 @@ type SetTableConfigAction = {
   name: string;
   config: TableConfig;
 };
+type SoftResetTableConfigAction = {
+  page: string;
+  tabId: number;
+  name: string;
+};
 
 const dataSlice = createSlice({
   name: "data",
@@ -62,8 +67,28 @@ const dataSlice = createSlice({
 
       state.tableConfigs[page]![tabId]![name] = config;
     },
+    softResetTableConfig: (state, action: PayloadAction<SoftResetTableConfigAction>) => {
+      const { page, tabId, name } = action.payload;
+
+      // If the page or tab doesn't exist, create it
+      if (!state.tableConfigs[page]) {
+        state.tableConfigs[page] = {};
+      }
+      if (!state.tableConfigs[page]![tabId]) {
+        state.tableConfigs[page]![tabId] = {};
+      }
+
+      // Soft-Reset the config if it exists
+      const config = state.tableConfigs[page]![tabId]![name];
+      if (config) {
+        config.selected = [];
+        config.pageIndex = 0;
+
+        state.tableConfigs[page]![tabId]![name] = config;
+      }
+    },
   },
 });
 
-export const { setQuery, setResult, setTableConfig } = dataSlice.actions;
+export const { setQuery, setResult, setTableConfig, softResetTableConfig } = dataSlice.actions;
 export default dataSlice.reducer;

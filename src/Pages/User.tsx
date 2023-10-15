@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../Redux/store";
 import { updateTab } from "../Redux/tabs";
-import { setResult } from "../Redux/data";
+import { setResult, softResetTableConfig } from "../Redux/data";
 import { defaultAdQuery } from "../Config/default";
 import {
   expectMultipleResults,
@@ -44,6 +44,7 @@ export default function User() {
     Promise.all(responses)
       .then((responses) => {
         dispatch(setResult({ page, tabId, name: "search", result: mergeResponses(responses) }));
+        dispatch(softResetTableConfig({ page, tabId, name: "search" }));
         dispatch(updateTab({ page, tabId, tab: { icon: "search" } }));
       })
       .catch(() => {
@@ -69,6 +70,7 @@ export default function User() {
         dispatch(
           setResult({ page, tabId, name: "attributes", result: firsObjectToPSDataSet(response) }),
         );
+        dispatch(softResetTableConfig({ page, tabId, name: "attributes" }));
         dispatch(updateTab({ page, tabId, tab: { icon: "user" } }));
       })
       .catch(() => {
@@ -83,6 +85,7 @@ export default function User() {
     })
       .then((response) => {
         dispatch(setResult({ page, tabId, name: "groups", result: response }));
+        dispatch(softResetTableConfig({ page, tabId, name: "groups" }));
       })
       .catch(() => {
         dispatch(updateTab({ page, tabId, tab: { icon: "error" } }));
