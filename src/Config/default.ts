@@ -22,6 +22,7 @@ export const defaultTableFilter: TableFilter = {
   column: "",
   value: "",
 };
+
 export const defaultTableHighlight: TableHighlight = {
   color: "#000000",
   type: "bg",

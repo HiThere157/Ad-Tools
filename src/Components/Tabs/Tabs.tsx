@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { defaultTab } from "../../Config/default";
 import { addTab, setActiveTab, removeTab } from "../../Redux/tabs";
+import { defaultTab } from "../../Config/default";
 
 import Tab from "./Tab";
 
@@ -18,6 +18,7 @@ export default function Tabs({ page }: TabsProps) {
   const pageActiveTab = activeTab[page] ?? 0;
   const pageTabs = tabs[page] ?? [];
 
+  // If there are no tabs, add a default tab
   if (pageTabs.length === 0) {
     const id = new Date().getTime();
     dispatch(addTab({ page, tab: { ...defaultTab, id } }));

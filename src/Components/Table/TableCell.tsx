@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-import { BsArrowsAngleContract, BsArrowsAngleExpand } from "react-icons/bs";
 import Button from "../Button";
+
+import { BsArrowsAngleContract, BsArrowsAngleExpand } from "react-icons/bs";
 
 type TableCellProps = {
   content: string;

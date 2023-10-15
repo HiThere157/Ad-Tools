@@ -2,14 +2,14 @@ import { useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
+import { setQuery } from "../../Redux/data";
 import { defaultAdQuery } from "../../Config/default";
 import { useQueryDomains } from "../../Helper/api";
-import { setQuery } from "../../Redux/data";
 
 import Button from "../Button";
 import Checkbox from "../Checkbox";
-import MultiDropdown from "../Dropdown/MultiDropdown";
 import Input from "../Input/Input";
+import MultiDropdown from "../Dropdown/MultiDropdown";
 
 type AdQueryProps = {
   page: string;
@@ -25,15 +25,18 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
   const tabQuery = query[page]?.[tabId] ?? defaultAdQuery;
   const { isAdvanced, filter, servers } = tabQuery;
 
+  // We only want to submit if there is a filter or servers
   const beforeSubmit = () => {
     if (Object.keys(filter).length === 0 || servers.length === 0) return;
     onSubmit();
   };
 
+  // Update the query with a partial query
   const updateQuery = (query: Partial<AdQuery>) => {
     dispatch(setQuery({ page, tabId, query: { ...tabQuery, ...query } }));
   };
 
+  // If the default query is selected and the available servers are loaded, select the first server as default
   useLayoutEffect(() => {
     if (tabQuery === defaultAdQuery && availableServers.length > 0) {
       updateQuery({ servers: [availableServers[0]] });

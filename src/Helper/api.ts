@@ -1,7 +1,7 @@
+import { useState } from "react";
+
 import { ElectronAPI } from "../../electron/preload";
 import { defaultEnvironment } from "../Config/default";
-
-import { useState } from "react";
 
 const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
 

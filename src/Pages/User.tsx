@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../Redux/store";
+import { updateTab } from "../Redux/tabs";
 import { setResult } from "../Redux/data";
 import { defaultAdQuery } from "../Config/default";
-import { updateTab } from "../Redux/tabs";
 import {
   expectMultipleResults,
   getPSFilterString,

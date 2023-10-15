@@ -1,22 +1,22 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { friendly } from "../../Config/lookup";
+import { RootState } from "../../Redux/store";
+import { setTableConfig } from "../../Redux/data";
+import { setTablePreferences } from "../../Redux/preferences";
 import { defaultTableConfig, defaultTablePreferences } from "../../Config/default";
+import { friendly } from "../../Config/lookup";
 import { filterData, sortData, paginateData, colorData } from "../../Helper/array";
 import { stringify } from "../../Helper/string";
-import { RootState } from "../../Redux/store";
 
 import TableHeader from "./TableHeader";
 import TableActions from "./TableActions";
 import TableFilterMenu from "./TableFilterMenu";
+import TableHighlightMenu from "./TableHighlightMenu";
 import TableElement from "./TableElement";
 import TablePagination from "./TablePagination";
 import TableLoader from "./TableLoader";
 import TableError from "./TableError";
-import TableHighlightMenu from "./TableHighlightMenu";
-import { setTableConfig } from "../../Redux/data";
-import { setTablePreferences } from "../../Redux/preferences";
 
 type TableProps = {
   title: string;
@@ -85,10 +85,12 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
     navigator.clipboard.writeText(csv);
   };
 
-  // Update functions for volatile and persistent config
+  // Update the table config with a partial config
   const updateConfig = (config: Partial<TableConfig>) => {
     dispatch(setTableConfig({ page, tabId, name, config: { ...keyTableConfigs, ...config } }));
   };
+
+  // Update the table preferences with a partial preferences
   const updatePreferences = (persistentConfig: Partial<TablePreferences>) => {
     dispatch(
       setTablePreferences({ name, preferences: { ...keyTablePreferences, ...persistentConfig } }),

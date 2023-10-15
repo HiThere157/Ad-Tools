@@ -30,6 +30,7 @@ export default function MultiDropdown({
 
   useClickAway(ref, () => setIsOpen(false));
 
+  // Get the replaced and joined text for the button
   const getButtonLabel = (value: string[]) => {
     return value
       .map((value) => {

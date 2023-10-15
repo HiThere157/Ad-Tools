@@ -1,5 +1,4 @@
 import { BsExclamationCircle, BsPersonFill, BsSearch, BsX } from "react-icons/bs";
-
 import { ClipLoader } from "react-spinners";
 
 type TabProps = {
