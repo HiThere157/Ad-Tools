@@ -1,5 +1,5 @@
 export function firsObjectToPSDataSet(dataSet: Loadable<PSDataSet>): Loadable<PSDataSet> {
-  if (dataSet === null) return dataSet;
+  if (!dataSet) return dataSet;
 
   const { result, error } = dataSet;
 
@@ -28,7 +28,7 @@ export function addServerToResult(
   dataSet: Loadable<PSDataSet>,
   server: string,
 ): Loadable<PSDataSet> {
-  if (dataSet === null) return dataSet;
+  if (!dataSet) return dataSet;
 
   const { result, error } = dataSet;
 

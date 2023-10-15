@@ -26,9 +26,17 @@ export default function User() {
   const tabId = activeTab[page] ?? 0;
   const tabQuery = query[page]?.[tabId] ?? defaultAdQuery;
 
+  const updatePageTab = (tab: Partial<Tab>) => dispatch(updateTab({ page, tabId, tab }));
+  const setTabResult = (name: string, result: Loadable<PSDataSet>) =>
+    dispatch(setResult({ page, tabId, name, result }));
+  const softResetTabTableConfig = (name: string) =>
+    dispatch(softResetTableConfig({ page, tabId, name }));
+
   const runPreQuery = async () => {
-    dispatch(updateTab({ page, tabId, tab: { icon: "loading", title: "Search Results" } }));
-    dispatch(setResult({ page, tabId, name: "search", result: null }));
+    updatePageTab({ icon: "loading", title: "Search Results" });
+    setTabResult("search", null);
+    setTabResult("attributes", undefined);
+    setTabResult("groups", undefined);
 
     const selectFields = removeDuplicates(["Name", "DisplayName"], Object.keys(tabQuery.filter));
     const responses = tabQuery.servers.map((server) =>
@@ -43,53 +51,41 @@ export default function User() {
 
     Promise.all(responses)
       .then((responses) => {
-        dispatch(setResult({ page, tabId, name: "search", result: mergeResponses(responses) }));
-        dispatch(softResetTableConfig({ page, tabId, name: "search" }));
-        dispatch(updateTab({ page, tabId, tab: { icon: "search" } }));
+        updatePageTab({ icon: "search" });
+        setTabResult("search", mergeResponses(responses));
+        softResetTabTableConfig("search");
       })
-      .catch(() => {
-        dispatch(updateTab({ page, tabId, tab: { icon: "error" } }));
-      });
+      .catch(() => updatePageTab({ icon: "error" }));
   };
 
   const runQuery = async (tabQuery: AdQuery, resetSearch?: boolean) => {
-    dispatch(
-      updateTab({ page, tabId, tab: { icon: "loading", title: tabQuery.filter.Name || "User" } }),
-    );
-    dispatch(setResult({ page, tabId, name: "attributes", result: null }));
-    dispatch(setResult({ page, tabId, name: "groups", result: null }));
-    if (resetSearch) dispatch(setResult({ page, tabId, name: "search", result: null }));
+    updatePageTab({ icon: "loading", title: tabQuery.filter.Name || "User" });
+    if (resetSearch) setTabResult("search", undefined);
+    setTabResult("attributes", null);
+    setTabResult("groups", null);
 
-    invokePSCommand({
-      command: `Get-AdUser \
+    Promise.all([
+      invokePSCommand({
+        command: `Get-AdUser \
         -Identity ${tabQuery.filter.Name} \
         -Server ${tabQuery.servers[0]} \
         -Properties *`,
-    })
-      .then((response) => {
-        dispatch(
-          setResult({ page, tabId, name: "attributes", result: firsObjectToPSDataSet(response) }),
-        );
-        dispatch(softResetTableConfig({ page, tabId, name: "attributes" }));
-        dispatch(updateTab({ page, tabId, tab: { icon: "user" } }));
-      })
-      .catch(() => {
-        dispatch(updateTab({ page, tabId, tab: { icon: "error" } }));
-      });
-
-    invokePSCommand({
-      command: `Get-AdPrincipalGroupMembership \
+      }).then((response) => {
+        setTabResult("attributes", firsObjectToPSDataSet(response));
+        softResetTabTableConfig("attributes");
+      }),
+      invokePSCommand({
+        command: `Get-AdPrincipalGroupMembership \
         -Identity ${tabQuery.filter.Name} \
         -Server ${tabQuery.servers[0]}`,
-      selectFields: ["Name", "GroupCategory", "DistinguishedName"],
-    })
-      .then((response) => {
-        dispatch(setResult({ page, tabId, name: "groups", result: response }));
-        dispatch(softResetTableConfig({ page, tabId, name: "groups" }));
-      })
-      .catch(() => {
-        dispatch(updateTab({ page, tabId, tab: { icon: "error" } }));
-      });
+        selectFields: ["Name", "GroupCategory", "DistinguishedName"],
+      }).then((response) => {
+        setTabResult("groups", response);
+        softResetTabTableConfig("groups");
+      }),
+    ])
+      .then(() => updatePageTab({ icon: "user" }))
+      .catch(() => updatePageTab({ icon: "error" }));
   };
 
   return (
@@ -104,7 +100,19 @@ export default function User() {
         />
 
         {expectMultipleResults(tabQuery) && (
-          <Table page={page} tabId={tabId} name="search" title="Search Results" />
+          <Table
+            page={page}
+            tabId={tabId}
+            name="search"
+            title="Search Results"
+            onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
+              runQuery({
+                isAdvanced: false,
+                filter: { Name: row.Name ?? "" },
+                servers: [row._Server ?? ""],
+              });
+            }}
+          />
         )}
         <Table page={page} tabId={tabId} name="attributes" title="Attributes" />
         <Table page={page} tabId={tabId} name="groups" title="Groups" />

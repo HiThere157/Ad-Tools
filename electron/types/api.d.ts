@@ -1,9 +1,12 @@
-type Loadable<T> = null | {
-  result?: T;
-  error?: string;
-  timestamp: number;
-  executionTime: number;
-};
+type Loadable<T> =
+  | null
+  | undefined
+  | {
+      result?: T;
+      error?: string;
+      timestamp: number;
+      executionTime: number;
+    };
 
 type RawPSResult = {
   [key: string]: any;

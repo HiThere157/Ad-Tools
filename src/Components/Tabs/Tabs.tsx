@@ -26,7 +26,7 @@ export default function Tabs({ page }: TabsProps) {
   }
 
   return (
-    <div className="sticky top-0 z-50 flex h-8 flex-wrap items-center gap-0.5 bg-primary px-1 pt-1">
+    <div className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-0.5">
       {pageTabs.map((tab, tabIndex) => (
         <Tab
           key={tabIndex}
