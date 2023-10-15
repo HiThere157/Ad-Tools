@@ -1,6 +1,6 @@
 import Home from "../Pages/Home";
 import User from "../Pages/User";
-// import Tetris from "../Pages/Tetris";
+import Tetris from "../Pages/Tetris";
 
 import {
   BsClockHistory,
@@ -14,7 +14,7 @@ import {
   BsPersonLinesFill,
   BsPrinterFill,
   BsServer,
-  // BsJoystick,
+  BsJoystick,
 } from "react-icons/bs";
 
 export const navigationLinks: NavigationLink[][] = [
@@ -105,14 +105,14 @@ export const navigationLinks: NavigationLink[][] = [
       page: <div>SettingsPage</div>,
     },
   ],
-  // [
-  //   {
-  //     href: "/tetris",
-  //     text: "Tetris",
-  //     icon: <BsJoystick />,
-  //     page: <Tetris />,
-  //     isHidden: true,
-  //     isEasterEgg: true,
-  //   },
-  // ],
+  [
+    {
+      href: "/tetris",
+      text: "Tetris",
+      icon: <BsJoystick />,
+      page: <Tetris />,
+      isHidden: true,
+      isEasterEgg: true,
+    },
+  ],
 ];
