@@ -8,13 +8,13 @@ type SetQueryAction = {
 type SetResultAction = {
   page: string;
   tabId: number;
-  key: string;
+  name: string;
   result: Loadable<PSDataSet>;
 };
 type SetTableConfigAction = {
   page: string;
   tabId: number;
-  key: string;
+  name: string;
   config: TableConfig;
 };
 
@@ -37,7 +37,7 @@ const dataSlice = createSlice({
       state.query[page]![tabId] = query;
     },
     setResult: (state, action: PayloadAction<SetResultAction>) => {
-      const { page, tabId, key, result } = action.payload;
+      const { page, tabId, name, result } = action.payload;
 
       // If the page or tab doesn't exist, create it
       if (!state.results[page]) {
@@ -47,10 +47,10 @@ const dataSlice = createSlice({
         state.results[page]![tabId] = {};
       }
 
-      state.results[page]![tabId]![key] = result;
+      state.results[page]![tabId]![name] = result;
     },
     setTableConfig: (state, action: PayloadAction<SetTableConfigAction>) => {
-      const { page, tabId, key, config } = action.payload;
+      const { page, tabId, name, config } = action.payload;
 
       // If the page or tab doesn't exist, create it
       if (!state.tableConfigs[page]) {
@@ -60,7 +60,7 @@ const dataSlice = createSlice({
         state.tableConfigs[page]![tabId] = {};
       }
 
-      state.tableConfigs[page]![tabId]![key] = config;
+      state.tableConfigs[page]![tabId]![name] = config;
     },
   },
 });

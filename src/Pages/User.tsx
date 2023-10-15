@@ -28,7 +28,7 @@ export default function User() {
 
   const runPreQuery = async () => {
     dispatch(updateTab({ page, tabId, tab: { icon: "loading", title: "Search Results" } }));
-    dispatch(setResult({ page, tabId, key: "search", result: null }));
+    dispatch(setResult({ page, tabId, name: "search", result: null }));
 
     const selectFields = removeDuplicates(["Name", "DisplayName"], Object.keys(tabQuery.filter));
     const responses = tabQuery.servers.map((server) =>
@@ -43,7 +43,7 @@ export default function User() {
 
     Promise.all(responses)
       .then((responses) => {
-        dispatch(setResult({ page, tabId, key: "search", result: mergeResponses(responses) }));
+        dispatch(setResult({ page, tabId, name: "search", result: mergeResponses(responses) }));
         dispatch(updateTab({ page, tabId, tab: { icon: "search" } }));
       })
       .catch(() => {
@@ -55,9 +55,9 @@ export default function User() {
     dispatch(
       updateTab({ page, tabId, tab: { icon: "loading", title: tabQuery.filter.Name || "User" } }),
     );
-    dispatch(setResult({ page, tabId, key: "attributes", result: null }));
-    dispatch(setResult({ page, tabId, key: "groups", result: null }));
-    if (resetSearch) dispatch(setResult({ page, tabId, key: "search", result: null }));
+    dispatch(setResult({ page, tabId, name: "attributes", result: null }));
+    dispatch(setResult({ page, tabId, name: "groups", result: null }));
+    if (resetSearch) dispatch(setResult({ page, tabId, name: "search", result: null }));
 
     invokePSCommand({
       command: `Get-AdUser \
@@ -67,7 +67,7 @@ export default function User() {
     })
       .then((response) => {
         dispatch(
-          setResult({ page, tabId, key: "attributes", result: firsObjectToPSDataSet(response) }),
+          setResult({ page, tabId, name: "attributes", result: firsObjectToPSDataSet(response) }),
         );
         dispatch(updateTab({ page, tabId, tab: { icon: "user" } }));
       })
@@ -82,7 +82,7 @@ export default function User() {
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     })
       .then((response) => {
-        dispatch(setResult({ page, tabId, key: "groups", result: response }));
+        dispatch(setResult({ page, tabId, name: "groups", result: response }));
       })
       .catch(() => {
         dispatch(updateTab({ page, tabId, tab: { icon: "error" } }));
@@ -101,10 +101,10 @@ export default function User() {
         />
 
         {expectMultipleResults(tabQuery) && (
-          <Table page={page} tabId={tabId} key="search" title="Search Results" />
+          <Table page={page} tabId={tabId} name="search" title="Search Results" />
         )}
-        <Table page={page} tabId={tabId} key="attributes" title="Attributes" />
-        <Table page={page} tabId={tabId} key="groups" title="Groups" />
+        <Table page={page} tabId={tabId} name="attributes" title="Attributes" />
+        <Table page={page} tabId={tabId} name="groups" title="Groups" />
       </div>
     </div>
   );

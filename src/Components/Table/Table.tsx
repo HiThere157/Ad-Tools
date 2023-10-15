@@ -22,17 +22,17 @@ type TableProps = {
   title: string;
   page: string;
   tabId: number;
-  key: string;
+  name: string;
   onRedirect?: (row: PSResult) => void;
 };
-export default function Table({ title, page, tabId, key, onRedirect }: TableProps) {
+export default function Table({ title, page, tabId, name, onRedirect }: TableProps) {
   const { tablePreferences } = useSelector((state: RootState) => state.preferences);
   const { results, tableConfigs } = useSelector((state: RootState) => state.data);
   const dispatch = useDispatch();
 
-  const keyResults = results[page]?.[tabId]?.[key];
-  const keyTableConfigs = tableConfigs[page]?.[tabId]?.[key] ?? defaultTableConfig;
-  const keyTablePreferences = tablePreferences[key] ?? defaultTablePreferences;
+  const keyResults = results[page]?.[tabId]?.[name];
+  const keyTableConfigs = tableConfigs[page]?.[tabId]?.[name] ?? defaultTableConfig;
+  const keyTablePreferences = tablePreferences[name] ?? defaultTablePreferences;
 
   const { result, error, timestamp, executionTime } = keyResults ?? {};
   const { data = [], columns = [] } = result ?? {};
@@ -87,11 +87,11 @@ export default function Table({ title, page, tabId, key, onRedirect }: TableProp
 
   // Update functions for volatile and persistent config
   const updateConfig = (config: Partial<TableConfig>) => {
-    dispatch(setTableConfig({ page, tabId, key, config: { ...keyTableConfigs, ...config } }));
+    dispatch(setTableConfig({ page, tabId, name, config: { ...keyTableConfigs, ...config } }));
   };
   const updatePreferences = (persistentConfig: Partial<TablePreferences>) => {
     dispatch(
-      setTablePreferences({ key, preferences: { ...keyTablePreferences, ...persistentConfig } }),
+      setTablePreferences({ name, preferences: { ...keyTablePreferences, ...persistentConfig } }),
     );
   };
 

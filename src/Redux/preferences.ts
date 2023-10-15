@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type SetTablePreferencesAction = {
-  key: string;
+  name: string;
   preferences: TablePreferences;
 };
 
@@ -16,9 +16,9 @@ const preferencesSlice = createSlice({
       state.isNavBarExpanded = !state.isNavBarExpanded;
     },
     setTablePreferences: (state, action: PayloadAction<SetTablePreferencesAction>) => {
-      const { key, preferences } = action.payload;
+      const { name, preferences } = action.payload;
 
-      state.tablePreferences[key] = preferences;
+      state.tablePreferences[name] = preferences;
     },
   },
 });
