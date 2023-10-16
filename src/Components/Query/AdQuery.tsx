@@ -39,12 +39,18 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
     if (isAdvanced) {
       if (!Object.values(filters).some(({ value }) => value !== "")) return;
     } else {
-      if (filters.find(({ property }) => property === "Name")?.value === "") return;
+      if (!filters.find(({ property }) => property === "Name")?.value) return;
     }
 
     onSubmit();
   };
 
+  // If there are no filters, set the default filter
+  if (filters.length === 0) {
+    updateTabQuery({ filters: [defaultQueryFilter] });
+  }
+
+  // If there are no servers, set the first available server
   useEffect(() => {
     if (tabQuery === defaultAdQuery && availableServers.length > 0) {
       updateTabQuery({ servers: [availableServers[0]] });
@@ -52,9 +58,9 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
   }, [availableServers, tabQuery]);
 
   return (
-    <div className="m-1.5 mb-4 flex items-center gap-1">
+    <div className="m-1.5 mb-4 flex items-start gap-1">
       {isAdvanced ? (
-        <label className="flex items-center gap-2">
+        <div className="flex items-start gap-2">
           <span>Filter:</span>
 
           <div className="flex items-end gap-1">
@@ -83,9 +89,9 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
               <BsPlusLg />
             </Button>
           </div>
-        </label>
+        </div>
       ) : (
-        <label className="flex items-center gap-2">
+        <div className="flex items-start gap-2">
           <span>Identity:</span>
 
           <Input
@@ -107,7 +113,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
             }}
             onEnter={beforeSubmit}
           />
-        </label>
+        </div>
       )}
 
       <span className="text-grey">@</span>
@@ -120,12 +126,17 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
         }}
       />
 
-      <Button onClick={beforeSubmit}>Run</Button>
+      <div className="flex items-center gap-1.5">
+        <Button onClick={beforeSubmit}>Run</Button>
 
-      <label className="ml-2 flex items-center gap-1.5">
-        <Checkbox checked={isAdvanced} onChange={(isAdvanced) => updateTabQuery({ isAdvanced })} />
-        <span>Advanced</span>
-      </label>
+        <label className="flex items-center gap-1">
+          <Checkbox
+            checked={isAdvanced}
+            onChange={(isAdvanced) => updateTabQuery({ isAdvanced })}
+          />
+          <span>Advanced</span>
+        </label>
+      </div>
     </div>
   );
 }
