@@ -75,13 +75,13 @@ const dataSlice = createSlice({
       const { page, tabId } = action.payload;
 
       // Remove the tab from all the data
-      if(state.query[page]) {
+      if (state.query[page]) {
         delete state.query[page]![tabId];
       }
-      if(state.results[page]) {
+      if (state.results[page]) {
         delete state.results[page]![tabId];
       }
-      if(state.tableConfigs[page]) {
+      if (state.tableConfigs[page]) {
         delete state.tableConfigs[page]![tabId];
       }
     },

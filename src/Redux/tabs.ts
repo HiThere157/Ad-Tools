@@ -43,6 +43,7 @@ const tabsSlice = createSlice({
       }
 
       state.tabs[page]!.push(tab);
+      state.activeTab[page] = tab.id;
     },
     updateTab: (state, action: PayloadAction<UpdateTabAction>) => {
       const { page, tabId, tab } = action.payload;

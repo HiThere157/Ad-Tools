@@ -1,4 +1,3 @@
-import { useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
@@ -34,13 +33,6 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
   // Update the query with a partial query
   const updateTabQuery = (query: Partial<AdQuery>) =>
     dispatch(setQuery({ page, tabId, query: { ...tabQuery, ...query } }));
-
-  // If the default query is selected and the available servers are loaded, select the first server as default
-  useLayoutEffect(() => {
-    if (tabQuery === defaultAdQuery && availableServers.length > 0 && tabId !== 0) {
-      updateTabQuery({ servers: [availableServers[0]] });
-    }
-  }, [availableServers]);
 
   return (
     <div className="m-1.5 mb-4 flex items-center gap-1">

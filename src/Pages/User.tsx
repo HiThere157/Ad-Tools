@@ -11,7 +11,7 @@ import {
   removeDuplicates,
 } from "../Helper/utils";
 import { invokePSCommand } from "../Helper/api";
-import { addServerToResult, firsObjectToPSDataSet } from "../Helper/postProcessors";
+import { addServerToResult, extractFirstObject } from "../Helper/postProcessors";
 
 import AdQuery from "../Components/Query/AdQuery";
 import Tabs from "../Components/Tabs/Tabs";
@@ -71,7 +71,7 @@ export default function User() {
         -Server ${tabQuery.servers[0]} \
         -Properties *`,
       }).then((response) => {
-        setTabResult("attributes", firsObjectToPSDataSet(response));
+        setTabResult("attributes", extractFirstObject(response));
         softResetTabTableConfig("attributes");
       }),
       invokePSCommand({
@@ -96,7 +96,9 @@ export default function User() {
         <AdQuery
           page={page}
           tabId={tabId}
-          onSubmit={() => (expectMultipleResults(tabQuery) ? runPreQuery() : runQuery(tabQuery, true))}
+          onSubmit={() =>
+            expectMultipleResults(tabQuery) ? runPreQuery() : runQuery(tabQuery, true)
+          }
         />
 
         {expectMultipleResults(tabQuery) && (

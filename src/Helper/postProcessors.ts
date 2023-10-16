@@ -1,4 +1,4 @@
-export function firsObjectToPSDataSet(dataSet: Loadable<PSDataSet>): Loadable<PSDataSet> {
+export function extractFirstObject(dataSet: Loadable<PSDataSet>): Loadable<PSDataSet> {
   if (!dataSet) return dataSet;
 
   const { result, error } = dataSet;
