@@ -65,11 +65,20 @@ const tabsSlice = createSlice({
     },
     removeTab: (state, action: PayloadAction<RemoveTabAction>) => {
       const { page, tabId } = action.payload;
+      const index = state.tabs[page]?.findIndex((tab) => tab.id === tabId) ?? 0;
+
       state.tabs[page] = state.tabs[page]?.filter((tab) => tab.id !== tabId);
 
-      // If the active tab was removed, set the first tab as active
+      // If the active tab was removed
       if (state.activeTab[page] === tabId) {
-        state.activeTab[page] = state.tabs[page]?.[0]?.id;
+        // If there is a tab at the same index, set it as active
+        if (state.tabs[page]?.[index]) {
+          state.activeTab[page] = state.tabs[page]?.[index]?.id;
+        } else {
+          // If there is no tab at the same index, set the last tab as active (if last tab was removed)
+          const length = state.tabs[page]?.length ?? 0;
+          state.activeTab[page] = state.tabs[page]?.[length - 1]?.id;
+        }
       }
     },
   },
