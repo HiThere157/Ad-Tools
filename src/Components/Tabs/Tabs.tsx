@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
@@ -19,12 +20,30 @@ export default function Tabs({ page }: TabsProps) {
   const pageActiveTab = activeTab[page] ?? 0;
   const pageTabs = tabs[page] ?? [];
 
-  // If there are no tabs, add a default tab
-  if (pageTabs.length === 0) {
+  const newTab = () => {
     const id = new Date().getTime();
     dispatch(addTab({ page, tab: { ...defaultTab, id } }));
     dispatch(setActiveTab({ page, tabId: id }));
-  }
+  };
+
+  const deleteTab = (tabId: number) => {
+    dispatch(removeTab({ page, tabId }));
+    dispatch(removeTabData({ page, tabId }));
+  };
+
+  const onKeyDown = (event: KeyboardEvent) => {
+    const { ctrlKey, key } = event;
+    if (ctrlKey && key === "t") {
+      newTab();
+    }
+
+    if (ctrlKey && key === "w") {
+      const activeTabIndex = pageTabs.findIndex((tab) => tab.id === pageActiveTab);
+      if (activeTabIndex) {
+        deleteTab(pageActiveTab);
+      }
+    }
+  };
 
   const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
     const sourceTabId = event.dataTransfer.getData("text/plain");
@@ -46,6 +65,20 @@ export default function Tabs({ page }: TabsProps) {
     );
   };
 
+  // If there are no tabs, add a default tab
+  if (pageTabs.length === 0) {
+    newTab();
+  }
+
+  // Handle keyboard shortcuts
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [pageTabs, pageActiveTab]);
+
   return (
     <div
       className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-0.5"
@@ -59,10 +92,7 @@ export default function Tabs({ page }: TabsProps) {
           tab={tab}
           isActive={tab.id === pageActiveTab}
           onChange={() => dispatch(setActiveTab({ page, tabId: tab.id }))}
-          onRemove={() => {
-            dispatch(removeTab({ page, tabId: tab.id }));
-            dispatch(removeTabData({ page, tabId: tab.id }));
-          }}
+          onRemove={() => deleteTab(tab.id)}
         />
       ))}
 
