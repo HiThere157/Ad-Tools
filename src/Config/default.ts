@@ -34,7 +34,7 @@ export const defaultTableFilter: TableFilter = {
 export const defaultTableHighlight: TableHighlight = {
   color: "#000000",
   type: "bg",
-  fields: [],
+  strings: [],
 };
 
 export const defaultTableConfig: TableConfig = {

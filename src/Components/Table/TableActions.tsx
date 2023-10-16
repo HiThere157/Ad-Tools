@@ -48,7 +48,7 @@ export default function TableActions({
       <Button
         className={
           "p-1 " +
-          (highlights.some((highlight) => highlight.fields.length !== 0)
+          (highlights.some((highlight) => highlight.strings.length !== 0)
             ? "!border-primaryAccent"
             : "")
         }

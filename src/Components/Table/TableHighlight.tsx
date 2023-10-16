@@ -14,7 +14,7 @@ export default function TableHighlight({
   setHighlight,
   onRemoveHighlight,
 }: TableHighlightProps) {
-  const { color, type, fields } = highlight;
+  const { color, type, strings } = highlight;
 
   return (
     <>
@@ -30,7 +30,7 @@ export default function TableHighlight({
         {type === "bg" && <BsPaintBucket />}
       </Button>
 
-      <MultiInput value={fields} onChange={(fields) => setHighlight({ ...highlight, fields })} />
+      <MultiInput value={strings} onChange={(strings) => setHighlight({ ...highlight, strings })} />
 
       <Button className="p-1 text-red" onClick={onRemoveHighlight}>
         <BsTrashFill />

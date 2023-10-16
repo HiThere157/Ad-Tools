@@ -49,22 +49,27 @@ export function colorData(data: PSResult[], highlights: TableHighlight[]) {
 
     // Loop over the highlights, and check if the row matches the highlight
     highlights.forEach((highlight) => {
-      const { color, fields } = highlight;
-      if (fields.length === 0) return;
+      const { color, strings } = highlight;
+      if (strings.length === 0) return;
 
-      // If every field matches, the highlight rule matches
-      if (
-        fields.every((field) => {
-          const regexValue = field.replace(/\*/g, ".*");
-          const regex = new RegExp(`^${regexValue}$`, "i");
+      // Loop over all the strings for this color, and check if the row matches any of them
+      strings.forEach((string) => {
+        const fields = string.split(",");
 
-          // If any of the values match, the field matches
-          return rowValues.some((value) => regex.test(stringify(value)));
-        })
-      ) {
-        if (highlight.type === "fg") fgColor = color;
-        if (highlight.type === "bg") bgColor = color;
-      }
+        // If every field of the string matches, the highlight rule matches
+        if (
+          fields.every((field) => {
+            const regexValue = field.replace(/\*/g, ".*");
+            const regex = new RegExp(`^${regexValue}$`, "i");
+
+            // If any of the values match, the field matches
+            return rowValues.some((value) => regex.test(stringify(value)));
+          })
+        ) {
+          if (highlight.type === "fg") fgColor = color;
+          if (highlight.type === "bg") bgColor = color;
+        }
+      });
     });
 
     return { __highlight_bg__: bgColor, __highlight_fg__: fgColor, ...row };
