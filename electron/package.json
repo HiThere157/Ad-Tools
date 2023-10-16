@@ -40,10 +40,10 @@
     "copyfiles": "^2.4.1",
     "electron": "^26.2.1",
     "electron-builder": "^24.6.4",
-    "electron-devtools-installer": "^3.2.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "electron-devtools-installer": "^3.2.0",
     "node-powershell": "^5.0.1"
   }
 }

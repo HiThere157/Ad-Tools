@@ -1,8 +1,8 @@
 export function expectMultipleResults(query: AdQuery) {
   const { filters, servers } = query;
-  const hasNonNameField = Object.keys(filters).some((key) => key !== "name");
+  const hasNonNameField = filters.some(({ property }) => property !== "Name");
   const hasMultipleServers = servers.length > 1;
-  const hasWildcard = Object.values(filters).some(({ value }) => value?.includes("*"));
+  const hasWildcard = filters.some(({ value }) => value?.includes("*"));
 
   return hasNonNameField || hasMultipleServers || hasWildcard;
 }
