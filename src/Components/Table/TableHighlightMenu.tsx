@@ -22,7 +22,9 @@ export default function TableHighlightMenu({ highlights, setHighlights }: TableH
               newHighlights[highlightIndex] = highlight;
               setHighlights(newHighlights);
             }}
-            removeHighlight={() => setHighlights(highlights.filter((_, i) => i !== highlightIndex))}
+            onRemoveHighlight={() =>
+              setHighlights(highlights.filter((_, i) => i !== highlightIndex))
+            }
           />
         ))}
       </div>

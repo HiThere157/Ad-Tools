@@ -1,16 +1,16 @@
 export function expectMultipleResults(query: AdQuery) {
-  const { filter, servers } = query;
-  const hasNonNameField = Object.keys(filter).some((key) => key !== "Name");
+  const { filters, servers } = query;
+  const hasNonNameField = Object.keys(filters).some((key) => key !== "name");
   const hasMultipleServers = servers.length > 1;
-  const hasWildcard = Object.values(filter).some((value) => value?.includes("*"));
+  const hasWildcard = Object.values(filters).some(({ value }) => value?.includes("*"));
 
   return hasNonNameField || hasMultipleServers || hasWildcard;
 }
 
-export function getPSFilterString(filter: PartialRecord<string, string>) {
-  return Object.entries(filter)
-    .map(([key, value]) => {
-      return `${key} -${value?.includes("*") ? "like" : "eq"} '${value}'`;
+export function getPSFilterString(filters: QueryFilter[]) {
+  return filters
+    .map(({ property, value }) => {
+      return `${property} -${value?.includes("*") ? "like" : "eq"} '${value}'`;
     })
     .join(" -and ");
 }

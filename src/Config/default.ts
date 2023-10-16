@@ -9,11 +9,19 @@ export const defaultEnvironment: ElectronEnvironment = {
   appChannel: "stable",
 };
 
+export const defaultQueryFilter: QueryFilter = {
+  property: "",
+  value: "",
+};
+
 export const defaultAdQuery: AdQuery = {
   isAdvanced: false,
-  filter: {
-    Name: "",
-  },
+  filters: [
+    {
+      property: "Name",
+      value: "",
+    },
+  ],
   servers: [],
 };
 

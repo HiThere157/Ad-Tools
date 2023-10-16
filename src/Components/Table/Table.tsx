@@ -34,6 +34,16 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
   const keyTableConfigs = tableConfigs[page]?.[tabId]?.[name] ?? defaultTableConfig;
   const keyTablePreferences = tablePreferences[name] ?? defaultTablePreferences;
 
+  // Update the table config with a partial config
+  const updateKeyTableConfig = (config: Partial<TableConfig>) =>
+    dispatch(setTableConfig({ page, tabId, name, config: { ...keyTableConfigs, ...config } }));
+
+  // Update the table preferences with a partial preferences
+  const updateKeyTablePreferences = (persistentConfig: Partial<TablePreferences>) =>
+    dispatch(
+      setTablePreferences({ name, preferences: { ...keyTablePreferences, ...persistentConfig } }),
+    );
+
   const { result, error, timestamp, executionTime } = keyResults ?? {};
   const { data = [], columns = [] } = result ?? {};
   const isLoading = keyResults === null;
@@ -84,16 +94,6 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
 
     navigator.clipboard.writeText(csv);
   };
-
-  // Update the table config with a partial config
-  const updateKeyTableConfig = (config: Partial<TableConfig>) =>
-    dispatch(setTableConfig({ page, tabId, name, config: { ...keyTableConfigs, ...config } }));
-
-  // Update the table preferences with a partial preferences
-  const updateKeyTablePreferences = (persistentConfig: Partial<TablePreferences>) =>
-    dispatch(
-      setTablePreferences({ name, preferences: { ...keyTablePreferences, ...persistentConfig } }),
-    );
 
   return (
     <section className="mb-7 w-fit min-w-[35rem] max-w-full">

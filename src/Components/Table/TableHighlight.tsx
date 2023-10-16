@@ -7,12 +7,12 @@ import { BsType, BsPaintBucket, BsTrashFill } from "react-icons/bs";
 type TableHighlightProps = {
   highlight: TableHighlight;
   setHighlight: (highlight: TableHighlight) => void;
-  removeHighlight: () => void;
+  onRemoveHighlight: () => void;
 };
 export default function TableHighlight({
   highlight,
   setHighlight,
-  removeHighlight,
+  onRemoveHighlight,
 }: TableHighlightProps) {
   const { color, type, fields } = highlight;
 
@@ -32,7 +32,7 @@ export default function TableHighlight({
 
       <MultiInput value={fields} onChange={(fields) => setHighlight({ ...highlight, fields })} />
 
-      <Button className="p-1 text-red" onClick={removeHighlight}>
+      <Button className="p-1 text-red" onClick={onRemoveHighlight}>
         <BsTrashFill />
       </Button>
     </>

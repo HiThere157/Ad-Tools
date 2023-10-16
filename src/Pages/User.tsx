@@ -38,11 +38,14 @@ export default function User() {
     setTabResult("attributes", undefined);
     setTabResult("groups", undefined);
 
-    const selectFields = removeDuplicates(["Name", "DisplayName"], Object.keys(tabQuery.filter));
+    const selectFields = removeDuplicates(
+      ["Name", "DisplayName"],
+      tabQuery.filters.map(({ property }) => property),
+    );
     const responses = tabQuery.servers.map((server) =>
       invokePSCommand({
         command: `Get-AdUser \
-          -Filter "${getPSFilterString(tabQuery.filter)}" \
+          -Filter "${getPSFilterString(tabQuery.filters)}" \
           -Server ${server} \
           -Properties ${selectFields.join(",")}`,
         selectFields,
@@ -59,7 +62,9 @@ export default function User() {
   };
 
   const runQuery = async (tabQuery: AdQuery, resetSearch?: boolean) => {
-    updatePageTab({ icon: "loading", title: tabQuery.filter.Name || "User" });
+    const identity = tabQuery.filters.find(({ property }) => property === "Name")?.value ?? "";
+
+    updatePageTab({ icon: "loading", title: identity || "User" });
     if (resetSearch) setTabResult("search", undefined);
     setTabResult("attributes", null);
     setTabResult("groups", null);
@@ -67,7 +72,7 @@ export default function User() {
     Promise.all([
       invokePSCommand({
         command: `Get-AdUser \
-        -Identity ${tabQuery.filter.Name} \
+        -Identity ${identity} \
         -Server ${tabQuery.servers[0]} \
         -Properties *`,
       }).then((response) => {
@@ -76,7 +81,7 @@ export default function User() {
       }),
       invokePSCommand({
         command: `Get-AdPrincipalGroupMembership \
-        -Identity ${tabQuery.filter.Name} \
+        -Identity ${identity} \
         -Server ${tabQuery.servers[0]}`,
         selectFields: ["Name", "GroupCategory", "DistinguishedName"],
       }).then((response) => {
@@ -110,7 +115,7 @@ export default function User() {
             onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
               runQuery({
                 isAdvanced: false,
-                filter: { Name: row.Name ?? "" },
+                filters: [{ property: "Name", value: row.Name ?? "" }],
                 servers: [row._Server ?? ""],
               });
             }}

@@ -11,13 +11,13 @@ type TableFilterProps = {
   columns: string[];
   filter: TableFilter;
   setFilter: (filter: TableFilter) => void;
-  removeFilter: () => void;
+  onRemoveFilter: () => void;
 };
 export default function TableFilter({
   columns,
   filter,
   setFilter,
-  removeFilter,
+  onRemoveFilter,
 }: TableFilterProps) {
   const { type, column, value } = filter;
 
@@ -31,6 +31,7 @@ export default function TableFilter({
         className="w-full"
         disabled={columns.length === 0}
       />
+
       <Dropdown
         items={["is", "in"]}
         value={type}
@@ -56,7 +57,7 @@ export default function TableFilter({
         <MultiInput value={value} onChange={(value) => setFilter({ ...filter, value })} />
       )}
 
-      <Button className="p-1 text-red" onClick={removeFilter}>
+      <Button className="p-1 text-red" onClick={onRemoveFilter}>
         <BsTrashFill />
       </Button>
     </>

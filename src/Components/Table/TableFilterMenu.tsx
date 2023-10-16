@@ -24,7 +24,7 @@ export default function TableFilterMenu({ columns, filters, setFilters }: TableF
               newFilters[filterIndex] = filter;
               setFilters(newFilters);
             }}
-            removeFilter={() => setFilters(filters.filter((_, i) => i !== filterIndex))}
+            onRemoveFilter={() => setFilters(filters.filter((_, i) => i !== filterIndex))}
           />
         ))}
       </div>
