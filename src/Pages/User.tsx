@@ -11,7 +11,7 @@ import {
   removeDuplicates,
 } from "../Helper/utils";
 import { invokePSCommand } from "../Helper/api";
-import { addServerToResult, extractFirstObject } from "../Helper/postProcessors";
+import { addServerToResponse, extractFirstObject } from "../Helper/postProcessors";
 
 import AdQuery from "../Components/Query/AdQuery";
 import Tabs from "../Components/Tabs/Tabs";
@@ -46,7 +46,7 @@ export default function User() {
           -Server ${server} \
           -Properties ${selectFields.join(",")}`,
         selectFields,
-      }).then((response) => addServerToResult(response, server)),
+      }).then((response) => addServerToResponse(response, server)),
     );
 
     Promise.all(responses)

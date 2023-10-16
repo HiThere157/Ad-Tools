@@ -1,10 +1,10 @@
-export function extractFirstObject(dataSet: Loadable<PSDataSet>): Loadable<PSDataSet> {
-  if (!dataSet) return dataSet;
+export function extractFirstObject(response: Loadable<PSDataSet>): Loadable<PSDataSet> {
+  if (!response) return response;
 
-  const { result, error } = dataSet;
+  const { result, error } = response;
 
   if (result?.data.length != 1 || error !== undefined) {
-    return dataSet;
+    return response;
   }
 
   const firstObject: { PropertyNames?: string[] } & PSResult = result.data[0];
@@ -13,7 +13,7 @@ export function extractFirstObject(dataSet: Loadable<PSDataSet>): Loadable<PSDat
   const keys = firstObject.PropertyNames ?? Object.keys(firstObject);
 
   return {
-    ...dataSet,
+    ...response,
     result: {
       data: keys.map((key, index) => {
         return { __id__: index, key, value: firstObject[key] };
@@ -24,20 +24,20 @@ export function extractFirstObject(dataSet: Loadable<PSDataSet>): Loadable<PSDat
   };
 }
 
-export function addServerToResult(
-  dataSet: Loadable<PSDataSet>,
+export function addServerToResponse(
+  response: Loadable<PSDataSet>,
   server: string,
 ): Loadable<PSDataSet> {
-  if (!dataSet) return dataSet;
+  if (!response) return response;
 
-  const { result, error } = dataSet;
+  const { result, error } = response;
 
   if (!result || error !== undefined) {
-    return dataSet;
+    return response;
   }
 
   return {
-    ...dataSet,
+    ...response,
     result: {
       data: result.data.map((row) => ({ ...row, _Server: server })),
       columns: ["_Server", ...result.columns],
