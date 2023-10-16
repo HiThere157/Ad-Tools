@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
@@ -44,6 +45,12 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
     onSubmit();
   };
 
+  useEffect(() => {
+    if (tabQuery === defaultAdQuery && availableServers.length > 0) {
+      updateTabQuery({ servers: [availableServers[0]] });
+    }
+  }, [availableServers, tabQuery]);
+
   return (
     <div className="m-1.5 mb-4 flex items-center gap-1">
       {isAdvanced ? (
@@ -64,6 +71,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
                   onRemoveFilter={() =>
                     updateTabQuery({ filters: filters.filter((_, i) => i !== filterIndex) })
                   }
+                  onSubmit={beforeSubmit}
                 />
               ))}
             </div>
