@@ -1,6 +1,7 @@
 import Footer from "../Components/Footer";
 import Header from "../Components/Header/Header";
 import Navigation from "../Components/Navigation/Navigation";
+import Zoom from "../Components/Zoom";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -24,6 +25,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <div style={{ gridArea: "main" }} className="overflow-auto">
         {children}
       </div>
+
+      <Zoom />
     </main>
   );
 }

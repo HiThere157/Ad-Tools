@@ -4,7 +4,7 @@ import path = require("path");
 
 import { invokePSCommand } from "./api/powershell";
 import { getDnsSuffixList, getEnvironment } from "./api/node";
-import { changeWindowState } from "./api/win";
+import { changeWindowState, changeZoom } from "./api/win";
 
 app.on("ready", () => {
   const window = new BrowserWindow({
@@ -20,6 +20,11 @@ app.on("ready", () => {
 
   window.removeMenu();
   window.loadFile(path.join(__dirname, "web/index.html"));
+
+  // Handle window zoom
+  window.webContents.on("zoom-changed", (_event, direction) => {
+    changeZoom(window, direction);
+  });
 
   // Handle F12 for dev console and install Redux DevTools
   window.webContents.on("before-input-event", (event, input) => {

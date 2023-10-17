@@ -81,7 +81,7 @@ export default function Tabs({ page }: TabsProps) {
 
   return (
     <div
-      className="sticky top-0 z-50 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-0.5"
+      className="sticky top-0 z-40 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-0.5"
       onDrop={onDrop}
       onDragOver={(e) => e.preventDefault()}
       data-target-tab-id={-1}

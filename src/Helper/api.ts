@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ElectronAPI } from "../../electron/preload";
 import { defaultEnvironment } from "../Config/default";
 
-const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
+export const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
 
 export async function invokePSCommand(
   request: InvokePSCommandRequest,
