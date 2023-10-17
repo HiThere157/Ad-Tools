@@ -42,7 +42,7 @@ export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
       >
         {icon && icons[icon]}
 
-        <span className="min-w-[6rem] max-w-[12rem] overflow-hidden text-ellipsis text-start">
+        <span className="min-w-[6rem] max-w-[12rem] overflow-hidden text-ellipsis whitespace-nowrap text-start">
           {title}
         </span>
       </button>
