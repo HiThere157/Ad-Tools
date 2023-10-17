@@ -25,7 +25,7 @@ export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
 
   return (
     <div className="relative" draggable="true" onDragStart={onDragStart} data-target-tab-id={id}>
-      {!isActive && <div className="absolute bottom-1 left-0 top-1 border-l border-borderActive" />}
+      {!isActive && <div className="absolute bottom-1 left-0 top-1 border-l border-borderAccent" />}
 
       <button
         className={`flex items-center gap-1.5 rounded-t py-0.5 pe-7 ps-2 ${
