@@ -3,7 +3,7 @@ import { defaultTableFilter } from "../../Config/default";
 import Button from "../Button";
 import TableFilter from "./TableFilter";
 
-import { BsPlusLg } from "react-icons/bs";
+import { BsPlusLg, BsSave } from "react-icons/bs";
 
 type TableFilterMenuProps = {
   columns: string[];
@@ -13,7 +13,13 @@ type TableFilterMenuProps = {
 export default function TableFilterMenu({ columns, filters, setFilters }: TableFilterMenuProps) {
   return (
     <div className="rounded border-2 border-border">
-      <h3 className="mx-3 mt-1 text-lg font-bold">Filters:</h3>
+      <div className="me-2 ms-4 mt-2 flex items-center justify-between gap-1">
+        <h3 className="text-lg font-bold">Filters:</h3>
+
+        <Button className="p-1" onClick={() => {}}>
+          <BsSave />
+        </Button>
+      </div>
 
       <div className="flex items-start gap-1 p-2">
         <div className="grid flex-grow grid-cols-[auto_auto_1fr_auto] items-start gap-1">
