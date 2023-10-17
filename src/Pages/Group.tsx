@@ -110,7 +110,7 @@ export default function Group() {
           <Table
             page={page}
             tabId={tabId}
-            name="search"
+            name="group-search"
             title="Search Results"
             onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
               runQuery({

@@ -6,7 +6,7 @@ import Button from "../Button";
 import Dropdown from "../Dropdown/Dropdown";
 import MultiDropdown from "../Dropdown/MultiDropdown";
 
-import { BsFunnel, BsPalette, BsLayoutThreeColumns, BsClipboard } from "react-icons/bs";
+import { BsFunnel, BsPaintBucket, BsLayoutThreeColumns, BsClipboard } from "react-icons/bs";
 
 type TableActionsProps = {
   onFilterMenu: () => void;
@@ -54,7 +54,7 @@ export default function TableActions({
         }
         onClick={onHighlightMenu}
       >
-        <BsPalette />
+        <BsPaintBucket />
       </Button>
       <MultiDropdown
         items={columns}

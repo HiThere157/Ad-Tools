@@ -63,7 +63,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
         <div className="flex items-start gap-2">
           <span>Filter:</span>
 
-          <div className="flex items-end gap-1">
+          <div className="flex items-start gap-1">
             <div className="grid grid-cols-[auto_auto_auto_auto] items-start gap-1">
               {filters.map((filter, filterIndex) => (
                 <QueryFilter
@@ -97,19 +97,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
           <Input
             value={filters.find(({ property }) => property === "Name")?.value ?? ""}
             onChange={(name) => {
-              const newFilters = [...filters];
-              const nameFilterIndex = filters.findIndex(({ property }) => property === "Name");
-
-              const nameFilter = { property: "Name", value: name };
-
-              // If the filter exists, replace it otherwise add it
-              if (nameFilterIndex !== -1) {
-                newFilters[nameFilterIndex] = nameFilter;
-              } else {
-                newFilters.push(nameFilter);
-              }
-
-              updateTabQuery({ filters: newFilters });
+              updateTabQuery({ filters: [{ property: "Name", value: name }] });
             }}
             onEnter={beforeSubmit}
           />
@@ -121,9 +109,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
       <MultiDropdown
         items={availableServers}
         value={servers}
-        onChange={(servers) => {
-          updateTabQuery({ servers });
-        }}
+        onChange={(servers) => updateTabQuery({ servers })}
       />
 
       <div className="flex items-center gap-1.5">
@@ -132,7 +118,19 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
         <label className="flex items-center gap-1">
           <Checkbox
             checked={isAdvanced}
-            onChange={(isAdvanced) => updateTabQuery({ isAdvanced })}
+            onChange={(isAdvanced) => {
+              // If we are switching from advanced to simple, remove all filters except for the name filter
+              // If no name filter exists, add one
+              if (!isAdvanced) {
+                const nameFilter = filters.find(({ property }) => property === "Name");
+                updateTabQuery({
+                  isAdvanced,
+                  filters: nameFilter ? [nameFilter] : [{ property: "Name", value: "" }],
+                });
+              } else {
+                updateTabQuery({ isAdvanced });
+              }
+            }}
           />
           <span>Advanced</span>
         </label>

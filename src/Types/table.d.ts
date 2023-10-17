@@ -12,6 +12,7 @@ type TableConfig = {
 type TablePreferences = {
   pageSize: number;
   highlights: TableHighlight[];
+  savedFilters: SavedTableFilter[];
 };
 
 type SortConfig = {
@@ -30,10 +31,16 @@ type TableFilter =
       column: string;
       value: string[];
     };
+
 type TableHighlight = {
   color: string;
   type: "fg" | "bg";
   strings: string[];
+};
+
+type SavedTableFilter = {
+  name: string;
+  filters: TableFilter[];
 };
 
 type ResultCount = {
