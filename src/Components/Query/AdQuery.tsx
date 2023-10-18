@@ -52,7 +52,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
 
   // If there are no servers, set the first available server
   useEffect(() => {
-    if (tabQuery === defaultAdQuery && availableServers.length > 0 && tabId !== 0) {
+    if (tabQuery === defaultAdQuery && availableServers.length > 0) {
       updateTabQuery({ servers: [availableServers[0]] });
     }
   }, [availableServers, tabQuery]);
