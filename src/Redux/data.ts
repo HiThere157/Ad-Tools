@@ -31,8 +31,8 @@ const dataSlice = createSlice({
   name: "data",
   initialState: {
     query: {} as TabStorage<AdQuery>,
-    results: {} as TabStorage<PartialRecord<string, Loadable<PSDataSet>>>,
-    tableConfigs: {} as TabStorage<PartialRecord<string, TableConfig>>,
+    results: {} as TabStorage<NameStorage<Loadable<PSDataSet>>>,
+    tableConfigs: {} as TabStorage<NameStorage<TableConfig>>,
   },
   reducers: {
     setQuery: (state, action: PayloadAction<SetQueryAction>) => {
