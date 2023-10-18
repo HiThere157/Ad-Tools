@@ -32,7 +32,7 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
 
   const keyResults = results[page]?.[tabId]?.[name];
   const keyTableConfigs = tableConfigs[page]?.[tabId]?.[name] ?? defaultTableConfig;
-  const keyTablePreferences = tablePreferences[name] ?? defaultTablePreferences;
+  const keyTablePreferences = tablePreferences[page]?.[name] ?? defaultTablePreferences;
 
   // Update the table config with a partial config
   const updateKeyTableConfig = (config: Partial<TableConfig>) =>
@@ -41,7 +41,11 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
   // Update the table preferences with a partial preferences
   const updateKeyTablePreferences = (persistentConfig: Partial<TablePreferences>) =>
     dispatch(
-      setTablePreferences({ name, preferences: { ...keyTablePreferences, ...persistentConfig } }),
+      setTablePreferences({
+        page,
+        name,
+        preferences: { ...keyTablePreferences, ...persistentConfig },
+      }),
     );
 
   const { result, error, timestamp, executionTime } = keyResults ?? {};

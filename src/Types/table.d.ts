@@ -13,6 +13,7 @@ type TablePreferences = {
   pageSize: number;
   highlights: TableHighlight[];
   savedFilters: SavedTableFilter[];
+  selectedFilter?: string;
 };
 
 type SortConfig = {

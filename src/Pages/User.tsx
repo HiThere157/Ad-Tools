@@ -110,7 +110,7 @@ export default function User() {
           <Table
             page={page}
             tabId={tabId}
-            name="user-search"
+            name="search"
             title="Search Results"
             onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
               runQuery({

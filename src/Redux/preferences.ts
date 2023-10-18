@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type SetTablePreferencesAction = {
+  page: string;
   name: string;
   preferences: TablePreferences;
 };
@@ -9,16 +10,20 @@ const preferencesSlice = createSlice({
   name: "preferences",
   initialState: {
     isNavBarExpanded: true,
-    tablePreferences: {} as PartialRecord<string, TablePreferences>,
+    tablePreferences: {} as PageStorage<PartialRecord<string, TablePreferences>>,
   },
   reducers: {
     toggleNavBar: (state) => {
       state.isNavBarExpanded = !state.isNavBarExpanded;
     },
     setTablePreferences: (state, action: PayloadAction<SetTablePreferencesAction>) => {
-      const { name, preferences } = action.payload;
+      const { page, name, preferences } = action.payload;
 
-      state.tablePreferences[name] = preferences;
+      if (!state.tablePreferences[page]) {
+        state.tablePreferences[page] = {};
+      }
+
+      state.tablePreferences[page]![name] = preferences;
     },
   },
 });
