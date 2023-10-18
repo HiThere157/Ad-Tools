@@ -10,7 +10,7 @@ const preferencesSlice = createSlice({
   name: "preferences",
   initialState: {
     isNavBarExpanded: true,
-    tablePreferences: {} as PageStorage<NameStorage<TablePreferences>>,
+    tablePreferences: {} as PageStorage<PartialRecord<string, TablePreferences>>,
   },
   reducers: {
     toggleNavBar: (state) => {
