@@ -5,6 +5,7 @@ type InputProps = {
   onChange: (value: string) => void;
   onEnter?: () => void;
   placeholder?: string;
+  autoFocus?: boolean;
   className?: string;
   disabled?: boolean;
 };
@@ -13,13 +14,14 @@ export default function Input({
   onChange,
   onEnter,
   placeholder,
+  autoFocus,
   className,
   disabled,
 }: InputProps) {
   return (
     <input
       className={twMerge(
-        "rounded border-2 px-2 outline-none disabled:opacity-50",
+        "rounded border-2 px-2 disabled:opacity-50",
         "border-border bg-dark focus-within:border-borderActive focus-within:bg-secondaryActive hover:border-borderAccent hover:bg-secondaryAccent",
         className,
       )}
@@ -30,6 +32,7 @@ export default function Input({
         if (e.key === "Enter") onEnter?.();
       }}
       placeholder={placeholder}
+      autoFocus={autoFocus}
       disabled={disabled}
     />
   );

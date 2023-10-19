@@ -23,8 +23,7 @@ export default function TablePagination({
   setPageIndex,
 }: TablePaginationProps) {
   const maxPage = Math.ceil(count / pageSize) - 1;
-
-  const className = "bg-dark h-6 px-0.5";
+  const className = "bg-dark p-0.5";
 
   return (
     <div className="flex items-center gap-1">

@@ -99,6 +99,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
             onChange={(name) => {
               updateTabQuery({ filters: [{ property: "Name", value: name }] });
             }}
+            autoFocus={true}
             onEnter={beforeSubmit}
           />
         </div>

@@ -49,7 +49,7 @@ export default function MultiInput({
 
       <input
         type="text"
-        className="w-full rounded bg-dark px-2 outline-none focus-within:bg-secondaryActive group-hover:bg-secondaryAccent"
+        className="w-full rounded bg-dark px-2 focus-within:bg-secondaryActive group-hover:bg-secondaryAccent"
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             addItem(e.currentTarget.value);
