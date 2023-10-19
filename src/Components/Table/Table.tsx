@@ -161,7 +161,7 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
               />
             )}
 
-            <div className="overflow-x-auto rounded border-2 border-border">
+            <div tabIndex={-1} className="overflow-x-auto rounded border-2 border-border">
               <TableElement
                 data={coloredResult}
                 columns={columns.filter((column) => !hiddenColumns.includes(column))}

@@ -10,8 +10,8 @@ export default function Button({ children, className, disabled, onClick }: Butto
   return (
     <button
       className={twMerge(
-        "rounded border-2 px-2 disabled:opacity-50",
-        "border-border bg-secondary hover:border-borderAccent hover:bg-secondaryAccent active:border-borderActive active:bg-secondaryActive",
+        "rounded border-2 px-2 outline-none disabled:opacity-50",
+        "border-border bg-secondary hover:border-borderAccent hover:bg-secondaryAccent focus:border-borderActive active:border-borderActive active:bg-secondaryActive",
         className,
       )}
       onClick={onClick}

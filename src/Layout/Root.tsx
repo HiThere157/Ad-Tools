@@ -22,7 +22,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <Navigation />
       <Footer />
 
-      <div style={{ gridArea: "main" }} className="overflow-auto">
+      <div tabIndex={-1} style={{ gridArea: "main" }} className="overflow-auto">
         {children}
       </div>
 

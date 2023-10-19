@@ -88,9 +88,9 @@ export default function TableElement({
           </th>
 
           {columns.map((column, columnIndex) => (
-            <th key={columnIndex} className="border-s border-border px-2">
+            <th key={columnIndex} className="border-s border-border">
               <button
-                className="flex w-full items-center justify-between gap-2"
+                className="flex w-full items-center justify-between gap-2 rounded px-2 outline-none outline-offset-0 focus-visible:outline-borderActive"
                 onClick={() => onSort(column)}
               >
                 {friendly(column)}

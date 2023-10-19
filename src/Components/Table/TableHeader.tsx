@@ -15,13 +15,16 @@ export default function TableHeader({
   const { total, selected, filtered } = count ?? {};
 
   return (
-    <div className="flex gap-1">
-      <button className="mt-1 text-2xl" onClick={() => setIsCollapsed(!isCollapsed)}>
+    <div className="flex">
+      <button tabIndex={-1} className="mt-1 text-2xl" onClick={() => setIsCollapsed(!isCollapsed)}>
         <FiChevronDown className={isCollapsed ? "rotate-180" : ""} />
       </button>
 
-      <div className="flex items-baseline gap-2">
-        <button onClick={() => setIsCollapsed(!isCollapsed)}>
+      <div className="flex items-baseline gap-1">
+        <button
+          className="z-10 rounded px-1 outline-none outline-offset-0 focus-visible:outline-borderActive"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
           <h2 className="text-2xl font-bold" style={{ scrollMarginTop: "60px" }}>
             {title}
           </h2>

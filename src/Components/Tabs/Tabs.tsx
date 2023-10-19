@@ -97,7 +97,7 @@ export default function Tabs({ page }: TabsProps) {
       ))}
 
       <button
-        className="mx-1 rounded-full text-xl hover:bg-secondaryActive active:bg-primary"
+        className="mx-1 rounded-full text-xl outline-none outline-offset-0 hover:bg-secondaryActive focus-visible:outline-borderActive active:bg-primary"
         onClick={() => {
           const id = new Date().getTime();
           dispatch(addTab({ page, tab: { ...defaultTab, id } }));

@@ -12,12 +12,16 @@ export default function Header() {
       style={{ gridArea: "header" }}
       className="winbar-drag-region flex select-none items-center border-b-2 border-border bg-light"
     >
-      <NavLink draggable="false" className="winbar-no-drag flex items-center" to="/">
+      <NavLink
+        draggable="false"
+        className="winbar-no-drag ms-2 flex items-center gap-3 rounded px-1 outline-none outline-offset-0 focus-visible:outline-secondaryActive"
+        to="/"
+      >
         <img
           draggable="false"
           src={env.appChannel === "stable" ? "./icon.svg" : "./icon_beta.svg"}
           alt="AD Tools Logo"
-          className="mx-3 h-6"
+          className="h-6"
         />
         <span className="text-xl font-bold">
           <span>AD Tools</span>
@@ -26,7 +30,7 @@ export default function Header() {
         </span>
       </NavLink>
 
-      <span className="mx-3 text-grey ">{env.executingUser}</span>
+      <span className="mx-2 text-grey ">{env.executingUser}</span>
 
       <div className="flex-1" />
 
