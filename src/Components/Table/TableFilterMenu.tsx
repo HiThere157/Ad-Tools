@@ -1,10 +1,14 @@
+import { useState } from "react";
+
 import { defaultTableFilter } from "../../Config/default";
 
 import Button from "../Button";
 import Dropdown from "../Dropdown/Dropdown";
+import Prompt from "../Popup/Prompt";
+import Confirm from "../Popup/Confirm";
 import TableFilter from "./TableFilter";
 
-import { BsPlusLg, BsSave, BsTrashFill } from "react-icons/bs";
+import { BsPencilFill, BsPlusLg, BsSave, BsTrashFill } from "react-icons/bs";
 
 type TableFilterMenuProps = {
   columns: string[];
@@ -24,6 +28,10 @@ export default function TableFilterMenu({
   savedFilterName,
   setSavedFilterName,
 }: TableFilterMenuProps) {
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isRenameOpen, setIsRenameOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
   const setCurrentFilters = (filters: TableFilter[]) => {
     if (savedFilterName) {
       const newSavedFilters = [...savedFilters];
@@ -63,23 +71,17 @@ export default function TableFilterMenu({
         />
 
         {savedFilterName ? (
-          <Button
-            className="p-1 text-red"
-            onClick={() =>
-              setSavedFilters(savedFilters.filter((filter) => filter.name !== savedFilterName))
-            }
-          >
-            <BsTrashFill />
-          </Button>
+          <>
+            <Button className="p-1" onClick={() => setIsRenameOpen(true)}>
+              <BsPencilFill />
+            </Button>
+
+            <Button className="p-1 text-red" onClick={() => setIsDeleteOpen(true)}>
+              <BsTrashFill />
+            </Button>
+          </>
         ) : (
-          <Button
-            className="p-1"
-            onClick={() => {
-              const tempName = new Date().toLocaleString();
-              setSavedFilters([...savedFilters, { name: tempName, filters }], tempName);
-              setFilters([]);
-            }}
-          >
+          <Button className="p-1" onClick={() => setIsCreateOpen(true)}>
             <BsSave />
           </Button>
         )}
@@ -106,6 +108,48 @@ export default function TableFilterMenu({
           <BsPlusLg />
         </Button>
       </div>
+
+      <Prompt
+        isOpen={isCreateOpen}
+        title="Create new Saved Filter"
+        label="Name:"
+        onSubmit={(name) => {
+          setIsCreateOpen(false);
+          if (!name) return;
+
+          setSavedFilters([...savedFilters, { name, filters }], name);
+          setFilters([]);
+        }}
+      />
+
+      <Prompt
+        isOpen={isRenameOpen}
+        title="Rename Saved Filter"
+        label="Name:"
+        onSubmit={(name) => {
+          setIsRenameOpen(false);
+          if (!name) return;
+
+          const newSavedFilters = [...savedFilters];
+          const index = newSavedFilters.findIndex((filter) => filter.name === savedFilterName);
+
+          newSavedFilters[index] = { name, filters };
+          setSavedFilters(newSavedFilters, name);
+        }}
+      />
+
+      <Confirm
+        isOpen={isDeleteOpen}
+        title="Delete Saved Filter"
+        message="Are you sure you want to delete this Saved Filter?"
+        onSubmit={(selection) => {
+          setIsDeleteOpen(false);
+
+          if (selection) {
+            setSavedFilters(savedFilters.filter((filter) => filter.name !== savedFilterName));
+          }
+        }}
+      />
     </div>
   );
 }
