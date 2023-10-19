@@ -55,5 +55,5 @@ export const defaultTablePreferences: TablePreferences = {
   pageSize: 10,
   highlights: [],
   savedFilters: [],
-  selectedFilter: undefined,
+  savedFilterName: undefined,
 };

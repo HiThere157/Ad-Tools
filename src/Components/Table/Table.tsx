@@ -54,11 +54,15 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
 
   const { isFilterOpen, isHighlightOpen } = keyTableConfigs;
   const { isCollapsed, filters, hiddenColumns, sort, selected, pageIndex } = keyTableConfigs;
-  const { pageSize, highlights } = keyTablePreferences;
+  const { pageSize, highlights, savedFilters, savedFilterName } = keyTablePreferences;
+
+  const selectedFilter = useMemo(() => {
+    return savedFilters?.find((filter) => filter.name === savedFilterName)?.filters ?? filters;
+  }, [savedFilters, savedFilterName, filters]);
 
   const filteredResult = useMemo(() => {
-    return filterData(data, filters);
-  }, [data, filters]);
+    return filterData(data, selectedFilter);
+  }, [data, selectedFilter]);
 
   const sortedResult = useMemo(() => {
     return sortData(filteredResult, sort);
@@ -126,7 +130,7 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
             onFilterMenu={() => updateKeyTableConfig({ isFilterOpen: !isFilterOpen })}
             onHighlightMenu={() => updateKeyTableConfig({ isHighlightOpen: !isHighlightOpen })}
             onCopy={exportAsCSV}
-            filters={filters}
+            filters={selectedFilter}
             columns={columns}
             highlights={highlights}
             hiddenColumns={hiddenColumns}
@@ -137,8 +141,16 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
             {isFilterOpen && (
               <TableFilterMenu
                 columns={columns}
-                filters={filters}
+                filters={selectedFilter}
                 setFilters={(filters) => updateKeyTableConfig({ filters, pageIndex: 0 })}
+                savedFilters={savedFilters}
+                setSavedFilters={(savedFilters, savedFilterName) =>
+                  updateKeyTablePreferences({ savedFilters, savedFilterName })
+                }
+                savedFilterName={savedFilterName}
+                setSavedFilterName={(savedFilterName) =>
+                  updateKeyTablePreferences({ savedFilterName })
+                }
               />
             )}
 
