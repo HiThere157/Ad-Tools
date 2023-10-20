@@ -60,7 +60,7 @@ export default function Dropdown({
           <button
             key={itemIndex}
             className={
-              "flex w-full items-center gap-2 whitespace-nowrap border-border bg-secondary px-2 hover:bg-secondaryAccent active:bg-secondaryActive " +
+              "flex w-full items-center gap-2 whitespace-nowrap border-border bg-secondary px-2 outline-none  -outline-offset-2 hover:bg-secondaryAccent focus-visible:rounded focus-visible:outline-borderActive active:bg-secondaryActive " +
               (itemIndex !== 0 ? "border-t" : "")
             }
             onClick={() => {

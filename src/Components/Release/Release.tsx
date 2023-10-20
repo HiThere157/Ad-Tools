@@ -26,12 +26,12 @@ export default function Release({ release, installed }: ReleaseProps) {
 
   return (
     <div className="w-full max-w-3xl rounded border-2 border-border px-2 py-1">
-      <div className="mx-1 flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <a
-          className="group flex items-center gap-2"
+          className="group flex items-center gap-2 rounded px-1 outline-none outline-offset-0 focus-visible:outline-borderActive"
           href={html_url}
           target="_blank"
-          rel="noreferrer"
+          rel="no referrer"
         >
           <h2 className="text-2xl font-bold">
             {repository}: {name}
@@ -41,7 +41,7 @@ export default function Release({ release, installed }: ReleaseProps) {
         </a>
 
         <a
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 rounded px-1 outline-none outline-offset-0 focus-visible:outline-borderActive"
           href={author.html_url}
           target="_blank"
           rel="noreferrer"
