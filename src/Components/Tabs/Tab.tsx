@@ -1,4 +1,4 @@
-import { BsExclamationCircle, BsPersonFill, BsSearch, BsX } from "react-icons/bs";
+import { BsExclamationCircle, BsPeopleFill, BsPersonFill, BsSearch, BsX } from "react-icons/bs";
 import { ClipLoader } from "react-spinners";
 
 type TabProps = {
@@ -12,6 +12,7 @@ export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
 
   const icons: Record<Required<Tab>["icon"], JSX.Element> = {
     user: <BsPersonFill className="flex-shrink-0 text-primaryAccent" />,
+    group: <BsPeopleFill className="flex-shrink-0 text-primaryAccent" />,
     search: <BsSearch className="flex-shrink-0 text-primaryAccent" />,
     loading: (
       <ClipLoader className="flex-shrink-0" color="#208cf0" speedMultiplier={0.7} size={16} />

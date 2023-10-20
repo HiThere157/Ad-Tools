@@ -89,7 +89,7 @@ export default function Group() {
         softResetTabTableConfig("members");
       }),
     ])
-      .then(() => updatePageTab({ icon: "user" }))
+      .then(() => updatePageTab({ icon: "group" }))
       .catch(() => updatePageTab({ icon: "error" }));
   };
 
