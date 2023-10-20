@@ -117,7 +117,10 @@ export default function TableFilterMenu({
           setIsCreateOpen(false);
           if (!name) return;
 
-          setSavedFilters([...savedFilters, { name, filters }], name);
+          const sameNameCount = savedFilters.filter((filter) => filter.name === name).length;
+          const uniqueName = sameNameCount === 0 ? name : `${name} (${sameNameCount})`;
+
+          setSavedFilters([...savedFilters, { name: uniqueName, filters }], uniqueName);
           setFilters([]);
         }}
       />
@@ -133,8 +136,11 @@ export default function TableFilterMenu({
           const newSavedFilters = [...savedFilters];
           const index = newSavedFilters.findIndex((filter) => filter.name === savedFilterName);
 
-          newSavedFilters[index] = { name, filters };
-          setSavedFilters(newSavedFilters, name);
+          const sameNameCount = savedFilters.filter((filter) => filter.name === name).length;
+          const uniqueName = sameNameCount === 0 ? name : `${name} (${sameNameCount})`;
+
+          newSavedFilters[index] = { name: uniqueName, filters };
+          setSavedFilters(newSavedFilters, uniqueName);
         }}
       />
 
