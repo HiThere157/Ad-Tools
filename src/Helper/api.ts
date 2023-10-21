@@ -63,16 +63,14 @@ export function useEnvironment(): ElectronEnvironment {
   return env;
 }
 
-export function useQueryDomains(): string[] {
-  const [suffixList, setSuffixList] = useState<string[]>([]);
-
+export async function getDnsSuffixList(): Promise<string[]> {
   if (!electronWindow.electronAPI) {
-    return ["domain1.com", "domain2.com", "domain3.com"];
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(["domain1.com", "domain2.com", "domain3.com"]);
+      }, 1000);
+    });
   }
 
-  if (suffixList.length === 0) {
-    electronWindow.electronAPI.getDnsSuffixList().then(setSuffixList);
-  }
-
-  return suffixList;
+  return electronWindow.electronAPI.getDnsSuffixList();
 }

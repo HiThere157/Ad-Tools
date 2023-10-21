@@ -66,9 +66,11 @@ export default function Tabs({ page }: TabsProps) {
   };
 
   // If there are no tabs, add a default tab
-  if (pageTabs.length === 0) {
-    newTab();
-  }
+  useEffect(() => {
+    if (pageTabs.length === 0) {
+      newTab();
+    }
+  }, []);
 
   // Handle keyboard shortcuts
   useEffect(() => {

@@ -11,6 +11,7 @@ const preferencesSlice = createSlice({
   initialState: {
     isNavBarExpanded: true,
     tablePreferences: {} as PageStorage<PartialRecord<string, TablePreferences>>,
+    queryDomains: [] as string[],
   },
   reducers: {
     toggleNavBar: (state) => {
@@ -25,8 +26,11 @@ const preferencesSlice = createSlice({
 
       state.tablePreferences[page]![name] = preferences;
     },
+    setQueryDomains: (state, action: PayloadAction<string[]>) => {
+      state.queryDomains = action.payload;
+    },
   },
 });
 
-export const { toggleNavBar, setTablePreferences } = preferencesSlice.actions;
+export const { toggleNavBar, setTablePreferences, setQueryDomains } = preferencesSlice.actions;
 export default preferencesSlice.reducer;

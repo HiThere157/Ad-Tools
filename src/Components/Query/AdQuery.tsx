@@ -2,9 +2,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
+import { setQueryDomains } from "../../Redux/preferences";
 import { setQuery } from "../../Redux/data";
 import { defaultAdQuery, defaultQueryFilter } from "../../Config/default";
-import { useQueryDomains } from "../../Helper/api";
+import { getDnsSuffixList } from "../../Helper/api";
 
 import Button from "../Button";
 import Checkbox from "../Checkbox";
@@ -20,9 +21,8 @@ type AdQueryProps = {
   onSubmit: () => void;
 };
 export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
-  const availableServers = useQueryDomains();
-
   const { query } = useSelector((state: RootState) => state.data);
+  const { queryDomains } = useSelector((state: RootState) => state.preferences);
   const dispatch = useDispatch();
 
   const tabQuery = query[page]?.[tabId] ?? defaultAdQuery;
@@ -46,16 +46,25 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
   };
 
   // If there are no filters, set the default filter
-  if (filters.length === 0) {
-    updateTabQuery({ filters: [defaultQueryFilter] });
-  }
-
-  // If there are no servers, set the first available server
   useEffect(() => {
-    if (tabQuery === defaultAdQuery && availableServers.length > 0) {
-      updateTabQuery({ servers: [availableServers[0]] });
+    if (filters.length === 0) {
+      updateTabQuery({ filters: [defaultQueryFilter] });
     }
-  }, [availableServers, tabQuery]);
+  }, []);
+
+  // If there are no queryDomains, get them
+  useEffect(() => {
+    if (queryDomains.length === 0) {
+      getDnsSuffixList().then((domains) => dispatch(setQueryDomains(domains)));
+    }
+  }, []);
+
+  // Set default server if there are queryDomains and the query is the default query
+  useEffect(() => {
+    if (tabQuery === defaultAdQuery && queryDomains.length > 0 && tabId !== 0) {
+      updateTabQuery({ servers: [queryDomains[0]] });
+    }
+  }, [queryDomains, tabQuery, tabId]);
 
   return (
     <div className="m-1.5 mb-4 flex items-start gap-1">
@@ -108,7 +117,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
       <span className="text-grey">@</span>
 
       <MultiDropdown
-        items={availableServers}
+        items={queryDomains}
         value={servers}
         onChange={(servers) => updateTabQuery({ servers })}
       />
