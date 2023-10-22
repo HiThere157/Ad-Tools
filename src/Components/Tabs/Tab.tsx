@@ -1,4 +1,4 @@
-import { BsExclamationCircle, BsPeopleFill, BsPersonFill, BsSearch, BsX } from "react-icons/bs";
+import { BsPeopleFill, BsPersonFill, BsSearch, BsX } from "react-icons/bs";
 import { ClipLoader } from "react-spinners";
 
 type TabProps = {
@@ -17,7 +17,6 @@ export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
     loading: (
       <ClipLoader className="flex-shrink-0" color="#208cf0" speedMultiplier={0.7} size={16} />
     ),
-    error: <BsExclamationCircle className="flex-shrink-0 text-red" />,
   };
 
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {

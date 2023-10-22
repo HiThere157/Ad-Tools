@@ -1,10 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
-
-import { RootState } from "../Redux/store";
-import { updateTab } from "../Redux/tabs";
-import { setResult, softResetTableConfig } from "../Redux/data";
-import { defaultAdQuery } from "../Config/default";
 import { useRedirect } from "../Hooks/useRedirect";
+import { useTabState } from "../Hooks/useTabState";
 import {
   expectMultipleResults,
   getPSFilterString,
@@ -21,92 +16,77 @@ import Table from "../Components/Table/Table";
 export default function User() {
   const page = "user";
   const { redirect, onRedirect } = useRedirect();
-  const { activeTab } = useSelector((state: RootState) => state.tabs);
-  const { query } = useSelector((state: RootState) => state.data);
-  const dispatch = useDispatch();
+  const { tabId, query, updateTab, setResult, softResetTableConfig } = useTabState(page);
 
-  const tabId = activeTab[page] ?? 0;
-  const tabQuery = query[page]?.[tabId] ?? defaultAdQuery;
-
-  const updatePageTab = (tab: Partial<Tab>) => dispatch(updateTab({ page, tabId, tab }));
-  const setTabResult = (name: string, result: Loadable<PSDataSet>) =>
-    dispatch(setResult({ page, tabId, name, result }));
-  const softResetTabTableConfig = (name: string) =>
-    dispatch(softResetTableConfig({ page, tabId, name }));
-
-  const runPreQuery = async (tabQuery: AdQuery) => {
-    updatePageTab({ icon: "loading", title: "Search Results" });
-    setTabResult("search", null);
-    setTabResult("attributes", undefined);
-    setTabResult("groups", undefined);
+  const runPreQuery = async (query: AdQuery) => {
+    updateTab({ icon: "loading", title: "Search Results" });
+    setResult("search", null);
+    setResult("attributes", undefined);
+    setResult("groups", undefined);
 
     const selectFields = removeDuplicates(
       ["Name", "DisplayName"],
-      tabQuery.filters.map(({ property }) => property),
+      query.filters.map(({ property }) => property),
     );
-    const responses = tabQuery.servers.map((server) =>
+    const responses = query.servers.map((server) =>
       invokePSCommand({
         command: `Get-AdUser \
-          -Filter "${getPSFilterString(tabQuery.filters)}" \
+          -Filter "${getPSFilterString(query.filters)}" \
           -Server ${server} \
           -Properties ${selectFields.join(",")}`,
         selectFields,
       }).then((response) => addServerToResponse(response, server)),
     );
 
-    Promise.all(responses)
-      .then((responses) => {
-        updatePageTab({ icon: "search" });
-        setTabResult("search", mergeResponses(responses));
-        softResetTabTableConfig("search");
-      })
-      .catch(() => updatePageTab({ icon: "error" }));
+    Promise.all(responses).then((responses) => {
+      updateTab({ icon: "search" });
+      setResult("search", mergeResponses(responses));
+      softResetTableConfig("search");
+    });
   };
 
-  const runQuery = async (tabQuery: AdQuery, resetSearch?: boolean) => {
-    if (expectMultipleResults(tabQuery)) return runPreQuery(tabQuery);
+  const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
+    if (expectMultipleResults(query)) return runPreQuery(query);
 
-    const identity = tabQuery.filters.find(({ property }) => property === "Name")?.value ?? "";
+    const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
 
-    updatePageTab({ icon: "loading", title: identity || "User" });
-    if (resetSearch) setTabResult("search", undefined);
-    setTabResult("attributes", null);
-    setTabResult("groups", null);
+    updateTab({ icon: "loading", title: identity || "User" });
+    if (resetSearch) setResult("search", undefined);
+    setResult("attributes", null);
+    setResult("groups", null);
 
     Promise.all([
       invokePSCommand({
         command: `Get-AdUser \
         -Identity ${identity} \
-        -Server ${tabQuery.servers[0]} \
+        -Server ${query.servers[0]} \
         -Properties *`,
       }).then((response) => {
-        setTabResult("attributes", extractFirstObject(response));
-        softResetTabTableConfig("attributes");
+        setResult("attributes", extractFirstObject(response));
+        softResetTableConfig("attributes");
       }),
       invokePSCommand({
         command: `Get-AdPrincipalGroupMembership \
         -Identity ${identity} \
-        -Server ${tabQuery.servers[0]}`,
+        -Server ${query.servers[0]}`,
         selectFields: ["Name", "GroupCategory", "DistinguishedName"],
       }).then((response) => {
-        setTabResult("groups", addServerToResponse(response, tabQuery.servers[0]));
-        softResetTabTableConfig("groups");
+        setResult("groups", addServerToResponse(response, query.servers[0]));
+        softResetTableConfig("groups");
       }),
-    ])
-      .then(() => updatePageTab({ icon: "user" }))
-      .catch(() => updatePageTab({ icon: "error" }));
+    ]).then(() => updateTab({ icon: "user" }));
   };
 
-  onRedirect(() => runQuery(tabQuery, true));
+  onRedirect(() => runQuery(query, true));
 
   return (
     <div>
       <Tabs page={page} />
 
       <div className="px-4 py-2">
-        <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(tabQuery, true)} />
+        <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
-        {expectMultipleResults(tabQuery) && (
+        {expectMultipleResults(query) && (
           <Table
             page={page}
             tabId={tabId}
