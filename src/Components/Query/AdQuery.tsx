@@ -50,7 +50,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
     if (filters.length === 0) {
       updateTabQuery({ filters: [defaultQueryFilter] });
     }
-  }, []);
+  });
 
   // If there are no queryDomains, get them
   useEffect(() => {

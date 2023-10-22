@@ -69,7 +69,7 @@ export default function Tabs({ page }: TabsProps) {
     if (pageTabs.length === 0) {
       newTab();
     }
-  }, []);
+  });
 
   // Handle keyboard shortcuts
   useEffect(() => {
