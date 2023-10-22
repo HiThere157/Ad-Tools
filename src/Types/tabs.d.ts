@@ -1,5 +1,5 @@
 type Tab = {
-  icon?: "user" | "group" | "search" | "loading";
+  icon?: "user" | "group" | "computer" | "search" | "loading";
   id: number;
   title: string;
 };

@@ -1,6 +1,7 @@
 import Home from "../Pages/Home";
 import User from "../Pages/User";
 import Group from "../Pages/Group";
+import Computer from "../Pages/Computer";
 import Settings from "../Pages/Settings";
 import Tetris from "../Pages/Tetris";
 
@@ -44,7 +45,7 @@ export const navigationLinks: NavigationLink[][] = [
       href: "/computer",
       text: "Computer",
       icon: <BsDisplay />,
-      page: <div>ComputerPage</div>,
+      page: <Computer />,
     },
     {
       href: "/replication",
