@@ -1,4 +1,4 @@
-export function expectMultipleResults(query: AdQuery) {
+export function shouldPreQuery(query: AdQuery) {
   const { filters, servers } = query;
   const hasNonNameField = filters.some(({ property }) => property !== "Name");
   const hasMultipleServers = servers.length > 1;
@@ -7,7 +7,7 @@ export function expectMultipleResults(query: AdQuery) {
   return hasNonNameField || hasMultipleServers || hasWildcard;
 }
 
-export function getPSFilterString(filters: QueryFilter[]) {
+export function getPSFilter(filters: QueryFilter[]) {
   return filters
     .map(({ property, value }) => {
       return `${property} -${value?.includes("*") ? "like" : "eq"} '${value}'`;

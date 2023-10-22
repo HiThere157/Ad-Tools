@@ -1,11 +1,6 @@
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
-import {
-  expectMultipleResults,
-  getPSFilterString,
-  mergeResponses,
-  removeDuplicates,
-} from "../Helper/utils";
+import { shouldPreQuery, getPSFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
 import { invokePSCommand } from "../Helper/api";
 import { addServerToResponse, extractFirstObject } from "../Helper/postProcessors";
 
@@ -31,7 +26,7 @@ export default function User() {
     const responses = query.servers.map((server) =>
       invokePSCommand({
         command: `Get-AdUser \
-          -Filter "${getPSFilterString(query.filters)}" \
+          -Filter "${getPSFilter(query.filters)}" \
           -Server ${server} \
           -Properties ${selectFields.join(",")}`,
         selectFields,
@@ -46,7 +41,7 @@ export default function User() {
   };
 
   const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
-    if (expectMultipleResults(query)) return runPreQuery(query);
+    if (shouldPreQuery(query)) return runPreQuery(query);
 
     const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
 
@@ -86,7 +81,7 @@ export default function User() {
       <div className="px-4 py-2">
         <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
-        {expectMultipleResults(query) && (
+        {shouldPreQuery(query) && (
           <Table
             page={page}
             tabId={tabId}
