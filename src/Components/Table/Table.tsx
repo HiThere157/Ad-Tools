@@ -23,7 +23,7 @@ type TableProps = {
   page: string;
   tabId: number;
   name: string;
-  onRedirect?: (row: PSResult) => void;
+  onRedirect?: (row: PSResult, newTab?: boolean) => void;
 };
 export default function Table({ title, page, tabId, name, onRedirect }: TableProps) {
   const { tablePreferences } = useSelector((state: RootState) => state.preferences);

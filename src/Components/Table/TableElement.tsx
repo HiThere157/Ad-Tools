@@ -17,7 +17,7 @@ type TableElementProps = {
   allRowIds: number[];
   selected: number[];
   setSelected: (selected: number[]) => void;
-  onRedirect?: (row: PSResult) => void;
+  onRedirect?: (row: PSResult, newTab?: boolean) => void;
 };
 export default function TableElement({
   data,
@@ -132,8 +132,8 @@ export default function TableElement({
                 {onRedirect && (
                   <Button
                     className="absolute right-1 top-1/2 hidden h-6 translate-y-[-50%] px-0.5 group-hover:block"
-                    onClick={() => {
-                      onRedirect(row);
+                    onClick={(e) => {
+                      onRedirect(row, e.ctrlKey);
                     }}
                   >
                     <BsSearch />

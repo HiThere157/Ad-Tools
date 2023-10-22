@@ -4,7 +4,7 @@ type ButtonProps = {
   children?: React.ReactNode;
   className?: string;
   disabled?: boolean;
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 export default function Button({ children, className, disabled, onClick }: ButtonProps) {
   return (

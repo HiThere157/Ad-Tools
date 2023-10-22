@@ -4,6 +4,7 @@ import { RootState } from "../Redux/store";
 import { updateTab } from "../Redux/tabs";
 import { setResult, softResetTableConfig } from "../Redux/data";
 import { defaultAdQuery } from "../Config/default";
+import { useRedirect } from "../Hooks/useRedirect";
 import {
   expectMultipleResults,
   getPSFilterString,
@@ -19,6 +20,7 @@ import Table from "../Components/Table/Table";
 
 export default function Group() {
   const page = "group";
+  const { redirect, onRedirect } = useRedirect();
   const { activeTab } = useSelector((state: RootState) => state.tabs);
   const { query } = useSelector((state: RootState) => state.data);
   const dispatch = useDispatch();
@@ -87,13 +89,15 @@ export default function Group() {
         -Server ${tabQuery.servers[0]}`,
         selectFields: ["Name", "DisplayName", "ObjectClass"],
       }).then((response) => {
-        setTabResult("members", response);
+        setTabResult("members", addServerToResponse(response, tabQuery.servers[0]));
         softResetTabTableConfig("members");
       }),
     ])
       .then(() => updatePageTab({ icon: "group" }))
       .catch(() => updatePageTab({ icon: "error" }));
   };
+
+  onRedirect(() => runQuery(tabQuery, true));
 
   return (
     <div>
@@ -108,16 +112,35 @@ export default function Group() {
             tabId={tabId}
             name="search"
             title="Search Results"
-            onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
-              runQuery({
+            onRedirect={(row: PSResult & { Name?: string; _Server?: string }, newTab) => {
+              const newQuery = {
+                isAdvanced: false,
                 filters: [{ property: "Name", value: row.Name ?? "" }],
                 servers: [row._Server ?? ""],
-              });
+              };
+
+              if (newTab) {
+                redirect(page, newQuery);
+              } else {
+                runQuery(newQuery);
+              }
             }}
           />
         )}
         <Table page={page} tabId={tabId} name="attributes" title="Attributes" />
-        <Table page={page} tabId={tabId} name="members" title="Members" />
+        <Table
+          page={page}
+          tabId={tabId}
+          name="members"
+          title="Members"
+          onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
+            redirect("user", {
+              isAdvanced: false,
+              filters: [{ property: "Name", value: row.Name ?? "" }],
+              servers: [row._Server ?? ""],
+            });
+          }}
+        />
       </div>
     </div>
   );
