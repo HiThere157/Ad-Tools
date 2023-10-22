@@ -127,7 +127,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
 
         <label className="flex items-center gap-1">
           <Checkbox
-            checked={isAdvanced}
+            checked={isAdvanced == true}
             onChange={(isAdvanced) => {
               // If we are switching from advanced to simple, remove all filters except for the name filter
               // If no name filter exists, add one

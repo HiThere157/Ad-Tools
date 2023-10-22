@@ -94,7 +94,6 @@ export default function User() {
             title="Search Results"
             onRedirect={(row: PSResult & { Name?: string; _Server?: string }, newTab) => {
               const newQuery = {
-                isAdvanced: false,
                 filters: [{ property: "Name", value: row.Name ?? "" }],
                 servers: [row._Server ?? ""],
               };
@@ -115,7 +114,6 @@ export default function User() {
           title="Groups"
           onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
             redirect("group", {
-              isAdvanced: false,
               filters: [{ property: "Name", value: row.Name ?? "" }],
               servers: [row._Server ?? ""],
             });
