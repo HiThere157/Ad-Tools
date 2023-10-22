@@ -32,7 +32,7 @@ export default function User() {
   const softResetTabTableConfig = (name: string) =>
     dispatch(softResetTableConfig({ page, tabId, name }));
 
-  const runPreQuery = async () => {
+  const runPreQuery = async (tabQuery: AdQuery) => {
     updatePageTab({ icon: "loading", title: "Search Results" });
     setTabResult("search", null);
     setTabResult("attributes", undefined);
@@ -62,6 +62,8 @@ export default function User() {
   };
 
   const runQuery = async (tabQuery: AdQuery, resetSearch?: boolean) => {
+    if (expectMultipleResults(tabQuery)) return runPreQuery(tabQuery);
+
     const identity = tabQuery.filters.find(({ property }) => property === "Name")?.value ?? "";
 
     updatePageTab({ icon: "loading", title: identity || "User" });
@@ -98,13 +100,7 @@ export default function User() {
       <Tabs page={page} />
 
       <div className="px-4 py-2">
-        <AdQuery
-          page={page}
-          tabId={tabId}
-          onSubmit={() =>
-            expectMultipleResults(tabQuery) ? runPreQuery() : runQuery(tabQuery, true)
-          }
-        />
+        <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(tabQuery, true)} />
 
         {expectMultipleResults(tabQuery) && (
           <Table
@@ -114,7 +110,6 @@ export default function User() {
             title="Search Results"
             onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
               runQuery({
-                isAdvanced: false,
                 filters: [{ property: "Name", value: row.Name ?? "" }],
                 servers: [row._Server ?? ""],
               });

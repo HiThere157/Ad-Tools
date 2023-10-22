@@ -1,5 +1,5 @@
 type AdQuery = {
-  isAdvanced: boolean;
+  isAdvanced?: boolean;
   filters: QueryFilter[];
   servers: string[];
 };
