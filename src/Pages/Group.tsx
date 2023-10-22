@@ -13,7 +13,7 @@ export default function Group() {
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult, softResetTableConfig } = useTabState(page);
 
-  const runPreQuery = async (query: AdQuery) => {
+  const runPreQuery = (query: AdQuery) => {
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult("attributes", undefined);
@@ -23,24 +23,24 @@ export default function Group() {
       ["Name", "Description"],
       query.filters.map(({ property }) => property),
     );
-    const responses = query.servers.map((server) =>
-      invokePSCommand({
-        command: `Get-AdGroup \
+    Promise.all(
+      query.servers.map((server) =>
+        invokePSCommand({
+          command: `Get-AdGroup \
           -Filter "${getPSFilter(query.filters)}" \
           -Server ${server} \
           -Properties ${selectFields.join(",")}`,
-        selectFields,
-      }).then((response) => addServerToResponse(response, server)),
-    );
-
-    Promise.all(responses).then((responses) => {
+          selectFields,
+        }).then((response) => addServerToResponse(response, server)),
+      ),
+    ).then((responses) => {
       updateTab({ icon: "search" });
       setResult("search", mergeResponses(responses));
       softResetTableConfig("search");
     });
   };
 
-  const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
+  const runQuery = (query: AdQuery, resetSearch?: boolean) => {
     if (shouldPreQuery(query)) return runPreQuery(query);
 
     const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
