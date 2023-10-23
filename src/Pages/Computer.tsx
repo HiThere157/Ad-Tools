@@ -32,7 +32,7 @@ export default function Computer() {
           -Server ${server} \
           -Properties ${selectFields.join(",")}`,
           selectFields,
-        }).then((response) => addServerToResponse(response, server)),
+        }).then((response) => addServerToResponse(response, server, true)),
       ),
     ).then((responses) => {
       updateTab({ icon: "search" });
@@ -71,7 +71,7 @@ export default function Computer() {
       }),
       invokePSCommand({
         command: `Get-AdPrincipalGroupMembership \
-        -Identity ${identity} \
+        (Get-AdComputer -Identity ${identity} -Server ${query.servers[0]}) \
         -Server ${query.servers[0]}`,
         selectFields: ["Name", "GroupCategory", "DistinguishedName"],
       }).then((response) => {

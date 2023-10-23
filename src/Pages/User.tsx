@@ -31,7 +31,7 @@ export default function User() {
           -Server ${server} \
           -Properties ${selectFields.join(",")}`,
           selectFields,
-        }).then((response) => addServerToResponse(response, server)),
+        }).then((response) => addServerToResponse(response, server, true)),
       ),
     ).then((responses) => {
       updateTab({ icon: "search" });

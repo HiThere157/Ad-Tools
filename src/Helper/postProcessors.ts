@@ -27,6 +27,7 @@ export function extractFirstObject(response: Loadable<PSDataSet>): Loadable<PSDa
 export function addServerToResponse(
   response: Loadable<PSDataSet>,
   server: string,
+  addToColumns?: boolean,
 ): Loadable<PSDataSet> {
   if (!response) return response;
 
@@ -36,11 +37,13 @@ export function addServerToResponse(
     return response;
   }
 
+  const newColumns = addToColumns ? [...result.columns, "_Server"] : result.columns;
+
   return {
     ...response,
     result: {
       data: result.data.map((row) => ({ ...row, _Server: server })),
-      columns: ["_Server", ...result.columns],
+      columns: newColumns,
     },
   };
 }

@@ -31,7 +31,7 @@ export default function Group() {
           -Server ${server} \
           -Properties ${selectFields.join(",")}`,
           selectFields,
-        }).then((response) => addServerToResponse(response, server)),
+        }).then((response) => addServerToResponse(response, server, true)),
       ),
     ).then((responses) => {
       updateTab({ icon: "search" });
@@ -64,7 +64,7 @@ export default function Group() {
         command: `Get-ADGroupMember \
         -Identity ${identity} \
         -Server ${query.servers[0]}`,
-        selectFields: ["Name", "DisplayName", "ObjectClass"],
+        selectFields: ["Name", "ObjectClass"],
       }).then((response) => {
         setResult("members", addServerToResponse(response, query.servers[0]));
         softResetTableConfig("members");
