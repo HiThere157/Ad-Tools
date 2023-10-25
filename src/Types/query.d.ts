@@ -8,3 +8,7 @@ type QueryFilter = {
   property: string;
   value: string;
 };
+
+type AzureQuery = {
+  searchString: string;
+};

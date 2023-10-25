@@ -12,6 +12,11 @@ const preferencesSlice = createSlice({
     isNavBarExpanded: true,
     tablePreferences: {} as PageStorage<PartialRecord<string, TablePreferences>>,
     queryDomains: [] as string[],
+    azureLogin: {
+      upn: "",
+      useCredentials: false,
+      rememberChoice: false,
+    },
   },
   reducers: {
     toggleNavBar: (state) => {
