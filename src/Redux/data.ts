@@ -10,6 +10,7 @@ type SetResultAction = {
   tabId: number;
   name: string;
   result: Loadable<PSDataSet>;
+  resetConfig?: boolean;
 };
 type SetTableConfigAction = {
   page: string;
@@ -20,11 +21,6 @@ type SetTableConfigAction = {
 type RemoveTabDataAction = {
   page: string;
   tabId: number;
-};
-type SoftResetTableConfigAction = {
-  page: string;
-  tabId: number;
-  name: string;
 };
 
 const dataSlice = createSlice({
@@ -46,7 +42,7 @@ const dataSlice = createSlice({
       state.query[page]![tabId] = query;
     },
     setResult: (state, action: PayloadAction<SetResultAction>) => {
-      const { page, tabId, name, result } = action.payload;
+      const { page, tabId, name, result, resetConfig } = action.payload;
 
       // If the page or tab doesn't exist, create it
       if (!state.results[page]) {
@@ -57,6 +53,15 @@ const dataSlice = createSlice({
       }
 
       state.results[page]![tabId]![name] = result;
+
+      // Soft-Reset the config if it exists and the flag is set
+      const config = state.tableConfigs[page]?.[tabId]?.[name];
+      if (resetConfig && config) {
+        config.selected = [];
+        config.pageIndex = 0;
+
+        state.tableConfigs[page]![tabId]![name] = config;
+      }
     },
     setTableConfig: (state, action: PayloadAction<SetTableConfigAction>) => {
       const { page, tabId, name, config } = action.payload;
@@ -85,21 +90,8 @@ const dataSlice = createSlice({
         delete state.tableConfigs[page]![tabId];
       }
     },
-    softResetTableConfig: (state, action: PayloadAction<SoftResetTableConfigAction>) => {
-      const { page, tabId, name } = action.payload;
-
-      // Soft-Reset the config if it exists
-      const config = state.tableConfigs[page]?.[tabId]?.[name];
-      if (config) {
-        config.selected = [];
-        config.pageIndex = 0;
-
-        state.tableConfigs[page]![tabId]![name] = config;
-      }
-    },
   },
 });
 
-export const { setQuery, setResult, setTableConfig, removeTabData, softResetTableConfig } =
-  dataSlice.actions;
+export const { setQuery, setResult, setTableConfig, removeTabData } = dataSlice.actions;
 export default dataSlice.reducer;

@@ -11,9 +11,9 @@ import Table from "../Components/Table/Table";
 export default function Group() {
   const page = "group";
   const { redirect, onRedirect } = useRedirect();
-  const { tabId, query, updateTab, setResult, softResetTableConfig } = useTabState(page);
+  const { tabId, query, updateTab, setResult } = useTabState(page);
 
-  const runPreQuery = (query: AdQuery) => {
+  const runPreQuery = async (query: AdQuery) => {
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult("attributes", undefined);
@@ -23,7 +23,7 @@ export default function Group() {
       ["Name", "Description"],
       query.filters.map(({ property }) => property),
     );
-    Promise.all(
+    const responses = await Promise.all(
       query.servers.map((server) =>
         invokePSCommand({
           command: `Get-AdGroup \
@@ -33,14 +33,13 @@ export default function Group() {
           selectFields,
         }).then((response) => addServerToResponse(response, server, true)),
       ),
-    ).then((responses) => {
-      updateTab({ icon: "search" });
-      setResult("search", mergeResponses(responses));
-      softResetTableConfig("search");
-    });
+    );
+
+    updateTab({ icon: "search" });
+    setResult("search", mergeResponses(responses), true);
   };
 
-  const runQuery = (query: AdQuery, resetSearch?: boolean) => {
+  const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
     if (shouldPreQuery(query)) return runPreQuery(query);
 
     const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
@@ -50,26 +49,24 @@ export default function Group() {
     setResult("attributes", null);
     setResult("members", null);
 
-    Promise.all([
+    const [attributes, members] = await Promise.all([
       invokePSCommand({
         command: `Get-AdGroup \
         -Identity ${identity} \
         -Server ${query.servers[0]} \
         -Properties *`,
-      }).then((response) => {
-        setResult("attributes", extractFirstObject(response));
-        softResetTableConfig("attributes");
       }),
       invokePSCommand({
         command: `Get-ADGroupMember \
         -Identity ${identity} \
         -Server ${query.servers[0]}`,
         selectFields: ["Name", "ObjectClass"],
-      }).then((response) => {
-        setResult("members", addServerToResponse(response, query.servers[0]));
-        softResetTableConfig("members");
       }),
-    ]).then(() => updateTab({ icon: "group" }));
+    ]);
+
+    updateTab({ icon: "group" });
+    setResult("attributes", extractFirstObject(attributes), true);
+    setResult("members", addServerToResponse(members, query.servers[0]), true);
   };
 
   onRedirect(() => runQuery(query, true));

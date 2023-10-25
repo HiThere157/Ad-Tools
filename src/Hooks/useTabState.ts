@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../Redux/store";
 import { updateTab } from "../Redux/tabs";
-import { setResult, softResetTableConfig } from "../Redux/data";
+import { setResult } from "../Redux/data";
 import { defaultAdQuery } from "../Config/default";
 
 export function useTabState(page: string) {
@@ -14,16 +14,13 @@ export function useTabState(page: string) {
   const tabQuery = query[page]?.[tabId] ?? defaultAdQuery;
 
   const updatePageTab = (tab: Partial<Tab>) => dispatch(updateTab({ page, tabId, tab }));
-  const setTabResult = (name: string, result: Loadable<PSDataSet>) =>
-    dispatch(setResult({ page, tabId, name, result }));
-  const softResetTabTableConfig = (name: string) =>
-    dispatch(softResetTableConfig({ page, tabId, name }));
+  const setTabResult = (name: string, result: Loadable<PSDataSet>, resetConfig?: boolean) =>
+    dispatch(setResult({ page, tabId, name, result, resetConfig }));
 
   return {
     tabId,
     query: tabQuery,
     updateTab: updatePageTab,
     setResult: setTabResult,
-    softResetTableConfig: softResetTabTableConfig,
   };
 }
