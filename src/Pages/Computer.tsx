@@ -1,8 +1,7 @@
+import { getMultipleComputers, getSingleComputer } from "../Api/computer";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
-import { shouldPreQuery, getPSFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
-import { invokePSCommand } from "../Helper/api";
-import { addServerToResponse, extractFirstObject } from "../Helper/postProcessors";
+import { shouldPreQuery } from "../Helper/utils";
 
 import AdQuery from "../Components/Query/AdQuery";
 import Tabs from "../Components/Tabs/Tabs";
@@ -16,28 +15,12 @@ export default function Computer() {
   const runPreQuery = async (query: AdQuery) => {
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
-    setResult("dns", undefined);
-    setResult("attributes", undefined);
-    setResult("groups", undefined);
+    setResult(["dns", "attributes", "memberof"], undefined);
 
-    const selectFields = removeDuplicates(
-      ["Name", "DisplayName"],
-      query.filters.map(({ property }) => property),
-    );
-    const responses = await Promise.all(
-      query.servers.map((server) =>
-        invokePSCommand({
-          command: `Get-AdComputer \
-          -Filter "${getPSFilter(query.filters)}" \
-          -Server ${server} \
-          -Properties ${selectFields.join(",")}`,
-          selectFields,
-        }).then((response) => addServerToResponse(response, server, true)),
-      ),
-    );
+    const { computers } = await getMultipleComputers(query);
 
     updateTab({ icon: "search" });
-    setResult("search", mergeResponses(responses), true);
+    setResult("search", computers);
   };
 
   const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
@@ -47,33 +30,14 @@ export default function Computer() {
 
     updateTab({ icon: "loading", title: identity || "User" });
     if (resetSearch) setResult("search", undefined);
-    setResult("dns", null);
-    setResult("attributes", null);
-    setResult("groups", null);
+    setResult(["dns", "attributes", "memberof"], null);
 
-    const [dns, attributes, groups] = await Promise.all([
-      invokePSCommand({
-        command: `Resolve-DnsName -Name ${identity}.${query.servers[0]}`,
-        selectFields: ["Name", "Type", "IPAddress"],
-      }),
-      invokePSCommand({
-        command: `Get-AdComputer \
-        -Identity ${identity} \
-        -Server ${query.servers[0]} \
-        -Properties *`,
-      }),
-      invokePSCommand({
-        command: `Get-AdPrincipalGroupMembership \
-        (Get-AdComputer -Identity ${identity} -Server ${query.servers[0]}) \
-        -Server ${query.servers[0]}`,
-        selectFields: ["Name", "GroupCategory", "DistinguishedName"],
-      }),
-    ]);
+    const { dns, attributes, memberof } = await getSingleComputer(query);
 
     updateTab({ icon: "computer" });
-    setResult("dns", dns, true);
-    setResult("attributes", extractFirstObject(attributes), true);
-    setResult("groups", addServerToResponse(groups, query.servers[0]), true);
+    setResult("dns", dns);
+    setResult("attributes", attributes);
+    setResult("memberof", memberof);
   };
 
   onRedirect(() => runQuery(query, true));
@@ -110,8 +74,8 @@ export default function Computer() {
         <Table
           page={page}
           tabId={tabId}
-          name="groups"
-          title="Groups"
+          name="memberof"
+          title="Group Memberships"
           onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
             redirect("group", {
               filters: [{ property: "Name", value: row.Name ?? "" }],

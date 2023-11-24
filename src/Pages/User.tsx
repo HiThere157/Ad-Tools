@@ -1,8 +1,7 @@
+import { getMultipleUsers, getSingleUser } from "../Api/user";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
-import { shouldPreQuery, getPSFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
-import { invokePSCommand } from "../Helper/api";
-import { addServerToResponse, extractFirstObject } from "../Helper/postProcessors";
+import { shouldPreQuery } from "../Helper/utils";
 
 import AdQuery from "../Components/Query/AdQuery";
 import Tabs from "../Components/Tabs/Tabs";
@@ -16,27 +15,12 @@ export default function User() {
   const runPreQuery = async (query: AdQuery) => {
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
-    setResult("attributes", undefined);
-    setResult("groups", undefined);
+    setResult(["attributes", "groups"], undefined);
 
-    const selectFields = removeDuplicates(
-      ["Name", "DisplayName"],
-      query.filters.map(({ property }) => property),
-    );
-    const responses = await Promise.all(
-      query.servers.map((server) =>
-        invokePSCommand({
-          command: `Get-AdUser \
-          -Filter "${getPSFilter(query.filters)}" \
-          -Server ${server} \
-          -Properties ${selectFields.join(",")}`,
-          selectFields,
-        }).then((response) => addServerToResponse(response, server, true)),
-      ),
-    );
+    const { users } = await getMultipleUsers(query);
 
     updateTab({ icon: "search" });
-    setResult("search", mergeResponses(responses), true);
+    setResult("search", users);
   };
 
   const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
@@ -46,27 +30,13 @@ export default function User() {
 
     updateTab({ icon: "loading", title: identity || "User" });
     if (resetSearch) setResult("search", undefined);
-    setResult("attributes", null);
-    setResult("groups", null);
+    setResult(["attributes", "groups"], null);
 
-    const [attributes, groups] = await Promise.all([
-      invokePSCommand({
-        command: `Get-AdUser \
-        -Identity ${identity} \
-        -Server ${query.servers[0]} \
-        -Properties *`,
-      }),
-      invokePSCommand({
-        command: `Get-AdPrincipalGroupMembership \
-        -Identity ${identity} \
-        -Server ${query.servers[0]}`,
-        selectFields: ["Name", "GroupCategory", "DistinguishedName"],
-      }),
-    ]);
+    const { attributes, groups } = await getSingleUser(query);
 
     updateTab({ icon: "user" });
-    setResult("attributes", extractFirstObject(attributes), true);
-    setResult("groups", addServerToResponse(groups, query.servers[0]), true);
+    setResult("attributes", attributes);
+    setResult("groups", groups);
   };
 
   onRedirect(() => runQuery(query, true));

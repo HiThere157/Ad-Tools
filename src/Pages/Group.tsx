@@ -1,8 +1,7 @@
+import { getMultipleGroups, getSingleGroup } from "../Api/group";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
-import { shouldPreQuery, getPSFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
-import { invokePSCommand } from "../Helper/api";
-import { addServerToResponse, extractFirstObject } from "../Helper/postProcessors";
+import { shouldPreQuery } from "../Helper/utils";
 
 import AdQuery from "../Components/Query/AdQuery";
 import Tabs from "../Components/Tabs/Tabs";
@@ -16,27 +15,12 @@ export default function Group() {
   const runPreQuery = async (query: AdQuery) => {
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
-    setResult("attributes", undefined);
-    setResult("members", undefined);
+    setResult(["attributes", "members", "memberof"], undefined);
 
-    const selectFields = removeDuplicates(
-      ["Name", "Description"],
-      query.filters.map(({ property }) => property),
-    );
-    const responses = await Promise.all(
-      query.servers.map((server) =>
-        invokePSCommand({
-          command: `Get-AdGroup \
-          -Filter "${getPSFilter(query.filters)}" \
-          -Server ${server} \
-          -Properties ${selectFields.join(",")}`,
-          selectFields,
-        }).then((response) => addServerToResponse(response, server, true)),
-      ),
-    );
+    const { groups } = await getMultipleGroups(query);
 
     updateTab({ icon: "search" });
-    setResult("search", mergeResponses(responses), true);
+    setResult("search", groups);
   };
 
   const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
@@ -46,27 +30,14 @@ export default function Group() {
 
     updateTab({ icon: "loading", title: identity || "Group" });
     if (resetSearch) setResult("search", undefined);
-    setResult("attributes", null);
-    setResult("members", null);
+    setResult(["attributes", "members", "memberof"], null);
 
-    const [attributes, members] = await Promise.all([
-      invokePSCommand({
-        command: `Get-AdGroup \
-        -Identity ${identity} \
-        -Server ${query.servers[0]} \
-        -Properties *`,
-      }),
-      invokePSCommand({
-        command: `Get-ADGroupMember \
-        -Identity ${identity} \
-        -Server ${query.servers[0]}`,
-        selectFields: ["Name", "ObjectClass"],
-      }),
-    ]);
+    const { attributes, members, memberof } = await getSingleGroup(query);
 
     updateTab({ icon: "group" });
-    setResult("attributes", extractFirstObject(attributes), true);
-    setResult("members", addServerToResponse(members, query.servers[0]), true);
+    setResult("attributes", attributes);
+    setResult("members", members);
+    setResult("memberof", memberof);
   };
 
   onRedirect(() => runQuery(query, true));
@@ -109,6 +80,24 @@ export default function Group() {
               filters: [{ property: "Name", value: row.Name ?? "" }],
               servers: [row._Server ?? ""],
             });
+          }}
+        />
+        <Table
+          page={page}
+          tabId={tabId}
+          name="memberof"
+          title="Group Memberships"
+          onRedirect={(row: PSResult & { Name?: string; _Server?: string }, newTab) => {
+            const newQuery = {
+              filters: [{ property: "Name", value: row.Name ?? "" }],
+              servers: [row._Server ?? ""],
+            };
+
+            if (newTab) {
+              redirect(page, newQuery);
+            } else {
+              runQuery(newQuery);
+            }
           }}
         />
       </div>

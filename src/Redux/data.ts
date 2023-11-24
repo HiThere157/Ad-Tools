@@ -10,7 +10,6 @@ type SetResultAction = {
   tabId: number;
   name: string;
   result: Loadable<PSDataSet>;
-  resetConfig?: boolean;
 };
 type SetTableConfigAction = {
   page: string;
@@ -42,7 +41,7 @@ const dataSlice = createSlice({
       state.query[page]![tabId] = query;
     },
     setResult: (state, action: PayloadAction<SetResultAction>) => {
-      const { page, tabId, name, result, resetConfig } = action.payload;
+      const { page, tabId, name, result } = action.payload;
 
       // If the page or tab doesn't exist, create it
       if (!state.results[page]) {
@@ -54,9 +53,9 @@ const dataSlice = createSlice({
 
       state.results[page]![tabId]![name] = result;
 
-      // Soft-Reset the config if it exists and the flag is set
+      // Soft-Reset the config if it exists
       const config = state.tableConfigs[page]?.[tabId]?.[name];
-      if (resetConfig && config) {
+      if (config) {
         config.selected = [];
         config.pageIndex = 0;
 

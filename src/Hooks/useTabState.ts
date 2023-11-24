@@ -14,8 +14,13 @@ export function useTabState(page: string) {
   const tabQuery = query[page]?.[tabId] ?? defaultAdQuery;
 
   const updatePageTab = (tab: Partial<Tab>) => dispatch(updateTab({ page, tabId, tab }));
-  const setTabResult = (name: string, result: Loadable<PSDataSet>, resetConfig?: boolean) =>
-    dispatch(setResult({ page, tabId, name, result, resetConfig }));
+  const setTabResult = (name: string | string[], result: Loadable<PSDataSet>) => {
+    const names = Array.isArray(name) ? name : [name];
+
+    names.forEach((name) => {
+      dispatch(setResult({ page, tabId, name, result }));
+    });
+  };
 
   return {
     tabId,
