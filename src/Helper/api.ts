@@ -1,7 +1,4 @@
-import { useState } from "react";
-
 import { ElectronAPI } from "../../electron/preload";
-import { defaultEnvironment } from "../Config/default";
 
 export const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
 
@@ -45,22 +42,20 @@ export function changeWindowState(state: WindowState) {
   return electronWindow.electronAPI.changeWindowState(state);
 }
 
-export function useEnvironment(): ElectronEnvironment {
-  const [env, setEnv] = useState(defaultEnvironment);
-
+export async function getEnvironment(): Promise<ElectronEnvironment> {
   if (!electronWindow.electronAPI) {
-    return {
-      executingUser: "API\\NOTFOUND",
-      appVersion: "v0.0.0",
-      appChannel: "stable",
-    };
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          executingUser: "API\\NOTFOUND",
+          appVersion: "v0.0.0",
+          appChannel: "stable",
+        });
+      }, 1000);
+    });
   }
 
-  if (env === defaultEnvironment) {
-    electronWindow.electronAPI.getEnvironment().then(setEnv);
-  }
-
-  return env;
+  return electronWindow.electronAPI.getEnvironment();
 }
 
 export async function getDnsSuffixList(): Promise<string[]> {

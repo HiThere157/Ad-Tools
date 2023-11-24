@@ -1,3 +1,9 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+
+import { setEnvironment } from "../Redux/environment";
+import { getEnvironment } from "../Helper/api";
+
 import Footer from "../Components/Footer";
 import Header from "../Components/Header/Header";
 import Navigation from "../Components/Navigation/Navigation";
@@ -7,6 +13,17 @@ type RootLayoutProps = {
   children: React.ReactNode;
 };
 export default function RootLayout({ children }: RootLayoutProps) {
+  const dispatch = useDispatch();
+
+  const init = async () => {
+    const electronEnvironment = await getEnvironment();
+    dispatch(setEnvironment(electronEnvironment));
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
     <main
       style={{

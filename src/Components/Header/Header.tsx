@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import { useEnvironment } from "../../Helper/api";
+import { RootState } from "../../Redux/store";
 
 import WindowControls from "./WindowControls";
 
 export default function Header() {
-  const env = useEnvironment();
+  const { appChannel, executingUser } = useSelector((state: RootState) => state.environment);
 
   return (
     <header
@@ -19,18 +20,18 @@ export default function Header() {
       >
         <img
           draggable="false"
-          src={env.appChannel === "stable" ? "./icon.svg" : "./icon_beta.svg"}
+          src={appChannel === "stable" ? "./icon.svg" : "./icon_beta.svg"}
           alt="AD Tools Logo"
           className="h-6"
         />
         <span className="text-xl font-bold">
           <span>AD Tools</span>
 
-          {env.appChannel === "beta" && <span className="ml-2">[BETA]</span>}
+          {appChannel === "beta" && <span className="ml-2">[BETA]</span>}
         </span>
       </NavLink>
 
-      <span className="mx-2 text-grey ">{env.executingUser}</span>
+      <span className="mx-2 text-grey ">{executingUser}</span>
 
       <div className="flex-1" />
 

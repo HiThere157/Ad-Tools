@@ -3,12 +3,6 @@ export const defaultTab: Tab = {
   title: "New Tab",
 };
 
-export const defaultEnvironment: ElectronEnvironment = {
-  executingUser: "",
-  appVersion: "",
-  appChannel: "stable",
-};
-
 export const defaultQueryFilter: QueryFilter = {
   property: "",
   value: "",

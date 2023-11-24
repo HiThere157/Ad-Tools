@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
-import { useEnvironment } from "../Helper/api";
+import { RootState } from "../Redux/store";
 
 import Release from "../Components/Release/Release";
 
@@ -11,7 +12,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Release[] | null>(null);
 
-  const env = useEnvironment();
+  const { appVersion } = useSelector((state: RootState) => state.environment);
 
   const fetchReleases = async () => {
     setError(null);
@@ -67,11 +68,7 @@ export default function Home() {
       )}
 
       {result?.map((release, releaseIndex) => (
-        <Release
-          key={releaseIndex}
-          release={release}
-          installed={release.tag_name === env.appVersion}
-        />
+        <Release key={releaseIndex} release={release} installed={release.tag_name === appVersion} />
       ))}
     </div>
   );

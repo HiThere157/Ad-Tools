@@ -1,14 +1,16 @@
-import { useEnvironment } from "../Helper/api";
+import { useSelector } from "react-redux";
+
+import { RootState } from "../Redux/store";
 
 export default function Footer() {
-  const env = useEnvironment();
+  const { appVersion } = useSelector((state: RootState) => state.environment);
 
   return (
     <footer
       style={{ gridArea: "footer" }}
       className="flex justify-center bg-light p-1 text-xs text-grey"
     >
-      <span>{env.appVersion}</span>
+      <span>{appVersion}</span>
     </footer>
   );
 }
