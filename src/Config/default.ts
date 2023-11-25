@@ -7,8 +7,7 @@ export const defaultQueryFilter: QueryFilter = {
   property: "",
   value: "",
 };
-
-export const defaultAdQuery: Query = {
+export const defaultQuery: Query = {
   isAdvanced: false,
   filters: [
     {
@@ -24,7 +23,6 @@ export const defaultTableFilter: TableFilter = {
   column: "",
   value: "",
 };
-
 export const defaultTableHighlight: TableHighlight = {
   color: "#000000",
   type: "bg",
@@ -44,7 +42,6 @@ export const defaultTableConfig: TableConfig = {
   selected: [],
   pageIndex: 0,
 };
-
 export const defaultTablePreferences: TablePreferences = {
   pageSize: 10,
   highlights: [],

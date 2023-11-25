@@ -2,10 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { setQueryDomains } from "../../Redux/preferences";
 import { setQuery } from "../../Redux/data";
-import { defaultAdQuery, defaultQueryFilter } from "../../Config/default";
-import { getDnsSuffixList } from "../../Helper/api";
+import { defaultQuery, defaultQueryFilter } from "../../Config/default";
 
 import Button from "../Button";
 import Checkbox from "../Checkbox";
@@ -15,26 +13,28 @@ import QueryFilter from "./QueryFilter";
 
 import { BsPlusLg } from "react-icons/bs";
 
-type AdQueryProps = {
+type QueryProps = {
   page: string;
   tabId: number;
+  type: "ad" | "azure";
   onSubmit: () => void;
 };
-export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
+export default function Query({ page, tabId, type, onSubmit }: QueryProps) {
   const { query } = useSelector((state: RootState) => state.data);
   const { queryDomains } = useSelector((state: RootState) => state.preferences);
   const dispatch = useDispatch();
 
-  const tabQuery = query[page]?.[tabId] ?? defaultAdQuery;
+  const tabQuery = query[page]?.[tabId] ?? defaultQuery;
   const { isAdvanced, filters, servers } = tabQuery;
 
   // Update the query with a partial query
   const updateTabQuery = (query: Partial<Query>) =>
     dispatch(setQuery({ page, tabId, query: { ...tabQuery, ...query } }));
 
-  // We only want to submit if there is a filter or servers
+  // We only want to submit if the query is somewhat valid
   const beforeSubmit = () => {
-    if (servers.length === 0) return;
+    // If we are querying for ad and there are no servers, don't submit
+    if (type === "ad" && servers.length === 0) return;
 
     if (isAdvanced) {
       if (!Object.values(filters).some(({ value }) => value !== "")) return;
@@ -52,16 +52,9 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
     }
   });
 
-  // If there are no queryDomains, get them
+  // Set default server for ad queries if there are queryDomains and the query is the default query
   useEffect(() => {
-    if (queryDomains.length === 0) {
-      getDnsSuffixList().then((domains) => dispatch(setQueryDomains(domains)));
-    }
-  }, []);
-
-  // Set default server if there are queryDomains and the query is the default query
-  useEffect(() => {
-    if (tabQuery === defaultAdQuery && queryDomains.length > 0 && tabId !== 0) {
+    if (type === "ad" && tabId !== 0 && tabQuery === defaultQuery && queryDomains.length > 0) {
       updateTabQuery({ servers: [queryDomains[0]] });
     }
   }, [queryDomains, tabQuery, tabId]);
@@ -114,13 +107,17 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
         </div>
       )}
 
-      <span className="text-grey">@</span>
+      {type === "ad" && (
+        <>
+          <span className="text-grey">@</span>
 
-      <MultiDropdown
-        items={queryDomains}
-        value={servers}
-        onChange={(servers) => updateTabQuery({ servers })}
-      />
+          <MultiDropdown
+            items={queryDomains}
+            value={servers}
+            onChange={(servers) => updateTabQuery({ servers })}
+          />
+        </>
+      )}
 
       <div className="flex items-center gap-1.5">
         <Button onClick={beforeSubmit}>Run</Button>

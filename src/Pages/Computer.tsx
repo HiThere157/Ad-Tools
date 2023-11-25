@@ -3,7 +3,7 @@ import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { shouldPreQuery } from "../Helper/utils";
 
-import AdQuery from "../Components/Query/AdQuery";
+import Query from "../Components/Query/Query";
 import Tabs from "../Components/Tabs/Tabs";
 import Table from "../Components/Table/Table";
 
@@ -47,7 +47,7 @@ export default function Computer() {
       <Tabs page={page} />
 
       <div className="px-4 py-2">
-        <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+        <Query page={page} tabId={tabId} type="ad" onSubmit={() => runQuery(query, true)} />
 
         <Table
           title="Search Results"

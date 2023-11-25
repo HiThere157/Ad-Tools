@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { setEnvironment } from "../Redux/environment";
-import { getEnvironment } from "../Helper/api";
+import { setDefaultQueryDomains } from "../Redux/preferences";
+import { getDnsSuffixList, getEnvironment } from "../Helper/api";
 
 import Footer from "../Components/Footer";
 import Header from "../Components/Header/Header";
@@ -16,8 +17,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const dispatch = useDispatch();
 
   const init = async () => {
-    const electronEnvironment = await getEnvironment();
+    const [electronEnvironment, queryDomains] = await Promise.all([
+      getEnvironment(),
+      getDnsSuffixList(),
+    ]);
+
     dispatch(setEnvironment(electronEnvironment));
+    dispatch(setDefaultQueryDomains(queryDomains));
   };
 
   useEffect(() => {

@@ -14,7 +14,6 @@ const preferencesSlice = createSlice({
     queryDomains: [] as string[],
     azureLogin: {
       upn: "",
-      useCredentials: false,
       rememberChoice: false,
     },
   },
@@ -31,11 +30,17 @@ const preferencesSlice = createSlice({
 
       state.tablePreferences[page]![name] = preferences;
     },
+    setDefaultQueryDomains: (state, action: PayloadAction<string[]>) => {
+      if (state.queryDomains.length === 0) {
+        state.queryDomains = action.payload;
+      }
+    },
     setQueryDomains: (state, action: PayloadAction<string[]>) => {
       state.queryDomains = action.payload;
     },
   },
 });
 
-export const { toggleNavBar, setTablePreferences, setQueryDomains } = preferencesSlice.actions;
+export const { toggleNavBar, setTablePreferences, setDefaultQueryDomains, setQueryDomains } =
+  preferencesSlice.actions;
 export default preferencesSlice.reducer;
