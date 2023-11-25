@@ -30,7 +30,7 @@ export default function AdUser() {
 
     updateTab({ icon: "loading", title: identity || "User" });
     if (resetSearch) setResult("search", undefined);
-    setResult(["attributes", "groups"], null);
+    setResult(["attributes", "memberof"], null);
 
     const { attributes, memberof } = await getSingleUser(query);
 
