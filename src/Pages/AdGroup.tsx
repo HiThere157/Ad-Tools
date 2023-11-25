@@ -1,4 +1,4 @@
-import { getMultipleGroups, getSingleGroup } from "../Api/group";
+import { getMultipleAdGroups, getSingleAdGroup } from "../Api/adGroup";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldPreQuery } from "../Helper/utils";
@@ -17,7 +17,7 @@ export default function AdGroup() {
     setResult("search", null);
     setResult(["attributes", "members", "memberof"], undefined);
 
-    const { groups } = await getMultipleGroups(query);
+    const { groups } = await getMultipleAdGroups(query);
 
     updateTab({ icon: "search" });
     setResult("search", groups);
@@ -32,7 +32,7 @@ export default function AdGroup() {
     if (resetSearch) setResult("search", undefined);
     setResult(["attributes", "members", "memberof"], null);
 
-    const { attributes, members, memberof } = await getSingleGroup(query);
+    const { attributes, members, memberof } = await getSingleAdGroup(query);
 
     updateTab({ icon: "group" });
     setResult("attributes", attributes);

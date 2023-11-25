@@ -6,7 +6,7 @@ type SingleUserResponse = {
   attributes: Loadable<PSDataSet>;
   memberof: Loadable<PSDataSet>;
 };
-export async function getSingleUser(query: Query): Promise<SingleUserResponse> {
+export async function getSingleAdUser(query: Query): Promise<SingleUserResponse> {
   const { filters, servers } = query;
   const identity = getFilterValue(filters, "Name");
 
@@ -34,7 +34,7 @@ export async function getSingleUser(query: Query): Promise<SingleUserResponse> {
 type MultipleUsersResponse = {
   users: Loadable<PSDataSet>;
 };
-export async function getMultipleUsers(query: Query): Promise<MultipleUsersResponse> {
+export async function getMultipleAdUsers(query: Query): Promise<MultipleUsersResponse> {
   const { filters, servers } = query;
   const selectFields = removeDuplicates(
     ["Name", "DisplayName"],

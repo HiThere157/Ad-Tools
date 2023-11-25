@@ -1,4 +1,4 @@
-import { getMultipleUsers, getSingleUser } from "../Api/user";
+import { getMultipleAdUsers, getSingleAdUser } from "../Api/adUser";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldPreQuery } from "../Helper/utils";
@@ -17,7 +17,7 @@ export default function AdUser() {
     setResult("search", null);
     setResult(["attributes", "memberof"], undefined);
 
-    const { users } = await getMultipleUsers(query);
+    const { users } = await getMultipleAdUsers(query);
 
     updateTab({ icon: "search" });
     setResult("search", users);
@@ -32,7 +32,7 @@ export default function AdUser() {
     if (resetSearch) setResult("search", undefined);
     setResult(["attributes", "memberof"], null);
 
-    const { attributes, memberof } = await getSingleUser(query);
+    const { attributes, memberof } = await getSingleAdUser(query);
 
     updateTab({ icon: "user" });
     setResult("attributes", attributes);

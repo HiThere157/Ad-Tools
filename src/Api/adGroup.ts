@@ -2,55 +2,57 @@ import { invokePSCommand } from "../Helper/api";
 import { extractFirstObject, addServerToResponse } from "../Helper/postProcessors";
 import { removeDuplicates, formatAdFilter, mergeResponses, getFilterValue } from "../Helper/utils";
 
-type getSingleComputerResponse = {
-  dns: Loadable<PSDataSet>;
+type SingleGroupResponse = {
   attributes: Loadable<PSDataSet>;
+  members: Loadable<PSDataSet>;
   memberof: Loadable<PSDataSet>;
 };
-export async function getSingleComputer(query: Query): Promise<getSingleComputerResponse> {
+export async function getSingleAdGroup(query: Query): Promise<SingleGroupResponse> {
   const { filters, servers } = query;
   const identity = getFilterValue(filters, "Name");
 
-  const [dns, attributes, memberof] = await Promise.all([
+  const [attributes, members, memberof] = await Promise.all([
     invokePSCommand({
-      command: `Resolve-DnsName -Name ${identity}.${servers[0]}`,
-      selectFields: ["Name", "Type", "IPAddress"],
-    }),
-    invokePSCommand({
-      command: `Get-AdComputer \
+      command: `Get-AdGroup \
       -Identity ${identity} \
       -Server ${servers[0]} \
       -Properties *`,
     }),
     invokePSCommand({
+      command: `Get-AdGroupMember \
+      -Identity ${identity} \
+      -Server ${servers[0]}`,
+      selectFields: ["Name", "SamAccountName", "DistinguishedName", "ObjectClass"],
+    }),
+    invokePSCommand({
       command: `Get-AdPrincipalGroupMembership \
-      (Get-AdComputer -Identity ${identity} -Server ${servers[0]}) \
+      -Identity ${identity} \
       -Server ${servers[0]}`,
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     }),
   ]);
 
   return {
-    dns,
     attributes: extractFirstObject(attributes),
+    members: addServerToResponse(members, servers[0]),
     memberof: addServerToResponse(memberof, servers[0]),
   };
 }
 
-type MultipleComputersResponse = {
-  computers: Loadable<PSDataSet>;
+type MultipleGroupsResponse = {
+  groups: Loadable<PSDataSet>;
 };
-export async function getMultipleComputers(query: Query): Promise<MultipleComputersResponse> {
+export async function getMultipleAdGroups(query: Query): Promise<MultipleGroupsResponse> {
   const { filters, servers } = query;
   const selectFields = removeDuplicates(
-    ["Name", "DisplayName"],
+    ["Name", "Description"],
     filters.map(({ property }) => property),
   );
 
-  const computers = await Promise.all(
+  const groups = await Promise.all(
     servers.map((server) =>
       invokePSCommand({
-        command: `Get-AdComputer \
+        command: `Get-AdGroup \
         -Filter "${formatAdFilter(filters)}" \
         -Server ${server} \
         -Properties ${selectFields.join(",")}`,
@@ -60,6 +62,6 @@ export async function getMultipleComputers(query: Query): Promise<MultipleComput
   );
 
   return {
-    computers: mergeResponses(computers),
+    groups: mergeResponses(groups),
   };
 }

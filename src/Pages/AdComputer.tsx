@@ -1,4 +1,4 @@
-import { getMultipleComputers, getSingleComputer } from "../Api/computer";
+import { getMultipleAdComputers, getSingleAdComputer } from "../Api/adComputer";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldPreQuery } from "../Helper/utils";
@@ -17,7 +17,7 @@ export default function AdComputer() {
     setResult("search", null);
     setResult(["dns", "attributes", "memberof"], undefined);
 
-    const { computers } = await getMultipleComputers(query);
+    const { computers } = await getMultipleAdComputers(query);
 
     updateTab({ icon: "search" });
     setResult("search", computers);
@@ -32,7 +32,7 @@ export default function AdComputer() {
     if (resetSearch) setResult("search", undefined);
     setResult(["dns", "attributes", "memberof"], null);
 
-    const { dns, attributes, memberof } = await getSingleComputer(query);
+    const { dns, attributes, memberof } = await getSingleAdComputer(query);
 
     updateTab({ icon: "computer" });
     setResult("dns", dns);
