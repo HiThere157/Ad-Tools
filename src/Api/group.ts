@@ -8,33 +8,34 @@ type SingleGroupResponse = {
   memberof: Loadable<PSDataSet>;
 };
 export async function getSingleGroup(query: Query): Promise<SingleGroupResponse> {
-  const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
+  const { filters, servers } = query;
+  const identity = filters.find(({ property }) => property === "Name")?.value ?? "";
 
   const [attributes, members, memberof] = await Promise.all([
     invokePSCommand({
       command: `Get-AdGroup \
       -Identity ${identity} \
-      -Server ${query.servers[0]} \
+      -Server ${servers[0]} \
       -Properties *`,
     }),
     invokePSCommand({
       command: `Get-AdGroupMember \
       -Identity ${identity} \
-      -Server ${query.servers[0]}`,
+      -Server ${servers[0]}`,
       selectFields: ["Name", "SamAccountName", "DistinguishedName", "ObjectClass"],
     }),
     invokePSCommand({
       command: `Get-AdPrincipalGroupMembership \
       -Identity ${identity} \
-      -Server ${query.servers[0]}`,
+      -Server ${servers[0]}`,
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     }),
   ]);
 
   return {
     attributes: extractFirstObject(attributes),
-    members: addServerToResponse(members, query.servers[0]),
-    memberof: addServerToResponse(memberof, query.servers[0]),
+    members: addServerToResponse(members, servers[0]),
+    memberof: addServerToResponse(memberof, servers[0]),
   };
 }
 
@@ -42,15 +43,17 @@ type MultipleGroupsResponse = {
   groups: Loadable<PSDataSet>;
 };
 export async function getMultipleGroups(query: Query): Promise<MultipleGroupsResponse> {
+  const { filters, servers } = query;
   const selectFields = removeDuplicates(
     ["Name", "Description"],
-    query.filters.map(({ property }) => property),
+    filters.map(({ property }) => property),
   );
+
   const groups = await Promise.all(
-    query.servers.map((server) =>
+    servers.map((server) =>
       invokePSCommand({
         command: `Get-AdGroup \
-        -Filter "${getPSFilter(query.filters)}" \
+        -Filter "${getPSFilter(filters)}" \
         -Server ${server} \
         -Properties ${selectFields.join(",")}`,
         selectFields,

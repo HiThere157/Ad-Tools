@@ -7,26 +7,27 @@ type SingleUserResponse = {
   groups: Loadable<PSDataSet>;
 };
 export async function getSingleUser(query: Query): Promise<SingleUserResponse> {
-  const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
+  const { filters, servers } = query;
+  const identity = filters.find(({ property }) => property === "Name")?.value ?? "";
 
   const [attributes, groups] = await Promise.all([
     invokePSCommand({
       command: `Get-AdUser \
       -Identity ${identity} \
-      -Server ${query.servers[0]} \
+      -Server ${servers[0]} \
       -Properties *`,
     }),
     invokePSCommand({
       command: `Get-AdPrincipalGroupMembership \
       -Identity ${identity} \
-      -Server ${query.servers[0]}`,
+      -Server ${servers[0]}`,
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     }),
   ]);
 
   return {
     attributes: extractFirstObject(attributes),
-    groups: addServerToResponse(groups, query.servers[0]),
+    groups: addServerToResponse(groups, servers[0]),
   };
 }
 
@@ -34,15 +35,17 @@ type MultipleUsersResponse = {
   users: Loadable<PSDataSet>;
 };
 export async function getMultipleUsers(query: Query): Promise<MultipleUsersResponse> {
+  const { filters, servers } = query;
   const selectFields = removeDuplicates(
     ["Name", "DisplayName"],
-    query.filters.map(({ property }) => property),
+    filters.map(({ property }) => property),
   );
+
   const users = await Promise.all(
-    query.servers.map((server) =>
+    servers.map((server) =>
       invokePSCommand({
         command: `Get-AdUser \
-        -Filter "${getPSFilter(query.filters)}" \
+        -Filter "${getPSFilter(filters)}" \
         -Server ${server} \
         -Properties ${selectFields.join(",")}`,
         selectFields,

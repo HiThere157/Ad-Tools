@@ -8,23 +8,24 @@ type getSingleComputerResponse = {
   memberof: Loadable<PSDataSet>;
 };
 export async function getSingleComputer(query: Query): Promise<getSingleComputerResponse> {
-  const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
+  const { filters, servers } = query;
+  const identity = filters.find(({ property }) => property === "Name")?.value ?? "";
 
   const [dns, attributes, memberof] = await Promise.all([
     invokePSCommand({
-      command: `Resolve-DnsName -Name ${identity}.${query.servers[0]}`,
+      command: `Resolve-DnsName -Name ${identity}.${servers[0]}`,
       selectFields: ["Name", "Type", "IPAddress"],
     }),
     invokePSCommand({
       command: `Get-AdComputer \
       -Identity ${identity} \
-      -Server ${query.servers[0]} \
+      -Server ${servers[0]} \
       -Properties *`,
     }),
     invokePSCommand({
       command: `Get-AdPrincipalGroupMembership \
-      (Get-AdComputer -Identity ${identity} -Server ${query.servers[0]}) \
-      -Server ${query.servers[0]}`,
+      (Get-AdComputer -Identity ${identity} -Server ${servers[0]}) \
+      -Server ${servers[0]}`,
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     }),
   ]);
@@ -32,7 +33,7 @@ export async function getSingleComputer(query: Query): Promise<getSingleComputer
   return {
     dns,
     attributes: extractFirstObject(attributes),
-    memberof: addServerToResponse(memberof, query.servers[0]),
+    memberof: addServerToResponse(memberof, servers[0]),
   };
 }
 
@@ -40,15 +41,17 @@ type MultipleComputersResponse = {
   computers: Loadable<PSDataSet>;
 };
 export async function getMultipleComputers(query: Query): Promise<MultipleComputersResponse> {
+  const { filters, servers } = query;
   const selectFields = removeDuplicates(
     ["Name", "DisplayName"],
-    query.filters.map(({ property }) => property),
+    filters.map(({ property }) => property),
   );
+
   const computers = await Promise.all(
-    query.servers.map((server) =>
+    servers.map((server) =>
       invokePSCommand({
         command: `Get-AdComputer \
-        -Filter "${getPSFilter(query.filters)}" \
+        -Filter "${getPSFilter(filters)}" \
         -Server ${server} \
         -Properties ${selectFields.join(",")}`,
         selectFields,
