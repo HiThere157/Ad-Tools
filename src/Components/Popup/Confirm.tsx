@@ -5,18 +5,18 @@ type ConfirmProps = {
   isOpen: boolean;
   title: string;
   message: string;
-  onSubmit: (selection: boolean) => void;
+  onExit: (selection: boolean) => void;
 };
-export default function Confirm({ isOpen, title, message, onSubmit }: ConfirmProps) {
+export default function Confirm({ isOpen, title, message, onExit }: ConfirmProps) {
   return (
-    <Popup isOpen={isOpen} title={title} onCancel={() => onSubmit(false)}>
+    <Popup isOpen={isOpen} title={title} onCancel={() => onExit(false)}>
       <span>{message}</span>
 
       <div className="mt-3 flex justify-end gap-2">
-        <Button className="bg-dark" onClick={() => onSubmit(false)}>
+        <Button className="bg-dark" onClick={() => onExit(false)}>
           Cancel
         </Button>
-        <Button onClick={() => onSubmit(true)}>Yes</Button>
+        <Button onClick={() => onExit(true)}>Yes</Button>
       </div>
     </Popup>
   );

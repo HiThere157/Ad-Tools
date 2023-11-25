@@ -113,12 +113,12 @@ export default function TableFilterMenu({
         isOpen={isCreateOpen}
         title="Create new Saved Filter"
         label="Name:"
-        onSubmit={(name) => {
+        onExit={(value) => {
           setIsCreateOpen(false);
-          if (!name) return;
+          if (!value) return;
 
-          const sameNameCount = savedFilters.filter((filter) => filter.name === name).length;
-          const uniqueName = sameNameCount === 0 ? name : `${name} (${sameNameCount})`;
+          const sameNameCount = savedFilters.filter((filter) => filter.name === value).length;
+          const uniqueName = sameNameCount === 0 ? value : `${value} (${sameNameCount})`;
 
           setSavedFilters([...savedFilters, { name: uniqueName, filters }], uniqueName);
           setFilters([]);
@@ -129,15 +129,16 @@ export default function TableFilterMenu({
         isOpen={isRenameOpen}
         title="Rename Saved Filter"
         label="Name:"
-        onSubmit={(name) => {
+        defaultValue={savedFilterName}
+        onExit={(value) => {
           setIsRenameOpen(false);
-          if (!name) return;
+          if (!value) return;
 
           const newSavedFilters = [...savedFilters];
           const index = newSavedFilters.findIndex((filter) => filter.name === savedFilterName);
 
-          const sameNameCount = savedFilters.filter((filter) => filter.name === name).length;
-          const uniqueName = sameNameCount === 0 ? name : `${name} (${sameNameCount})`;
+          const sameNameCount = savedFilters.filter((filter) => filter.name === value).length;
+          const uniqueName = sameNameCount === 0 ? value : `${value} (${sameNameCount})`;
 
           newSavedFilters[index] = { name: uniqueName, filters };
           setSavedFilters(newSavedFilters, uniqueName);
@@ -148,7 +149,7 @@ export default function TableFilterMenu({
         isOpen={isDeleteOpen}
         title="Delete Saved Filter"
         message="Are you sure you want to delete this Saved Filter?"
-        onSubmit={(selection) => {
+        onExit={(selection) => {
           setIsDeleteOpen(false);
 
           if (selection) {

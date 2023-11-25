@@ -2,25 +2,25 @@ import { useState } from "react";
 
 import Input from "../Input/Input";
 import Button from "../Button";
-
 import Popup from "./Popup";
 
 type PromptProps = {
   isOpen: boolean;
   title: string;
   label: string;
-  onSubmit: (value: string | null) => void;
+  defaultValue?: string;
+  onExit: (value: string | null) => void;
 };
-export default function Prompt({ isOpen, title, label, onSubmit }: PromptProps) {
-  const [value, setValue] = useState("");
+export default function Prompt({ isOpen, title, label, defaultValue, onExit }: PromptProps) {
+  const [value, setValue] = useState(defaultValue ?? "");
 
-  const submitPopup = () => {
-    onSubmit(value);
+  const onSubmit = () => {
+    onExit(value);
     setValue("");
   };
 
   const onCancel = () => {
-    onSubmit(null);
+    onExit(null);
     setValue("");
   };
 
@@ -28,14 +28,14 @@ export default function Prompt({ isOpen, title, label, onSubmit }: PromptProps) 
     <Popup isOpen={isOpen} title={title} onCancel={onCancel}>
       <div className="flex gap-2">
         <span>{label}</span>
-        <Input autoFocus={true} value={value} onChange={setValue} onEnter={submitPopup} />
+        <Input autoFocus={true} value={value} onChange={setValue} onEnter={onSubmit} />
       </div>
 
       <div className="mt-3 flex justify-end gap-2">
         <Button className="bg-dark" onClick={onCancel}>
           Cancel
         </Button>
-        <Button onClick={submitPopup}>Submit</Button>
+        <Button onClick={onSubmit}>Submit</Button>
       </div>
     </Popup>
   );

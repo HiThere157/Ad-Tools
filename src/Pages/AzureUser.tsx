@@ -1,16 +1,23 @@
+import { useState } from "react";
+import { useSelector } from "react-redux";
+
 import { getMultipleAzureUsers, getSingleAzureUser } from "../Api/azureUser";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
+import { RootState } from "../Redux/store";
 import { getFilterValue, shouldPreQuery } from "../Helper/utils";
 
 import TabLayout from "../Layout/TabLayout";
 import AzureQuery from "../Components/Query/AzureQuery";
 import Table from "../Components/Table/Table";
+import AzureLogin from "../Components/Popup/AzureLogin";
 
 export default function AzureUser() {
   const page = "azureUser";
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
+  const { executingAzureUser } = useSelector((state: RootState) => state.environment);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const runPreQuery = async (query: Query) => {
     updateTab({ icon: "loading", title: "Search Results" });
@@ -24,6 +31,7 @@ export default function AzureUser() {
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
+    if (!executingAzureUser) return setIsLoginOpen(true);
     if (shouldPreQuery(query)) return runPreQuery(query);
 
     const identity = getFilterValue(query.filters, "Name");
@@ -68,6 +76,14 @@ export default function AzureUser() {
       <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
       <Table title="Group Memberships" page={page} tabId={tabId} name="memberof" />
       <Table title="Devices" page={page} tabId={tabId} name="devices" />
+
+      <AzureLogin
+        isOpen={isLoginOpen}
+        onExit={(status) => {
+          setIsLoginOpen(false);
+          if (status) runQuery(query, true);
+        }}
+      />
     </TabLayout>
   );
 }
