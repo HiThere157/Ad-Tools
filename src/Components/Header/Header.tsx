@@ -6,7 +6,9 @@ import { RootState } from "../../Redux/store";
 import WindowControls from "./WindowControls";
 
 export default function Header() {
-  const { appChannel, executingUser } = useSelector((state: RootState) => state.environment);
+  const { appChannel, executingUser, executingAzureUser } = useSelector(
+    (state: RootState) => state.environment,
+  );
 
   return (
     <header
@@ -15,23 +17,25 @@ export default function Header() {
     >
       <NavLink
         draggable="false"
-        className="winbar-no-drag ms-2 flex items-center gap-3 rounded px-1 outline-none outline-offset-0 focus-visible:outline-secondaryActive"
+        className="winbar-no-drag flex items-center rounded px-1 outline-none outline-offset-0 focus-visible:outline-secondaryActive"
         to="/"
       >
         <img
           draggable="false"
           src={appChannel === "stable" ? "./icon.svg" : "./icon_beta.svg"}
           alt="AD Tools Logo"
-          className="h-6"
+          className="mx-2 h-6"
         />
-        <span className="text-xl font-bold">
+        <span className="mx-1 text-xl font-bold">
           <span>AD Tools</span>
-
-          {appChannel === "beta" && <span className="ml-2">[BETA]</span>}
+          {appChannel === "beta" && <span className="ml-1">[BETA]</span>}
         </span>
       </NavLink>
 
-      <span className="mx-2 text-grey ">{executingUser}</span>
+      <span className="mx-1.5 text-grey">
+        <span>{executingUser}</span>
+        {executingAzureUser && <span className="ml-1">({executingAzureUser})</span>}
+      </span>
 
       <div className="flex-1" />
 

@@ -26,6 +26,9 @@ type ElectronEnvironment = {
   appVersion: string;
   appChannel: "beta" | "stable";
 };
+type AzureEnvironment = {
+  executingAzureUser: string;
+};
 
 type InvokePSCommandRequest = {
   command: string;

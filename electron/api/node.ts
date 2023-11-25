@@ -2,7 +2,7 @@ import { PowerShell } from "node-powershell";
 
 const packageJson = require("../../package.json");
 
-export function getEnvironment(): ElectronEnvironment {
+export function getElectronEnvironment(): ElectronEnvironment {
   return {
     executingUser: `${process.env.USERDOMAIN}\\${process.env.USERNAME}`,
     appVersion: "v" + packageJson.version ?? "",

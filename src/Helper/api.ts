@@ -42,7 +42,7 @@ export function changeWindowState(state: WindowState) {
   return electronWindow.electronAPI.changeWindowState(state);
 }
 
-export async function getEnvironment(): Promise<ElectronEnvironment> {
+export async function getElectronEnvironment(): Promise<ElectronEnvironment> {
   if (!electronWindow.electronAPI) {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -55,7 +55,29 @@ export async function getEnvironment(): Promise<ElectronEnvironment> {
     });
   }
 
-  return electronWindow.electronAPI.getEnvironment();
+  return electronWindow.electronAPI.getElectronEnvironment();
+}
+
+export async function getAzureEnvironment(): Promise<AzureEnvironment> {
+  if (!electronWindow.electronAPI) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          executingAzureUser: "API@NOTFOUND",
+        });
+      }, 1000);
+    });
+  }
+
+  const env = await invokePSCommand({
+    useGlobalSession: true,
+    command: "Get-AzureADCurrentSessionInfo",
+    selectFields: ["Account"],
+  });
+
+  return {
+    executingAzureUser: env?.result?.data?.[0]?.Account?.Id ?? "",
+  };
 }
 
 export async function getDnsSuffixList(): Promise<string[]> {

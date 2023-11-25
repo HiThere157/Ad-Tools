@@ -3,8 +3,8 @@ import { contextBridge, ipcRenderer } from "electron";
 const api = {
   invokePSCommand: async (request: InvokePSCommandRequest): Promise<Loadable<PSDataSet>> =>
     ipcRenderer.invoke("ps:invokePSCommand", request),
-  getEnvironment: async (): Promise<ElectronEnvironment> =>
-    ipcRenderer.invoke("node:getEnvironment"),
+  getElectronEnvironment: async (): Promise<ElectronEnvironment> =>
+    ipcRenderer.invoke("node:getElectronEnvironment"),
   getDnsSuffixList: async (): Promise<string[]> => ipcRenderer.invoke("node:getDnsSuffixList"),
   changeWindowState: (state: WindowState) => ipcRenderer.send("win:changeWindowState", state),
 

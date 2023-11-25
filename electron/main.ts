@@ -3,7 +3,7 @@ import installExtension, { REDUX_DEVTOOLS } from "electron-devtools-installer";
 import path = require("path");
 
 import { invokePSCommand } from "./api/powershell";
-import { getDnsSuffixList, getEnvironment } from "./api/node";
+import { getDnsSuffixList, getElectronEnvironment } from "./api/node";
 import { changeWindowState, changeZoom } from "./api/win";
 
 app.on("ready", () => {
@@ -33,7 +33,7 @@ app.on("ready", () => {
       event.preventDefault();
     }
   });
-  if (getEnvironment().appChannel === "beta") {
+  if (getElectronEnvironment().appChannel === "beta") {
     installExtension(REDUX_DEVTOOLS, {
       loadExtensionOptions: { allowFileAccess: true },
     });
@@ -47,7 +47,7 @@ app.on("ready", () => {
 
   // Handle API requests
   ipcMain.handle("ps:invokePSCommand", invokePSCommand);
-  ipcMain.handle("node:getEnvironment", getEnvironment);
+  ipcMain.handle("node:getElectronEnvironment", getElectronEnvironment);
   ipcMain.handle("node:getDnsSuffixList", getDnsSuffixList);
 
   // Handle window state changes
