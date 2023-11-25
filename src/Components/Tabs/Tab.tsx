@@ -29,9 +29,10 @@ export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
       {!isActive && <div className="absolute bottom-1 left-0 top-1 border-l border-borderAccent" />}
 
       <button
-        className={`flex items-center gap-1.5 rounded-t py-0.5 pe-7 ps-2 outline-none outline-offset-0 focus-visible:outline-borderActive ${
-          isActive ? "bg-dark" : "bg-primary hover:bg-secondaryAccent active:bg-secondaryActive"
-        }`}
+        className={
+          "flex items-center gap-1.5 rounded-t py-0.5 pe-7 ps-2 outline-none outline-offset-0 focus-visible:outline-borderActive " +
+          (isActive ? "bg-dark" : "bg-primary hover:bg-secondaryAccent active:bg-secondaryActive")
+        }
         onClick={() => onChange()}
         onMouseUp={(e) => {
           if (e.button === 1) {
@@ -49,11 +50,12 @@ export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
       </button>
 
       <button
-        className={`absolute right-1 top-1/2 translate-y-[-50%] rounded-full text-lg outline-none outline-offset-0 focus-visible:outline-borderActive ${
-          isActive
+        className={
+          "absolute right-1 top-1/2 translate-y-[-50%] rounded-full text-lg outline-none outline-offset-0 focus-visible:outline-borderActive " +
+          (isActive
             ? "hover:bg-secondaryAccent active:bg-dark"
-            : "hover:bg-secondaryActive active:bg-primary"
-        }`}
+            : "hover:bg-secondaryActive active:bg-primary")
+        }
         onClick={(e) => {
           e.stopPropagation();
           onRemove();

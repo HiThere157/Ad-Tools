@@ -69,7 +69,7 @@ export default function MultiDropdown({
 
       <div
         className={
-          "absolute left-0 z-10 mt-0.5 w-fit overflow-hidden rounded border-2 border-border bg-primary drop-shadow-custom " +
+          "absolute left-0 z-20 mt-0.5 w-fit overflow-hidden rounded border-2 border-border bg-primary drop-shadow-custom " +
           (!isOpen ? "hidden" : "")
         }
       >

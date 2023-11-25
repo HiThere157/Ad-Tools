@@ -8,6 +8,7 @@ import { defaultQuery, defaultQueryFilter } from "../../Config/default";
 import Button from "../Button";
 import Checkbox from "../Checkbox";
 import Input from "../Input/Input";
+import Dropdown from "../Dropdown/Dropdown";
 import MultiDropdown from "../Dropdown/MultiDropdown";
 import QueryFilter from "./QueryFilter";
 
@@ -60,7 +61,7 @@ export default function Query({ page, tabId, type, onSubmit }: QueryProps) {
   }, [queryDomains, tabQuery, tabId]);
 
   return (
-    <div className="m-1.5 mb-4 flex items-start gap-1">
+    <div className={"m-1.5 mb-4 flex items-start gap-1 " + (isAdvanced ? "flex-col" : "")}>
       {isAdvanced ? (
         <div className="flex items-start gap-2">
           <span>Filter:</span>
@@ -107,40 +108,58 @@ export default function Query({ page, tabId, type, onSubmit }: QueryProps) {
         </div>
       )}
 
-      {type === "ad" && (
-        <>
-          <span className="text-grey">@</span>
+      <div className="flex gap-1">
+        {type === "ad" && (
+          <>
+            {isAdvanced ? (
+              <div className="flex items-start gap-2">
+                <span>Domains:</span>
 
-          <MultiDropdown
-            items={queryDomains}
-            value={servers}
-            onChange={(servers) => updateTabQuery({ servers })}
-          />
-        </>
-      )}
+                <MultiDropdown
+                  items={queryDomains}
+                  value={servers}
+                  onChange={(servers) => updateTabQuery({ servers })}
+                />
+              </div>
+            ) : (
+              <div className="flex items-start gap-1">
+                <span className="text-grey">@</span>
 
-      <div className="flex items-center gap-1.5">
-        <Button onClick={beforeSubmit}>Run</Button>
+                <Dropdown
+                  items={queryDomains}
+                  value={servers[0]}
+                  onChange={(server) => updateTabQuery({ servers: [server] })}
+                />
+              </div>
+            )}
+          </>
+        )}
 
-        <label className="flex items-center gap-1">
-          <Checkbox
-            checked={isAdvanced == true}
-            onChange={(isAdvanced) => {
-              // If we are switching from advanced to simple, remove all filters except for the name filter
-              // If no name filter exists, add one
-              if (!isAdvanced) {
-                const nameFilter = filters.find(({ property }) => property === "Name");
-                updateTabQuery({
-                  isAdvanced,
-                  filters: nameFilter ? [nameFilter] : [{ property: "Name", value: "" }],
-                });
-              } else {
-                updateTabQuery({ isAdvanced });
-              }
-            }}
-          />
-          <span>Advanced</span>
-        </label>
+        <div className="flex items-center gap-1.5">
+          <Button onClick={beforeSubmit}>Run</Button>
+
+          <label className="flex items-center gap-1">
+            <Checkbox
+              checked={isAdvanced == true}
+              onChange={(isAdvanced) => {
+                // If we are switching from advanced to simple, remove all filters except for the name filter and all servers except for the first one
+                // If no name filter exists, add one
+                if (!isAdvanced) {
+                  const nameFilter = filters.find(({ property }) => property === "Name");
+                  const server = servers[0];
+                  updateTabQuery({
+                    isAdvanced,
+                    filters: nameFilter ? [nameFilter] : [{ property: "Name", value: "" }],
+                    servers: server ? [server] : [],
+                  });
+                } else {
+                  updateTabQuery({ isAdvanced });
+                }
+              }}
+            />
+            <span>Advanced</span>
+          </label>
+        </div>
       </div>
     </div>
   );
