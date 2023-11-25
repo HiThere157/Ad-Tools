@@ -56,6 +56,7 @@ export async function loginAzure(upn: string): Promise<AzureEnvironment> {
   const env = await electronWindow.electronAPI.invokePSCommand({
     useGlobalSession: true,
     command: `Connect-AzureAD -AccountId ${upn}`,
+    selectFields: ["Account"],
   });
 
   return {

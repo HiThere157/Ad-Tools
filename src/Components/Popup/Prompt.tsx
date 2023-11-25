@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Input from "../Input/Input";
 import Button from "../Button";
@@ -12,7 +12,7 @@ type PromptProps = {
   onExit: (value: string | null) => void;
 };
 export default function Prompt({ isOpen, title, label, defaultValue, onExit }: PromptProps) {
-  const [value, setValue] = useState(defaultValue ?? "");
+  const [value, setValue] = useState("");
 
   const onSubmit = () => {
     onExit(value);
@@ -23,6 +23,11 @@ export default function Prompt({ isOpen, title, label, defaultValue, onExit }: P
     onExit(null);
     setValue("");
   };
+
+  // Reset value to default when opening
+  useEffect(() => {
+    if (isOpen) setValue(defaultValue ?? "");
+  }, [isOpen, defaultValue]);
 
   return (
     <Popup isOpen={isOpen} title={title} onCancel={onCancel}>

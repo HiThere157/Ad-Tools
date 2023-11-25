@@ -27,6 +27,9 @@ const preferencesSlice = createSlice({
 
       state.tablePreferences[page]![name] = preferences;
     },
+    setAzureLoginUPN: (state, action: PayloadAction<string>) => {
+      state.azureLoginUPN = action.payload;
+    },
     setDefaultQueryDomains: (state, action: PayloadAction<string[]>) => {
       if (state.queryDomains.length === 0) {
         state.queryDomains = action.payload;
@@ -38,6 +41,11 @@ const preferencesSlice = createSlice({
   },
 });
 
-export const { toggleNavBar, setTablePreferences, setDefaultQueryDomains, setQueryDomains } =
-  preferencesSlice.actions;
+export const {
+  toggleNavBar,
+  setTablePreferences,
+  setAzureLoginUPN,
+  setDefaultQueryDomains,
+  setQueryDomains,
+} = preferencesSlice.actions;
 export default preferencesSlice.reducer;
