@@ -61,7 +61,11 @@ export default function Query({ page, tabId, type, onSubmit }: QueryProps) {
   }, [queryDomains, tabQuery, tabId]);
 
   return (
-    <div className={"m-1.5 mb-4 flex items-start gap-1 " + (isAdvanced ? "flex-col" : "")}>
+    <div
+      className={
+        "m-1.5 mb-4 flex items-start gap-1 " + (isAdvanced && type == "ad" ? "flex-col" : "")
+      }
+    >
       {isAdvanced ? (
         <div className="flex items-start gap-2">
           <span>Filter:</span>
