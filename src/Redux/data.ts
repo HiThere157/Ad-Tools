@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 type SetQueryAction = {
   page: string;
   tabId: number;
-  query: AdQuery;
+  query: Query;
 };
 type SetResultAction = {
   page: string;
@@ -25,7 +25,7 @@ type RemoveTabDataAction = {
 const dataSlice = createSlice({
   name: "data",
   initialState: {
-    query: {} as TabStorage<AdQuery>,
+    query: {} as TabStorage<Query>,
     results: {} as TabStorage<PartialRecord<string, Loadable<PSDataSet>>>,
     tableConfigs: {} as TabStorage<PartialRecord<string, TableConfig>>,
   },

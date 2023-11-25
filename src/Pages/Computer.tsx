@@ -12,7 +12,7 @@ export default function Computer() {
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
-  const runPreQuery = async (query: AdQuery) => {
+  const runPreQuery = async (query: Query) => {
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["dns", "attributes", "memberof"], undefined);
@@ -23,7 +23,7 @@ export default function Computer() {
     setResult("search", computers);
   };
 
-  const runQuery = async (query: AdQuery, resetSearch?: boolean) => {
+  const runQuery = async (query: Query, resetSearch?: boolean) => {
     if (shouldPreQuery(query)) return runPreQuery(query);
 
     const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";

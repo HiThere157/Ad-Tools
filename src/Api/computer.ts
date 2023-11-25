@@ -7,7 +7,7 @@ type getSingleComputerResponse = {
   attributes: Loadable<PSDataSet>;
   memberof: Loadable<PSDataSet>;
 };
-export async function getSingleComputer(query: AdQuery): Promise<getSingleComputerResponse> {
+export async function getSingleComputer(query: Query): Promise<getSingleComputerResponse> {
   const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
 
   const [dns, attributes, memberof] = await Promise.all([
@@ -39,7 +39,7 @@ export async function getSingleComputer(query: AdQuery): Promise<getSingleComput
 type MultipleComputersResponse = {
   computers: Loadable<PSDataSet>;
 };
-export async function getMultipleComputers(query: AdQuery): Promise<MultipleComputersResponse> {
+export async function getMultipleComputers(query: Query): Promise<MultipleComputersResponse> {
   const selectFields = removeDuplicates(
     ["Name", "DisplayName"],
     query.filters.map(({ property }) => property),

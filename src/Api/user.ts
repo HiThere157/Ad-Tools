@@ -6,7 +6,7 @@ type SingleUserResponse = {
   attributes: Loadable<PSDataSet>;
   groups: Loadable<PSDataSet>;
 };
-export async function getSingleUser(query: AdQuery): Promise<SingleUserResponse> {
+export async function getSingleUser(query: Query): Promise<SingleUserResponse> {
   const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
 
   const [attributes, groups] = await Promise.all([
@@ -33,7 +33,7 @@ export async function getSingleUser(query: AdQuery): Promise<SingleUserResponse>
 type MultipleUsersResponse = {
   users: Loadable<PSDataSet>;
 };
-export async function getMultipleUsers(query: AdQuery): Promise<MultipleUsersResponse> {
+export async function getMultipleUsers(query: Query): Promise<MultipleUsersResponse> {
   const selectFields = removeDuplicates(
     ["Name", "DisplayName"],
     query.filters.map(({ property }) => property),

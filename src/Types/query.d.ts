@@ -1,4 +1,4 @@
-type AdQuery = {
+type Query = {
   isAdvanced?: boolean;
   filters: QueryFilter[];
   servers: string[];
@@ -7,8 +7,4 @@ type AdQuery = {
 type QueryFilter = {
   property: string;
   value: string;
-};
-
-type AzureQuery = {
-  searchString: string;
 };

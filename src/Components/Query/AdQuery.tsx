@@ -29,7 +29,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
   const { isAdvanced, filters, servers } = tabQuery;
 
   // Update the query with a partial query
-  const updateTabQuery = (query: Partial<AdQuery>) =>
+  const updateTabQuery = (query: Partial<Query>) =>
     dispatch(setQuery({ page, tabId, query: { ...tabQuery, ...query } }));
 
   // We only want to submit if there is a filter or servers

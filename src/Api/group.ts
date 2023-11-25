@@ -7,7 +7,7 @@ type SingleGroupResponse = {
   members: Loadable<PSDataSet>;
   memberof: Loadable<PSDataSet>;
 };
-export async function getSingleGroup(query: AdQuery): Promise<SingleGroupResponse> {
+export async function getSingleGroup(query: Query): Promise<SingleGroupResponse> {
   const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
 
   const [attributes, members, memberof] = await Promise.all([
@@ -41,7 +41,7 @@ export async function getSingleGroup(query: AdQuery): Promise<SingleGroupRespons
 type MultipleGroupsResponse = {
   groups: Loadable<PSDataSet>;
 };
-export async function getMultipleGroups(query: AdQuery): Promise<MultipleGroupsResponse> {
+export async function getMultipleGroups(query: Query): Promise<MultipleGroupsResponse> {
   const selectFields = removeDuplicates(
     ["Name", "Description"],
     query.filters.map(({ property }) => property),

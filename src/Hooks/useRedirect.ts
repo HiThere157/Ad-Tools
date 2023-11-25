@@ -11,7 +11,7 @@ export function useRedirect() {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const redirect = (page: string, query: AdQuery) => {
+  const redirect = (page: string, query: Query) => {
     const newTabId = new Date().getTime();
     dispatch(addTab({ page, tab: { ...defaultTab, id: newTabId } }));
     dispatch(setQuery({ page, tabId: newTabId, query }));

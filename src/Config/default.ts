@@ -8,7 +8,7 @@ export const defaultQueryFilter: QueryFilter = {
   value: "",
 };
 
-export const defaultAdQuery: AdQuery = {
+export const defaultAdQuery: Query = {
   isAdvanced: false,
   filters: [
     {
