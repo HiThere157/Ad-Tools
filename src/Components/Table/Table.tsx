@@ -23,9 +23,10 @@ type TableProps = {
   page: string;
   tabId: number;
   name: string;
+  hideIfEmpty?: boolean;
   onRedirect?: (row: PSResult, newTab?: boolean) => void;
 };
-export default function Table({ title, page, tabId, name, onRedirect }: TableProps) {
+export default function Table({ title, page, tabId, name, hideIfEmpty, onRedirect }: TableProps) {
   const { tablePreferences } = useSelector((state: RootState) => state.preferences);
   const { results, tableConfigs } = useSelector((state: RootState) => state.data);
   const dispatch = useDispatch();
@@ -102,6 +103,8 @@ export default function Table({ title, page, tabId, name, onRedirect }: TablePro
 
     navigator.clipboard.writeText(csv);
   };
+
+  if (hideIfEmpty && keyResults === undefined) return null;
 
   return (
     <section className="mb-7 w-fit min-w-[35rem] max-w-full">

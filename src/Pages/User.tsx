@@ -48,32 +48,31 @@ export default function User() {
       <div className="px-4 py-2">
         <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
-        {shouldPreQuery(query) && (
-          <Table
-            page={page}
-            tabId={tabId}
-            name="search"
-            title="Search Results"
-            onRedirect={(row: PSResult & { Name?: string; _Server?: string }, newTab) => {
-              const newQuery = {
-                filters: [{ property: "Name", value: row.Name ?? "" }],
-                servers: [row._Server ?? ""],
-              };
-
-              if (newTab) {
-                redirect(page, newQuery);
-              } else {
-                runQuery(newQuery);
-              }
-            }}
-          />
-        )}
-        <Table page={page} tabId={tabId} name="attributes" title="Attributes" />
         <Table
+          title="Search Results"
+          page={page}
+          tabId={tabId}
+          name="search"
+          hideIfEmpty={true}
+          onRedirect={(row: PSResult & { Name?: string; _Server?: string }, newTab) => {
+            const newQuery = {
+              filters: [{ property: "Name", value: row.Name ?? "" }],
+              servers: [row._Server ?? ""],
+            };
+
+            if (newTab) {
+              redirect(page, newQuery);
+            } else {
+              runQuery(newQuery);
+            }
+          }}
+        />
+        <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
+        <Table
+          title="Groups"
           page={page}
           tabId={tabId}
           name="groups"
-          title="Groups"
           onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
             redirect("group", {
               filters: [{ property: "Name", value: row.Name ?? "" }],
