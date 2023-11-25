@@ -3,8 +3,8 @@ import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { shouldPreQuery } from "../Helper/utils";
 
+import TabLayout from "../Layout/TabLayout";
 import Query from "../Components/Query/Query";
-import Tabs from "../Components/Tabs/Tabs";
 import Table from "../Components/Table/Table";
 
 export default function User() {
@@ -42,45 +42,41 @@ export default function User() {
   onRedirect(() => runQuery(query, true));
 
   return (
-    <div>
-      <Tabs page={page} />
+    <TabLayout page={page}>
+      <Query page={page} tabId={tabId} type="ad" onSubmit={() => runQuery(query, true)} />
 
-      <div className="px-4 py-2">
-        <Query page={page} tabId={tabId} type="ad" onSubmit={() => runQuery(query, true)} />
+      <Table
+        title="Search Results"
+        page={page}
+        tabId={tabId}
+        name="search"
+        hideIfEmpty={true}
+        onRedirect={(row: PSResult & { Name?: string; _Server?: string }, newTab) => {
+          const newQuery = {
+            filters: [{ property: "Name", value: row.Name ?? "" }],
+            servers: [row._Server ?? ""],
+          };
 
-        <Table
-          title="Search Results"
-          page={page}
-          tabId={tabId}
-          name="search"
-          hideIfEmpty={true}
-          onRedirect={(row: PSResult & { Name?: string; _Server?: string }, newTab) => {
-            const newQuery = {
-              filters: [{ property: "Name", value: row.Name ?? "" }],
-              servers: [row._Server ?? ""],
-            };
-
-            if (newTab) {
-              redirect(page, newQuery);
-            } else {
-              runQuery(newQuery);
-            }
-          }}
-        />
-        <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
-        <Table
-          title="Groups"
-          page={page}
-          tabId={tabId}
-          name="groups"
-          onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
-            redirect("group", {
-              filters: [{ property: "Name", value: row.Name ?? "" }],
-              servers: [row._Server ?? ""],
-            });
-          }}
-        />
-      </div>
-    </div>
+          if (newTab) {
+            redirect(page, newQuery);
+          } else {
+            runQuery(newQuery);
+          }
+        }}
+      />
+      <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
+      <Table
+        title="Groups"
+        page={page}
+        tabId={tabId}
+        name="groups"
+        onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
+          redirect("group", {
+            filters: [{ property: "Name", value: row.Name ?? "" }],
+            servers: [row._Server ?? ""],
+          });
+        }}
+      />
+    </TabLayout>
   );
 }

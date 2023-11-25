@@ -3,13 +3,15 @@ import installExtension, { REDUX_DEVTOOLS } from "electron-devtools-installer";
 import path = require("path");
 
 import { invokePSCommand } from "./api/powershell";
-import { getDnsSuffixList, getElectronEnvironment } from "./api/node";
+import { getElectronEnvironment } from "./api/node";
 import { changeWindowState, changeZoom } from "./api/win";
 
 app.on("ready", () => {
   const window = new BrowserWindow({
     width: 800,
     height: 600,
+    minWidth: 680,
+    minHeight: 510,
     backgroundColor: "#1A1A1A",
     titleBarStyle: "hidden",
     icon: path.join(__dirname, "assets/icon32.png"),
@@ -48,7 +50,6 @@ app.on("ready", () => {
   // Handle API requests
   ipcMain.handle("ps:invokePSCommand", invokePSCommand);
   ipcMain.handle("node:getElectronEnvironment", getElectronEnvironment);
-  ipcMain.handle("node:getDnsSuffixList", getDnsSuffixList);
 
   // Handle window state changes
   ipcMain.on("win:changeWindowState", (_event, state: WindowState) => {

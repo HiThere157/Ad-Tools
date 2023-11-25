@@ -47,7 +47,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <Navigation />
       <Footer />
 
-      <div style={{ gridArea: "main" }} className="overflow-auto">
+      <div style={{ gridArea: "main" }} className="overflow-hidden">
         {children}
       </div>
 

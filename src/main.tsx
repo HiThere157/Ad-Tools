@@ -8,7 +8,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import store from "./Redux/store";
 import { navigationLinks } from "./Config/navigation";
 
-import RootLayout from "./Layout/Root";
+import RootLayout from "./Layout/RootLayout";
 
 import "./index.css";
 import "./scrollbar.css";

@@ -42,6 +42,27 @@ export function changeWindowState(state: WindowState) {
   return electronWindow.electronAPI.changeWindowState(state);
 }
 
+export async function loginAzure(upn: string): Promise<AzureEnvironment> {
+  if (!electronWindow.electronAPI) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          executingAzureUser: "API@NOTFOUND",
+        });
+      }, 1000);
+    });
+  }
+
+  const env = await electronWindow.electronAPI.invokePSCommand({
+    useGlobalSession: true,
+    command: `Connect-AzureAD -AccountId ${upn}`,
+  });
+
+  return {
+    executingAzureUser: env?.result?.data?.[0]?.Account?.Id ?? "",
+  };
+}
+
 export async function getElectronEnvironment(): Promise<ElectronEnvironment> {
   if (!electronWindow.electronAPI) {
     return new Promise((resolve) => {
@@ -69,7 +90,7 @@ export async function getAzureEnvironment(): Promise<AzureEnvironment> {
     });
   }
 
-  const env = await invokePSCommand({
+  const env = await electronWindow.electronAPI.invokePSCommand({
     useGlobalSession: true,
     command: "Get-AzureADCurrentSessionInfo",
     selectFields: ["Account"],
@@ -89,5 +110,9 @@ export async function getDnsSuffixList(): Promise<string[]> {
     });
   }
 
-  return electronWindow.electronAPI.getDnsSuffixList();
+  const dns = await electronWindow.electronAPI.invokePSCommand({
+    command: "Get-DnsClientGlobalSetting",
+  });
+
+  return dns?.result?.data?.[0]?.SuffixSearchList ?? [];
 }

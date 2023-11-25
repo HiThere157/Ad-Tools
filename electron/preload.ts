@@ -5,7 +5,6 @@ const api = {
     ipcRenderer.invoke("ps:invokePSCommand", request),
   getElectronEnvironment: async (): Promise<ElectronEnvironment> =>
     ipcRenderer.invoke("node:getElectronEnvironment"),
-  getDnsSuffixList: async (): Promise<string[]> => ipcRenderer.invoke("node:getDnsSuffixList"),
   changeWindowState: (state: WindowState) => ipcRenderer.send("win:changeWindowState", state),
 
   onZoom: (callback: (zoom: number) => void) =>
