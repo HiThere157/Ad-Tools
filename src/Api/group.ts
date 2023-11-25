@@ -1,6 +1,6 @@
 import { invokePSCommand } from "../Helper/api";
 import { extractFirstObject, addServerToResponse } from "../Helper/postProcessors";
-import { removeDuplicates, getPSFilter, mergeResponses } from "../Helper/utils";
+import { removeDuplicates, formatAdFilter, mergeResponses, getFilterValue } from "../Helper/utils";
 
 type SingleGroupResponse = {
   attributes: Loadable<PSDataSet>;
@@ -9,7 +9,7 @@ type SingleGroupResponse = {
 };
 export async function getSingleGroup(query: Query): Promise<SingleGroupResponse> {
   const { filters, servers } = query;
-  const identity = filters.find(({ property }) => property === "Name")?.value ?? "";
+  const identity = getFilterValue(filters, "Name");
 
   const [attributes, members, memberof] = await Promise.all([
     invokePSCommand({
@@ -53,7 +53,7 @@ export async function getMultipleGroups(query: Query): Promise<MultipleGroupsRes
     servers.map((server) =>
       invokePSCommand({
         command: `Get-AdGroup \
-        -Filter "${getPSFilter(filters)}" \
+        -Filter "${formatAdFilter(filters)}" \
         -Server ${server} \
         -Properties ${selectFields.join(",")}`,
         selectFields,

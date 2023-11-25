@@ -1,10 +1,10 @@
 import { getMultipleGroups, getSingleGroup } from "../Api/group";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
-import { shouldPreQuery } from "../Helper/utils";
+import { getFilterValue, shouldPreQuery } from "../Helper/utils";
 
 import TabLayout from "../Layout/TabLayout";
-import Query from "../Components/Query/Query";
+import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 
 export default function Group() {
@@ -26,7 +26,7 @@ export default function Group() {
   const runQuery = async (query: Query, resetSearch?: boolean) => {
     if (shouldPreQuery(query)) return runPreQuery(query);
 
-    const identity = query.filters.find(({ property }) => property === "Name")?.value ?? "";
+    const identity = getFilterValue(query.filters, "Name");
 
     updateTab({ icon: "loading", title: identity || "Group" });
     if (resetSearch) setResult("search", undefined);
@@ -44,7 +44,7 @@ export default function Group() {
 
   return (
     <TabLayout page={page}>
-      <Query page={page} tabId={tabId} type="ad" onSubmit={() => runQuery(query, true)} />
+      <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="Search Results"

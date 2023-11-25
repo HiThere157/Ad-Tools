@@ -1,26 +1,26 @@
-import { getMultipleComputers, getSingleComputer } from "../Api/computer";
+import { getMultipleAzureUsers, getSingleAzureUser } from "../Api/azureUser";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldPreQuery } from "../Helper/utils";
 
 import TabLayout from "../Layout/TabLayout";
-import AdQuery from "../Components/Query/AdQuery";
+import AzureQuery from "../Components/Query/AzureQuery";
 import Table from "../Components/Table/Table";
 
-export default function Computer() {
-  const page = "computer";
+export default function AzureUser() {
+  const page = "azureUser";
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runPreQuery = async (query: Query) => {
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
-    setResult(["dns", "attributes", "memberof"], undefined);
+    setResult(["attributes", "memberof", "devices"], undefined);
 
-    const { computers } = await getMultipleComputers(query);
+    const { users } = await getMultipleAzureUsers(query);
 
     updateTab({ icon: "search" });
-    setResult("search", computers);
+    setResult("search", users);
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
@@ -28,23 +28,23 @@ export default function Computer() {
 
     const identity = getFilterValue(query.filters, "Name");
 
-    updateTab({ icon: "loading", title: identity || "User" });
+    updateTab({ icon: "loading", title: identity || "Azure User" });
     if (resetSearch) setResult("search", undefined);
-    setResult(["dns", "attributes", "memberof"], null);
+    setResult(["attributes", "memberof", "devices"], null);
 
-    const { dns, attributes, memberof } = await getSingleComputer(query);
+    const { attributes, memberof, devices } = await getSingleAzureUser(query);
 
-    updateTab({ icon: "computer" });
-    setResult("dns", dns);
+    updateTab({ icon: "user" });
     setResult("attributes", attributes);
     setResult("memberof", memberof);
+    setResult("devices", devices);
   };
 
   onRedirect(() => runQuery(query, true));
 
   return (
     <TabLayout page={page}>
-      <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+      <AzureQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="Search Results"
@@ -55,7 +55,7 @@ export default function Computer() {
         onRedirect={(row: PSResult & { Name?: string; _Server?: string }, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server ?? ""],
+            servers: [],
           };
 
           if (newTab) {
@@ -65,20 +65,9 @@ export default function Computer() {
           }
         }}
       />
-      <Table title="DNS" page={page} tabId={tabId} name="dns" />
       <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
-      <Table
-        title="Group Memberships"
-        page={page}
-        tabId={tabId}
-        name="memberof"
-        onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
-          redirect("group", {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server ?? ""],
-          });
-        }}
-      />
+      <Table title="Group Memberships" page={page} tabId={tabId} name="memberof" />
+      <Table title="Devices" page={page} tabId={tabId} name="devices" />
     </TabLayout>
   );
 }

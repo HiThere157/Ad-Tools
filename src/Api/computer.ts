@@ -1,6 +1,6 @@
 import { invokePSCommand } from "../Helper/api";
 import { extractFirstObject, addServerToResponse } from "../Helper/postProcessors";
-import { removeDuplicates, getPSFilter, mergeResponses } from "../Helper/utils";
+import { removeDuplicates, formatAdFilter, mergeResponses, getFilterValue } from "../Helper/utils";
 
 type getSingleComputerResponse = {
   dns: Loadable<PSDataSet>;
@@ -9,7 +9,7 @@ type getSingleComputerResponse = {
 };
 export async function getSingleComputer(query: Query): Promise<getSingleComputerResponse> {
   const { filters, servers } = query;
-  const identity = filters.find(({ property }) => property === "Name")?.value ?? "";
+  const identity = getFilterValue(filters, "Name");
 
   const [dns, attributes, memberof] = await Promise.all([
     invokePSCommand({
@@ -51,7 +51,7 @@ export async function getMultipleComputers(query: Query): Promise<MultipleComput
     servers.map((server) =>
       invokePSCommand({
         command: `Get-AdComputer \
-        -Filter "${getPSFilter(filters)}" \
+        -Filter "${formatAdFilter(filters)}" \
         -Server ${server} \
         -Properties ${selectFields.join(",")}`,
         selectFields,

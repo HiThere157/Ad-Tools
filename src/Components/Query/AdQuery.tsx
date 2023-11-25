@@ -13,14 +13,14 @@ import MultiDropdown from "../Dropdown/MultiDropdown";
 import QueryFilter from "./QueryFilter";
 
 import { BsPlusLg } from "react-icons/bs";
+import { getFilterValue } from "../../Helper/utils";
 
-type QueryProps = {
+type AdQueryProps = {
   page: string;
   tabId: number;
-  type: "ad" | "azure";
   onSubmit: () => void;
 };
-export default function Query({ page, tabId, type, onSubmit }: QueryProps) {
+export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
   const { query } = useSelector((state: RootState) => state.data);
   const { queryDomains } = useSelector((state: RootState) => state.preferences);
   const dispatch = useDispatch();
@@ -34,13 +34,12 @@ export default function Query({ page, tabId, type, onSubmit }: QueryProps) {
 
   // We only want to submit if the query is somewhat valid
   const beforeSubmit = () => {
-    // If we are querying for ad and there are no servers, don't submit
-    if (type === "ad" && servers.length === 0) return;
+    if (servers.length === 0) return;
 
     if (isAdvanced) {
       if (!Object.values(filters).some(({ value }) => value !== "")) return;
     } else {
-      if (!filters.find(({ property }) => property === "Name")?.value) return;
+      if (getFilterValue(filters, "Name") === "") return;
     }
 
     onSubmit();
@@ -55,17 +54,13 @@ export default function Query({ page, tabId, type, onSubmit }: QueryProps) {
 
   // Set default server for ad queries if there are queryDomains and the query is the default query
   useEffect(() => {
-    if (type === "ad" && tabId !== 0 && tabQuery === defaultQuery && queryDomains.length > 0) {
+    if (tabId !== 0 && tabQuery === defaultQuery && queryDomains.length > 0) {
       updateTabQuery({ servers: [queryDomains[0]] });
     }
   }, [queryDomains, tabQuery, tabId]);
 
   return (
-    <div
-      className={
-        "m-1.5 mb-4 flex items-start gap-1 " + (isAdvanced && type == "ad" ? "flex-col" : "")
-      }
-    >
+    <div className={"m-1.5 mb-4 flex items-start gap-1 " + (isAdvanced ? "flex-col" : "")}>
       {isAdvanced ? (
         <div className="flex items-start gap-2">
           <span>Filter:</span>
@@ -102,7 +97,7 @@ export default function Query({ page, tabId, type, onSubmit }: QueryProps) {
           <span>Identity:</span>
 
           <Input
-            value={filters.find(({ property }) => property === "Name")?.value ?? ""}
+            value={getFilterValue(filters, "Name")}
             onChange={(name) => {
               updateTabQuery({ filters: [{ property: "Name", value: name }] });
             }}
@@ -113,30 +108,26 @@ export default function Query({ page, tabId, type, onSubmit }: QueryProps) {
       )}
 
       <div className="flex gap-1">
-        {type === "ad" && (
-          <>
-            {isAdvanced ? (
-              <div className="flex items-start gap-2">
-                <span>Domains:</span>
+        {isAdvanced ? (
+          <div className="flex items-start gap-2">
+            <span>Domains:</span>
 
-                <MultiDropdown
-                  items={queryDomains}
-                  value={servers}
-                  onChange={(servers) => updateTabQuery({ servers })}
-                />
-              </div>
-            ) : (
-              <div className="flex items-start gap-1">
-                <span className="text-grey">@</span>
+            <MultiDropdown
+              items={queryDomains}
+              value={servers}
+              onChange={(servers) => updateTabQuery({ servers })}
+            />
+          </div>
+        ) : (
+          <div className="flex items-start gap-1">
+            <span className="text-grey">@</span>
 
-                <Dropdown
-                  items={queryDomains}
-                  value={servers[0]}
-                  onChange={(server) => updateTabQuery({ servers: [server] })}
-                />
-              </div>
-            )}
-          </>
+            <Dropdown
+              items={queryDomains}
+              value={servers[0]}
+              onChange={(server) => updateTabQuery({ servers: [server] })}
+            />
+          </div>
         )}
 
         <div className="flex items-center gap-1.5">

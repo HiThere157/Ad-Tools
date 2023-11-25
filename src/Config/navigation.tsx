@@ -2,6 +2,7 @@ import Home from "../Pages/Home";
 import User from "../Pages/User";
 import Group from "../Pages/Group";
 import Computer from "../Pages/Computer";
+import AzureUser from "../Pages/AzureUser";
 import Settings from "../Pages/Settings";
 import Tetris from "../Pages/Tetris";
 
@@ -79,7 +80,7 @@ export const navigationLinks: NavigationLink[][] = [
       href: "/azureUser",
       text: "Azure User",
       icon: <BsPersonLinesFill />,
-      page: <div>AzureUserPage</div>,
+      page: <AzureUser />,
     },
     {
       href: "/azureGroup",

@@ -7,7 +7,7 @@ export function shouldPreQuery(query: Query) {
   return hasNonNameField || hasMultipleServers || hasWildcard;
 }
 
-export function getPSFilter(filters: QueryFilter[]) {
+export function formatAdFilter(filters: QueryFilter[]) {
   return filters
     .map(({ property, value }) => {
       return `${property} -${value?.includes("*") ? "like" : "eq"} '${value}'`;
@@ -47,4 +47,8 @@ export function mergeResponses(responses: Loadable<PSDataSet>[]): Loadable<PSDat
 
 export function removeDuplicates<T>(...array: T[]) {
   return [...new Set(array.flat())];
+}
+
+export function getFilterValue(filters: QueryFilter[], property: string) {
+  return filters.find(({ property: filterProperty }) => filterProperty === property)?.value ?? "";
 }
