@@ -21,7 +21,7 @@ export default function Navigation() {
           dispatch(toggleNavBar());
           setCounter(counter + 1);
         }}
-        className="mb-1 flex h-[1.875rem] w-full items-center justify-center bg-primary outline-none -outline-offset-2 hover:bg-primaryAccent focus-visible:rounded focus-visible:outline-borderActive active:bg-primaryActive"
+        className="mb-1 flex h-[1.875rem] w-full flex-shrink-0 items-center justify-center bg-primary outline-none -outline-offset-2 hover:bg-primaryAccent focus-visible:rounded focus-visible:outline-borderActive active:bg-primaryActive"
       >
         {isNavBarExpanded ? <FiChevronsLeft /> : <FiChevronsRight />}
       </button>
