@@ -1,7 +1,7 @@
 import Home from "../Pages/Home";
-import User from "../Pages/User";
-import Group from "../Pages/Group";
-import Computer from "../Pages/Computer";
+import AdUser from "../Pages/AdUser";
+import AdGroup from "../Pages/AdGroup";
+import AdComputer from "../Pages/AdComputer";
 import AzureUser from "../Pages/AzureUser";
 import Settings from "../Pages/Settings";
 import Tetris from "../Pages/Tetris";
@@ -31,25 +31,25 @@ export const navigationLinks: NavigationLink[][] = [
       isHidden: true,
     },
     {
-      href: "/user",
+      href: "/adUser",
       text: "User",
       icon: <BsPersonLinesFill />,
-      page: <User />,
+      page: <AdUser />,
     },
     {
-      href: "/group",
+      href: "/adGroup",
       text: "Group",
       icon: <BsPeopleFill />,
-      page: <Group />,
+      page: <AdGroup />,
     },
     {
-      href: "/computer",
+      href: "/adComputer",
       text: "Computer",
       icon: <BsDisplay />,
-      page: <Computer />,
+      page: <AdComputer />,
     },
     {
-      href: "/replication",
+      href: "/adReplication",
       text: "Replication",
       icon: <BsDiagram3Fill />,
       page: <div>ReplicationPage</div>,

@@ -1,4 +1,4 @@
-import { getMultipleComputers, getSingleComputer } from "../Api/computer";
+import { getMultipleUsers, getSingleUser } from "../Api/user";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldPreQuery } from "../Helper/utils";
@@ -7,20 +7,20 @@ import TabLayout from "../Layout/TabLayout";
 import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 
-export default function Computer() {
-  const page = "computer";
+export default function AdUser() {
+  const page = "adUser";
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runPreQuery = async (query: Query) => {
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
-    setResult(["dns", "attributes", "memberof"], undefined);
+    setResult(["attributes", "memberof"], undefined);
 
-    const { computers } = await getMultipleComputers(query);
+    const { users } = await getMultipleUsers(query);
 
     updateTab({ icon: "search" });
-    setResult("search", computers);
+    setResult("search", users);
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
@@ -30,12 +30,11 @@ export default function Computer() {
 
     updateTab({ icon: "loading", title: identity || "User" });
     if (resetSearch) setResult("search", undefined);
-    setResult(["dns", "attributes", "memberof"], null);
+    setResult(["attributes", "groups"], null);
 
-    const { dns, attributes, memberof } = await getSingleComputer(query);
+    const { attributes, memberof } = await getSingleUser(query);
 
-    updateTab({ icon: "computer" });
-    setResult("dns", dns);
+    updateTab({ icon: "user" });
     setResult("attributes", attributes);
     setResult("memberof", memberof);
   };
@@ -65,7 +64,6 @@ export default function Computer() {
           }
         }}
       />
-      <Table title="DNS" page={page} tabId={tabId} name="dns" />
       <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
       <Table
         title="Group Memberships"
@@ -73,7 +71,7 @@ export default function Computer() {
         tabId={tabId}
         name="memberof"
         onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
-          redirect("group", {
+          redirect("adGroup", {
             filters: [{ property: "Name", value: row.Name ?? "" }],
             servers: [row._Server ?? ""],
           });
