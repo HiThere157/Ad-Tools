@@ -22,7 +22,7 @@ export default function TableHeader({
 
       <div className="flex items-baseline gap-1">
         <button
-          className="z-10 rounded px-1 outline-none outline-offset-0 focus-visible:outline-borderActive"
+          className="rounded px-1 outline-none outline-offset-0 focus-visible:outline-borderActive"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           <h2 className="text-2xl font-bold" style={{ scrollMarginTop: "60px" }}>
