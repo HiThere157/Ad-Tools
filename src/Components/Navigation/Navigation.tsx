@@ -14,6 +14,11 @@ export default function Navigation() {
   const { isNavBarExpanded } = useSelector((state: RootState) => state.preferences);
   const dispatch = useDispatch();
 
+  // Filter out hidden links and groups with no visible links
+  const visibleLinks = navigationLinks
+    .map((group) => group.filter((link) => !link.isHidden || (link.isEasterEgg && counter >= 25)))
+    .filter((group) => group.length > 0);
+
   return (
     <nav style={{ gridArea: "nav" }} className="flex select-none flex-col overflow-auto bg-light">
       <button
@@ -26,16 +31,13 @@ export default function Navigation() {
         {isNavBarExpanded ? <FiChevronsLeft /> : <FiChevronsRight />}
       </button>
 
-      {navigationLinks.map((group, groupIndex) => (
+      {visibleLinks.map((group, groupIndex) => (
         <React.Fragment key={groupIndex}>
           {groupIndex !== 0 && <hr className="mx-1 my-1.5 border-border" />}
 
-          {group.map(
-            (link, linkIndex) =>
-              (!link.isHidden || (link.isEasterEgg && counter >= 25)) && (
-                <NavigationLink key={linkIndex} link={link} isExpanded={isNavBarExpanded} />
-              ),
-          )}
+          {group.map((link, linkIndex) => (
+            <NavigationLink key={linkIndex} link={link} isExpanded={isNavBarExpanded} />
+          ))}
         </React.Fragment>
       ))}
     </nav>
