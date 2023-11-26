@@ -5,7 +5,6 @@
 .winbar-drag-region {
   -webkit-app-region: drag;
 }
-
 .winbar-no-drag {
   -webkit-app-region: no-drag;
 }
@@ -25,4 +24,22 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 input[type="color"]::-webkit-color-swatch {
   border: none;
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 0.375rem;
+  background-color: #2d2d2d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #3f3f3f;
+}
+::-webkit-scrollbar-thumb:active {
+  background-color: #323232;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
 }

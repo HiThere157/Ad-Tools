@@ -11,7 +11,6 @@ import { navigationLinks } from "./Config/navigation";
 import RootLayout from "./Layout/RootLayout";
 
 import "./index.css";
-import "./scrollbar.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
