@@ -58,11 +58,8 @@ export default function AdComputer() {
             servers: [row._Server ?? ""],
           };
 
-          if (newTab) {
-            redirect(page, newQuery);
-          } else {
-            runQuery(newQuery);
-          }
+          if (newTab) return redirect(page, newQuery);
+          runQuery(newQuery);
         }}
       />
       <Table title="DNS" page={page} tabId={tabId} name="dns" />
