@@ -192,7 +192,7 @@ export default function Table({ title, page, tabId, name, hideIfEmpty, onRedirec
                 )}
               </div>
 
-              {count && count.total > 10 && (
+              {count && count.total > 25 && pageSize >= 25 && (
                 <TablePagination
                   count={count.total - count.filtered}
                   pageIndex={pageIndex}

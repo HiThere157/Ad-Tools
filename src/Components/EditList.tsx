@@ -1,3 +1,5 @@
+import React from "react";
+
 import Button from "./Button";
 import Input from "./Input/Input";
 
@@ -9,10 +11,10 @@ type EditListProps = {
 };
 export default function EditList({ list, onChange }: EditListProps) {
   return (
-    <div className="flex items-start gap-1 p-2">
+    <div className="flex items-start gap-1">
       <div className="grid grid-cols-[1fr_auto] items-start gap-1">
         {list.map((item, itemIndex) => (
-          <>
+          <React.Fragment key={itemIndex}>
             <Input
               value={item}
               onChange={(value) => {
@@ -28,7 +30,7 @@ export default function EditList({ list, onChange }: EditListProps) {
             >
               <BsTrashFill />
             </Button>
-          </>
+          </React.Fragment>
         ))}
       </div>
 
