@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { getMultipleAzureUsers, getSingleAzureUser } from "../Api/azureUser";
+import {
+  getMultipleAzureUsers,
+  getSingleAzureInfoUser,
+  getSingleAzureUser,
+} from "../Api/azureUser";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { RootState } from "../Redux/store";
-import { getFilterValue, shouldPreQuery } from "../Helper/utils";
+import { getFilterValue } from "../Helper/utils";
 
 import TabLayout from "../Layout/TabLayout";
 import AzureQuery from "../Components/Query/AzureQuery";
@@ -32,7 +36,6 @@ export default function AzureUser() {
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
     if (!executingAzureUser) return setIsLoginOpen(true);
-    if (shouldPreQuery(query)) return runPreQuery(query);
 
     const identity = getFilterValue(query.filters, "Name");
 
@@ -40,7 +43,10 @@ export default function AzureUser() {
     if (resetSearch) setResult("search", undefined);
     setResult(["attributes", "memberof", "devices"], null);
 
-    const { attributes, memberof, devices } = await getSingleAzureUser(query);
+    const { attributes } = await getSingleAzureUser(query);
+    if (attributes?.error) return runPreQuery(query);
+
+    const { memberof, devices } = await getSingleAzureInfoUser(query);
 
     updateTab({ icon: "user" });
     setResult("attributes", attributes);
@@ -60,9 +66,9 @@ export default function AzureUser() {
         tabId={tabId}
         name="search"
         hideIfEmpty={true}
-        onRedirect={(row: PSResult & { Name?: string; _Server?: string }, newTab) => {
+        onRedirect={(row: PSResult & { UserPrincipalName?: string; _Server?: string }, newTab) => {
           const newQuery = {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
+            filters: [{ property: "Name", value: row.UserPrincipalName ?? "" }],
             servers: [],
           };
 
