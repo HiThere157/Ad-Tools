@@ -4,30 +4,18 @@ import { getFilterValue, removeDuplicates } from "../Helper/utils";
 
 type SingleAzureUserResponse = {
   attributes: Loadable<PSDataSet>;
+  memberof: Loadable<PSDataSet>;
+  devices: Loadable<PSDataSet>;
 };
 export async function getSingleAzureUser(query: Query): Promise<SingleAzureUserResponse> {
   const { filters } = query;
   const identity = getFilterValue(filters, "Name");
 
-  const attributes = await invokePSCommand({
-    command: `Get-AzureADUser \
-    -ObjectId ${identity}`,
-  });
-
-  return {
-    attributes: extractFirstObject(attributes),
-  };
-}
-
-type SingleAzureUserInfoResponse = {
-  memberof: Loadable<PSDataSet>;
-  devices: Loadable<PSDataSet>;
-};
-export async function getSingleAzureInfoUser(query: Query): Promise<SingleAzureUserInfoResponse> {
-  const { filters } = query;
-  const identity = getFilterValue(filters, "Name");
-
-  const [memberof, devices] = await Promise.all([
+  const [attributes, memberof, devices] = await Promise.all([
+    invokePSCommand({
+      command: `Get-AzureADUser \
+      -ObjectId ${identity}`,
+    }),
     invokePSCommand({
       command: `Get-AzureADUserMembership \
       -ObjectId ${identity} \
@@ -49,6 +37,7 @@ export async function getSingleAzureInfoUser(query: Query): Promise<SingleAzureU
   ]);
 
   return {
+    attributes: extractFirstObject(attributes),
     memberof,
     devices,
   };

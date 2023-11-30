@@ -1,8 +1,4 @@
-import {
-  getMultipleAzureUsers,
-  getSingleAzureInfoUser,
-  getSingleAzureUser,
-} from "../Api/azureUser";
+import { getMultipleAzureUsers, getSingleAzureUser } from "../Api/azureUser";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue } from "../Helper/utils";
@@ -34,11 +30,7 @@ export default function AzureUser() {
     if (resetSearch) setResult("search", undefined);
     setResult(["attributes", "memberof", "devices"], null);
 
-    // We need to test if we should run a pre-query or not by checking if the user exists.
-    const { attributes } = await getSingleAzureUser(query);
-    if (attributes?.error) return runPreQuery(query);
-
-    const { memberof, devices } = await getSingleAzureInfoUser(query);
+    const { attributes, memberof, devices } = await getSingleAzureUser(query);
 
     updateTab({ icon: "user" });
     setResult("attributes", attributes);
@@ -46,11 +38,11 @@ export default function AzureUser() {
     setResult("devices", devices);
   };
 
-  onRedirect(() => runQuery(query, true));
+  onRedirect(() => runPreQuery(query));
 
   return (
     <TabLayout page={page}>
-      <AzureQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+      <AzureQuery page={page} tabId={tabId} onSubmit={() => runPreQuery(query)} />
 
       <Table
         title="Search Results"
