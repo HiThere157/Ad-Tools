@@ -50,7 +50,7 @@ export default function AzureGroup() {
         hideIfEmpty={true}
         onRedirect={(row, newTab) => {
           const newQuery = {
-            filters: [{ property: "Name", value: row.ObjectId ?? "" }],
+            filters: [{ property: "Name", value: row.DisplayName ?? "" }],
             servers: [],
           };
 
