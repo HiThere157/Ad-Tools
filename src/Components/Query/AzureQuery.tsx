@@ -37,8 +37,8 @@ export default function AzureQuery({ page, tabId, onSubmit }: AzureQueryProps) {
   };
 
   return (
-    <div className="m-1.5 mb-4 flex items-start gap-1">
-      <div className="flex items-start gap-2">
+    <div className="m-1.5 mb-4 flex gap-1">
+      <div className="flex gap-2">
         <span>Search String:</span>
 
         <Input

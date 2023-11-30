@@ -88,7 +88,7 @@ export default function TableFilterMenu({
       </div>
 
       <div className="flex items-start gap-1 p-2">
-        <div className="grid flex-grow grid-cols-[auto_auto_1fr_auto] items-start gap-1">
+        <div className="grid flex-grow grid-cols-[auto_auto_1fr_auto] gap-1">
           {filters.map((filter, filterIndex) => (
             <TableFilter
               key={filterIndex}

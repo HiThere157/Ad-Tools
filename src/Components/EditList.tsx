@@ -12,7 +12,7 @@ type EditListProps = {
 export default function EditList({ list, onChange }: EditListProps) {
   return (
     <div className="flex items-start gap-1">
-      <div className="grid grid-cols-[1fr_auto] items-start gap-1">
+      <div className="grid grid-cols-[1fr_auto] gap-1">
         {list.map((item, itemIndex) => (
           <React.Fragment key={itemIndex}>
             <Input

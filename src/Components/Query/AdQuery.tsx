@@ -60,13 +60,13 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
   }, [queryDomains, tabQuery, tabId]);
 
   return (
-    <div className={"m-1.5 mb-4 flex items-start gap-1 " + (isAdvanced ? "flex-col" : "")}>
+    <div className={"m-1.5 mb-4 flex gap-1 " + (isAdvanced ? "flex-col" : "")}>
       {isAdvanced ? (
-        <div className="flex items-start gap-2">
+        <div className="flex gap-2">
           <span>Filter:</span>
 
           <div className="flex items-start gap-1">
-            <div className="grid grid-cols-[auto_auto_auto_auto] items-start gap-1">
+            <div className="grid grid-cols-[auto_auto_auto_auto] gap-1">
               {filters.map((filter, filterIndex) => (
                 <QueryFilter
                   key={filterIndex}
@@ -93,7 +93,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
           </div>
         </div>
       ) : (
-        <div className="flex items-start gap-2">
+        <div className="flex gap-2">
           <span>Identity:</span>
 
           <Input
@@ -109,7 +109,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
 
       <div className="flex gap-1">
         {isAdvanced ? (
-          <div className="flex items-start gap-2">
+          <div className="flex gap-2">
             <span>Domains:</span>
 
             <MultiDropdown
@@ -119,7 +119,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
             />
           </div>
         ) : (
-          <div className="flex items-start gap-1">
+          <div className="flex gap-1">
             <span className="text-grey">@</span>
 
             <Dropdown
