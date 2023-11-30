@@ -20,7 +20,7 @@ export default function AzureGroup() {
     setResult(["attributes", "members"], undefined);
 
     const { users } = await getMultipleAzureGroups(query);
-    if(users?.result?.data?.[0]?.DisplayName === identity) return runQuery(query);
+    if (users?.result?.data?.[0]?.DisplayName === identity) return runQuery(query);
 
     updateTab({ icon: "search" });
     setResult("search", users);

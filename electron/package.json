@@ -8,7 +8,8 @@
     "copy:assets": "npx copyfiles ./assets/* ./build/",
     "start": "npx tsc && npm run copy:assets && electron .",
     "dist": "npx tsc && npm run copy:assets && electron-builder --dir",
-    "pack": "npx tsc && npm run copy:assets && electron-builder"
+    "pack": "npx tsc && npm run copy:assets && electron-builder",
+    "publish": "npx tsc && npm run copy:assets && electron-builder --publish=always"
   },
   "repository": {
     "type": "git",
@@ -28,7 +29,10 @@
       "package.json"
     ],
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "publish": [
+        "github"
+      ]
     },
     "nsis": {
       "oneClick": false,

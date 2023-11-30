@@ -20,7 +20,7 @@ export default function AzureUser() {
     setResult(["attributes", "memberof", "devices"], undefined);
 
     const { users } = await getMultipleAzureUsers(query);
-    if(users?.result?.data?.[0]?.UserPrincipalName === identity) return runQuery(query);
+    if (users?.result?.data?.[0]?.UserPrincipalName === identity) return runQuery(query);
 
     updateTab({ icon: "search" });
     setResult("search", users);
