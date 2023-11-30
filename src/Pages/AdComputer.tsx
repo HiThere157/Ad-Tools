@@ -41,7 +41,7 @@ export default function AdComputer() {
     setResult("memberof", memberof);
   };
 
-  onRedirect(() => runQuery(query, true));
+  onRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>
@@ -53,7 +53,7 @@ export default function AdComputer() {
         tabId={tabId}
         name="search"
         hideIfEmpty={true}
-        onRedirect={(row: PSResult & { Name?: string; _Server?: string }, newTab) => {
+        onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],
             servers: [row._Server ?? ""],
@@ -70,7 +70,7 @@ export default function AdComputer() {
         page={page}
         tabId={tabId}
         name="memberof"
-        onRedirect={(row: PSResult & { Name?: string; _Server?: string }) => {
+        onRedirect={(row) => {
           redirect("adGroup", {
             filters: [{ property: "Name", value: row.Name ?? "" }],
             servers: [row._Server ?? ""],

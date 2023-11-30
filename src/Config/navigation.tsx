@@ -3,6 +3,7 @@ import AdUser from "../Pages/AdUser";
 import AdGroup from "../Pages/AdGroup";
 import AdComputer from "../Pages/AdComputer";
 import AzureUser from "../Pages/AzureUser";
+import AzureGroup from "../Pages/AzureGroup";
 import Settings from "../Pages/Settings";
 import Tetris from "../Pages/Tetris";
 
@@ -86,7 +87,7 @@ export const navigationLinks: NavigationLink[][] = [
       href: "/azureGroup",
       text: "Azure Group",
       icon: <BsPeopleFill />,
-      page: <div>AzureGroupPage</div>,
+      page: <AzureGroup />,
     },
     {
       href: "/azureDevice",
