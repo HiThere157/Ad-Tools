@@ -13,11 +13,14 @@ export default function AzureGroup() {
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = async (query: Query) => {
+    const identity = getFilterValue(query.filters, "Name");
+
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["attributes", "members"], undefined);
 
     const { users } = await getMultipleAzureGroups(query);
+    if(users?.result?.data?.[0]?.DisplayName === identity) return runQuery(query);
 
     updateTab({ icon: "search" });
     setResult("search", users);
@@ -36,7 +39,7 @@ export default function AzureGroup() {
     setResult("members", members);
   };
 
-  onRedirect(() => runQuery(query));
+  onRedirect(() => runSearchQuery(query));
 
   return (
     <TabLayout page={page}>
@@ -55,7 +58,7 @@ export default function AzureGroup() {
           };
 
           if (newTab) return redirect(page, newQuery);
-          runQuery(newQuery);
+          runSearchQuery(newQuery);
         }}
       />
       <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
