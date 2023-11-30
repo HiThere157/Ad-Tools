@@ -1,7 +1,7 @@
 import { getMultipleAdGroups, getSingleAdGroup } from "../Api/adGroup";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
-import { getFilterValue, shouldPreQuery } from "../Helper/utils";
+import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
 
 import TabLayout from "../Layout/TabLayout";
 import AdQuery from "../Components/Query/AdQuery";
@@ -12,7 +12,7 @@ export default function AdGroup() {
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
-  const runPreQuery = async (query: Query) => {
+  const runSearchQuery = async (query: Query) => {
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["attributes", "members", "memberof"], undefined);
@@ -25,7 +25,7 @@ export default function AdGroup() {
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
     // We can predict if we need to run a pre-query based on the query itself.
-    if (shouldPreQuery(query)) return runPreQuery(query);
+    if (shouldSearchQuery(query)) return runSearchQuery(query);
 
     const identity = getFilterValue(query.filters, "Name");
 

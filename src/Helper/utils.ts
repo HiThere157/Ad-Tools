@@ -1,4 +1,4 @@
-export function shouldPreQuery(query: Query) {
+export function shouldSearchQuery(query: Query) {
   const { filters, servers } = query;
   const hasNonNameField = filters.some(({ property }) => property !== "Name");
   const hasMultipleServers = servers.length > 1;

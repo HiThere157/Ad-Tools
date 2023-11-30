@@ -12,7 +12,7 @@ export default function AzureUser() {
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
-  const runPreQuery = async (query: Query) => {
+  const runSearchQuery = async (query: Query) => {
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["attributes", "memberof", "devices"], undefined);
@@ -38,11 +38,11 @@ export default function AzureUser() {
     setResult("devices", devices);
   };
 
-  onRedirect(() => runPreQuery(query));
+  onRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>
-      <AzureQuery page={page} tabId={tabId} onSubmit={() => runPreQuery(query)} />
+      <AzureQuery page={page} tabId={tabId} onSubmit={() => runSearchQuery(query)} />
 
       <Table
         title="Search Results"
