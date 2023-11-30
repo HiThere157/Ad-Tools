@@ -43,11 +43,11 @@ export default function Settings() {
             Clear Persistent
           </Button>
 
-          <ul className="[&>li]:leading-5">
+          <ul className="[&>li]:leading-5 px-2">
             <li>Tabs</li>
             <li>Results</li>
           </ul>
-          <ul className="[&>li]:leading-5">
+          <ul className="[&>li]:leading-5 px-2">
             <li>Preferences</li>
             <li>Query Domains</li>
             <li>Filter Presets</li>
