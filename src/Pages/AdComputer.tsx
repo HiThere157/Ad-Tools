@@ -24,6 +24,7 @@ export default function AdComputer() {
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
+    // We can predict if we need to run a pre-query based on the query itself.
     if (shouldPreQuery(query)) return runPreQuery(query);
 
     const identity = getFilterValue(query.filters, "Name");

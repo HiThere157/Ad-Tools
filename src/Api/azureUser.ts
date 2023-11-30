@@ -10,7 +10,6 @@ export async function getSingleAzureUser(query: Query): Promise<SingleAzureUserR
   const identity = getFilterValue(filters, "Name");
 
   const attributes = await invokePSCommand({
-    useGlobalSession: true,
     command: `Get-AzureADUser \
     -ObjectId ${identity}`,
   });
@@ -30,14 +29,12 @@ export async function getSingleAzureInfoUser(query: Query): Promise<SingleAzureU
 
   const [memberof, devices] = await Promise.all([
     invokePSCommand({
-      useGlobalSession: true,
       command: `Get-AzureADUserMembership \
       -ObjectId ${identity} \
       -All $true`,
       selectFields: ["DisplayName", "Description"],
     }),
     invokePSCommand({
-      useGlobalSession: true,
       command: `Get-AzureADUserRegisteredDevice \
       -ObjectId ${identity} \
       -All $true`,
@@ -68,7 +65,6 @@ export async function getMultipleAzureUsers(query: Query): Promise<MultipleAzure
   );
 
   const users = await invokePSCommand({
-    useGlobalSession: true,
     command: `Get-AzureADUser \
     -SearchString ${getFilterValue(filters, "Name")} \
     -All $true`,

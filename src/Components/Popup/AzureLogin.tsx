@@ -28,6 +28,7 @@ export default function AzureLogin({ isOpen, onExit }: AzureLoginProps) {
         const env = await loginAzure(value);
         dispatch(setAzureEnvironment(env));
         dispatch(setAzureLoginUPN(value));
+
         onExit(true);
       }}
     />

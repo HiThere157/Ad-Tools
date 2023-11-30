@@ -33,7 +33,6 @@ type AzureEnvironment = {
 type InvokePSCommandRequest = {
   command: string;
   selectFields?: string[];
-  useGlobalSession?: boolean;
 };
 
 type WindowState = "minimize" | "maximize_restore" | "close";
