@@ -1,41 +1,43 @@
 import { invokePSCommand } from "../Helper/api";
 import { addServerToResponse, extractFirstObject } from "../Helper/postProcessors";
-import { formatAdFilter, getFilterValue, mergeResponses, removeDuplicates } from "../Helper/utils";
+import { formatAdFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
 
 type SingleUserResponse = {
   attributes: Loadable<PSDataSet>;
   memberof: Loadable<PSDataSet>;
 };
-export async function getSingleAdUser(query: Query): Promise<SingleUserResponse> {
-  const { filters, servers } = query;
-  const identity = getFilterValue(filters, "Name");
-
+export async function getSingleAdUser(
+  identity: string,
+  server: string,
+): Promise<SingleUserResponse> {
   const [attributes, memberof] = await Promise.all([
     invokePSCommand({
       command: `Get-AdUser \
       -Identity ${identity} \
-      -Server ${servers[0]} \
+      -Server ${server} \
       -Properties *`,
     }),
     invokePSCommand({
       command: `Get-AdPrincipalGroupMembership \
       -Identity ${identity} \
-      -Server ${servers[0]}`,
+      -Server ${server}`,
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     }),
   ]);
 
   return {
     attributes: extractFirstObject(attributes),
-    memberof: addServerToResponse(memberof, servers[0]),
+    memberof: addServerToResponse(memberof, server),
   };
 }
 
 type MultipleUsersResponse = {
   users: Loadable<PSDataSet>;
 };
-export async function getMultipleAdUsers(query: Query): Promise<MultipleUsersResponse> {
-  const { filters, servers } = query;
+export async function getMultipleAdUsers(
+  filters: QueryFilter[],
+  servers: string[],
+): Promise<MultipleUsersResponse> {
   const selectFields = removeDuplicates(
     ["Name", "DisplayName"],
     filters.map(({ property }) => property),

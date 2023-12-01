@@ -1,49 +1,51 @@
 import { invokePSCommand } from "../Helper/api";
 import { extractFirstObject, addServerToResponse } from "../Helper/postProcessors";
-import { removeDuplicates, formatAdFilter, mergeResponses, getFilterValue } from "../Helper/utils";
+import { removeDuplicates, formatAdFilter, mergeResponses } from "../Helper/utils";
 
 type SingleGroupResponse = {
   attributes: Loadable<PSDataSet>;
   members: Loadable<PSDataSet>;
   memberof: Loadable<PSDataSet>;
 };
-export async function getSingleAdGroup(query: Query): Promise<SingleGroupResponse> {
-  const { filters, servers } = query;
-  const identity = getFilterValue(filters, "Name");
-
+export async function getSingleAdGroup(
+  identity: string,
+  server: string,
+): Promise<SingleGroupResponse> {
   const [attributes, members, memberof] = await Promise.all([
     invokePSCommand({
       command: `Get-AdGroup \
       -Identity ${identity} \
-      -Server ${servers[0]} \
+      -Server ${server} \
       -Properties *`,
     }),
     invokePSCommand({
       command: `Get-AdGroupMember \
       -Identity ${identity} \
-      -Server ${servers[0]}`,
+      -Server ${server}`,
       selectFields: ["Name", "SamAccountName", "DistinguishedName", "ObjectClass"],
     }),
     invokePSCommand({
       command: `Get-AdPrincipalGroupMembership \
       -Identity ${identity} \
-      -Server ${servers[0]}`,
+      -Server ${server}`,
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     }),
   ]);
 
   return {
     attributes: extractFirstObject(attributes),
-    members: addServerToResponse(members, servers[0]),
-    memberof: addServerToResponse(memberof, servers[0]),
+    members: addServerToResponse(members, server),
+    memberof: addServerToResponse(memberof, server),
   };
 }
 
 type MultipleGroupsResponse = {
   groups: Loadable<PSDataSet>;
 };
-export async function getMultipleAdGroups(query: Query): Promise<MultipleGroupsResponse> {
-  const { filters, servers } = query;
+export async function getMultipleAdGroups(
+  filters: QueryFilter[],
+  servers: string[],
+): Promise<MultipleGroupsResponse> {
   const selectFields = removeDuplicates(
     ["Name", "Description"],
     filters.map(({ property }) => property),

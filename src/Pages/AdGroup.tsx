@@ -13,11 +13,13 @@ export default function AdGroup() {
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = async (query: Query) => {
+    const { filters, servers } = query;
+
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["attributes", "members", "memberof"], undefined);
 
-    const { groups } = await getMultipleAdGroups(query);
+    const { groups } = await getMultipleAdGroups(filters, servers);
 
     updateTab({ icon: "search" });
     setResult("search", groups);
@@ -28,12 +30,13 @@ export default function AdGroup() {
     if (shouldSearchQuery(query)) return runSearchQuery(query);
 
     const identity = getFilterValue(query.filters, "Name");
+    const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "Group" });
     if (resetSearch) setResult("search", undefined);
     setResult(["attributes", "members", "memberof"], null);
 
-    const { attributes, members, memberof } = await getSingleAdGroup(query);
+    const { attributes, members, memberof } = await getSingleAdGroup(identity, server);
 
     updateTab({ icon: "group" });
     setResult("attributes", attributes);

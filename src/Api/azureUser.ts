@@ -1,30 +1,37 @@
 import { invokePSCommand } from "../Helper/api";
 import { extractFirstObject } from "../Helper/postProcessors";
-import { getFilterValue, removeDuplicates } from "../Helper/utils";
 
 type SingleAzureUserResponse = {
   attributes: Loadable<PSDataSet>;
+};
+export async function getSingleAzureUser(objectId: string): Promise<SingleAzureUserResponse> {
+  const attributes = await invokePSCommand({
+    command: `Get-AzureADUser \
+      -ObjectId ${objectId}`,
+  });
+
+  return {
+    attributes: extractFirstObject(attributes),
+  };
+}
+
+type SingleAzureUserDetailsResponse = {
   memberof: Loadable<PSDataSet>;
   devices: Loadable<PSDataSet>;
 };
-export async function getSingleAzureUser(query: Query): Promise<SingleAzureUserResponse> {
-  const { filters } = query;
-  const identity = getFilterValue(filters, "Name");
-
-  const [attributes, memberof, devices] = await Promise.all([
-    invokePSCommand({
-      command: `Get-AzureADUser \
-      -ObjectId ${identity}`,
-    }),
+export async function getSingleAzureUserDetails(
+  objectId: string,
+): Promise<SingleAzureUserDetailsResponse> {
+  const [memberof, devices] = await Promise.all([
     invokePSCommand({
       command: `Get-AzureADUserMembership \
-      -ObjectId ${identity} \
+      -ObjectId ${objectId} \
       -All $true`,
       selectFields: ["DisplayName", "Description"],
     }),
     invokePSCommand({
       command: `Get-AzureADUserRegisteredDevice \
-      -ObjectId ${identity} \
+      -ObjectId ${objectId} \
       -All $true`,
       selectFields: [
         "DisplayName",
@@ -37,7 +44,6 @@ export async function getSingleAzureUser(query: Query): Promise<SingleAzureUserR
   ]);
 
   return {
-    attributes: extractFirstObject(attributes),
     memberof,
     devices,
   };
@@ -46,18 +52,14 @@ export async function getSingleAzureUser(query: Query): Promise<SingleAzureUserR
 type MultipleAzureUsersResponse = {
   users: Loadable<PSDataSet>;
 };
-export async function getMultipleAzureUsers(query: Query): Promise<MultipleAzureUsersResponse> {
-  const { filters } = query;
-  const selectFields = removeDuplicates(
-    ["UserPrincipalName", "DisplayName", "Department"],
-    filters.map(({ property }) => property),
-  );
-
+export async function getMultipleAzureUsers(
+  searchString: string,
+): Promise<MultipleAzureUsersResponse> {
   const users = await invokePSCommand({
     command: `Get-AzureADUser \
-    -SearchString ${getFilterValue(filters, "Name")} \
+    -SearchString ${searchString} \
     -All $true`,
-    selectFields,
+    selectFields: ["UserPrincipalName", "DisplayName", "Department"],
   });
 
   return {

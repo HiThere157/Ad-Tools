@@ -13,11 +13,13 @@ export default function AdUser() {
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = async (query: Query) => {
+    const { filters, servers } = query;
+
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["attributes", "memberof"], undefined);
 
-    const { users } = await getMultipleAdUsers(query);
+    const { users } = await getMultipleAdUsers(filters, servers);
 
     updateTab({ icon: "search" });
     setResult("search", users);
@@ -28,12 +30,13 @@ export default function AdUser() {
     if (shouldSearchQuery(query)) return runSearchQuery(query);
 
     const identity = getFilterValue(query.filters, "Name");
+    const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "User" });
     if (resetSearch) setResult("search", undefined);
     setResult(["attributes", "memberof"], null);
 
-    const { attributes, memberof } = await getSingleAdUser(query);
+    const { attributes, memberof } = await getSingleAdUser(identity, server);
 
     updateTab({ icon: "user" });
     setResult("attributes", attributes);

@@ -13,11 +13,13 @@ export default function AdComputer() {
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = async (query: Query) => {
+    const { filters, servers } = query;
+
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["dns", "attributes", "memberof"], undefined);
 
-    const { computers } = await getMultipleAdComputers(query);
+    const { computers } = await getMultipleAdComputers(filters, servers);
 
     updateTab({ icon: "search" });
     setResult("search", computers);
@@ -28,12 +30,13 @@ export default function AdComputer() {
     if (shouldSearchQuery(query)) return runSearchQuery(query);
 
     const identity = getFilterValue(query.filters, "Name");
+    const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "User" });
     if (resetSearch) setResult("search", undefined);
     setResult(["dns", "attributes", "memberof"], null);
 
-    const { dns, attributes, memberof } = await getSingleAdComputer(query);
+    const { dns, attributes, memberof } = await getSingleAdComputer(identity, server);
 
     updateTab({ icon: "computer" });
     setResult("dns", dns);

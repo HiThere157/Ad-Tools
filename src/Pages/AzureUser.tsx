@@ -1,4 +1,8 @@
-import { getMultipleAzureUsers, getSingleAzureUser } from "../Api/azureUser";
+import {
+  getMultipleAzureUsers,
+  getSingleAzureUser,
+  getSingleAzureUserDetails,
+} from "../Api/azureUser";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue } from "../Helper/utils";
@@ -13,26 +17,30 @@ export default function AzureUser() {
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = async (query: Query) => {
-    const identity = getFilterValue(query.filters, "Name");
+    const searchString = getFilterValue(query.filters, "Name");
 
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["attributes", "memberof", "devices"], undefined);
 
-    const { users } = await getMultipleAzureUsers(query);
-    if (users?.result?.data?.[0]?.UserPrincipalName === identity) return runQuery(query);
+    const { users } = await getMultipleAzureUsers(searchString);
 
     updateTab({ icon: "search" });
     setResult("search", users);
   };
 
-  const runQuery = async (query: Query) => {
-    const identity = getFilterValue(query.filters, "Name");
+  const runQuery = async (query: Query, resetSearch?: boolean) => {
+    const objectId = getFilterValue(query.filters, "Name");
 
-    updateTab({ icon: "loading", title: identity || "Azure User" });
+    updateTab({ icon: "loading", title: objectId || "Azure User" });
+    if (resetSearch) setResult("search", undefined);
     setResult(["attributes", "memberof", "devices"], null);
 
-    const { attributes, memberof, devices } = await getSingleAzureUser(query);
+    // We need to test if we should run a pre-query or not by checking if the object exists.
+    const { attributes } = await getSingleAzureUser(objectId);
+    if (attributes?.error) return runSearchQuery(query);
+
+    const { memberof, devices } = await getSingleAzureUserDetails(objectId);
 
     updateTab({ icon: "user" });
     setResult("attributes", attributes);
@@ -40,11 +48,11 @@ export default function AzureUser() {
     setResult("devices", devices);
   };
 
-  onRedirect(() => runSearchQuery(query));
+  onRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>
-      <AzureQuery page={page} tabId={tabId} onSubmit={() => runSearchQuery(query)} />
+      <AzureQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="Search Results"
@@ -59,7 +67,7 @@ export default function AzureUser() {
           };
 
           if (newTab) return redirect(page, newQuery);
-          runSearchQuery(newQuery);
+          runQuery(newQuery);
         }}
       />
       <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
