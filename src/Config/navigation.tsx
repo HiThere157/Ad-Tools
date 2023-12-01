@@ -4,6 +4,7 @@ import AdGroup from "../Pages/AdGroup";
 import AdComputer from "../Pages/AdComputer";
 import AzureUser from "../Pages/AzureUser";
 import AzureGroup from "../Pages/AzureGroup";
+import AzureDevice from "../Pages/AzureDevice";
 import Settings from "../Pages/Settings";
 import Tetris from "../Pages/Tetris";
 
@@ -93,7 +94,7 @@ export const navigationLinks: NavigationLink[][] = [
       href: "/azureDevice",
       text: "Azure Device",
       icon: <BsLaptop />,
-      page: <div>AzureDevicePage</div>,
+      page: <AzureDevice />,
     },
   ],
   [
