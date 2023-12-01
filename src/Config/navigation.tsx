@@ -2,6 +2,7 @@ import Home from "../Pages/Home";
 import AdUser from "../Pages/AdUser";
 import AdGroup from "../Pages/AdGroup";
 import AdComputer from "../Pages/AdComputer";
+import AdReplication from "../Pages/AdReplication";
 import AzureUser from "../Pages/AzureUser";
 import AzureGroup from "../Pages/AzureGroup";
 import AzureDevice from "../Pages/AzureDevice";
@@ -19,7 +20,6 @@ import {
   BsPeopleFill,
   BsPersonLinesFill,
   BsPrinterFill,
-  BsServer,
   BsJoystick,
 } from "react-icons/bs";
 
@@ -54,7 +54,7 @@ export const navigationLinks: NavigationLink[][] = [
       href: "/adReplication",
       text: "Replication",
       icon: <BsDiagram3Fill />,
-      page: <div>ReplicationPage</div>,
+      page: <AdReplication />,
     },
   ],
   [
@@ -69,12 +69,6 @@ export const navigationLinks: NavigationLink[][] = [
       text: "Printer",
       icon: <BsPrinterFill />,
       page: <div>PrinterPage</div>,
-    },
-    {
-      href: "/dns",
-      text: "DNS",
-      icon: <BsServer />,
-      page: <div>DnsPage</div>,
     },
   ],
   [
