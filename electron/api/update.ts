@@ -4,16 +4,22 @@ import { autoUpdater } from "electron-updater";
 autoUpdater.allowDowngrade = true;
 autoUpdater.allowPrerelease = process.env.AD_TOOLS_PRERELEASE?.toLowerCase() === "true";
 
-export async function checkForUpdates(window: BrowserWindow): Promise<string> {
+export async function checkForUpdates(window: BrowserWindow) {
   const update = await autoUpdater.checkForUpdates();
+  const version = update?.updateInfo?.version ?? "";
 
-  if (update?.downloadPromise) {
-    window.webContents.send("update:onDownloadStatusUpdate", "pending");
-
-    update.downloadPromise
-      .then(() => window.webContents.send("update:onDownloadStatusUpdate", "complete"))
-      .catch(() => window.webContents.send("update:onDownloadStatusUpdate", "error"));
+  function sendUpdate(version: string, status: string) {
+    window.webContents.send("update:onDownloadStatusUpdate", {
+      version,
+      status,
+    });
   }
 
-  return update?.updateInfo?.version ?? "";
+  if (update?.downloadPromise) {
+    sendUpdate(version, "pending");
+
+    update.downloadPromise
+      .then(() => sendUpdate(version, "complete"))
+      .catch(() => sendUpdate(version, "error"));
+  }
 }

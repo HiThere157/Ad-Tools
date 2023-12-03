@@ -58,8 +58,8 @@ app.on("ready", () => {
   });
 
   // Handle Updater
-  ipcMain.handle("update:checkForUpdates", async () => {
-    return await checkForUpdates(window);
+  ipcMain.on("update:checkForUpdates", async () => {
+    checkForUpdates(window);
   });
 });
 

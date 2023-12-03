@@ -42,6 +42,14 @@ export function changeWindowState(state: WindowState) {
   return electronWindow.electronAPI.changeWindowState(state);
 }
 
+export async function checkForUpdates() {
+  if (!electronWindow.electronAPI) {
+    return;
+  }
+
+  return electronWindow.electronAPI.checkForUpdates();
+}
+
 export async function loginAzure(upn: string): Promise<AzureEnvironment> {
   if (!electronWindow.electronAPI) {
     return new Promise((resolve) => {
@@ -145,16 +153,4 @@ export async function getDnsSuffixList(): Promise<string[]> {
   });
 
   return dns?.result?.data?.[0]?.SuffixSearchList ?? [];
-}
-
-export async function checkForUpdates(): Promise<string> {
-  if (!electronWindow.electronAPI) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("");
-      }, 1000);
-    });
-  }
-
-  return electronWindow.electronAPI.checkForUpdates();
 }
