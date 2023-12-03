@@ -146,3 +146,15 @@ export async function getDnsSuffixList(): Promise<string[]> {
 
   return dns?.result?.data?.[0]?.SuffixSearchList ?? [];
 }
+
+export async function checkForUpdates(): Promise<string> {
+  if (!electronWindow.electronAPI) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("");
+      }, 1000);
+    });
+  }
+
+  return electronWindow.electronAPI.checkForUpdates();
+}
