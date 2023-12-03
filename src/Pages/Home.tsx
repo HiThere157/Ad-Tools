@@ -12,7 +12,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Release[] | null>(null);
 
-  const { appVersion } = useSelector((state: RootState) => state.environment);
+  const { appVersion } = useSelector((state: RootState) => state.environment.electron);
 
   const fetchReleases = async () => {
     setError(null);

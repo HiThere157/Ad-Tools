@@ -1,9 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { setAzureEnvironment, setElectronEnvironment } from "../Redux/environment";
+import {
+  setAzureEnvironment,
+  setElectronEnvironment,
+  setPowershellEnvironment,
+} from "../Redux/environment";
 import { setDefaultQueryDomains } from "../Redux/preferences";
-import { getAzureEnvironment, getDnsSuffixList, getElectronEnvironment } from "../Helper/api";
+import {
+  getAzureEnvironment,
+  getDnsSuffixList,
+  getElectronEnvironment,
+  getPowershellEnvironment,
+} from "../Helper/api";
 
 import Footer from "../Components/Footer";
 import Header from "../Components/Header/Header";
@@ -17,14 +26,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const dispatch = useDispatch();
 
   const init = async () => {
-    const [electronEnvironment, azureEnvironment, queryDomains] = await Promise.all([
-      getElectronEnvironment(),
-      getAzureEnvironment(),
-      getDnsSuffixList(),
-    ]);
+    const [electronEnvironment, azureEnvironment, powershellEnvironment, queryDomains] =
+      await Promise.all([
+        getElectronEnvironment(),
+        getAzureEnvironment(),
+        getPowershellEnvironment(),
+        getDnsSuffixList(),
+      ]);
 
     dispatch(setElectronEnvironment(electronEnvironment));
     dispatch(setAzureEnvironment(azureEnvironment));
+    dispatch(setPowershellEnvironment(powershellEnvironment));
     dispatch(setDefaultQueryDomains(queryDomains));
   };
 

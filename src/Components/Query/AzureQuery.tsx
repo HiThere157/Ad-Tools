@@ -18,7 +18,7 @@ type AzureQueryProps = {
 export default function AzureQuery({ page, tabId, onSubmit }: AzureQueryProps) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const { query } = useSelector((state: RootState) => state.data);
-  const { executingAzureUser } = useSelector((state: RootState) => state.environment);
+  const { executingAzureUser } = useSelector((state: RootState) => state.environment.azure);
   const dispatch = useDispatch();
 
   const tabQuery = query[page]?.[tabId] ?? defaultQuery;

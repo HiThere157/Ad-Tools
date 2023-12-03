@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../Redux/store";
 
 export default function Footer() {
-  const { appVersion } = useSelector((state: RootState) => state.environment);
+  const { appVersion } = useSelector((state: RootState) => state.environment.electron);
 
   return (
     <footer

@@ -6,9 +6,10 @@ import { RootState } from "../../Redux/store";
 import WindowControls from "./WindowControls";
 
 export default function Header() {
-  const { appChannel, executingUser, executingAzureUser } = useSelector(
-    (state: RootState) => state.environment,
-  );
+  const {
+    electron: { appChannel, executingUser },
+    azure: { executingAzureUser },
+  } = useSelector((state: RootState) => state.environment);
 
   return (
     <header

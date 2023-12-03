@@ -3,26 +3,32 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 const environmentSlice = createSlice({
   name: "environment",
   initialState: {
-    executingUser: "",
-    executingAzureUser: "",
-    appVersion: "",
-    appChannel: "stable",
+    electron: {
+      executingUser: "",
+      appVersion: "",
+      appChannel: "stable",
+    },
+    powershell: {
+      adVersion: "",
+      azureAdVersion: "",
+    },
+    azure: {
+      executingAzureUser: "",
+    },
   },
   reducers: {
     setElectronEnvironment: (state, action: PayloadAction<ElectronEnvironment>) => {
-      const { executingUser, appVersion, appChannel } = action.payload;
-
-      state.executingUser = executingUser;
-      state.appVersion = appVersion;
-      state.appChannel = appChannel;
+      state.electron = action.payload;
     },
     setAzureEnvironment: (state, action: PayloadAction<AzureEnvironment>) => {
-      const { executingAzureUser } = action.payload;
-
-      state.executingAzureUser = executingAzureUser;
+      state.azure = action.payload;
+    },
+    setPowershellEnvironment: (state, action: PayloadAction<PowershellEnvironment>) => {
+      state.powershell = action.payload;
     },
   },
 });
 
-export const { setElectronEnvironment, setAzureEnvironment } = environmentSlice.actions;
+export const { setElectronEnvironment, setAzureEnvironment, setPowershellEnvironment } =
+  environmentSlice.actions;
 export default environmentSlice.reducer;

@@ -100,6 +100,37 @@ export async function getAzureEnvironment(): Promise<AzureEnvironment> {
   };
 }
 
+export async function getPowershellEnvironment(): Promise<PowershellEnvironment> {
+  if (!electronWindow.electronAPI) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          adVersion: "v0.0.0",
+          azureAdVersion: "v0.0.0",
+        });
+      }, 1000);
+    });
+  }
+
+  const formatVersion = (env: Loadable<PSDataSet>, module: string) => {
+    const version = env?.result?.data?.find((m) => m.Name === module)?.Version;
+    if (!version) return "";
+
+    const { Major: major, Minor: minor, Build: build } = version;
+    return `v${major}.${minor}.${build}`;
+  };
+
+  const env = await electronWindow.electronAPI.invokePSCommand({
+    command: "Get-Module -ListAvailable -Name AzureAd,ActiveDirectory",
+    selectFields: ["Name", "Version"],
+  });
+
+  return {
+    adVersion: formatVersion(env, "ActiveDirectory"),
+    azureAdVersion: formatVersion(env, "AzureAD"),
+  };
+}
+
 export async function getDnsSuffixList(): Promise<string[]> {
   if (!electronWindow.electronAPI) {
     return new Promise((resolve) => {
