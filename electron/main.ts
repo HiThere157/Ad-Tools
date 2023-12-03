@@ -5,6 +5,7 @@ import path = require("path");
 import { invokePSCommand } from "./api/powershell";
 import { getElectronEnvironment } from "./api/node";
 import { changeWindowState, changeZoom } from "./api/win";
+import { checkForUpdates } from "./api/update";
 
 app.on("ready", () => {
   const window = new BrowserWindow({
@@ -54,6 +55,11 @@ app.on("ready", () => {
   // Handle window state changes
   ipcMain.on("win:changeWindowState", (_event, state: WindowState) => {
     changeWindowState(window, state);
+  });
+
+  // Handle Updater
+  ipcMain.handle("update:checkForUpdates", async () => {
+    return await checkForUpdates(window);
   });
 });
 

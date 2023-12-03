@@ -6,10 +6,17 @@ const api = {
   getElectronEnvironment: async (): Promise<ElectronEnvironment> =>
     ipcRenderer.invoke("node:getElectronEnvironment"),
   changeWindowState: (state: WindowState) => ipcRenderer.send("win:changeWindowState", state),
+  checkForUpdates: async (): Promise<string | undefined> =>
+    ipcRenderer.invoke("update:checkForUpdates"),
 
   onZoom: (callback: (zoom: number) => void) =>
     ipcRenderer.on("win:onZoom", (_event, zoom: number) => callback(zoom)),
   offZoom: () => ipcRenderer.removeAllListeners("win:onZoom"),
+  onDownloadStatusUpdate: (callback: (status: UpdateDownloadStatus) => void) =>
+    ipcRenderer.on("update:onDownloadStatusUpdate", (_event, status: UpdateDownloadStatus) =>
+      callback(status),
+    ),
+  offDownloadStatusUpdate: () => ipcRenderer.removeAllListeners("update:onDownloadStatusUpdate"),
 };
 
 export type ElectronAPI = typeof api;

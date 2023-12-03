@@ -33,3 +33,4 @@ type InvokePSCommandRequest = {
 };
 
 type WindowState = "minimize" | "maximize_restore" | "close";
+type UpdateDownloadStatus = "pending" | "complete" | "error";
