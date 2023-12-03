@@ -55,7 +55,7 @@ export default function AzureUser() {
       <AzureQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
       <Table
-        title="Search Results"
+        title="User Search Results"
         page={page}
         tabId={tabId}
         name="search"

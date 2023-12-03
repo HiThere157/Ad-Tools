@@ -1,4 +1,4 @@
-import { getMultipleAdReplications, getSingleAdReplication } from "../Api/adReplication";
+import { getMultipleAdReplicationTargets, getSingleAdReplication } from "../Api/adReplication";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
@@ -19,7 +19,7 @@ export default function AdReplication() {
     setResult("search", null);
     setResult("attributes", undefined);
 
-    const { objects } = await getMultipleAdReplications(filters, servers);
+    const { objects } = await getMultipleAdReplicationTargets(filters, servers);
 
     updateTab({ icon: "search" });
     setResult("search", objects);
@@ -49,7 +49,7 @@ export default function AdReplication() {
       <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
       <Table
-        title="Search Results"
+        title="Object Search Results"
         page={page}
         tabId={tabId}
         name="search"

@@ -51,7 +51,7 @@ export default function AdGroup() {
       <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
       <Table
-        title="Search Results"
+        title="Group Search Results"
         page={page}
         tabId={tabId}
         name="search"

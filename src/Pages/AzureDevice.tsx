@@ -53,7 +53,7 @@ export default function AzureDevice() {
       <AzureQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
       <Table
-        title="Search Results"
+        title="Device Search Results"
         page={page}
         tabId={tabId}
         name="search"

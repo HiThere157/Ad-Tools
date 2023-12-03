@@ -51,7 +51,7 @@ export default function AdComputer() {
       <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
       <Table
-        title="Search Results"
+        title="Computer Search Results"
         page={page}
         tabId={tabId}
         name="search"

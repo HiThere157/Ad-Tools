@@ -20,13 +20,13 @@ export async function getSingleAdReplication(
   };
 }
 
-type MultipleReplicationssResponse = {
+type MultipleReplicationTargetsResponse = {
   objects: Loadable<PSDataSet>;
 };
-export async function getMultipleAdReplications(
+export async function getMultipleAdReplicationTargets(
   filters: QueryFilter[],
   servers: string[],
-): Promise<MultipleReplicationssResponse> {
+): Promise<MultipleReplicationTargetsResponse> {
   const selectFields = removeDuplicates(
     ["Name", "DisplayName"],
     filters.map(({ property }) => property),
