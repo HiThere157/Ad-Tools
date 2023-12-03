@@ -6,8 +6,7 @@ const api = {
   getElectronEnvironment: async (): Promise<ElectronEnvironment> =>
     ipcRenderer.invoke("node:getElectronEnvironment"),
   changeWindowState: (state: WindowState) => ipcRenderer.send("win:changeWindowState", state),
-  checkForUpdates: async (): Promise<string | undefined> =>
-    ipcRenderer.invoke("update:checkForUpdates"),
+  checkForUpdates: (): Promise<string> => ipcRenderer.invoke("update:checkForUpdates"),
 
   onZoom: (callback: (zoom: number) => void) =>
     ipcRenderer.on("win:onZoom", (_event, zoom: number) => callback(zoom)),

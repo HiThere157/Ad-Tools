@@ -21,16 +21,17 @@ type PSDataSet = {
   columns: string[];
 };
 
+type InvokePSCommandRequest = {
+  command: string;
+  selectFields?: string[];
+};
+
 type ElectronEnvironment = {
   executingUser: string;
   appVersion: string;
   appChannel: "beta" | "stable";
 };
 
-type InvokePSCommandRequest = {
-  command: string;
-  selectFields?: string[];
-};
-
 type WindowState = "minimize" | "maximize_restore" | "close";
+
 type UpdateDownloadStatus = "pending" | "complete" | "error";
