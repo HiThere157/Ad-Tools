@@ -11,8 +11,9 @@ export async function getSingleAdReplication(
 ): Promise<SingleReplicationResponse> {
   const attributes = await invokePSCommand({
     command: `Get-ADReplicationAttributeMetadata \
-    (Get-AdObject -Filter "Name -eq '${identity}'" -Server ${server})[0] \
-    -Server (Get-AdDomainController -DomainName ${server} -Discover -Service PrimaryDC)[0].HostName[0]`,
+    (Get-AdObject -Filter "Name -eq '${identity}'" -Server ${server}).ObjectGUID \
+    -Server (Get-AdDomainController -DomainName ${server} -Discover -Service PrimaryDC).HostName[0]`,
+    selectFields: ["AttributeName", "AttributeValue", "LastOriginatingChangeTime"],
   });
 
   return {
@@ -35,7 +36,7 @@ export async function getMultipleAdReplicationTargets(
   const objects = await Promise.all(
     servers.map((server) =>
       invokePSCommand({
-        command: `Get-Object \
+        command: `Get-AdObject \
         -Filter "${formatAdFilter(filters)}" \
         -Server ${server} \
         -Properties ${selectFields.join(",")}`,
