@@ -11,8 +11,8 @@ export async function getSingleAdReplication(
 ): Promise<SingleReplicationResponse> {
   const attributes = await invokePSCommand({
     command: `Get-ADReplicationAttributeMetadata \
-    (Get-AdObject -Filter "Name -eq '${identity}'" -Server ${server}) \
-    -Server (Get-AdDomainController -DomainName ${server} -Discover -Service PrimaryDC).HostName`,
+    (Get-AdObject -Filter "Name -eq '${identity}'" -Server ${server})[0] \
+    -Server (Get-AdDomainController -DomainName ${server} -Discover -Service PrimaryDC)[0].HostName[0]`,
   });
 
   return {
