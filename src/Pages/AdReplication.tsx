@@ -8,7 +8,7 @@ import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 
 export default function AdReplication() {
-  const page = "adUser";
+  const page = "adReplication";
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
