@@ -36,8 +36,6 @@ export default function Updater() {
   };
 
   useEffect(() => {
-    refresh();
-
     electronWindow.electronAPI?.onDownloadStatusUpdate((status) => {
       dispatch(setUpdateDownloadStatus(status));
     });

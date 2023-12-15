@@ -8,6 +8,7 @@ import {
 } from "../Redux/environment";
 import { setDefaultQueryDomains } from "../Redux/preferences";
 import {
+  electronWindow,
   getAzureEnvironment,
   getDnsSuffixList,
   getElectronEnvironment,
@@ -38,6 +39,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
     dispatch(setAzureEnvironment(azureEnvironment));
     dispatch(setPowershellEnvironment(powershellEnvironment));
     dispatch(setDefaultQueryDomains(queryDomains));
+
+    electronWindow.electronAPI?.checkForUpdates();
   };
 
   useEffect(() => {
