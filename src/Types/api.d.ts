@@ -2,6 +2,6 @@ type AzureEnvironment = {
   executingAzureUser: string;
 };
 type PowershellEnvironment = {
-  adVersion: string;
-  azureAdVersion: string;
+  adVersion: string | null;
+  azureAdVersion: string | null;
 };

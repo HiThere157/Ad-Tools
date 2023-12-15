@@ -34,22 +34,6 @@ export async function invokePSCommand(
   return electronWindow.electronAPI.invokePSCommand(request);
 }
 
-export function changeWindowState(state: WindowState) {
-  if (!electronWindow.electronAPI) {
-    return;
-  }
-
-  return electronWindow.electronAPI.changeWindowState(state);
-}
-
-export async function checkForUpdates() {
-  if (!electronWindow.electronAPI) {
-    return;
-  }
-
-  return electronWindow.electronAPI.checkForUpdates();
-}
-
 export async function loginAzure(upn: string): Promise<AzureEnvironment> {
   if (!electronWindow.electronAPI) {
     return new Promise((resolve) => {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { electronWindow } from "../Helper/api";
 
 export default function Zoom() {

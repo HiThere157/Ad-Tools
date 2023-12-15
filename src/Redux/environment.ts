@@ -9,12 +9,13 @@ const environmentSlice = createSlice({
       appChannel: "stable",
     },
     powershell: {
-      adVersion: "",
-      azureAdVersion: "",
+      adVersion: null as string | null,
+      azureAdVersion: null as string | null,
     },
     azure: {
       executingAzureUser: "",
     },
+    update: null as null | UpdateDownloadStatus,
   },
   reducers: {
     setElectronEnvironment: (state, action: PayloadAction<ElectronEnvironment>) => {
@@ -26,9 +27,16 @@ const environmentSlice = createSlice({
     setPowershellEnvironment: (state, action: PayloadAction<PowershellEnvironment>) => {
       state.powershell = action.payload;
     },
+    setUpdateDownloadStatus: (state, action: PayloadAction<UpdateDownloadStatus>) => {
+      state.update = action.payload;
+    },
   },
 });
 
-export const { setElectronEnvironment, setAzureEnvironment, setPowershellEnvironment } =
-  environmentSlice.actions;
+export const {
+  setElectronEnvironment,
+  setAzureEnvironment,
+  setPowershellEnvironment,
+  setUpdateDownloadStatus,
+} = environmentSlice.actions;
 export default environmentSlice.reducer;

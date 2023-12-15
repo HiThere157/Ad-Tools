@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { setPowershellEnvironment } from "../../Redux/environment";
-import { getPowershellEnvironment } from "../../Helper/api";
+import { setPowershellEnvironment, setUpdateDownloadStatus } from "../../Redux/environment";
+import { electronWindow, getPowershellEnvironment } from "../../Helper/api";
 
 import HeaderButton from "../Header/HeaderButton";
 import Button from "../Button";
@@ -19,10 +19,24 @@ export default function Updater() {
   const dispatch = useDispatch();
 
   const refresh = async () => {
+    dispatch(setUpdateDownloadStatus(null));
+    dispatch(setPowershellEnvironment({ adVersion: null, azureAdVersion: null }));
+
+    electronWindow.electronAPI?.checkForUpdates();
     const [powershellEnvironment] = await Promise.all([getPowershellEnvironment()]);
 
     dispatch(setPowershellEnvironment(powershellEnvironment));
   };
+
+  useEffect(() => {
+    electronWindow.electronAPI?.onDownloadStatusUpdate((status) => {
+      dispatch(setUpdateDownloadStatus(status));
+    });
+
+    return () => {
+      electronWindow.electronAPI?.offDownloadStatusUpdate();
+    };
+  }, []);
 
   return (
     <div className="winbar-no-drag relative">

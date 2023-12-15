@@ -12,7 +12,7 @@ export async function checkForUpdates(window: BrowserWindow) {
     window.webContents.send("update:onDownloadStatusUpdate", {
       version,
       status,
-    });
+    } as UpdateDownloadStatus);
   }
 
   if (update?.downloadPromise) {
