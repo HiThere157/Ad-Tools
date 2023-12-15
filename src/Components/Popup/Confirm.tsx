@@ -5,6 +5,7 @@ type ConfirmProps = {
   isOpen: boolean;
   title: string;
   message: string;
+
   onExit: (selection: boolean) => void;
 };
 export default function Confirm({ isOpen, title, message, onExit }: ConfirmProps) {
@@ -16,7 +17,9 @@ export default function Confirm({ isOpen, title, message, onExit }: ConfirmProps
         <Button className="bg-dark" onClick={() => onExit(false)}>
           Cancel
         </Button>
-        <Button onClick={() => onExit(true)}>Yes</Button>
+        <Button className="text-red" onClick={() => onExit(true)}>
+          Yes
+        </Button>
       </div>
     </Popup>
   );
