@@ -10,12 +10,15 @@ import Button from "../Button";
 import ModuleVersion from "./ModuleVersion";
 
 import { BsArrowRepeat, BsDownload } from "react-icons/bs";
+import AppVersion from "./AppVersion";
 
 export default function Updater() {
   const [isOpen, setIsOpen] = useState(false);
-  const { adVersion, azureAdVersion } = useSelector(
-    (state: RootState) => state.environment.powershell,
-  );
+  const {
+    electron: { appVersion },
+    powershell: { adVersion, azureAdVersion },
+    updateStatus,
+  } = useSelector((state: RootState) => state.environment);
   const dispatch = useDispatch();
 
   const refresh = async () => {
@@ -29,6 +32,8 @@ export default function Updater() {
   };
 
   useEffect(() => {
+    refresh();
+
     electronWindow.electronAPI?.onDownloadStatusUpdate((status) => {
       dispatch(setUpdateDownloadStatus(status));
     });
@@ -55,6 +60,7 @@ export default function Updater() {
           </div>
 
           <div className="p-2">
+            <AppVersion app="Ad-Tools" currentVersion={appVersion} downloadStatus={updateStatus} />
             <ModuleVersion module="ActiveDirectory" version={adVersion} />
             <ModuleVersion module="AzureAD" version={azureAdVersion} />
           </div>

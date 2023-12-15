@@ -21,5 +21,7 @@ export async function checkForUpdates(window: BrowserWindow) {
     update.downloadPromise
       .then(() => sendUpdate(version, "complete"))
       .catch(() => sendUpdate(version, "error"));
+  } else {
+    sendUpdate(version, "upToDate");
   }
 }

@@ -35,6 +35,6 @@ type ElectronEnvironment = {
 type WindowState = "minimize" | "maximize_restore" | "close";
 
 type UpdateDownloadStatus = null | {
-  status: "pending" | "complete" | "error";
+  status: "pending" | "complete" | "error" | "upToDate";
   version: string;
 };

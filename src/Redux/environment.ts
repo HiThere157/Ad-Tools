@@ -15,7 +15,7 @@ const environmentSlice = createSlice({
     azure: {
       executingAzureUser: "",
     },
-    update: null as null | UpdateDownloadStatus,
+    updateStatus: null as null | UpdateDownloadStatus,
   },
   reducers: {
     setElectronEnvironment: (state, action: PayloadAction<ElectronEnvironment>) => {
@@ -28,7 +28,7 @@ const environmentSlice = createSlice({
       state.powershell = action.payload;
     },
     setUpdateDownloadStatus: (state, action: PayloadAction<UpdateDownloadStatus>) => {
-      state.update = action.payload;
+      state.updateStatus = action.payload;
     },
   },
 });
