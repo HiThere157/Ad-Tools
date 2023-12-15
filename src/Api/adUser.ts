@@ -13,13 +13,13 @@ export async function getSingleAdUser(
   const [attributes, memberof] = await Promise.all([
     invokePSCommand({
       command: `Get-AdUser \
-      -Identity ${identity} \
+      -Identity "${identity}" \
       -Server ${server} \
       -Properties *`,
     }),
     invokePSCommand({
       command: `Get-AdPrincipalGroupMembership \
-      -Identity ${identity} \
+      -Identity "${identity}" \
       -Server ${server}`,
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     }),

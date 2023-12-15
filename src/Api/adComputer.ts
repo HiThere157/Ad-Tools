@@ -13,18 +13,18 @@ export async function getSingleAdComputer(
 ): Promise<getSingleComputerResponse> {
   const [dns, attributes, memberof] = await Promise.all([
     invokePSCommand({
-      command: `Resolve-DnsName -Name ${identity}.${server}`,
+      command: `Resolve-DnsName -Name "${identity}.${server}"`,
       selectFields: ["Name", "Type", "IPAddress"],
     }),
     invokePSCommand({
       command: `Get-AdComputer \
-      -Identity ${identity} \
+      -Identity "${identity}" \
       -Server ${server} \
       -Properties *`,
     }),
     invokePSCommand({
       command: `Get-AdPrincipalGroupMembership \
-      (Get-AdComputer -Identity ${identity} -Server ${server}) \
+      (Get-AdComputer -Identity "${identity}" -Server ${server}) \
       -Server ${server}`,
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     }),

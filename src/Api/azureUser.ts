@@ -7,7 +7,7 @@ type SingleAzureUserResponse = {
 export async function getSingleAzureUser(objectId: string): Promise<SingleAzureUserResponse> {
   const attributes = await invokePSCommand({
     command: `Get-AzureADUser \
-      -ObjectId ${objectId}`,
+      -ObjectId "${objectId}"`,
   });
 
   return {
@@ -25,13 +25,13 @@ export async function getSingleAzureUserDetails(
   const [memberof, devices] = await Promise.all([
     invokePSCommand({
       command: `Get-AzureADUserMembership \
-      -ObjectId ${objectId} \
+      -ObjectId "${objectId}" \
       -All $true`,
       selectFields: ["DisplayName", "Description"],
     }),
     invokePSCommand({
       command: `Get-AzureADUserRegisteredDevice \
-      -ObjectId ${objectId} \
+      -ObjectId "${objectId}" \
       -All $true`,
       selectFields: [
         "DisplayName",
@@ -57,7 +57,7 @@ export async function getMultipleAzureUsers(
 ): Promise<MultipleAzureUsersResponse> {
   const users = await invokePSCommand({
     command: `Get-AzureADUser \
-    -SearchString ${searchString} \
+    -SearchString "${searchString}" \
     -All $true`,
     selectFields: ["UserPrincipalName", "DisplayName", "Department"],
   });

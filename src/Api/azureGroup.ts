@@ -4,7 +4,7 @@ import { extractFirstObject } from "../Helper/postProcessors";
 export async function getSingleAzureGroupId(displayName: string): Promise<string | undefined> {
   const groups = await invokePSCommand({
     command: `Get-AzureADGroup \
-      -SearchString ${displayName}`,
+      -SearchString "${displayName}"`,
     selectFields: ["DisplayName", "ObjectId"],
   });
 
@@ -22,11 +22,11 @@ export async function getSingleAzureGroup(objectId: string): Promise<SingleAzure
   const [attributes, members] = await Promise.all([
     invokePSCommand({
       command: `Get-AzureADGroup \
-      -ObjectId ${objectId}`,
+      -ObjectId "${objectId}"`,
     }),
     invokePSCommand({
       command: `Get-AzureADGroupMember \
-      -ObjectId ${objectId} \
+      -ObjectId "${objectId}" \
       -All $true`,
       selectFields: ["UserPrincipalName", "DisplayName", "ObjectType"],
     }),
@@ -46,7 +46,7 @@ export async function getMultipleAzureGroups(
 ): Promise<MultipleAzureGroupsResponse> {
   const groups = await invokePSCommand({
     command: `Get-AzureADGroup \
-    -SearchString ${searchString} \
+    -SearchString "${searchString}" \
     -All $true`,
     selectFields: ["DisplayName", "Description"],
   });

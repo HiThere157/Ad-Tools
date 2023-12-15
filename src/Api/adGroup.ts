@@ -14,19 +14,19 @@ export async function getSingleAdGroup(
   const [attributes, members, memberof] = await Promise.all([
     invokePSCommand({
       command: `Get-AdGroup \
-      -Identity ${identity} \
+      -Identity "${identity}" \
       -Server ${server} \
       -Properties *`,
     }),
     invokePSCommand({
       command: `Get-AdGroupMember \
-      -Identity ${identity} \
+      -Identity "${identity}" \
       -Server ${server}`,
       selectFields: ["Name", "SamAccountName", "DistinguishedName", "ObjectClass"],
     }),
     invokePSCommand({
       command: `Get-AdPrincipalGroupMembership \
-      -Identity ${identity} \
+      -Identity "${identity}" \
       -Server ${server}`,
       selectFields: ["Name", "GroupCategory", "DistinguishedName"],
     }),
