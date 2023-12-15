@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
 import { setPowershellEnvironment, setUpdateDownloadStatus } from "../../Redux/environment";
 import { electronWindow, getPowershellEnvironment } from "../../Helper/api";
+import { useClickAway } from "../../Hooks/useClickAway";
 
 import HeaderButton from "../Header/HeaderButton";
 import Button from "../Button";
@@ -13,6 +14,7 @@ import { BsArrowRepeat, BsDownload } from "react-icons/bs";
 import AppVersion from "./AppVersion";
 
 export default function Updater() {
+  const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const {
     electron: { appVersion },
@@ -20,6 +22,8 @@ export default function Updater() {
     updateStatus,
   } = useSelector((state: RootState) => state.environment);
   const dispatch = useDispatch();
+
+  useClickAway(ref, () => setIsOpen(false));
 
   const refresh = async () => {
     dispatch(setUpdateDownloadStatus(null));
@@ -44,7 +48,7 @@ export default function Updater() {
   }, []);
 
   return (
-    <div className="winbar-no-drag relative">
+    <div ref={ref} className="winbar-no-drag relative">
       <HeaderButton onClick={() => setIsOpen(!isOpen)}>
         <BsDownload />
       </HeaderButton>
