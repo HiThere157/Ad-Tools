@@ -12,20 +12,20 @@ export default function AdComputer() {
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
-  const runSearchQuery = async (query: Query) => {
+  const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["dns", "attributes", "memberof"], undefined);
 
-    const { computers } = await getMultipleAdComputers(filters, servers);
+    const { computers } = getMultipleAdComputers(filters, servers);
 
-    updateTab({ icon: "search" });
     setResult("search", computers);
+    Promise.all([computers]).then(() => updateTab({ icon: "search" }));
   };
 
-  const runQuery = async (query: Query, resetSearch?: boolean) => {
+  const runQuery = (query: Query, resetSearch?: boolean) => {
     // We can predict if we need to run a pre-query based on the query itself.
     if (shouldSearchQuery(query)) return runSearchQuery(query);
 
@@ -36,12 +36,12 @@ export default function AdComputer() {
     if (resetSearch) setResult("search", undefined);
     setResult(["dns", "attributes", "memberof"], null);
 
-    const { dns, attributes, memberof } = await getSingleAdComputer(identity, server);
+    const { dns, attributes, memberof } = getSingleAdComputer(identity, server);
 
-    updateTab({ icon: "computer" });
     setResult("dns", dns);
     setResult("attributes", attributes);
     setResult("memberof", memberof);
+    Promise.all([dns, attributes, memberof]).then(() => updateTab({ icon: "computer" }));
   };
 
   onRedirect(() => runQuery(query));
@@ -59,7 +59,7 @@ export default function AdComputer() {
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server ?? ""],
+            servers: [row._Server],
           };
 
           if (newTab) return redirect(page, newQuery);
@@ -76,7 +76,7 @@ export default function AdComputer() {
         onRedirect={(row) => {
           redirect("adGroup", {
             filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server ?? ""],
+            servers: [row._Server],
           });
         }}
       />

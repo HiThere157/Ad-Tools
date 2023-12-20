@@ -3,13 +3,13 @@ import { addServerToResponse, extractFirstObject } from "../Helper/postProcessor
 import { formatAdFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
 
 type SingleReplicationResponse = {
-  attributes: Loadable<PSDataSet>;
+  attributes: Promise<Loadable<PSDataSet>>;
 };
-export async function getSingleAdReplication(
+export function getSingleAdReplication(
   identity: string,
   server: string,
-): Promise<SingleReplicationResponse> {
-  const attributes = await invokePSCommand({
+): SingleReplicationResponse {
+  const attributes = invokePSCommand({
     command: `Get-ADReplicationAttributeMetadata \
     (Get-AdObject -Filter "Name -eq '${identity}'" -Server ${server}).ObjectGUID \
     -Server (Get-AdDomainController -DomainName ${server} -Discover -Service PrimaryDC).HostName[0]`,
@@ -17,23 +17,23 @@ export async function getSingleAdReplication(
   });
 
   return {
-    attributes: extractFirstObject(attributes),
+    attributes: attributes.then(extractFirstObject),
   };
 }
 
 type MultipleReplicationTargetsResponse = {
-  objects: Loadable<PSDataSet>;
+  objects: Promise<Loadable<PSDataSet>>;
 };
-export async function getMultipleAdReplicationTargets(
+export function getMultipleAdReplicationTargets(
   filters: QueryFilter[],
   servers: string[],
-): Promise<MultipleReplicationTargetsResponse> {
+): MultipleReplicationTargetsResponse {
   const selectFields = removeDuplicates(
     ["Name", "DisplayName"],
     filters.map(({ property }) => property),
   );
 
-  const objects = await Promise.all(
+  const objects = Promise.all(
     servers.map((server) =>
       invokePSCommand({
         command: `Get-AdObject \
@@ -46,6 +46,6 @@ export async function getMultipleAdReplicationTargets(
   );
 
   return {
-    objects: mergeResponses(objects),
+    objects: objects.then(mergeResponses),
   };
 }

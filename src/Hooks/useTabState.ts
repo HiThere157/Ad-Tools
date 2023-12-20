@@ -14,11 +14,14 @@ export function useTabState(page: string) {
   const tabQuery = query[page]?.[tabId] ?? defaultQuery;
 
   const updatePageTab = (tab: Partial<Tab>) => dispatch(updateTab({ page, tabId, tab }));
-  const setTabResult = (name: string | string[], result: Loadable<PSDataSet>) => {
+  const setTabResult = (
+    name: string | string[],
+    result: Loadable<PSDataSet> | Promise<Loadable<PSDataSet>>,
+  ) => {
     const names = Array.isArray(name) ? name : [name];
 
-    names.forEach((name) => {
-      dispatch(setResult({ page, tabId, name, result }));
+    names.forEach(async (name) => {
+      dispatch(setResult({ page, tabId, name, result: await result }));
     });
   };
 

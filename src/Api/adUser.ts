@@ -3,47 +3,42 @@ import { addServerToResponse, extractFirstObject } from "../Helper/postProcessor
 import { formatAdFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
 
 type SingleUserResponse = {
-  attributes: Loadable<PSDataSet>;
-  memberof: Loadable<PSDataSet>;
+  attributes: Promise<Loadable<PSDataSet>>;
+  memberof: Promise<Loadable<PSDataSet>>;
 };
-export async function getSingleAdUser(
-  identity: string,
-  server: string,
-): Promise<SingleUserResponse> {
-  const [attributes, memberof] = await Promise.all([
-    invokePSCommand({
-      command: `Get-AdUser \
+export function getSingleAdUser(identity: string, server: string): SingleUserResponse {
+  const attributes = invokePSCommand({
+    command: `Get-AdUser \
       -Identity "${identity}" \
       -Server ${server} \
       -Properties *`,
-    }),
-    invokePSCommand({
-      command: `Get-AdPrincipalGroupMembership \
+  });
+  const memberof = invokePSCommand({
+    command: `Get-AdPrincipalGroupMembership \
       -Identity "${identity}" \
       -Server ${server}`,
-      selectFields: ["Name", "GroupCategory", "DistinguishedName"],
-    }),
-  ]);
+    selectFields: ["Name", "GroupCategory", "DistinguishedName"],
+  });
 
   return {
-    attributes: extractFirstObject(attributes),
-    memberof: addServerToResponse(memberof, server),
+    attributes: attributes.then(extractFirstObject),
+    memberof: memberof.then((memberof) => addServerToResponse(memberof, server)),
   };
 }
 
 type MultipleUsersResponse = {
-  users: Loadable<PSDataSet>;
+  users: Promise<Loadable<PSDataSet>>;
 };
-export async function getMultipleAdUsers(
+export function getMultipleAdUsers(
   filters: QueryFilter[],
   servers: string[],
-): Promise<MultipleUsersResponse> {
+): MultipleUsersResponse {
   const selectFields = removeDuplicates(
     ["Name", "DisplayName"],
     filters.map(({ property }) => property),
   );
 
-  const users = await Promise.all(
+  const users = Promise.all(
     servers.map((server) =>
       invokePSCommand({
         command: `Get-AdUser \
@@ -56,6 +51,6 @@ export async function getMultipleAdUsers(
   );
 
   return {
-    users: mergeResponses(users),
+    users: users.then(mergeResponses),
   };
 }

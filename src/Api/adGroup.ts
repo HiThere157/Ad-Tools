@@ -3,55 +3,50 @@ import { extractFirstObject, addServerToResponse } from "../Helper/postProcessor
 import { removeDuplicates, formatAdFilter, mergeResponses } from "../Helper/utils";
 
 type SingleGroupResponse = {
-  attributes: Loadable<PSDataSet>;
-  members: Loadable<PSDataSet>;
-  memberof: Loadable<PSDataSet>;
+  attributes: Promise<Loadable<PSDataSet>>;
+  members: Promise<Loadable<PSDataSet>>;
+  memberof: Promise<Loadable<PSDataSet>>;
 };
-export async function getSingleAdGroup(
-  identity: string,
-  server: string,
-): Promise<SingleGroupResponse> {
-  const [attributes, members, memberof] = await Promise.all([
-    invokePSCommand({
-      command: `Get-AdGroup \
+export function getSingleAdGroup(identity: string, server: string): SingleGroupResponse {
+  const attributes = invokePSCommand({
+    command: `Get-AdGroup \
       -Identity "${identity}" \
       -Server ${server} \
       -Properties *`,
-    }),
-    invokePSCommand({
-      command: `Get-AdGroupMember \
+  });
+  const members = invokePSCommand({
+    command: `Get-AdGroupMember \
       -Identity "${identity}" \
       -Server ${server}`,
-      selectFields: ["Name", "SamAccountName", "DistinguishedName", "ObjectClass"],
-    }),
-    invokePSCommand({
-      command: `Get-AdPrincipalGroupMembership \
+    selectFields: ["Name", "SamAccountName", "DistinguishedName", "ObjectClass"],
+  });
+  const memberof = invokePSCommand({
+    command: `Get-AdPrincipalGroupMembership \
       -Identity "${identity}" \
       -Server ${server}`,
-      selectFields: ["Name", "GroupCategory", "DistinguishedName"],
-    }),
-  ]);
+    selectFields: ["Name", "GroupCategory", "DistinguishedName"],
+  });
 
   return {
-    attributes: extractFirstObject(attributes),
-    members: addServerToResponse(members, server),
-    memberof: addServerToResponse(memberof, server),
+    attributes: attributes.then(extractFirstObject),
+    members: members.then((members) => addServerToResponse(members, server)),
+    memberof: memberof.then((memberof) => addServerToResponse(memberof, server)),
   };
 }
 
 type MultipleGroupsResponse = {
-  groups: Loadable<PSDataSet>;
+  groups: Promise<Loadable<PSDataSet>>;
 };
-export async function getMultipleAdGroups(
+export function getMultipleAdGroups(
   filters: QueryFilter[],
   servers: string[],
-): Promise<MultipleGroupsResponse> {
+): MultipleGroupsResponse {
   const selectFields = removeDuplicates(
     ["Name", "Description"],
     filters.map(({ property }) => property),
   );
 
-  const groups = await Promise.all(
+  const groups = Promise.all(
     servers.map((server) =>
       invokePSCommand({
         command: `Get-AdGroup \
@@ -64,6 +59,6 @@ export async function getMultipleAdGroups(
   );
 
   return {
-    groups: mergeResponses(groups),
+    groups: groups.then(mergeResponses),
   };
 }

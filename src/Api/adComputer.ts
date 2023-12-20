@@ -2,54 +2,49 @@ import { invokePSCommand } from "../Helper/api";
 import { extractFirstObject, addServerToResponse } from "../Helper/postProcessors";
 import { removeDuplicates, formatAdFilter, mergeResponses } from "../Helper/utils";
 
-type getSingleComputerResponse = {
-  dns: Loadable<PSDataSet>;
-  attributes: Loadable<PSDataSet>;
-  memberof: Loadable<PSDataSet>;
+type GetSingleComputerResponse = {
+  dns: Promise<Loadable<PSDataSet>>;
+  attributes: Promise<Loadable<PSDataSet>>;
+  memberof: Promise<Loadable<PSDataSet>>;
 };
-export async function getSingleAdComputer(
-  identity: string,
-  server: string,
-): Promise<getSingleComputerResponse> {
-  const [dns, attributes, memberof] = await Promise.all([
-    invokePSCommand({
-      command: `Resolve-DnsName -Name "${identity}.${server}"`,
-      selectFields: ["Name", "Type", "IPAddress"],
-    }),
-    invokePSCommand({
-      command: `Get-AdComputer \
+export function getSingleAdComputer(identity: string, server: string): GetSingleComputerResponse {
+  const dns = invokePSCommand({
+    command: `Resolve-DnsName -Name "${identity}.${server}"`,
+    selectFields: ["Name", "Type", "IPAddress"],
+  });
+  const attributes = invokePSCommand({
+    command: `Get-AdComputer \
       -Identity "${identity}" \
       -Server ${server} \
       -Properties *`,
-    }),
-    invokePSCommand({
-      command: `Get-AdPrincipalGroupMembership \
+  });
+  const memberof = invokePSCommand({
+    command: `Get-AdPrincipalGroupMembership \
       (Get-AdComputer -Identity "${identity}" -Server ${server}) \
       -Server ${server}`,
-      selectFields: ["Name", "GroupCategory", "DistinguishedName"],
-    }),
-  ]);
+    selectFields: ["Name", "GroupCategory", "DistinguishedName"],
+  });
 
   return {
     dns,
-    attributes: extractFirstObject(attributes),
-    memberof: addServerToResponse(memberof, server),
+    attributes: attributes.then(extractFirstObject),
+    memberof: memberof.then((memberof) => addServerToResponse(memberof, server)),
   };
 }
 
 type MultipleComputersResponse = {
-  computers: Loadable<PSDataSet>;
+  computers: Promise<Loadable<PSDataSet>>;
 };
-export async function getMultipleAdComputers(
+export function getMultipleAdComputers(
   filters: QueryFilter[],
   servers: string[],
-): Promise<MultipleComputersResponse> {
+): MultipleComputersResponse {
   const selectFields = removeDuplicates(
     ["Name", "DisplayName"],
     filters.map(({ property }) => property),
   );
 
-  const computers = await Promise.all(
+  const computers = Promise.all(
     servers.map((server) =>
       invokePSCommand({
         command: `Get-AdComputer \
@@ -62,6 +57,6 @@ export async function getMultipleAdComputers(
   );
 
   return {
-    computers: mergeResponses(computers),
+    computers: computers.then(mergeResponses),
   };
 }

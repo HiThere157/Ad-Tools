@@ -16,17 +16,17 @@ export default function AzureGroup() {
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
-  const runSearchQuery = async (query: Query) => {
+  const runSearchQuery = (query: Query) => {
     const searchString = getFilterValue(query.filters, "Name");
 
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["attributes", "members"], undefined);
 
-    const { groups } = await getMultipleAzureGroups(searchString);
+    const { groups } = getMultipleAzureGroups(searchString);
 
-    updateTab({ icon: "search" });
     setResult("search", groups);
+    Promise.all([groups]).then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
@@ -40,11 +40,11 @@ export default function AzureGroup() {
     const objectId = await getSingleAzureGroupId(displayName);
     if (!objectId) return runSearchQuery(query);
 
-    const { attributes, members } = await getSingleAzureGroup(objectId);
+    const { attributes, members } = getSingleAzureGroup(objectId);
 
-    updateTab({ icon: "group" });
     setResult("attributes", attributes);
     setResult("members", members);
+    Promise.all([attributes, members]).then(() => updateTab({ icon: "group" }));
   };
 
   onRedirect(() => runQuery(query));

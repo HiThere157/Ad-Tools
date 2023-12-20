@@ -52,7 +52,6 @@ export default function TableFilter({
       {type === "is" && (
         <Input value={value} onChange={(value) => setFilter({ ...filter, value })} />
       )}
-
       {type === "in" && (
         <MultiInput value={value} onChange={(value) => setFilter({ ...filter, value })} />
       )}

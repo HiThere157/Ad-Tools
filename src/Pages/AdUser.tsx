@@ -12,20 +12,20 @@ export default function AdUser() {
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
-  const runSearchQuery = async (query: Query) => {
+  const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["attributes", "memberof"], undefined);
 
-    const { users } = await getMultipleAdUsers(filters, servers);
+    const { users } = getMultipleAdUsers(filters, servers);
 
-    updateTab({ icon: "search" });
     setResult("search", users);
+    Promise.all([users]).then(() => updateTab({ icon: "search" }));
   };
 
-  const runQuery = async (query: Query, resetSearch?: boolean) => {
+  const runQuery = (query: Query, resetSearch?: boolean) => {
     // We can predict if we need to run a pre-query based on the query itself.
     if (shouldSearchQuery(query)) return runSearchQuery(query);
 
@@ -36,11 +36,11 @@ export default function AdUser() {
     if (resetSearch) setResult("search", undefined);
     setResult(["attributes", "memberof"], null);
 
-    const { attributes, memberof } = await getSingleAdUser(identity, server);
+    const { attributes, memberof } = getSingleAdUser(identity, server);
 
-    updateTab({ icon: "user" });
     setResult("attributes", attributes);
     setResult("memberof", memberof);
+    Promise.all([attributes, memberof]).then(() => updateTab({ icon: "user" }));
   };
 
   onRedirect(() => runQuery(query));
@@ -58,7 +58,7 @@ export default function AdUser() {
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server ?? ""],
+            servers: [row._Server],
           };
 
           if (newTab) return redirect(page, newQuery);
@@ -75,7 +75,7 @@ export default function AdUser() {
         onRedirect={(row) => {
           redirect("adGroup", {
             filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server ?? ""],
+            servers: [row._Server],
           });
         }}
       />

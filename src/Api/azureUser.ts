@@ -16,32 +16,28 @@ export async function getSingleAzureUser(objectId: string): Promise<SingleAzureU
 }
 
 type SingleAzureUserDetailsResponse = {
-  memberof: Loadable<PSDataSet>;
-  devices: Loadable<PSDataSet>;
+  memberof: Promise<Loadable<PSDataSet>>;
+  devices: Promise<Loadable<PSDataSet>>;
 };
-export async function getSingleAzureUserDetails(
-  objectId: string,
-): Promise<SingleAzureUserDetailsResponse> {
-  const [memberof, devices] = await Promise.all([
-    invokePSCommand({
-      command: `Get-AzureADUserMembership \
+export function getSingleAzureUserDetails(objectId: string): SingleAzureUserDetailsResponse {
+  const memberof = invokePSCommand({
+    command: `Get-AzureADUserMembership \
       -ObjectId "${objectId}" \
       -All $true`,
-      selectFields: ["DisplayName", "Description"],
-    }),
-    invokePSCommand({
-      command: `Get-AzureADUserRegisteredDevice \
+    selectFields: ["DisplayName", "Description"],
+  });
+  const devices = invokePSCommand({
+    command: `Get-AzureADUserRegisteredDevice \
       -ObjectId "${objectId}" \
       -All $true`,
-      selectFields: [
-        "DisplayName",
-        "DeviceOSType",
-        "AccountEnabled",
-        "IsManaged",
-        "ApproximateLastLogonTimeStamp",
-      ],
-    }),
-  ]);
+    selectFields: [
+      "DisplayName",
+      "DeviceOSType",
+      "AccountEnabled",
+      "IsManaged",
+      "ApproximateLastLogonTimeStamp",
+    ],
+  });
 
   return {
     memberof,
@@ -50,12 +46,10 @@ export async function getSingleAzureUserDetails(
 }
 
 type MultipleAzureUsersResponse = {
-  users: Loadable<PSDataSet>;
+  users: Promise<Loadable<PSDataSet>>;
 };
-export async function getMultipleAzureUsers(
-  searchString: string,
-): Promise<MultipleAzureUsersResponse> {
-  const users = await invokePSCommand({
+export function getMultipleAzureUsers(searchString: string): MultipleAzureUsersResponse {
+  const users = invokePSCommand({
     command: `Get-AzureADUser \
     -SearchString "${searchString}" \
     -All $true`,

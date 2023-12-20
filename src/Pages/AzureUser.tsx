@@ -23,10 +23,10 @@ export default function AzureUser() {
     setResult("search", null);
     setResult(["attributes", "memberof", "devices"], undefined);
 
-    const { users } = await getMultipleAzureUsers(searchString);
+    const { users } = getMultipleAzureUsers(searchString);
 
-    updateTab({ icon: "search" });
     setResult("search", users);
+    Promise.all([users]).then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
@@ -40,12 +40,12 @@ export default function AzureUser() {
     const { attributes } = await getSingleAzureUser(objectId);
     if (attributes?.error) return runSearchQuery(query);
 
-    const { memberof, devices } = await getSingleAzureUserDetails(objectId);
+    const { memberof, devices } = getSingleAzureUserDetails(objectId);
 
-    updateTab({ icon: "user" });
     setResult("attributes", attributes);
     setResult("memberof", memberof);
     setResult("devices", devices);
+    Promise.all([attributes, memberof, devices]).then(() => updateTab({ icon: "user" }));
   };
 
   onRedirect(() => runQuery(query));

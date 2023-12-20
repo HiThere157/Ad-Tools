@@ -12,20 +12,20 @@ export default function AdReplication() {
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
-  const runSearchQuery = async (query: Query) => {
+  const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult("attributes", undefined);
 
-    const { objects } = await getMultipleAdReplicationTargets(filters, servers);
+    const { objects } = getMultipleAdReplicationTargets(filters, servers);
 
-    updateTab({ icon: "search" });
     setResult("search", objects);
+    Promise.all([objects]).then(() => updateTab({ icon: "search" }));
   };
 
-  const runQuery = async (query: Query, resetSearch?: boolean) => {
+  const runQuery = (query: Query, resetSearch?: boolean) => {
     // We can predict if we need to run a pre-query based on the query itself.
     if (shouldSearchQuery(query)) return runSearchQuery(query);
 
@@ -36,10 +36,10 @@ export default function AdReplication() {
     if (resetSearch) setResult("search", undefined);
     setResult("attributes", null);
 
-    const { attributes } = await getSingleAdReplication(identity, server);
+    const { attributes } = getSingleAdReplication(identity, server);
 
-    updateTab({ icon: "replication" });
     setResult("attributes", attributes);
+    Promise.all([attributes]).then(() => updateTab({ icon: "replication" }));
   };
 
   onRedirect(() => runQuery(query));
@@ -57,7 +57,7 @@ export default function AdReplication() {
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server ?? ""],
+            servers: [row._Server],
           };
 
           if (newTab) return redirect(page, newQuery);

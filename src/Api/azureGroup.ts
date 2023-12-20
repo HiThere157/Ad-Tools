@@ -15,36 +15,32 @@ export async function getSingleAzureGroupId(displayName: string): Promise<string
 }
 
 type SingleAzureGroupResponse = {
-  attributes: Loadable<PSDataSet>;
-  members: Loadable<PSDataSet>;
+  attributes: Promise<Loadable<PSDataSet>>;
+  members: Promise<Loadable<PSDataSet>>;
 };
-export async function getSingleAzureGroup(objectId: string): Promise<SingleAzureGroupResponse> {
-  const [attributes, members] = await Promise.all([
-    invokePSCommand({
-      command: `Get-AzureADGroup \
+export function getSingleAzureGroup(objectId: string): SingleAzureGroupResponse {
+  const attributes = invokePSCommand({
+    command: `Get-AzureADGroup \
       -ObjectId "${objectId}"`,
-    }),
-    invokePSCommand({
-      command: `Get-AzureADGroupMember \
+  });
+  const members = invokePSCommand({
+    command: `Get-AzureADGroupMember \
       -ObjectId "${objectId}" \
       -All $true`,
-      selectFields: ["UserPrincipalName", "DisplayName", "ObjectType"],
-    }),
-  ]);
+    selectFields: ["UserPrincipalName", "DisplayName", "ObjectType"],
+  });
 
   return {
-    attributes: extractFirstObject(attributes),
+    attributes: attributes.then(extractFirstObject),
     members,
   };
 }
 
 type MultipleAzureGroupsResponse = {
-  groups: Loadable<PSDataSet>;
+  groups: Promise<Loadable<PSDataSet>>;
 };
-export async function getMultipleAzureGroups(
-  searchString: string,
-): Promise<MultipleAzureGroupsResponse> {
-  const groups = await invokePSCommand({
+export function getMultipleAzureGroups(searchString: string): MultipleAzureGroupsResponse {
+  const groups = invokePSCommand({
     command: `Get-AzureADGroup \
     -SearchString "${searchString}" \
     -All $true`,

@@ -12,20 +12,20 @@ export default function AdGroup() {
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
-  const runSearchQuery = async (query: Query) => {
+  const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult(["attributes", "members", "memberof"], undefined);
 
-    const { groups } = await getMultipleAdGroups(filters, servers);
+    const { groups } = getMultipleAdGroups(filters, servers);
 
-    updateTab({ icon: "search" });
     setResult("search", groups);
+    Promise.all([groups]).then(() => updateTab({ icon: "search" }));
   };
 
-  const runQuery = async (query: Query, resetSearch?: boolean) => {
+  const runQuery = (query: Query, resetSearch?: boolean) => {
     // We can predict if we need to run a pre-query based on the query itself.
     if (shouldSearchQuery(query)) return runSearchQuery(query);
 
@@ -36,12 +36,12 @@ export default function AdGroup() {
     if (resetSearch) setResult("search", undefined);
     setResult(["attributes", "members", "memberof"], null);
 
-    const { attributes, members, memberof } = await getSingleAdGroup(identity, server);
+    const { attributes, members, memberof } = getSingleAdGroup(identity, server);
 
-    updateTab({ icon: "group" });
     setResult("attributes", attributes);
     setResult("members", members);
     setResult("memberof", memberof);
+    Promise.all([attributes, members, memberof]).then(() => updateTab({ icon: "group" }));
   };
 
   onRedirect(() => runQuery(query));
@@ -59,7 +59,7 @@ export default function AdGroup() {
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server ?? ""],
+            servers: [row._Server],
           };
 
           if (newTab) return redirect(page, newQuery);
@@ -75,7 +75,7 @@ export default function AdGroup() {
         onRedirect={(row) => {
           redirect("adUser", {
             filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server ?? ""],
+            servers: [row._Server],
           });
         }}
       />
@@ -87,7 +87,7 @@ export default function AdGroup() {
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server ?? ""],
+            servers: [row._Server],
           };
 
           if (newTab) {

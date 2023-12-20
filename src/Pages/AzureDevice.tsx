@@ -16,17 +16,17 @@ export default function AzureDevice() {
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
-  const runSearchQuery = async (query: Query) => {
+  const runSearchQuery = (query: Query) => {
     const searchString = getFilterValue(query.filters, "Name");
 
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
     setResult("attributes", undefined);
 
-    const { devices } = await getMultipleAzureDevices(searchString);
+    const { devices } = getMultipleAzureDevices(searchString);
 
-    updateTab({ icon: "search" });
     setResult("search", devices);
+    Promise.all([devices]).then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
@@ -40,10 +40,10 @@ export default function AzureDevice() {
     const objectId = await getSingleAzureDeviceId(displayName);
     if (!objectId) return runSearchQuery(query);
 
-    const { attributes } = await getSingleAzureDevice(objectId);
+    const { attributes } = getSingleAzureDevice(objectId);
 
-    updateTab({ icon: "computer" });
     setResult("attributes", attributes);
+    Promise.all([attributes]).then(() => updateTab({ icon: "computer" }));
   };
 
   onRedirect(() => runQuery(query));
