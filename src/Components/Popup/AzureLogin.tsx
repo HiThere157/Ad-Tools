@@ -22,8 +22,10 @@ export default function AzureLogin({ isOpen, onExit }: AzureLoginProps) {
       label="UPN:"
       defaultValue={azureLoginUPN}
       onExit={async (value) => {
-        onExit(false);
-        if (!value) return;
+        if (!value) {
+          onExit(false);
+          return;
+        }
 
         const env = await loginAzure(value);
         dispatch(setAzureEnvironment(env));

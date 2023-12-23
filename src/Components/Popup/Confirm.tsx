@@ -5,12 +5,11 @@ type ConfirmProps = {
   isOpen: boolean;
   title: string;
   message: string;
-
-  onExit: (selection: boolean) => void;
+  onExit: (selection: boolean | null) => void;
 };
 export default function Confirm({ isOpen, title, message, onExit }: ConfirmProps) {
   return (
-    <Popup isOpen={isOpen} title={title} onCancel={() => onExit(false)}>
+    <Popup isOpen={isOpen} title={title} onCancel={() => onExit(null)}>
       <span>{message}</span>
 
       <div className="mt-3 flex justify-end gap-2">
