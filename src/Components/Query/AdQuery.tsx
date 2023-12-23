@@ -92,7 +92,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
           </div>
         </div>
       ) : (
-        <div className="flex gap-2">
+        <div className="flex items-start gap-2">
           <span>Identity:</span>
 
           <Input
@@ -106,7 +106,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
         </div>
       )}
 
-      <div className="flex gap-1">
+      <div className="flex items-start gap-1">
         <div className="flex gap-1">
           {isAdvanced ? (
             <span className="mr-1">Domains:</span>

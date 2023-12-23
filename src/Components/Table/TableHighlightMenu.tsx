@@ -15,7 +15,7 @@ export default function TableHighlightMenu({ highlights, setHighlights }: TableH
       <h3 className="me-2 ms-4 mt-2 text-lg font-bold">Highlights:</h3>
 
       <div className="flex items-start gap-1 p-2">
-        <div className="grid flex-grow grid-cols-[auto_auto_1fr_auto] gap-1">
+        <div className="grid flex-grow grid-cols-[auto_auto_1fr_auto] items-start gap-1">
           {highlights.map((highlight, highlightIndex) => (
             <TableHighlight
               key={highlightIndex}
