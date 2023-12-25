@@ -30,20 +30,6 @@ export default function Tabs({ page }: TabsProps) {
     dispatch(removeTabData({ page, tabId }));
   };
 
-  const onKeyDown = (event: KeyboardEvent) => {
-    const { ctrlKey, key } = event;
-    if (ctrlKey && key === "t") {
-      newTab();
-    }
-
-    if (ctrlKey && key === "w") {
-      const activeTabIndex = pageTabs.findIndex((tab) => tab.id === pageActiveTab);
-      if (activeTabIndex) {
-        deleteTab(pageActiveTab);
-      }
-    }
-  };
-
   const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
     const sourceTabId = event.dataTransfer.getData("text/plain");
     const targetTabId = (event.target as HTMLDivElement)
@@ -66,15 +52,26 @@ export default function Tabs({ page }: TabsProps) {
 
   // If there are no tabs, add a default tab
   useEffect(() => {
-    if (pageTabs.length === 0) {
-      newTab();
-    }
+    if (pageTabs.length === 0) newTab();
   });
 
   // Handle keyboard shortcuts
   useEffect(() => {
-    document.addEventListener("keydown", onKeyDown);
+    const onKeyDown = (event: KeyboardEvent) => {
+      const { ctrlKey, key } = event;
+      if (ctrlKey && key === "t") {
+        newTab();
+      }
 
+      if (ctrlKey && key === "w") {
+        const activeTabIndex = pageTabs.findIndex((tab) => tab.id === pageActiveTab);
+        if (activeTabIndex) {
+          deleteTab(pageActiveTab);
+        }
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };

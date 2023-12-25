@@ -30,7 +30,7 @@ export default function Updater() {
     dispatch(setPowershellEnvironment({ adVersion: null, azureAdVersion: null }));
 
     electronWindow.electronAPI?.checkForUpdates();
-    const [powershellEnvironment] = await Promise.all([getPowershellEnvironment()]);
+    const powershellEnvironment = await getPowershellEnvironment();
 
     dispatch(setPowershellEnvironment(powershellEnvironment));
   };

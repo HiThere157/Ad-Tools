@@ -15,7 +15,7 @@ const environmentSlice = createSlice({
     azure: {
       executingAzureUser: "",
     },
-    updateStatus: null as null | UpdateDownloadStatus,
+    updateStatus: null as UpdateDownloadStatus | null,
   },
   reducers: {
     setElectronEnvironment: (state, action: PayloadAction<ElectronEnvironment>) => {

@@ -97,8 +97,8 @@ export async function getPowershellEnvironment(): Promise<PowershellEnvironment>
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
-          adVersion: "v0.0.0",
-          azureAdVersion: "v0.0.0",
+          adVersion: null,
+          azureAdVersion: null,
         });
       }, 1000);
     });

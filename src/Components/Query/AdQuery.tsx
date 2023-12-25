@@ -46,9 +46,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
 
   // If there are no filters, set the default filter
   useEffect(() => {
-    if (filters.length === 0) {
-      updateTabQuery({ filters: [defaultQueryFilter] });
-    }
+    if (filters.length === 0) updateTabQuery({ filters: [defaultQueryFilter] });
   });
 
   // Set default server for ad queries if there are queryDomains and the query is the default query

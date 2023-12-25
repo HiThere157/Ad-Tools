@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 
 import {
@@ -19,11 +19,13 @@ import Footer from "../Components/Footer";
 import Header from "../Components/Header/Header";
 import Navigation from "../Components/Navigation/Navigation";
 import Zoom from "../Components/Zoom";
+import ScrollToTop from "../Components/ScrollToTop";
 
 type RootLayoutProps = {
   children: React.ReactNode;
 };
 export default function RootLayout({ children }: RootLayoutProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
   const init = async () => {
@@ -62,11 +64,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <Navigation />
       <Footer />
 
-      <div style={{ gridArea: "main" }} className="overflow-hidden">
+      <div ref={scrollRef} style={{ gridArea: "main" }} className="overflow-auto">
         {children}
       </div>
 
       <Zoom />
+      <ScrollToTop scrollRef={scrollRef} />
     </main>
   );
 }
