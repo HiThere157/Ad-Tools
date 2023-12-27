@@ -20,6 +20,7 @@ export default function AzureLogin({ isOpen, onExit }: AzureLoginProps) {
       isOpen={isOpen}
       title="Azure Ad Login"
       label="UPN:"
+      hint="Your Azure AD username (e.g. kochda7@example.de)"
       defaultValue={azureLoginUPN}
       onExit={async (value) => {
         if (!value) {
