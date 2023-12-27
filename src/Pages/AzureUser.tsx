@@ -26,7 +26,7 @@ export default function AzureUser() {
     const { users } = getMultipleAzureUsers(searchString);
 
     setResult("search", users);
-    Promise.all([users]).then(() => updateTab({ icon: "search" }));
+    users.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {

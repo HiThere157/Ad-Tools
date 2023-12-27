@@ -3,6 +3,7 @@ import AdUser from "../Pages/AdUser";
 import AdGroup from "../Pages/AdGroup";
 import AdComputer from "../Pages/AdComputer";
 import AdReplication from "../Pages/AdReplication";
+import Printers from "../Pages/Printer";
 import AzureUser from "../Pages/AzureUser";
 import AzureGroup from "../Pages/AzureGroup";
 import AzureDevice from "../Pages/AzureDevice";
@@ -68,7 +69,7 @@ export const navigationLinks: NavigationLink[][] = [
       href: "/printer",
       text: "Printer",
       icon: <BsPrinterFill />,
-      page: <div>PrinterPage</div>,
+      page: <Printers />,
     },
   ],
   [

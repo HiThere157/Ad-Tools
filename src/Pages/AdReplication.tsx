@@ -22,7 +22,7 @@ export default function AdReplication() {
     const { objects } = getMultipleAdReplicationTargets(filters, servers);
 
     setResult("search", objects);
-    Promise.all([objects]).then(() => updateTab({ icon: "search" }));
+    objects.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = (query: Query, resetSearch?: boolean) => {
@@ -39,7 +39,7 @@ export default function AdReplication() {
     const { attributes } = getSingleAdReplication(identity, server);
 
     setResult("attributes", attributes);
-    Promise.all([attributes]).then(() => updateTab({ icon: "replication" }));
+    attributes.then(() => updateTab({ icon: "replication" }));
   };
 
   onRedirect(() => runQuery(query));

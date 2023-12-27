@@ -22,7 +22,7 @@ export default function AdGroup() {
     const { groups } = getMultipleAdGroups(filters, servers);
 
     setResult("search", groups);
-    Promise.all([groups]).then(() => updateTab({ icon: "search" }));
+    groups.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = (query: Query, resetSearch?: boolean) => {

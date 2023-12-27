@@ -22,7 +22,7 @@ export default function AdUser() {
     const { users } = getMultipleAdUsers(filters, servers);
 
     setResult("search", users);
-    Promise.all([users]).then(() => updateTab({ icon: "search" }));
+    users.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = (query: Query, resetSearch?: boolean) => {

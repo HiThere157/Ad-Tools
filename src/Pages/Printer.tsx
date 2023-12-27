@@ -1,4 +1,5 @@
-import { getMultipleAdComputers, getSingleAdComputer } from "../Api/adComputer";
+import { getMultipleAdComputers } from "../Api/adComputer";
+import { getSinglePrinters } from "../Api/printers";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
@@ -7,8 +8,8 @@ import TabLayout from "../Layout/TabLayout";
 import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 
-export default function AdComputer() {
-  const page = "adComputer";
+export default function Printers() {
+  const page = "printers";
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
@@ -17,7 +18,7 @@ export default function AdComputer() {
 
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
-    setResult(["dns", "attributes", "memberof"], undefined);
+    setResult("printers", undefined);
 
     const { computers } = getMultipleAdComputers(filters, servers);
 
@@ -32,16 +33,14 @@ export default function AdComputer() {
     const identity = getFilterValue(query.filters, "Name");
     const server = query.servers[0];
 
-    updateTab({ icon: "loading", title: identity || "User" });
+    updateTab({ icon: "loading", title: identity || "Printers" });
     if (resetSearch) setResult("search", undefined);
-    setResult(["dns", "attributes", "memberof"], null);
+    setResult("printers", null);
 
-    const { dns, attributes, memberof } = getSingleAdComputer(identity, server);
+    const { printers } = getSinglePrinters(identity, server);
 
-    setResult("dns", dns);
-    setResult("attributes", attributes);
-    setResult("memberof", memberof);
-    Promise.all([dns, attributes, memberof]).then(() => updateTab({ icon: "computer" }));
+    setResult("printers", printers);
+    printers.then(() => updateTab({ icon: "printer" }));
   };
 
   onRedirect(() => runQuery(query));
@@ -66,20 +65,7 @@ export default function AdComputer() {
           runQuery(newQuery);
         }}
       />
-      <Table title="DNS" page={page} tabId={tabId} name="dns" />
-      <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
-      <Table
-        title="Group Memberships"
-        page={page}
-        tabId={tabId}
-        name="memberof"
-        onRedirect={(row) => {
-          redirect("adGroup", {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server],
-          });
-        }}
-      />
+      <Table title="Printers" page={page} tabId={tabId} name="printers" />
     </TabLayout>
   );
 }

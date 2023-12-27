@@ -26,7 +26,7 @@ export default function AzureGroup() {
     const { groups } = getMultipleAzureGroups(searchString);
 
     setResult("search", groups);
-    Promise.all([groups]).then(() => updateTab({ icon: "search" }));
+    groups.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {

@@ -26,7 +26,7 @@ export default function AzureDevice() {
     const { devices } = getMultipleAzureDevices(searchString);
 
     setResult("search", devices);
-    Promise.all([devices]).then(() => updateTab({ icon: "search" }));
+    devices.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
@@ -43,7 +43,7 @@ export default function AzureDevice() {
     const { attributes } = getSingleAzureDevice(objectId);
 
     setResult("attributes", attributes);
-    Promise.all([attributes]).then(() => updateTab({ icon: "computer" }));
+    attributes.then(() => updateTab({ icon: "computer" }));
   };
 
   onRedirect(() => runQuery(query));
