@@ -33,7 +33,7 @@ export default function Navigation() {
 
       {visibleLinks.map((group, groupIndex) => (
         <React.Fragment key={groupIndex}>
-          {groupIndex !== 0 && <div className="mx-1 my-1.5 h-1 border-t border-border" />}
+          {groupIndex !== 0 && <div className="mx-1 my-1.5 border-t border-border" />}
 
           {group.map((link, linkIndex) => (
             <NavigationLink key={linkIndex} link={link} isExpanded={isNavBarExpanded} />

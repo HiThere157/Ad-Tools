@@ -9,6 +9,10 @@ import AzureGroup from "../Pages/AzureGroup";
 import AzureDevice from "../Pages/AzureDevice";
 import Settings from "../Pages/Settings";
 import Tetris from "../Pages/Tetris";
+import QueryHelp from "../Components/Help/QueryHelp";
+import AzureQueryHelp from "../Components/Help/AzureQueryHelp";
+import TableHelp from "../Components/Help/TableHelp";
+import SettingsHelp from "../Components/Help/SettingsHelp";
 
 import {
   BsClockHistory,
@@ -125,24 +129,24 @@ export const helpNavigationLinks: NavigationLink[] = [
     href: "#help/query",
     text: "Queries",
     icon: <BsSearch />,
-    page: <div>Queries</div>,
+    page: <QueryHelp />,
   },
   {
     href: "#help/azureQuery",
     text: "Azure Queries",
     icon: <BsSearch />,
-    page: <div>Azure Queries</div>,
+    page: <AzureQueryHelp />,
   },
   {
     href: "#help/table",
     text: "Tables",
     icon: <BsTable />,
-    page: <div>Tables</div>,
+    page: <TableHelp />,
   },
   {
     href: "#help/settings",
     text: "Settings",
     icon: <BsGearFill />,
-    page: <div>Settings</div>,
+    page: <SettingsHelp />,
   },
 ];

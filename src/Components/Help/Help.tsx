@@ -17,7 +17,7 @@ export default function Help() {
         <BsLifePreserver />
       </HeaderButton>
 
-      <Popup isOpen={isOpen} title="Help" onCancel={() => setIsOpen(false)}>
+      <Popup isOpen={isOpen} title="Help" onCancel={() => setIsOpen(false)} className="mt-16">
         <div className="flex">
           <div className="flex flex-shrink-0 flex-col gap-1">
             {helpNavigationLinks.map(({ href, icon, text }) => (
@@ -36,7 +36,7 @@ export default function Help() {
             ))}
           </div>
 
-          <div className="mx-1.5 w-1 border-r border-border" />
+          <div className="mx-2.5 border-r border-border" />
 
           {helpNavigationLinks.find(({ href }) => href === activeTab)?.page}
         </div>

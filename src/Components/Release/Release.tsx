@@ -51,7 +51,7 @@ export default function Release({ release, installed }: ReleaseProps) {
         </a>
       </div>
 
-      <div className="my-1.5 h-1 border-t border-border" />
+      <div className="my-1.5 border-t border-border" />
 
       <div className="mx-1 flex items-center text-xs text-grey">
         <div className="flex items-center gap-1">
