@@ -13,6 +13,7 @@ import QueryHelp from "../Components/Help/QueryHelp";
 import AzureQueryHelp from "../Components/Help/AzureQueryHelp";
 import TableHelp from "../Components/Help/TableHelp";
 import SettingsHelp from "../Components/Help/SettingsHelp";
+import UpdaterHelp from "../Components/Help/UpdaterHelp";
 
 import {
   BsClockHistory,
@@ -28,6 +29,7 @@ import {
   BsJoystick,
   BsSearch,
   BsTable,
+  BsDownload,
 } from "react-icons/bs";
 
 export const navigationLinks: NavigationLink[][] = [
@@ -148,5 +150,11 @@ export const helpNavigationLinks: NavigationLink[] = [
     text: "Settings",
     icon: <BsGearFill />,
     page: <SettingsHelp />,
+  },
+  {
+    href: "#help/updater",
+    text: "Updater",
+    icon: <BsDownload />,
+    page: <UpdaterHelp />,
   },
 ];
