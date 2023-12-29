@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 
 import Updater from "../Updater/Updater";
+import Help from "../Help/Help";
 import WindowControls from "./WindowControls";
 
 export default function Header() {
@@ -42,6 +43,7 @@ export default function Header() {
       <div className="flex-1" />
 
       <Updater />
+      <Help />
 
       <div className="w-3" />
 

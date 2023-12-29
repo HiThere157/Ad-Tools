@@ -22,6 +22,8 @@ import {
   BsPersonLinesFill,
   BsPrinterFill,
   BsJoystick,
+  BsSearch,
+  BsTable,
 } from "react-icons/bs";
 
 export const navigationLinks: NavigationLink[][] = [
@@ -116,4 +118,31 @@ export const navigationLinks: NavigationLink[][] = [
       isEasterEgg: true,
     },
   ],
+];
+
+export const helpNavigationLinks: NavigationLink[] = [
+  {
+    href: "#help/query",
+    text: "Queries",
+    icon: <BsSearch />,
+    page: <div>Queries</div>,
+  },
+  {
+    href: "#help/azureQuery",
+    text: "Azure Queries",
+    icon: <BsSearch />,
+    page: <div>Azure Queries</div>,
+  },
+  {
+    href: "#help/table",
+    text: "Tables",
+    icon: <BsTable />,
+    page: <div>Tables</div>,
+  },
+  {
+    href: "#help/settings",
+    text: "Settings",
+    icon: <BsGearFill />,
+    page: <div>Settings</div>,
+  },
 ];

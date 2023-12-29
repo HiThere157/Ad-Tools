@@ -15,7 +15,7 @@ export default function NavigationLink({ link, isExpanded }: NavigationLinkProps
         `mx-2 my-0.5 flex items-center gap-2 rounded px-2 py-0.5 outline-none outline-offset-0 ${
           isActive
             ? "bg-primaryAccent hover:bg-primaryActive"
-            : "bg-light hover:bg-secondaryAccent focus-visible:outline-borderActive active:bg-secondaryActive"
+            : "hover:bg-secondaryAccent focus-visible:outline-borderActive active:bg-secondaryActive"
         }`
       }
     >

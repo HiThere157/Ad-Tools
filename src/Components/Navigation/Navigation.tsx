@@ -26,14 +26,14 @@ export default function Navigation() {
           dispatch(toggleNavBar());
           setCounter(counter + 1);
         }}
-        className="mb-1 flex h-[1.875rem] w-full flex-shrink-0 items-center justify-center bg-primary outline-none -outline-offset-2 hover:bg-primaryAccent focus-visible:rounded focus-visible:outline-borderActive active:bg-primaryActive"
+        className="mb-1 flex h-[1.875rem] flex-shrink-0 items-center justify-center bg-primary outline-none -outline-offset-2 hover:bg-primaryAccent focus-visible:rounded focus-visible:outline-borderActive active:bg-primaryActive"
       >
         {isNavBarExpanded ? <FiChevronsLeft /> : <FiChevronsRight />}
       </button>
 
       {visibleLinks.map((group, groupIndex) => (
         <React.Fragment key={groupIndex}>
-          {groupIndex !== 0 && <hr className="mx-1 my-1.5 border-border" />}
+          {groupIndex !== 0 && <div className="mx-1 my-1.5 h-1 border-t border-border" />}
 
           {group.map((link, linkIndex) => (
             <NavigationLink key={linkIndex} link={link} isExpanded={isNavBarExpanded} />
