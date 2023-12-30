@@ -16,11 +16,11 @@ export default function Popup({ isOpen, title, onCancel, className, children }: 
 
   return (
     <>
-      <div className="absolute inset-0 z-40 bg-dark opacity-90" onClick={onCancel} />
+      <div className="fixed inset-0 z-40 bg-dark opacity-90" onClick={onCancel} />
 
       <div
         className={twMerge(
-          "absolute left-1/2 top-1/3 z-40 translate-x-[-50%] translate-y-[-50%] rounded border-2 border-border bg-dark",
+          "fixed left-1/2 top-1/3 z-40 translate-x-[-50%] translate-y-[-50%] rounded border-2 border-border bg-dark",
           className,
         )}
       >

@@ -23,10 +23,10 @@ type TableProps = {
   page: string;
   tabId: number;
   name: string;
-  hideIfEmpty?: boolean;
+  isSearchTable?: boolean;
   onRedirect?: (row: PSResult, newTab?: boolean) => void;
 };
-export default function Table({ title, page, tabId, name, hideIfEmpty, onRedirect }: TableProps) {
+export default function Table({ title, page, tabId, name, isSearchTable, onRedirect }: TableProps) {
   const { tablePreferences } = useSelector((state: RootState) => state.preferences);
   const { results, tableConfigs } = useSelector((state: RootState) => state.data);
   const dispatch = useDispatch();
@@ -104,11 +104,15 @@ export default function Table({ title, page, tabId, name, hideIfEmpty, onRedirec
     navigator.clipboard.writeText(csv);
   };
 
-  if (hideIfEmpty && keyResults === undefined) return null;
+  if (isSearchTable && keyResults === undefined) return null;
 
   return (
-    <section className="mb-7 w-fit min-w-[35rem] max-w-full">
-      <div className="ms-1 flex justify-between">
+    <section className="relative mb-7 w-fit min-w-[35rem] max-w-full">
+      {isSearchTable && (
+        <div className="absolute -bottom-2 -left-2 top-0 w-2 rounded-l border-2 border-r-0 border-primaryAccent" />
+      )}
+
+      <div className="ms-0.5 flex justify-between">
         <TableHeader
           title={title}
           count={count}

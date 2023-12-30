@@ -57,7 +57,7 @@ export default function AzureDevice() {
         page={page}
         tabId={tabId}
         name="search"
-        hideIfEmpty={true}
+        isSearchTable={true}
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.DisplayName ?? "" }],
