@@ -2,9 +2,7 @@ import { ElectronAPI } from "../../electron/preload";
 
 export const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
 
-export async function invokePSCommand(
-  request: InvokePSCommandRequest,
-): Promise<ResultDataSet> {
+export async function invokePSCommand(request: InvokePSCommandRequest): Promise<ResultDataSet> {
   if (!electronWindow.electronAPI) {
     return new Promise((resolve) => {
       setTimeout(() => {

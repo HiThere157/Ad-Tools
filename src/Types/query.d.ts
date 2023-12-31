@@ -14,4 +14,4 @@ type QueryLog = {
   timestamp: number;
   executionTime: number;
   success: boolean;
-}
+};
