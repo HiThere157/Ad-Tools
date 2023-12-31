@@ -3,7 +3,7 @@ import { addServerToResponse, extractFirstObject } from "../Helper/postProcessor
 import { formatAdFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
 
 type SingleReplicationResponse = {
-  attributes: Promise<Loadable<PSDataSet>>;
+  attributes: Promise<ResultDataSet>;
 };
 export function getSingleAdReplication(
   identity: string,
@@ -22,7 +22,7 @@ export function getSingleAdReplication(
 }
 
 type MultipleReplicationTargetsResponse = {
-  objects: Promise<Loadable<PSDataSet>>;
+  objects: Promise<ResultDataSet>;
 };
 export function getMultipleAdReplicationTargets(
   filters: QueryFilter[],

@@ -3,7 +3,7 @@ import { PowerShell } from "node-powershell";
 function makeToArray<T>(value: T | T[]): T[] {
   return Array.isArray(value) ? value : [value];
 }
-function tagArray(array: RawPSResult[]): PSResult[] {
+function tagArray(array: RawResultObject[]): ResultObject[] {
   return array.map((item, itemIndex) => ({ ...item, __id__: itemIndex }));
 }
 
@@ -12,7 +12,7 @@ const globalSession = new PowerShell();
 export async function invokePSCommand(
   _event: Electron.IpcMainInvokeEvent,
   { command, selectFields }: InvokePSCommandRequest,
-): Promise<Loadable<PSDataSet>> {
+): Promise<ResultDataSet> {
   // If the command should use the global session, use it
   const startTimestamp = Date.now();
 
@@ -23,7 +23,7 @@ export async function invokePSCommand(
     command += ` | ConvertTo-Json -Compress`;
 
     const output = await globalSession.invoke(command);
-    const data = tagArray(makeToArray<RawPSResult>(JSON.parse(output.raw || "[]")));
+    const data = tagArray(makeToArray<RawResultObject>(JSON.parse(output.raw || "[]")));
     const endTimestamp = Date.now();
 
     return {

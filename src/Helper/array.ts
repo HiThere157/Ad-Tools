@@ -1,6 +1,6 @@
 import { stringify } from "./string";
 
-export function filterData(data: PSResult[], filters: TableFilter[]) {
+export function filterData(data: ResultObject[], filters: TableFilter[]) {
   return data.filter((row) => {
     // Loop over all the filters, and check if the row matches all of them
     return filters.every((filter) => {
@@ -19,7 +19,7 @@ export function filterData(data: PSResult[], filters: TableFilter[]) {
   });
 }
 
-export function sortData(data: PSResult[], sort: SortConfig) {
+export function sortData(data: ResultObject[], sort: SortConfig) {
   const { column, direction } = sort;
 
   return [...data].sort((a, b) => {
@@ -31,13 +31,13 @@ export function sortData(data: PSResult[], sort: SortConfig) {
   });
 }
 
-export function paginateData(data: PSResult[], page: number, pageSize: number) {
+export function paginateData(data: ResultObject[], page: number, pageSize: number) {
   if (pageSize === -1) return data;
 
   return data.slice(page * pageSize, (page + 1) * pageSize);
 }
 
-export function colorData(data: PSResult[], highlights: TableHighlight[]) {
+export function colorData(data: ResultObject[], highlights: TableHighlight[]) {
   return data.map((row) => {
     let bgColor = "transparent";
     let fgColor = "inherit";

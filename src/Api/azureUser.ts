@@ -2,7 +2,7 @@ import { invokePSCommand } from "../Helper/api";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 type SingleAzureUserResponse = {
-  attributes: Loadable<PSDataSet>;
+  attributes: ResultDataSet;
 };
 export async function getSingleAzureUser(objectId: string): Promise<SingleAzureUserResponse> {
   const attributes = await invokePSCommand({
@@ -16,8 +16,8 @@ export async function getSingleAzureUser(objectId: string): Promise<SingleAzureU
 }
 
 type SingleAzureUserDetailsResponse = {
-  memberof: Promise<Loadable<PSDataSet>>;
-  devices: Promise<Loadable<PSDataSet>>;
+  memberof: Promise<ResultDataSet>;
+  devices: Promise<ResultDataSet>;
 };
 export function getSingleAzureUserDetails(objectId: string): SingleAzureUserDetailsResponse {
   const memberof = invokePSCommand({
@@ -46,7 +46,7 @@ export function getSingleAzureUserDetails(objectId: string): SingleAzureUserDeta
 }
 
 type MultipleAzureUsersResponse = {
-  users: Promise<Loadable<PSDataSet>>;
+  users: Promise<ResultDataSet>;
 };
 export function getMultipleAzureUsers(searchString: string): MultipleAzureUsersResponse {
   const users = invokePSCommand({

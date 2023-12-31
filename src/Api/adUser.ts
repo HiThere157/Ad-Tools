@@ -3,8 +3,8 @@ import { addServerToResponse, extractFirstObject } from "../Helper/postProcessor
 import { formatAdFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
 
 type SingleUserResponse = {
-  attributes: Promise<Loadable<PSDataSet>>;
-  memberof: Promise<Loadable<PSDataSet>>;
+  attributes: Promise<ResultDataSet>;
+  memberof: Promise<ResultDataSet>;
 };
 export function getSingleAdUser(identity: string, server: string): SingleUserResponse {
   const attributes = invokePSCommand({
@@ -27,7 +27,7 @@ export function getSingleAdUser(identity: string, server: string): SingleUserRes
 }
 
 type MultipleUsersResponse = {
-  users: Promise<Loadable<PSDataSet>>;
+  users: Promise<ResultDataSet>;
 };
 export function getMultipleAdUsers(
   filters: QueryFilter[],

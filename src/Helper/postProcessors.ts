@@ -1,4 +1,4 @@
-export function extractFirstObject(response: Loadable<PSDataSet>): Loadable<PSDataSet> {
+export function extractFirstObject(response: ResultDataSet): ResultDataSet {
   if (!response) return response;
 
   const { result, error } = response;
@@ -7,7 +7,7 @@ export function extractFirstObject(response: Loadable<PSDataSet>): Loadable<PSDa
     return response;
   }
 
-  const firstObject: { PropertyNames?: string[] } & PSResult = result.data[0];
+  const firstObject: { PropertyNames?: string[] } & ResultObject = result.data[0];
 
   // If the first object has a PropertyNames property, use that as the columns
   const keys = firstObject.PropertyNames ?? Object.keys(firstObject);
@@ -25,10 +25,10 @@ export function extractFirstObject(response: Loadable<PSDataSet>): Loadable<PSDa
 }
 
 export function addServerToResponse(
-  response: Loadable<PSDataSet>,
+  response: ResultDataSet,
   server: string,
   addToColumns?: boolean,
-): Loadable<PSDataSet> {
+): ResultDataSet {
   if (!response) return response;
 
   const { result, error } = response;

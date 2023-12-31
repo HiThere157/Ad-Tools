@@ -3,9 +3,9 @@ import { extractFirstObject, addServerToResponse } from "../Helper/postProcessor
 import { removeDuplicates, formatAdFilter, mergeResponses } from "../Helper/utils";
 
 type SingleGroupResponse = {
-  attributes: Promise<Loadable<PSDataSet>>;
-  members: Promise<Loadable<PSDataSet>>;
-  memberof: Promise<Loadable<PSDataSet>>;
+  attributes: Promise<ResultDataSet>;
+  members: Promise<ResultDataSet>;
+  memberof: Promise<ResultDataSet>;
 };
 export function getSingleAdGroup(identity: string, server: string): SingleGroupResponse {
   const attributes = invokePSCommand({
@@ -35,7 +35,7 @@ export function getSingleAdGroup(identity: string, server: string): SingleGroupR
 }
 
 type MultipleGroupsResponse = {
-  groups: Promise<Loadable<PSDataSet>>;
+  groups: Promise<ResultDataSet>;
 };
 export function getMultipleAdGroups(
   filters: QueryFilter[],

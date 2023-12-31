@@ -10,14 +10,14 @@ import TableCell from "./TableCell";
 import { BsCaretDownFill, BsSearch } from "react-icons/bs";
 
 type TableElementProps = {
-  data: PSResult[];
+  data: ResultObject[];
   columns: string[];
   sort: SortConfig;
   setSort: (sort: SortConfig) => void;
   allRowIds: number[];
   selected: number[];
   setSelected: (selected: number[]) => void;
-  onRedirect?: (row: PSResult, newTab?: boolean) => void;
+  onRedirect?: (row: ResultObject, newTab?: boolean) => void;
 };
 export default function TableElement({
   data,

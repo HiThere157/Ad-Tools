@@ -9,7 +9,7 @@ type SetResultAction = {
   page: string;
   tabId: number;
   name: string;
-  result: Loadable<PSDataSet>;
+  result: ResultDataSet;
 };
 type SetTableConfigAction = {
   page: string;
@@ -26,7 +26,7 @@ const dataSlice = createSlice({
   name: "data",
   initialState: {
     query: {} as TabStorage<Query>,
-    results: {} as TabStorage<PartialRecord<string, Loadable<PSDataSet>>>,
+    results: {} as TabStorage<PartialRecord<string, ResultDataSet>>,
     tableConfigs: {} as TabStorage<PartialRecord<string, TableConfig>>,
   },
   reducers: {

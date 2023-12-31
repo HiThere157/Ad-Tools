@@ -16,7 +16,7 @@ export function useTabState(page: string) {
   const updatePageTab = (tab: Partial<Tab>) => dispatch(updateTab({ page, tabId, tab }));
   const setTabResult = (
     name: string | string[],
-    result: Loadable<PSDataSet> | Promise<Loadable<PSDataSet>>,
+    result: ResultDataSet | Promise<ResultDataSet>,
   ) => {
     const names = Array.isArray(name) ? name : [name];
 

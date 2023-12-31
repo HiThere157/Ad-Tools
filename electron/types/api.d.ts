@@ -1,25 +1,23 @@
-type Loadable<T> =
-  | null
-  | undefined
-  | {
-      result?: T;
-      error?: string;
-      timestamp: number;
-      executionTime: number;
-    };
-
-type RawPSResult = {
+type RawResultObject = {
   [key: string]: any;
 };
-type PSResult = RawPSResult & {
+type ResultObject = RawResultObject & {
   __id__: number;
   __highlight_bg__?: string;
   __highlight_fg__?: string;
 };
-type PSDataSet = {
-  data: PSResult[];
-  columns: string[];
-};
+type ResultDataSet =
+  | null
+  | undefined
+  | {
+      result?: {
+        data: ResultObject[];
+        columns: string[];
+      };
+      error?: string;
+      timestamp: number;
+      executionTime: number;
+    };
 
 type InvokePSCommandRequest = {
   command: string;
@@ -30,6 +28,13 @@ type ElectronEnvironment = {
   executingUser: string;
   appVersion: string;
   appChannel: "beta" | "stable";
+};
+type AzureEnvironment = {
+  executingAzureUser: string;
+};
+type PowershellEnvironment = {
+  adVersion: string | null;
+  azureAdVersion: string | null;
 };
 
 type WindowState = "minimize" | "maximize_restore" | "close";

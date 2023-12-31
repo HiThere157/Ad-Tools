@@ -3,9 +3,9 @@ import { extractFirstObject, addServerToResponse } from "../Helper/postProcessor
 import { removeDuplicates, formatAdFilter, mergeResponses } from "../Helper/utils";
 
 type GetSingleComputerResponse = {
-  dns: Promise<Loadable<PSDataSet>>;
-  attributes: Promise<Loadable<PSDataSet>>;
-  memberof: Promise<Loadable<PSDataSet>>;
+  dns: Promise<ResultDataSet>;
+  attributes: Promise<ResultDataSet>;
+  memberof: Promise<ResultDataSet>;
 };
 export function getSingleAdComputer(identity: string, server: string): GetSingleComputerResponse {
   const dns = invokePSCommand({
@@ -33,7 +33,7 @@ export function getSingleAdComputer(identity: string, server: string): GetSingle
 }
 
 type MultipleComputersResponse = {
-  computers: Promise<Loadable<PSDataSet>>;
+  computers: Promise<ResultDataSet>;
 };
 export function getMultipleAdComputers(
   filters: QueryFilter[],

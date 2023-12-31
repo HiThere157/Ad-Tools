@@ -4,7 +4,7 @@ export const electronWindow = window as Window & typeof globalThis & { electronA
 
 export async function invokePSCommand(
   request: InvokePSCommandRequest,
-): Promise<Loadable<PSDataSet>> {
+): Promise<ResultDataSet> {
   if (!electronWindow.electronAPI) {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -25,7 +25,7 @@ export async function invokePSCommand(
             ],
           },
           timestamp: Date.now(),
-          executionTime: 0,
+          executionTime: 1337,
         });
       }, 1000);
     });
@@ -104,7 +104,7 @@ export async function getPowershellEnvironment(): Promise<PowershellEnvironment>
     });
   }
 
-  const formatVersion = (env: Loadable<PSDataSet>, module: string) => {
+  const formatVersion = (env: ResultDataSet, module: string) => {
     const version = env?.result?.data?.find((m) => m.Name === module)?.Version;
     if (!version) return "";
 

@@ -1,7 +1,7 @@
 import { invokePSCommand } from "../Helper/api";
 
 type GetSinglePrintersResponse = {
-  printers: Promise<Loadable<PSDataSet>>;
+  printers: Promise<ResultDataSet>;
 };
 export function getSinglePrinters(identity: string, server: string): GetSinglePrintersResponse {
   const printers = invokePSCommand({

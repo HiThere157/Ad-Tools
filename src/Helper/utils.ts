@@ -15,9 +15,9 @@ export function formatAdFilter(filters: QueryFilter[]) {
     .join(" -and ");
 }
 
-export function mergeResponses(responses: Loadable<PSDataSet>[]): Loadable<PSDataSet> {
+export function mergeResponses(responses: ResultDataSet[]): ResultDataSet {
   const mergedData = responses
-    .reduce((acc, response) => [...acc, ...(response?.result?.data ?? [])], [] as PSResult[])
+    .reduce((acc, response) => [...acc, ...(response?.result?.data ?? [])], [] as ResultObject[])
     .map((result, index) => {
       return { ...result, __id__: index };
     });

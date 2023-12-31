@@ -24,7 +24,7 @@ type TableProps = {
   tabId: number;
   name: string;
   isSearchTable?: boolean;
-  onRedirect?: (row: PSResult, newTab?: boolean) => void;
+  onRedirect?: (row: ResultObject, newTab?: boolean) => void;
 };
 export default function Table({ title, page, tabId, name, isSearchTable, onRedirect }: TableProps) {
   const { tablePreferences } = useSelector((state: RootState) => state.preferences);
@@ -57,25 +57,21 @@ export default function Table({ title, page, tabId, name, isSearchTable, onRedir
   const { isCollapsed, filters, hiddenColumns, sort, selected, pageIndex } = keyTableConfigs;
   const { pageSize, highlights, savedFilters, savedFilterName } = keyTablePreferences;
 
-  const selectedFilter = useMemo(() => {
-    return savedFilters?.find((filter) => filter.name === savedFilterName)?.filters ?? filters;
-  }, [savedFilters, savedFilterName, filters]);
+  const selectedFilter = useMemo(
+    () => savedFilters?.find((filter) => filter.name === savedFilterName)?.filters ?? filters,
+    [savedFilters, savedFilterName, filters],
+  );
 
-  const filteredResult = useMemo(() => {
-    return filterData(data, selectedFilter);
-  }, [data, selectedFilter]);
-
-  const sortedResult = useMemo(() => {
-    return sortData(filteredResult, sort);
-  }, [filteredResult, sort]);
-
-  const paginationResult = useMemo(() => {
-    return paginateData(sortedResult, pageIndex, pageSize);
-  }, [sortedResult, pageIndex, pageSize]);
-
-  const coloredResult = useMemo(() => {
-    return colorData(paginationResult, highlights);
-  }, [paginationResult, highlights]);
+  const filteredResult = useMemo(() => filterData(data, selectedFilter), [data, selectedFilter]);
+  const sortedResult = useMemo(() => sortData(filteredResult, sort), [filteredResult, sort]);
+  const paginationResult = useMemo(
+    () => paginateData(sortedResult, pageIndex, pageSize),
+    [sortedResult, pageIndex, pageSize],
+  );
+  const coloredResult = useMemo(
+    () => colorData(paginationResult, highlights),
+    [paginationResult, highlights],
+  );
 
   const count: ResultCount | undefined = useMemo(() => {
     // Only show count if acutal data is available

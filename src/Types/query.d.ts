@@ -8,3 +8,10 @@ type QueryFilter = {
   property: string;
   value: string;
 };
+
+type QueryLog = {
+  command: string;
+  timestamp: number;
+  executionTime: number;
+  success: boolean;
+}

@@ -15,7 +15,7 @@ export async function getSingleAzureDeviceId(displayName: string): Promise<strin
 }
 
 type SingleAzureDeviceResponse = {
-  attributes: Promise<Loadable<PSDataSet>>;
+  attributes: Promise<ResultDataSet>;
 };
 export function getSingleAzureDevice(objectId: string): SingleAzureDeviceResponse {
   const attributes = invokePSCommand({
@@ -29,7 +29,7 @@ export function getSingleAzureDevice(objectId: string): SingleAzureDeviceRespons
 }
 
 type MultipleAzureDevicesResponse = {
-  devices: Promise<Loadable<PSDataSet>>;
+  devices: Promise<ResultDataSet>;
 };
 export function getMultipleAzureDevices(searchString: string): MultipleAzureDevicesResponse {
   const devices = invokePSCommand({
