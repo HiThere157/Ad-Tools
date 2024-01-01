@@ -1,5 +1,4 @@
-import { getSingleAdReplication } from "../Api/adReplication";
-import { getMultipleAdObjects } from "../Api/adObject";
+import { getMultipleAdComputers } from "../Api/adComputer";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
@@ -7,9 +6,10 @@ import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
 import TabLayout from "../Layout/TabLayout";
 import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
+import { getSingleWmiInfo } from "../Api/wmi";
 
-export default function AdReplication() {
-  const page = "adReplication";
+export default function Printers() {
+  const page = "wmi";
   const { redirect, onRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
@@ -18,12 +18,12 @@ export default function AdReplication() {
 
     updateTab({ icon: "loading", title: "Search Results" });
     setResult("search", null);
-    setResult("attributes", undefined);
+    setResult(["monitors", "sysinfo", "software", "bios"], undefined);
 
-    const { objects } = getMultipleAdObjects(filters, servers);
+    const { computers } = getMultipleAdComputers(filters, servers);
 
-    setResult("search", objects);
-    objects.then(() => updateTab({ icon: "search" }));
+    setResult("search", computers);
+    computers.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = (query: Query, resetSearch?: boolean) => {
@@ -33,14 +33,17 @@ export default function AdReplication() {
     const identity = getFilterValue(query.filters, "Name");
     const server = query.servers[0];
 
-    updateTab({ icon: "loading", title: identity || "User" });
+    updateTab({ icon: "loading", title: identity || "WMI" });
     if (resetSearch) setResult("search", undefined);
-    setResult("attributes", null);
+    setResult(["monitors", "sysinfo", "software", "bios"], null);
 
-    const { attributes } = getSingleAdReplication(identity, server);
+    const { monitors, sysinfo, software, bios } = getSingleWmiInfo(identity, server);
 
-    setResult("attributes", attributes);
-    attributes.then(() => updateTab({ icon: "replication" }));
+    setResult("monitors", monitors);
+    setResult("sysinfo", sysinfo);
+    setResult("software", software);
+    setResult("bios", bios);
+    Promise.all([monitors, sysinfo, software, bios]).then(() => updateTab({ icon: "wmi" }));
   };
 
   onRedirect(() => runQuery(query));
@@ -50,7 +53,7 @@ export default function AdReplication() {
       <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
 
       <Table
-        title="Object Search Results"
+        title="Computer Search Results"
         page={page}
         tabId={tabId}
         name="search"
@@ -65,8 +68,10 @@ export default function AdReplication() {
           runQuery(newQuery);
         }}
       />
-
-      <Table title="Replication Attributes" page={page} tabId={tabId} name="attributes" />
+      <Table title="Monitors" page={page} tabId={tabId} name="monitors" />
+      <Table title="Sysinfo" page={page} tabId={tabId} name="sysinfo" />
+      <Table title="Software" page={page} tabId={tabId} name="software" />
+      <Table title="BIOS" page={page} tabId={tabId} name="bios" />
     </TabLayout>
   );
 }

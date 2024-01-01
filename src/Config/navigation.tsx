@@ -4,6 +4,7 @@ import AdGroup from "../Pages/AdGroup";
 import AdComputer from "../Pages/AdComputer";
 import AdReplication from "../Pages/AdReplication";
 import Printers from "../Pages/Printer";
+import WMI from "../Pages/WMI";
 import AzureUser from "../Pages/AzureUser";
 import AzureGroup from "../Pages/AzureGroup";
 import AzureDevice from "../Pages/AzureDevice";
@@ -71,7 +72,7 @@ export const navigationLinks: NavigationLink[][] = [
       href: "/wmi",
       text: "WMI",
       icon: <BsCpu />,
-      page: <div>WMIPage</div>,
+      page: <WMI />,
     },
     {
       href: "/printer",
