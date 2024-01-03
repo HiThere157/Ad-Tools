@@ -82,7 +82,7 @@ export default function Table({ title, page, tabId, name, isSearchTable, onRedir
       filtered: data.length - filteredResult.length,
       selected: selected.length,
     };
-  }, [data, filteredResult, selected]);
+  }, [result, data, filteredResult, selected]);
 
   const exportAsCSV = (onlySelection: boolean) => {
     // Add the header row to the CSV

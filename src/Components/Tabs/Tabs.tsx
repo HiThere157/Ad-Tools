@@ -55,28 +55,6 @@ export default function Tabs({ page }: TabsProps) {
     if (pageTabs.length === 0) newTab();
   });
 
-  // Handle keyboard shortcuts
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      const { ctrlKey, key } = event;
-      if (ctrlKey && key === "t") {
-        newTab();
-      }
-
-      if (ctrlKey && key === "w") {
-        const activeTabIndex = pageTabs.findIndex((tab) => tab.id === pageActiveTab);
-        if (activeTabIndex) {
-          deleteTab(pageActiveTab);
-        }
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [pageTabs, pageActiveTab]);
-
   return (
     <div
       className="sticky top-0 z-30 flex flex-wrap items-center gap-0.5 bg-primary px-1 pt-0.5"

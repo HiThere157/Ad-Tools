@@ -39,7 +39,7 @@ export default function TableElement({
 
     // If no rows are selected, return false
     return false;
-  }, [data, selected]);
+  }, [allRowIds, data, selected]);
 
   const onSort = (column: string) => {
     if (sort.column === column) {

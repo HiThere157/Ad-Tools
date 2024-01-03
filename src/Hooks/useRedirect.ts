@@ -9,7 +9,6 @@ import { defaultTab } from "../Config/default";
 export function useRedirect() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const redirect = (page: string, query: Query) => {
     const newTabId = new Date().getTime();
@@ -18,7 +17,9 @@ export function useRedirect() {
     navigate(`/${page}?runImmediately=true`);
   };
 
-  const onRedirect = (callback: () => void) => {
+  const useOnRedirect = (callback: () => void) => {
+    const [searchParams, setSearchParams] = useSearchParams();
+
     useEffect(() => {
       if (searchParams.get("runImmediately") === "true") {
         callback();
@@ -26,8 +27,8 @@ export function useRedirect() {
         searchParams.delete("runImmediately");
         setSearchParams(searchParams);
       }
-    }, [searchParams]);
+    }, [searchParams, setSearchParams, callback]);
   };
 
-  return { redirect, onRedirect };
+  return { redirect, useOnRedirect };
 }

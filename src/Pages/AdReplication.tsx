@@ -10,7 +10,7 @@ import Table from "../Components/Table/Table";
 
 export default function AdReplication() {
   const page = "adReplication";
-  const { redirect, onRedirect } = useRedirect();
+  const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
@@ -43,7 +43,7 @@ export default function AdReplication() {
     attributes.then(() => updateTab({ icon: "replication" }));
   };
 
-  onRedirect(() => runQuery(query));
+  useOnRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>

@@ -9,7 +9,7 @@ import Table from "../Components/Table/Table";
 
 export default function AdGroup() {
   const page = "adGroup";
-  const { redirect, onRedirect } = useRedirect();
+  const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
@@ -44,7 +44,7 @@ export default function AdGroup() {
     Promise.all([attributes, members, memberof]).then(() => updateTab({ icon: "group" }));
   };
 
-  onRedirect(() => runQuery(query));
+  useOnRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>

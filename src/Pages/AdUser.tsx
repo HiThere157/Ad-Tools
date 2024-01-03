@@ -9,7 +9,7 @@ import Table from "../Components/Table/Table";
 
 export default function AdUser() {
   const page = "adUser";
-  const { redirect, onRedirect } = useRedirect();
+  const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
@@ -43,7 +43,7 @@ export default function AdUser() {
     Promise.all([attributes, memberof]).then(() => updateTab({ icon: "user" }));
   };
 
-  onRedirect(() => runQuery(query));
+  useOnRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>

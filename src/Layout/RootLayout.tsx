@@ -28,26 +28,24 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
-  const init = async () => {
-    const [electronEnvironment, azureEnvironment, powershellEnvironment, queryDomains] =
-      await Promise.all([
-        getElectronEnvironment(),
-        getAzureEnvironment(),
-        getPowershellEnvironment(),
-        getDnsSuffixList(),
-      ]);
-
-    dispatch(setElectronEnvironment(electronEnvironment));
-    dispatch(setAzureEnvironment(azureEnvironment));
-    dispatch(setPowershellEnvironment(powershellEnvironment));
-    dispatch(setDefaultQueryDomains(queryDomains));
-
-    electronWindow.electronAPI?.checkForUpdates();
-  };
-
   useEffect(() => {
-    init();
-  }, []);
+    (async () => {
+      const [electronEnvironment, azureEnvironment, powershellEnvironment, queryDomains] =
+        await Promise.all([
+          getElectronEnvironment(),
+          getAzureEnvironment(),
+          getPowershellEnvironment(),
+          getDnsSuffixList(),
+        ]);
+
+      dispatch(setElectronEnvironment(electronEnvironment));
+      dispatch(setAzureEnvironment(azureEnvironment));
+      dispatch(setPowershellEnvironment(powershellEnvironment));
+      dispatch(setDefaultQueryDomains(queryDomains));
+
+      electronWindow.electronAPI?.checkForUpdates();
+    })();
+  }, [dispatch]);
 
   return (
     <main

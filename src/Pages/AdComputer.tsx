@@ -9,7 +9,7 @@ import Table from "../Components/Table/Table";
 
 export default function AdComputer() {
   const page = "adComputer";
-  const { redirect, onRedirect } = useRedirect();
+  const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
@@ -44,7 +44,7 @@ export default function AdComputer() {
     Promise.all([dns, attributes, memberof]).then(() => updateTab({ icon: "computer" }));
   };
 
-  onRedirect(() => runQuery(query));
+  useOnRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>

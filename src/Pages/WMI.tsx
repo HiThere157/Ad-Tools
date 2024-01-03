@@ -10,7 +10,7 @@ import { getSingleWmiInfo } from "../Api/wmi";
 
 export default function Printers() {
   const page = "wmi";
-  const { redirect, onRedirect } = useRedirect();
+  const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
@@ -46,7 +46,7 @@ export default function Printers() {
     Promise.all([monitors, sysinfo, software, bios]).then(() => updateTab({ icon: "wmi" }));
   };
 
-  onRedirect(() => runQuery(query));
+  useOnRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>

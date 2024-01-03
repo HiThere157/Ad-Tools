@@ -13,7 +13,7 @@ import Table from "../Components/Table/Table";
 
 export default function AzureGroup() {
   const page = "azureGroup";
-  const { redirect, onRedirect } = useRedirect();
+  const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
@@ -47,7 +47,7 @@ export default function AzureGroup() {
     Promise.all([attributes, members]).then(() => updateTab({ icon: "group" }));
   };
 
-  onRedirect(() => runQuery(query));
+  useOnRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>

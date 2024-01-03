@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useSessionStorage, useLocalStorage } from "../Hooks/useStorage";
 
 import { BsArrowDown, BsArrowLeft, BsArrowRight, BsArrowUp, BsLockFill } from "react-icons/bs";
@@ -202,123 +202,144 @@ export default function Tetris() {
     }
 
     return overlayedBoard;
-  }, [board, currentPiece]);
+  }, [board, currentPiece, setBoard, setScore, setHeldPiece]);
 
   const speed = useMemo(() => 1000 - score / 15, [score]);
 
-  function nextPiece() {
+  const nextPiece = useCallback(() => {
     const newQueue = [...queue];
     const nextPiece = newQueue.shift() as PositionedPiece;
 
     newQueue.push(newPiece());
     setQueue(newQueue);
     setCurrentPiece(nextPiece);
-  }
+  }, [queue, setQueue, setCurrentPiece]);
 
-  function lockClearAndNext(board: CellTypes[][]) {
-    const { clearedBoard, clearedRows } = clearFullRows(board);
-    if (clearedRows != 0) {
-      const newScore = score + (40 / 3) * 3 ** clearedRows;
-      setScore(newScore);
+  const lockClearAndNext = useCallback(
+    (board: CellTypes[][]) => {
+      const { clearedBoard, clearedRows } = clearFullRows(board);
+      if (clearedRows != 0) {
+        const newScore = score + (40 / 3) * 3 ** clearedRows;
+        setScore(newScore);
 
-      if (newScore > highScore) {
-        setHighScore(newScore);
+        if (newScore > highScore) {
+          setHighScore(newScore);
+        }
       }
-    }
 
-    setBoard(clearedBoard);
-    nextPiece();
+      setBoard(clearedBoard);
+      nextPiece();
 
-    setHeldPiece({ ...heldPiece, isLocked: false });
-  }
+      setHeldPiece({ ...heldPiece, isLocked: false });
+    },
+    [score, highScore, setScore, setHighScore, setBoard, nextPiece, heldPiece, setHeldPiece],
+  );
 
-  function action(type: ActionTypes) {
-    if (isPaused) return;
+  const action = useCallback(
+    (type: ActionTypes) => {
+      if (isPaused) return;
 
-    let newPosition = { ...currentPiece.position };
-    let newRotation = currentPiece.rotation;
+      const newPosition = { ...currentPiece.position };
+      let newRotation = currentPiece.rotation;
 
-    switch (type) {
-      case "MOVE_LEFT":
-        newPosition.x--;
-        break;
-      case "MOVE_RIGHT":
-        newPosition.x++;
-        break;
-      case "MOVE_DOWN":
-        newPosition.y++;
-        break;
-      case "ROTATE":
-        newRotation = ((newRotation + 1) % 4) as 0 | 1 | 2 | 3;
-        break;
-      case "DROP":
-        // Move down until clipping
-        while (!overlayPiece(board, { ...currentPiece, position: newPosition }).isClipping) {
+      switch (type) {
+        case "MOVE_LEFT":
+          newPosition.x--;
+          break;
+        case "MOVE_RIGHT":
+          newPosition.x++;
+          break;
+        case "MOVE_DOWN":
           newPosition.y++;
-        }
-        // Move back up one
-        newPosition.y--;
-        break;
-    }
+          break;
+        case "ROTATE":
+          newRotation = ((newRotation + 1) % 4) as 0 | 1 | 2 | 3;
+          break;
+        case "DROP":
+          // Move down until clipping
+          while (!overlayPiece(board, { ...currentPiece, position: newPosition }).isClipping) {
+            newPosition.y++;
+          }
+          // Move back up one
+          newPosition.y--;
+          break;
+      }
 
-    const newCurrentPiece = {
-      ...currentPiece,
-      position: newPosition,
-      rotation: newRotation,
-    };
-    const { isClipping, overlayedBoard: newOverlayedBoard } = overlayPiece(board, newCurrentPiece);
+      const newCurrentPiece = {
+        ...currentPiece,
+        position: newPosition,
+        rotation: newRotation,
+      };
+      const { isClipping, overlayedBoard: newOverlayedBoard } = overlayPiece(
+        board,
+        newCurrentPiece,
+      );
 
-    // If not clipping, move to new position
-    if (!isClipping) {
-      setCurrentPiece(newCurrentPiece);
-    }
+      // If not clipping, move to new position
+      if (!isClipping) {
+        setCurrentPiece(newCurrentPiece);
+      }
 
-    if (type === "MOVE_DOWN" && isClipping) {
-      // If clipping, ignore move down and lock the piece (use the unchanged overlayedBoard)
-      lockClearAndNext(overlayedBoard);
-    }
+      if (type === "MOVE_DOWN" && isClipping) {
+        // If clipping, ignore move down and lock the piece (use the unchanged overlayedBoard)
+        lockClearAndNext(overlayedBoard);
+      }
 
-    if (type === "DROP") {
-      // If dropping, dont check for clipping, just lock the new position (use the changed newOverlayedBoard)
-      lockClearAndNext(newOverlayedBoard);
-    }
-  }
+      if (type === "DROP") {
+        // If dropping, dont check for clipping, just lock the new position (use the changed newOverlayedBoard)
+        lockClearAndNext(newOverlayedBoard);
+      }
+    },
+    [board, overlayedBoard, currentPiece, isPaused, lockClearAndNext, setCurrentPiece],
+  );
 
-  function handleKeyDown(e: KeyboardEvent) {
-    switch (e.key) {
-      case "ArrowLeft":
-        action("MOVE_LEFT");
-        break;
-      case "ArrowRight":
-        action("MOVE_RIGHT");
-        break;
-      case "ArrowDown":
-        action("MOVE_DOWN");
-        break;
-      case "ArrowUp":
-        action("ROTATE");
-        break;
-      case " ":
-        action("DROP");
-        break;
-      case "p":
-        setIsPaused(!isPaused);
-        break;
-      case "h":
-        if (heldPiece.isLocked) break;
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "ArrowLeft":
+          action("MOVE_LEFT");
+          break;
+        case "ArrowRight":
+          action("MOVE_RIGHT");
+          break;
+        case "ArrowDown":
+          action("MOVE_DOWN");
+          break;
+        case "ArrowUp":
+          action("ROTATE");
+          break;
+        case " ":
+          action("DROP");
+          break;
+        case "p":
+          setIsPaused(!isPaused);
+          break;
+        case "h":
+          if (heldPiece.isLocked) break;
 
-        // Hold the current piece
-        setHeldPiece({ pieceType: currentPiece.pieceType, isLocked: true });
+          // Hold the current piece
+          setHeldPiece({ pieceType: currentPiece.pieceType, isLocked: true });
 
-        // If there is a held piece, swap it with the current piece
-        if (heldPiece.pieceType) {
-          setCurrentPiece(newPiece(heldPiece.pieceType));
-        } else {
-          nextPiece();
-        }
-        break;
-    }
-  }
+          // If there is a held piece, swap it with the current piece
+          if (heldPiece.pieceType) {
+            setCurrentPiece(newPiece(heldPiece.pieceType));
+          } else {
+            nextPiece();
+          }
+          break;
+      }
+    },
+    [
+      action,
+      currentPiece,
+      heldPiece,
+      isPaused,
+      nextPiece,
+      setIsPaused,
+      setHeldPiece,
+      setCurrentPiece,
+    ],
+  );
 
   // Game loop
   useInterval(() => {
@@ -331,7 +352,7 @@ export default function Tetris() {
     return () => window.removeEventListener("keydown", handleKeyDown);
 
     // because of js closures, we need to add all variables used in the callback to the dependency array
-  }, [currentPiece, board, isPaused]);
+  }, [handleKeyDown]);
 
   return (
     <div className="relative flex items-start justify-center gap-2 p-2">

@@ -15,8 +15,8 @@ type ResultDataSet =
         columns: string[];
       };
       error?: string;
-      timestamp: number;
-      executionTime: number;
+      timestamp?: number;
+      executionTime?: number;
     };
 
 type InvokePSCommandRequest = {

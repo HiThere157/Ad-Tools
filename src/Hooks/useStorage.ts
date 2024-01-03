@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function useStorage<T>(
-  storage: { getItem: Function; setItem: Function },
+  storage: Storage,
   key: string,
   initialValue: any,
 ): [T, React.Dispatch<React.SetStateAction<T>>] {

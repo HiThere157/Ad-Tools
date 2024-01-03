@@ -13,7 +13,7 @@ import Table from "../Components/Table/Table";
 
 export default function AzureDevice() {
   const page = "azureDevice";
-  const { redirect, onRedirect } = useRedirect();
+  const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
@@ -46,7 +46,7 @@ export default function AzureDevice() {
     attributes.then(() => updateTab({ icon: "computer" }));
   };
 
-  onRedirect(() => runQuery(query));
+  useOnRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
@@ -28,8 +28,12 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
   const { isAdvanced, filters, servers } = tabQuery;
 
   // Update the query with a partial query
-  const updateTabQuery = (query: Partial<Query>) =>
-    dispatch(setQuery({ page, tabId, query: { ...tabQuery, ...query } }));
+  const updateTabQuery = useCallback(
+    (query: Partial<Query>) => {
+      dispatch(setQuery({ page, tabId, query: { ...tabQuery, ...query } }));
+    },
+    [dispatch, page, tabId, tabQuery],
+  );
 
   // We only want to submit if the query is somewhat valid
   const beforeSubmit = () => {
@@ -54,7 +58,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
     if (tabId !== 0 && tabQuery === defaultQuery && queryDomains.length > 0) {
       updateTabQuery({ servers: [queryDomains[0]] });
     }
-  }, [queryDomains, tabQuery, tabId]);
+  }, [queryDomains, tabQuery, tabId, updateTabQuery]);
 
   return (
     <div className={"m-1.5 mb-4 flex gap-1 " + (isAdvanced ? "flex-col" : "")}>

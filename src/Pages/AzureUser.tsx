@@ -13,7 +13,7 @@ import Table from "../Components/Table/Table";
 
 export default function AzureUser() {
   const page = "azureUser";
-  const { redirect, onRedirect } = useRedirect();
+  const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = async (query: Query) => {
@@ -48,7 +48,7 @@ export default function AzureUser() {
     Promise.all([attributes, memberof, devices]).then(() => updateTab({ icon: "user" }));
   };
 
-  onRedirect(() => runQuery(query));
+  useOnRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>

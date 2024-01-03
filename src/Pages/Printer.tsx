@@ -10,7 +10,7 @@ import Table from "../Components/Table/Table";
 
 export default function Printers() {
   const page = "printers";
-  const { redirect, onRedirect } = useRedirect();
+  const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, updateTab, setResult } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
@@ -43,7 +43,7 @@ export default function Printers() {
     printers.then(() => updateTab({ icon: "printer" }));
   };
 
-  onRedirect(() => runQuery(query));
+  useOnRedirect(() => runQuery(query));
 
   return (
     <TabLayout page={page}>

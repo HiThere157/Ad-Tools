@@ -12,14 +12,17 @@ export default function ScrollToTop({ scrollRef }: ScrollToTopProps) {
   };
 
   useEffect(() => {
+    // the ref may change before the unmount, so we need to store it in a variable
+    const ref = scrollRef.current;
+
     const checkScrollTop = () => {
-      const scrollTop = scrollRef.current?.scrollTop ?? 0;
+      const scrollTop = ref?.scrollTop ?? 0;
       setShowButton(scrollTop > 250);
     };
 
-    scrollRef.current?.addEventListener("scroll", checkScrollTop);
-    return () => scrollRef.current?.removeEventListener("scroll", checkScrollTop);
-  }, []);
+    ref?.addEventListener("scroll", checkScrollTop);
+    return () => ref?.removeEventListener("scroll", checkScrollTop);
+  }, [scrollRef]);
 
   return (
     <div className="absolute bottom-5 right-8 z-30">

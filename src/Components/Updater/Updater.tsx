@@ -43,7 +43,7 @@ export default function Updater() {
     return () => {
       electronWindow.electronAPI?.offDownloadStatusUpdate();
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <div ref={ref} className="winbar-no-drag relative">
