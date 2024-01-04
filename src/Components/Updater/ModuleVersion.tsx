@@ -16,7 +16,7 @@ export default function ModuleVersion({ module, version }: ModuleVersionProps) {
 
       {version === null && <PulseLoader color="#208cf0" speedMultiplier={0.7} size={7} />}
       {version === "" && <BsExclamationOctagon className="text-xl text-red" />}
-      {version && <BsCheckCircle className="text-lg text-green" />}
+      {version && <BsCheckCircle className="text-xl text-grey" />}
     </div>
   );
 }

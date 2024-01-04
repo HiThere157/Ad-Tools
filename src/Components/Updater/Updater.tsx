@@ -47,8 +47,12 @@ export default function Updater() {
 
   return (
     <div ref={ref} className="winbar-no-drag relative">
-      <HeaderButton onClick={() => setIsOpen(!isOpen)}>
+      <HeaderButton className="relative" onClick={() => setIsOpen(!isOpen)}>
         <BsDownload />
+
+        {updateStatus && updateStatus.status !== "upToDate" && (
+          <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red" />
+        )}
       </HeaderButton>
 
       {isOpen && (
@@ -63,6 +67,9 @@ export default function Updater() {
 
           <div className="p-2">
             <AppVersion app="Ad-Tools" currentVersion={appVersion} downloadStatus={updateStatus} />
+
+            <div className="my-1.5 border-t border-border" />
+
             <ModuleVersion module="ActiveDirectory" version={adVersion} />
             <ModuleVersion module="AzureAD" version={azureAdVersion} />
           </div>
