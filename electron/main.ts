@@ -4,7 +4,7 @@ import path = require("path");
 
 import { invokePSCommand } from "./api/powershell";
 import { getElectronEnvironment } from "./api/node";
-import { changeWindowState, changeZoom } from "./api/win";
+import { setWindowState } from "./api/win";
 import { checkForUpdates } from "./api/update";
 
 app.on("ready", () => {
@@ -23,11 +23,6 @@ app.on("ready", () => {
 
   window.removeMenu();
   window.loadFile(path.join(__dirname, "web/index.html"));
-
-  // Handle window zoom
-  window.webContents.on("zoom-changed", (_event, direction) => {
-    changeZoom(window, direction);
-  });
 
   // Handle F12 for dev console and install Redux DevTools
   window.webContents.on("before-input-event", (event, input) => {
@@ -52,9 +47,12 @@ app.on("ready", () => {
   ipcMain.handle("ps:invokePSCommand", invokePSCommand);
   ipcMain.handle("node:getElectronEnvironment", getElectronEnvironment);
 
-  // Handle window state changes
-  ipcMain.on("win:changeWindowState", (_event, state: WindowState) => {
-    changeWindowState(window, state);
+  // Handle window state and zoom changes
+  ipcMain.on("win:setWindowState", (_event, state: WindowState) => {
+    setWindowState(window, state);
+  });
+  ipcMain.on("win:setZoom", (_event, zoom: number) => {
+    window.webContents.setZoomFactor(zoom);
   });
 
   // Handle Updater

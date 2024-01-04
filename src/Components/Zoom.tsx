@@ -1,29 +1,45 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+import { RootState } from "../Redux/store";
 import { electronWindow } from "../Helper/api";
+import { setZoom } from "../Redux/preferences";
 
 export default function Zoom() {
   const [visible, setVisible] = useState(false);
-  const [zoom, setZoom] = useState<number>();
   const [timeoutId, setTimeoutId] = useState<number>();
+  const { zoom } = useSelector((state: RootState) => state.preferences);
+  const dispatch = useDispatch();
+
+  const handleScroll = useCallback(
+    (e: WheelEvent) => {
+      if (e.ctrlKey) {
+        const newZoom = zoom + (e.deltaY > 0 ? -0.1 : 0.1);
+        const clampedZoom = Math.min(Math.max(newZoom, 0.5), 1);
+
+        dispatch(setZoom(clampedZoom));
+        setVisible(true);
+
+        const id = window.setTimeout(() => {
+          setVisible(false);
+        }, 1500);
+
+        if (timeoutId) clearTimeout(timeoutId);
+        setTimeoutId(id);
+      }
+    },
+    [dispatch, timeoutId],
+  );
+
+  // Handle zoom events
+  useEffect(() => {
+    window.addEventListener("wheel", handleScroll);
+    return () => window.removeEventListener("wheel", handleScroll);
+  }, [handleScroll]);
 
   useEffect(() => {
-    electronWindow.electronAPI?.onZoom((zoom) => {
-      setVisible(true);
-      setZoom(zoom);
-
-      const id = window.setTimeout(() => {
-        setVisible(false);
-      }, 1500);
-
-      if (timeoutId) clearTimeout(timeoutId);
-      setTimeoutId(id);
-    });
-
-    return () => {
-      electronWindow.electronAPI?.offZoom();
-    };
-  }, [timeoutId]);
+    electronWindow.electronAPI?.setZoom(zoom);
+  }, [zoom]);
 
   if (!visible || !zoom) return null;
 

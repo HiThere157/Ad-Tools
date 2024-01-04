@@ -12,6 +12,7 @@ const preferencesSlice = createSlice({
   name: "preferences",
   initialState: {
     isNavBarExpanded: true,
+    zoom: 1,
     tablePreferences: {} as PageStorage<PartialRecord<string, TablePreferences>>,
     queryDomains: [] as string[],
     azureLoginUPN: "",
@@ -19,6 +20,9 @@ const preferencesSlice = createSlice({
   reducers: {
     toggleNavBar: (state) => {
       state.isNavBarExpanded = !state.isNavBarExpanded;
+    },
+    setZoom: (state, action: PayloadAction<number>) => {
+      state.zoom = action.payload;
     },
     setTablePreferences: (state, action: PayloadAction<SetTablePreferencesAction>) => {
       const { page, name, preferences } = action.payload;
@@ -45,6 +49,7 @@ const preferencesSlice = createSlice({
 
 export const {
   toggleNavBar,
+  setZoom,
   setTablePreferences,
   setAzureLoginUPN,
   setDefaultQueryDomains,

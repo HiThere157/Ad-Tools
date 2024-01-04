@@ -350,8 +350,6 @@ export default function Tetris() {
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-
-    // because of js closures, we need to add all variables used in the callback to the dependency array
   }, [handleKeyDown]);
 
   return (

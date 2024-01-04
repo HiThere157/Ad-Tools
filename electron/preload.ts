@@ -5,12 +5,10 @@ const api = {
     ipcRenderer.invoke("ps:invokePSCommand", request),
   getElectronEnvironment: async (): Promise<ElectronEnvironment> =>
     ipcRenderer.invoke("node:getElectronEnvironment"),
-  changeWindowState: (state: WindowState) => ipcRenderer.send("win:changeWindowState", state),
+  setWindowState: (state: WindowState) => ipcRenderer.send("win:setWindowState", state),
+  setZoom: (zoom: number) => ipcRenderer.send("win:setZoom", zoom),
   checkForUpdates: () => ipcRenderer.send("update:checkForUpdates"),
 
-  onZoom: (callback: (zoom: number) => void) =>
-    ipcRenderer.on("win:onZoom", (_event, zoom: number) => callback(zoom)),
-  offZoom: () => ipcRenderer.removeAllListeners("win:onZoom"),
   onDownloadStatusUpdate: (callback: (status: UpdateDownloadStatus) => void) =>
     ipcRenderer.on("update:onDownloadStatusUpdate", (_event, status: UpdateDownloadStatus) =>
       callback(status),

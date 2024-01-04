@@ -5,19 +5,19 @@ import HeaderButton from "./HeaderButton";
 import { BsDashLg, BsSquare, BsXLg } from "react-icons/bs";
 
 export default function WindowControls() {
-  function changeWindowState(state: WindowState) {
-    electronWindow.electronAPI?.changeWindowState(state);
+  function setWindowState(state: WindowState) {
+    electronWindow.electronAPI?.setWindowState(state);
   }
 
   return (
     <div className="winbar-no-drag">
-      <HeaderButton onClick={() => changeWindowState("minimize")}>
+      <HeaderButton onClick={() => setWindowState("minimize")}>
         <BsDashLg />
       </HeaderButton>
-      <HeaderButton onClick={() => changeWindowState("maximize_restore")}>
+      <HeaderButton onClick={() => setWindowState("maximize_restore")}>
         <BsSquare />
       </HeaderButton>
-      <HeaderButton onClick={() => changeWindowState("close")}>
+      <HeaderButton onClick={() => setWindowState("close")}>
         <BsXLg />
       </HeaderButton>
     </div>
