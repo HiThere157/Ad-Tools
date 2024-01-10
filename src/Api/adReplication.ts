@@ -12,7 +12,7 @@ export function getSingleAdReplication(
     command: `Get-ADReplicationAttributeMetadata \
     (Get-AdObject -Filter "Name -eq '${identity}'" -Server ${server}).ObjectGUID \
     -Server (Get-AdDomainController -DomainName ${server} -Discover -Service PrimaryDC).HostName[0]`,
-    selectFields: ["AttributeName", "AttributeValue", "LastOriginatingChangeTime"],
+    selectFields: ["LastOriginatingChangeTime", "AttributeName", "AttributeValue"],
   });
 
   return {

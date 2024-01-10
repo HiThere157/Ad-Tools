@@ -9,9 +9,9 @@ import { useClickAway } from "../../Hooks/useClickAway";
 import HeaderButton from "../Header/HeaderButton";
 import Button from "../Button";
 import ModuleVersion from "./ModuleVersion";
+import AppVersion from "./AppVersion";
 
 import { BsArrowRepeat, BsDownload } from "react-icons/bs";
-import AppVersion from "./AppVersion";
 
 export default function Updater() {
   const ref = useRef<HTMLDivElement>(null);
