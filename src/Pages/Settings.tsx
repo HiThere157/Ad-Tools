@@ -19,7 +19,7 @@ export default function Settings() {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex flex-wrap items-start px-2">
+    <div className="flex flex-wrap items-start px-4 py-2">
       <SettingLayout title="Query Domains">
         <EditList list={queryDomains} onChange={(list) => dispatch(setQueryDomains(list))} />
       </SettingLayout>

@@ -1,5 +1,8 @@
 import { ElectronAPI } from "../../electron/preload";
 
+import store from "../Redux/store";
+import { pushQueryLog } from "../Redux/data";
+
 export const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
 
 export async function invokePSCommand(request: InvokePSCommandRequest): Promise<ResultDataSet> {
@@ -29,7 +32,24 @@ export async function invokePSCommand(request: InvokePSCommandRequest): Promise<
     });
   }
 
-  return electronWindow.electronAPI.invokePSCommand(request);
+  const result = electronWindow.electronAPI.invokePSCommand(request);
+
+  result.then((result) => {
+    // Write the command to the history
+    const { command } = request;
+    const { timestamp, executionTime } = result ?? {};
+
+    const log: QueryLog = {
+      command,
+      timestamp: new Date(timestamp ?? 0).toLocaleTimeString("de-de"),
+      executionTime: `${executionTime ?? 0}ms`,
+      success: !result?.error,
+    };
+
+    store.dispatch(pushQueryLog(log));
+  });
+
+  return result;
 }
 
 export async function loginAzure(upn: string): Promise<AzureEnvironment> {

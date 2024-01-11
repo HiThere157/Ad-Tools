@@ -14,6 +14,7 @@ import QueryHelp from "../Components/Help/QueryHelp";
 import AzureQueryHelp from "../Components/Help/AzureQueryHelp";
 import TableHelp from "../Components/Help/TableHelp";
 import SettingsHelp from "../Components/Help/SettingsHelp";
+import History from "../Pages/History";
 import UpdaterHelp from "../Components/Help/UpdaterHelp";
 
 import {
@@ -106,7 +107,7 @@ export const navigationLinks: NavigationLink[][] = [
       href: "/history",
       text: "History",
       icon: <BsClockHistory />,
-      page: <div>HistoryPage</div>,
+      page: <History />,
     },
     {
       href: "/settings",

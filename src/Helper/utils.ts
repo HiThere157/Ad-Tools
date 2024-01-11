@@ -9,6 +9,7 @@ export function shouldSearchQuery(query: Query) {
 
 export function formatAdFilter(filters: QueryFilter[]) {
   return filters
+    .filter(({ value }) => value)
     .map(({ property, value }) => {
       return `${property} -${value?.includes("*") ? "like" : "eq"} '${value}'`;
     })

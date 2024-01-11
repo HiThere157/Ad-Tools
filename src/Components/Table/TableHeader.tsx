@@ -33,7 +33,7 @@ export default function TableHeader({
         {count && (
           <>
             <span className="text-grey">
-              {total} {total === 1 ? "Result" : "Results"}
+              {total} {total === 1 ? "Row" : "Rows"}
             </span>
 
             {(selected !== 0 || filtered !== 0) && (

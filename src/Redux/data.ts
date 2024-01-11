@@ -91,8 +91,36 @@ const dataSlice = createSlice({
         delete state.tableConfigs[page]![tabId];
       }
     },
+    pushQueryLog: (state, action: PayloadAction<QueryLog>) => {
+      const page = "history";
+      const tabId = 0;
+      const name = "queryLog";
+
+      // If the page, tab or result doesn't exist, create it
+      if (!state.results[page]) {
+        state.results[page] = {};
+      }
+      if (!state.results[page]?.[tabId]) {
+        state.results[page]![tabId] = {};
+      }
+      if (!state.results[page]![tabId]![name]) {
+        state.results[page]![tabId]![name] = {
+          result: {
+            data: [],
+            columns: ["command", "timestamp", "executionTime", "success"],
+          },
+        };
+      }
+
+      // Push the log to the result
+      const id = state.results[page]![tabId]![name]!.result?.data.length ?? 0;
+      const log: ResultObject = { ...action.payload, __id__: id };
+
+      state.results[page]![tabId]![name]!.result?.data.push(log);
+    },
   },
 });
 
-export const { setQuery, setResult, setTableConfig, removeTabData } = dataSlice.actions;
+export const { setQuery, setResult, setTableConfig, removeTabData, pushQueryLog } =
+  dataSlice.actions;
 export default dataSlice.reducer;

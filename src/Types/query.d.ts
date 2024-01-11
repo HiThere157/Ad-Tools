@@ -11,7 +11,7 @@ type QueryFilter = {
 
 type QueryLog = {
   command: string;
-  timestamp: number;
-  executionTime: number;
+  timestamp: string;
+  executionTime: string;
   success: boolean;
 };
