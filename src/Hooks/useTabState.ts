@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../Redux/store";
-import { updateTab } from "../Redux/tabs";
-import { setDataSet } from "../Redux/data";
+import { updateTab } from "../Redux/tabsSlice";
+import { setDataSet } from "../Redux/dataSlice";
 import { defaultQuery } from "../Config/default";
 
 export function useTabState(page: string) {

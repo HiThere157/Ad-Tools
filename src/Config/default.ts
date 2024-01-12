@@ -48,3 +48,30 @@ export const defaultTablePreferences: TablePreferences = {
   savedFilters: [],
   savedFilterName: undefined,
 };
+
+export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, TablePreferences>> = {
+  adUser: {
+    attributes: {
+      pageSize: -1,
+      highlights: [
+        {
+          color: "#ff0000",
+          type: "fg",
+          strings: ["Enabled,false", "isDeleted,true", "LockedOut,true", "PasswordExpired,true"],
+        },
+      ],
+      savedFilters: [
+        {
+          name: "Login",
+          filters: [
+            {
+              column: "key",
+              type: "in",
+              value: ["Enabled", "isDeleted", "LockedOut", "PasswordExpired", "PasswordLastSet"],
+            },
+          ],
+        },
+      ],
+    },
+  },
+};

@@ -2,6 +2,8 @@
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+import { defaultGlobalTablePreferences } from "../Config/default";
+
 type SetTablePreferencesAction = {
   page: string;
   name: string;
@@ -13,7 +15,7 @@ const preferencesSlice = createSlice({
   initialState: {
     isNavBarExpanded: true,
     zoom: 1,
-    tablePreferences: {} as PageStorage<PartialRecord<string, TablePreferences>>,
+    tablePreferences: defaultGlobalTablePreferences,
     queryDomains: [] as string[],
     azureLoginUPN: "",
   },

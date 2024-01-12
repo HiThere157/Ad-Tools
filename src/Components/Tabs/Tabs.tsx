@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { addTab, setActiveTab, removeTab, moveTab } from "../../Redux/tabs";
+import { addTab, setActiveTab, removeTab, moveTab } from "../../Redux/tabsSlice";
 import { defaultTab } from "../../Config/default";
 
 import Tab from "./Tab";
 
 import { BsPlus } from "react-icons/bs";
-import { removeTabData } from "../../Redux/data";
+import { removeTabData } from "../../Redux/dataSlice";
 
 type TabsProps = {
   page: string;

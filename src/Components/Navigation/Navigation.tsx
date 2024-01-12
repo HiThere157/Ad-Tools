@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { toggleNavBar } from "../../Redux/preferences";
+import { toggleNavBar } from "../../Redux/preferencesSlice";
 import { navigationLinks } from "../../Config/navigation";
 
 import NavigationLink from "./NavigationLink";

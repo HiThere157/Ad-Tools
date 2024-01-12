@@ -1,7 +1,7 @@
 import { ElectronAPI } from "../../electron/preload";
 
 import store from "../Redux/store";
-import { pushQueryLog } from "../Redux/data";
+import { pushQueryLog } from "../Redux/dataSlice";
 
 export const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { setQuery } from "../../Redux/data";
+import { setQuery } from "../../Redux/dataSlice";
 import { defaultQuery } from "../../Config/default";
 import { getFilterValue } from "../../Helper/utils";
 

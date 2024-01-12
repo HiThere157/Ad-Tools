@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { setQuery } from "../Redux/data";
-import { addTab } from "../Redux/tabs";
+import { setQuery } from "../Redux/dataSlice";
+import { addTab } from "../Redux/tabsSlice";
 import { defaultTab } from "../Config/default";
 
 export function useRedirect() {

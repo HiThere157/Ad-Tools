@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { setTableConfig } from "../../Redux/data";
-import { setTablePreferences } from "../../Redux/preferences";
+import { setTableConfig } from "../../Redux/dataSlice";
+import { setTablePreferences } from "../../Redux/preferencesSlice";
 import { defaultTableConfig, defaultTablePreferences } from "../../Config/default";
 import { friendly } from "../../Config/lookup";
 import { filterData, sortData, paginateData, colorData } from "../../Helper/array";

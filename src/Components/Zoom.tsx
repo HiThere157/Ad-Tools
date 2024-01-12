@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../Redux/store";
 import { electronWindow } from "../Helper/api";
-import { setZoom } from "../Redux/preferences";
+import { setZoom } from "../Redux/preferencesSlice";
 
 export default function Zoom() {
   const [visible, setVisible] = useState(false);

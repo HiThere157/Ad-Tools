@@ -5,8 +5,8 @@ import {
   setAzureEnvironment,
   setElectronEnvironment,
   setPowershellEnvironment,
-} from "../Redux/environment";
-import { setDefaultQueryDomains } from "../Redux/preferences";
+} from "../Redux/environmentSlice";
+import { setDefaultQueryDomains } from "../Redux/preferencesSlice";
 import {
   electronWindow,
   getAzureEnvironment,

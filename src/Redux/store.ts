@@ -8,17 +8,20 @@ import {
   PURGE,
   REGISTER,
   persistCombineReducers,
+  createMigrate,
 } from "redux-persist";
 
-import preferencesReducer from "./preferences";
-import tabsReducer from "./tabs";
-import dataReducer from "./data";
-import environmentReducer from "./environment";
+import { migrations } from "./migrations";
+import preferencesReducer from "./preferencesSlice";
+import tabsReducer from "./tabsSlice";
+import dataReducer from "./dataSlice";
+import environmentReducer from "./environmentSlice";
 
 const persistConfig = {
   key: "root",
   storage,
   whitelist: ["preferences"],
+  migrate: createMigrate(migrations),
 };
 const reducer = persistCombineReducers(persistConfig, {
   preferences: preferencesReducer,

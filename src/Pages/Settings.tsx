@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../Redux/store";
-import { setAzureLoginUPN, setQueryDomains, setZoom } from "../Redux/preferences";
+import { setAzureLoginUPN, setQueryDomains, setZoom } from "../Redux/preferencesSlice";
 import { downloadJSON, uploadJSON } from "../Helper/file";
 
 import SettingLayout from "../Layout/SettingLayout";

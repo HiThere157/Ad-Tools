@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { setQuery } from "../../Redux/data";
+import { setQuery } from "../../Redux/dataSlice";
 import { defaultQuery, defaultQueryFilter } from "../../Config/default";
 
 import Button from "../Button";

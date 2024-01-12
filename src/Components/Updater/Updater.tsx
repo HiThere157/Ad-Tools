@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { setPowershellEnvironment, setUpdateDownloadStatus } from "../../Redux/environment";
+import { setPowershellEnvironment, setUpdateDownloadStatus } from "../../Redux/environmentSlice";
 import { electronWindow, getPowershellEnvironment } from "../../Helper/api";
 import { useClickAway } from "../../Hooks/useClickAway";
 
