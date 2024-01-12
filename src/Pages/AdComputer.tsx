@@ -10,18 +10,18 @@ import Table from "../Components/Table/Table";
 export default function AdComputer() {
   const page = "adComputer";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setResult } = useTabState(page);
+  const { tabId, query, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setResult("search", null);
-    setResult(["dns", "attributes", "memberof"], undefined);
+    setDataSet("search", null);
+    setDataSet(["dns", "attributes", "memberof"], undefined);
 
     const { computers } = getMultipleAdComputers(filters, servers);
 
-    setResult("search", computers);
+    setDataSet("search", computers);
     computers.then(() => updateTab({ icon: "search" }));
   };
 
@@ -33,14 +33,14 @@ export default function AdComputer() {
     const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "User" });
-    if (resetSearch) setResult("search", undefined);
-    setResult(["dns", "attributes", "memberof"], null);
+    if (resetSearch) setDataSet("search", undefined);
+    setDataSet(["dns", "attributes", "memberof"], null);
 
     const { dns, attributes, memberof } = getSingleAdComputer(identity, server);
 
-    setResult("dns", dns);
-    setResult("attributes", attributes);
-    setResult("memberof", memberof);
+    setDataSet("dns", dns);
+    setDataSet("attributes", attributes);
+    setDataSet("memberof", memberof);
     Promise.all([dns, attributes, memberof]).then(() => updateTab({ icon: "computer" }));
   };
 

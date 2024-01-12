@@ -3,10 +3,10 @@ import { remoteIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 type GetSingleWmiInfoResponse = {
-  monitors: Promise<ResultDataSet>;
-  sysinfo: Promise<ResultDataSet>;
-  software: Promise<ResultDataSet>;
-  bios: Promise<ResultDataSet>;
+  monitors: Promise<DataSet>;
+  sysinfo: Promise<DataSet>;
+  software: Promise<DataSet>;
+  bios: Promise<DataSet>;
 };
 export function getSingleWmiInfo(identity: string, server: string): GetSingleWmiInfoResponse {
   const monitors = invokePSCommand({

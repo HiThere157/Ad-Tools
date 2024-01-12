@@ -3,7 +3,7 @@ import { remoteIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 type SingleReplicationResponse = {
-  attributes: Promise<ResultDataSet>;
+  attributes: Promise<DataSet>;
 };
 export function getSingleAdReplication(
   identity: string,

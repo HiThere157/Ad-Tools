@@ -15,8 +15,8 @@ export async function getSingleAzureGroupId(displayName: string): Promise<string
 }
 
 type SingleAzureGroupResponse = {
-  attributes: Promise<ResultDataSet>;
-  members: Promise<ResultDataSet>;
+  attributes: Promise<DataSet>;
+  members: Promise<DataSet>;
 };
 export function getSingleAzureGroup(objectId: string): SingleAzureGroupResponse {
   const attributes = invokePSCommand({
@@ -36,7 +36,7 @@ export function getSingleAzureGroup(objectId: string): SingleAzureGroupResponse 
 }
 
 type MultipleAzureGroupsResponse = {
-  groups: Promise<ResultDataSet>;
+  groups: Promise<DataSet>;
 };
 export function getMultipleAzureGroups(searchString: string): MultipleAzureGroupsResponse {
   const groups = invokePSCommand({

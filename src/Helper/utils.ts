@@ -16,24 +16,21 @@ export function formatAdFilter(filters: QueryFilter[]) {
     .join(" -and ");
 }
 
-export function mergeResponses(responses: ResultDataSet[]): ResultDataSet {
-  const mergedData = responses
-    .reduce((acc, response) => [...acc, ...(response?.result?.data ?? [])], [] as ResultObject[])
+export function mergeDataSets(dataSets: DataSet[]): DataSet {
+  const mergedData = dataSets
+    .reduce((acc, dataSet) => [...acc, ...(dataSet?.result?.data ?? [])], [] as ResultObject[])
     .map((result, index) => {
       return { ...result, __id__: index };
     });
 
   const mergedColumns =
-    responses.filter((response) => response?.result?.columns !== undefined)[0]?.result?.columns ??
-    [];
+    dataSets.filter((dataSet) => dataSet?.result?.columns !== undefined)[0]?.result?.columns ?? [];
 
-  const mergedError = responses
-    .map((response) => response?.error)
+  const mergedError = dataSets
+    .map((dataSet) => dataSet?.error)
     .filter((error) => error !== undefined);
-  const mergedExecutionTime = Math.max(
-    ...responses.map((response) => response?.executionTime ?? 0),
-  );
-  const mergedTimestamp = Math.max(...responses.map((response) => response?.timestamp ?? 0));
+  const mergedExecutionTime = Math.max(...dataSets.map((dataSet) => dataSet?.executionTime ?? 0));
+  const mergedTimestamp = Math.max(...dataSets.map((dataSet) => dataSet?.timestamp ?? 0));
 
   return {
     result: {

@@ -14,18 +14,18 @@ import Table from "../Components/Table/Table";
 export default function AzureDevice() {
   const page = "azureDevice";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setResult } = useTabState(page);
+  const { tabId, query, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const searchString = getFilterValue(query.filters, "Name");
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setResult("search", null);
-    setResult("attributes", undefined);
+    setDataSet("search", null);
+    setDataSet("attributes", undefined);
 
     const { devices } = getMultipleAzureDevices(searchString);
 
-    setResult("search", devices);
+    setDataSet("search", devices);
     devices.then(() => updateTab({ icon: "search" }));
   };
 
@@ -33,8 +33,8 @@ export default function AzureDevice() {
     const displayName = getFilterValue(query.filters, "Name");
 
     updateTab({ icon: "loading", title: displayName || "Azure Device" });
-    if (resetSearch) setResult("search", undefined);
-    setResult("attributes", null);
+    if (resetSearch) setDataSet("search", undefined);
+    setDataSet("attributes", null);
 
     // We need to test if we should run a pre-query or not by checking if the object exists.
     const objectId = await getSingleAzureDeviceId(displayName);
@@ -42,7 +42,7 @@ export default function AzureDevice() {
 
     const { attributes } = getSingleAzureDevice(objectId);
 
-    setResult("attributes", attributes);
+    setDataSet("attributes", attributes);
     attributes.then(() => updateTab({ icon: "computer" }));
   };
 

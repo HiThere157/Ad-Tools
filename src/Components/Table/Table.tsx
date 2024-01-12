@@ -37,10 +37,10 @@ export default function Table({
   onRedirect,
 }: TableProps) {
   const { tablePreferences } = useSelector((state: RootState) => state.preferences);
-  const { results, tableConfigs } = useSelector((state: RootState) => state.data);
+  const { dataSets, tableConfigs } = useSelector((state: RootState) => state.data);
   const dispatch = useDispatch();
 
-  const keyResults = results[page]?.[tabId]?.[name];
+  const keyDataSets = dataSets[page]?.[tabId]?.[name];
   const keyTableConfigs = tableConfigs[page]?.[tabId]?.[name] ?? defaultTableConfig;
   const keyTablePreferences = tablePreferences[page]?.[name] ?? defaultTablePreferences;
 
@@ -58,9 +58,9 @@ export default function Table({
       }),
     );
 
-  const { result, error, timestamp, executionTime } = keyResults ?? {};
+  const { result, error, timestamp, executionTime } = keyDataSets ?? {};
   const { data = [], columns = [] } = result ?? {};
-  const isLoading = keyResults === null;
+  const isLoading = keyDataSets === null;
 
   const { isFilterOpen, isHighlightOpen } = keyTableConfigs;
   const { isCollapsed, filters, hiddenColumns, sort, selected, pageIndex } = keyTableConfigs;
@@ -109,7 +109,7 @@ export default function Table({
     navigator.clipboard.writeText(csv);
   };
 
-  if (isSearchTable && keyResults === undefined) return null;
+  if (isSearchTable && keyDataSets === undefined) return null;
 
   return (
     <section className="relative mb-7 w-fit min-w-[35rem] max-w-full">

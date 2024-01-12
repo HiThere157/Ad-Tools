@@ -1,12 +1,12 @@
 import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
-import { extractFirstObject, addServerToResponse } from "../Helper/postProcessors";
-import { removeDuplicates, formatAdFilter, mergeResponses } from "../Helper/utils";
+import { extractFirstObject, addServerToDataSet } from "../Helper/postProcessors";
+import { removeDuplicates, formatAdFilter, mergeDataSets } from "../Helper/utils";
 
 type GetSingleComputerResponse = {
-  dns: Promise<ResultDataSet>;
-  attributes: Promise<ResultDataSet>;
-  memberof: Promise<ResultDataSet>;
+  dns: Promise<DataSet>;
+  attributes: Promise<DataSet>;
+  memberof: Promise<DataSet>;
 };
 export function getSingleAdComputer(identity: string, server: string): GetSingleComputerResponse {
   const dns = invokePSCommand({
@@ -29,12 +29,12 @@ export function getSingleAdComputer(identity: string, server: string): GetSingle
   return {
     dns,
     attributes: attributes.then(extractFirstObject),
-    memberof: memberof.then((memberof) => addServerToResponse(memberof, server)),
+    memberof: memberof.then((memberof) => addServerToDataSet(memberof, server)),
   };
 }
 
 type MultipleComputersResponse = {
-  computers: Promise<ResultDataSet>;
+  computers: Promise<DataSet>;
 };
 export function getMultipleAdComputers(
   filters: QueryFilter[],
@@ -53,11 +53,11 @@ export function getMultipleAdComputers(
         -Server ${server}
         -Properties ${selectFields.join(",")}`),
         selectFields,
-      }).then((response) => addServerToResponse(response, server, true)),
+      }).then((dataSet) => addServerToDataSet(dataSet, server, true)),
     ),
   );
 
   return {
-    computers: computers.then(mergeResponses),
+    computers: computers.then(mergeDataSets),
   };
 }

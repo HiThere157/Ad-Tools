@@ -12,7 +12,7 @@ const globalSession = new PowerShell();
 export async function invokePSCommand(
   _event: Electron.IpcMainInvokeEvent,
   { command, selectFields }: InvokePSCommandRequest,
-): Promise<ResultDataSet> {
+): Promise<DataSet> {
   // If the command should use the global session, use it
   const startTimestamp = Date.now();
 

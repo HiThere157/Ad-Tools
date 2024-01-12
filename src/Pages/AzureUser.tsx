@@ -14,18 +14,18 @@ import Table from "../Components/Table/Table";
 export default function AzureUser() {
   const page = "azureUser";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setResult } = useTabState(page);
+  const { tabId, query, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = async (query: Query) => {
     const searchString = getFilterValue(query.filters, "Name");
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setResult("search", null);
-    setResult(["attributes", "memberof", "devices"], undefined);
+    setDataSet("search", null);
+    setDataSet(["attributes", "memberof", "devices"], undefined);
 
     const { users } = getMultipleAzureUsers(searchString);
 
-    setResult("search", users);
+    setDataSet("search", users);
     users.then(() => updateTab({ icon: "search" }));
   };
 
@@ -33,8 +33,8 @@ export default function AzureUser() {
     const objectId = getFilterValue(query.filters, "Name");
 
     updateTab({ icon: "loading", title: objectId || "Azure User" });
-    if (resetSearch) setResult("search", undefined);
-    setResult(["attributes", "memberof", "devices"], null);
+    if (resetSearch) setDataSet("search", undefined);
+    setDataSet(["attributes", "memberof", "devices"], null);
 
     // We need to test if we should run a pre-query or not by checking if the object exists.
     const { attributes } = await getSingleAzureUser(objectId);
@@ -42,9 +42,9 @@ export default function AzureUser() {
 
     const { memberof, devices } = getSingleAzureUserDetails(objectId);
 
-    setResult("attributes", attributes);
-    setResult("memberof", memberof);
-    setResult("devices", devices);
+    setDataSet("attributes", attributes);
+    setDataSet("memberof", memberof);
+    setDataSet("devices", devices);
     Promise.all([attributes, memberof, devices]).then(() => updateTab({ icon: "user" }));
   };
 

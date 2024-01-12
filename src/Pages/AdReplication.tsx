@@ -11,18 +11,18 @@ import Table from "../Components/Table/Table";
 export default function AdReplication() {
   const page = "adReplication";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setResult } = useTabState(page);
+  const { tabId, query, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setResult("search", null);
-    setResult("attributes", undefined);
+    setDataSet("search", null);
+    setDataSet("attributes", undefined);
 
     const { objects } = getMultipleAdObjects(filters, servers);
 
-    setResult("search", objects);
+    setDataSet("search", objects);
     objects.then(() => updateTab({ icon: "search" }));
   };
 
@@ -34,12 +34,12 @@ export default function AdReplication() {
     const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "User" });
-    if (resetSearch) setResult("search", undefined);
-    setResult("attributes", null);
+    if (resetSearch) setDataSet("search", undefined);
+    setDataSet("attributes", null);
 
     const { attributes } = getSingleAdReplication(identity, server);
 
-    setResult("attributes", attributes);
+    setDataSet("attributes", attributes);
     attributes.then(() => updateTab({ icon: "replication" }));
   };
 

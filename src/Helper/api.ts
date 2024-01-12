@@ -5,7 +5,7 @@ import { pushQueryLog } from "../Redux/data";
 
 export const electronWindow = window as Window & typeof globalThis & { electronAPI?: ElectronAPI };
 
-export async function invokePSCommand(request: InvokePSCommandRequest): Promise<ResultDataSet> {
+export async function invokePSCommand(request: InvokePSCommandRequest): Promise<DataSet> {
   if (!electronWindow.electronAPI) {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -32,24 +32,24 @@ export async function invokePSCommand(request: InvokePSCommandRequest): Promise<
     });
   }
 
-  const result = electronWindow.electronAPI.invokePSCommand(request);
+  const dataSet = electronWindow.electronAPI.invokePSCommand(request);
 
-  result.then((result) => {
+  dataSet.then((dataSet) => {
     // Write the command to the history
     const { command } = request;
-    const { timestamp, executionTime } = result ?? {};
+    const { timestamp, executionTime } = dataSet ?? {};
 
     const log: QueryLog = {
       command,
       timestamp: new Date(timestamp ?? 0).toLocaleTimeString("de-de"),
       executionTime: `${executionTime ?? 0}ms`,
-      success: !result?.error,
+      success: !dataSet?.error,
     };
 
     store.dispatch(pushQueryLog(log));
   });
 
-  return result;
+  return dataSet;
 }
 
 export async function loginAzure(upn: string): Promise<AzureEnvironment> {
@@ -122,7 +122,7 @@ export async function getPowershellEnvironment(): Promise<PowershellEnvironment>
     });
   }
 
-  const formatVersion = (env: ResultDataSet, module: string) => {
+  const formatVersion = (env: DataSet, module: string) => {
     const version = env?.result?.data?.find((m) => m.Name === module)?.Version;
     if (!version) return "";
 

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../Redux/store";
 import { updateTab } from "../Redux/tabs";
-import { setResult } from "../Redux/data";
+import { setDataSet } from "../Redux/data";
 import { defaultQuery } from "../Config/default";
 
 export function useTabState(page: string) {
@@ -14,14 +14,11 @@ export function useTabState(page: string) {
   const tabQuery = query[page]?.[tabId] ?? defaultQuery;
 
   const updatePageTab = (tab: Partial<Tab>) => dispatch(updateTab({ page, tabId, tab }));
-  const setTabResult = (
-    name: string | string[],
-    result: ResultDataSet | Promise<ResultDataSet>,
-  ) => {
+  const setTabDataSet = (name: string | string[], dataSet: DataSet | Promise<DataSet>) => {
     const names = Array.isArray(name) ? name : [name];
 
     names.forEach(async (name) => {
-      dispatch(setResult({ page, tabId, name, result: await result }));
+      dispatch(setDataSet({ page, tabId, name, dataSet: await dataSet }));
     });
   };
 
@@ -29,6 +26,6 @@ export function useTabState(page: string) {
     tabId,
     query: tabQuery,
     updateTab: updatePageTab,
-    setResult: setTabResult,
+    setDataSet: setTabDataSet,
   };
 }

@@ -10,18 +10,18 @@ import Table from "../Components/Table/Table";
 export default function AdGroup() {
   const page = "adGroup";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setResult } = useTabState(page);
+  const { tabId, query, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setResult("search", null);
-    setResult(["attributes", "members", "memberof"], undefined);
+    setDataSet("search", null);
+    setDataSet(["attributes", "members", "memberof"], undefined);
 
     const { groups } = getMultipleAdGroups(filters, servers);
 
-    setResult("search", groups);
+    setDataSet("search", groups);
     groups.then(() => updateTab({ icon: "search" }));
   };
 
@@ -33,14 +33,14 @@ export default function AdGroup() {
     const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "Group" });
-    if (resetSearch) setResult("search", undefined);
-    setResult(["attributes", "members", "memberof"], null);
+    if (resetSearch) setDataSet("search", undefined);
+    setDataSet(["attributes", "members", "memberof"], null);
 
     const { attributes, members, memberof } = getSingleAdGroup(identity, server);
 
-    setResult("attributes", attributes);
-    setResult("members", members);
-    setResult("memberof", memberof);
+    setDataSet("attributes", attributes);
+    setDataSet("members", members);
+    setDataSet("memberof", memberof);
     Promise.all([attributes, members, memberof]).then(() => updateTab({ icon: "group" }));
   };
 

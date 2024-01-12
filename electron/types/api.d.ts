@@ -6,7 +6,7 @@ type ResultObject = RawResultObject & {
   __highlight_bg__?: string;
   __highlight_fg__?: string;
 };
-type ResultDataSet =
+type DataSet =
   | null
   | undefined
   | {

@@ -3,7 +3,7 @@ import { remoteIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 type SingleAzureUserResponse = {
-  attributes: ResultDataSet;
+  attributes: DataSet;
 };
 export async function getSingleAzureUser(objectId: string): Promise<SingleAzureUserResponse> {
   const attributes = await invokePSCommand({
@@ -16,8 +16,8 @@ export async function getSingleAzureUser(objectId: string): Promise<SingleAzureU
 }
 
 type SingleAzureUserDetailsResponse = {
-  memberof: Promise<ResultDataSet>;
-  devices: Promise<ResultDataSet>;
+  memberof: Promise<DataSet>;
+  devices: Promise<DataSet>;
 };
 export function getSingleAzureUserDetails(objectId: string): SingleAzureUserDetailsResponse {
   const memberof = invokePSCommand({
@@ -46,7 +46,7 @@ export function getSingleAzureUserDetails(objectId: string): SingleAzureUserDeta
 }
 
 type MultipleAzureUsersResponse = {
-  users: Promise<ResultDataSet>;
+  users: Promise<DataSet>;
 };
 export function getMultipleAzureUsers(searchString: string): MultipleAzureUsersResponse {
   const users = invokePSCommand({

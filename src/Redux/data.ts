@@ -7,11 +7,11 @@ type SetQueryAction = {
   tabId: number;
   query: Query;
 };
-type SetResultAction = {
+type SetDataSetAction = {
   page: string;
   tabId: number;
   name: string;
-  result: ResultDataSet;
+  dataSet: DataSet;
 };
 type SetTableConfigAction = {
   page: string;
@@ -28,7 +28,7 @@ const dataSlice = createSlice({
   name: "data",
   initialState: {
     query: {} as TabStorage<Query>,
-    results: {} as TabStorage<PartialRecord<string, ResultDataSet>>,
+    dataSets: {} as TabStorage<PartialRecord<string, DataSet>>,
     tableConfigs: {} as TabStorage<PartialRecord<string, TableConfig>>,
   },
   reducers: {
@@ -42,18 +42,18 @@ const dataSlice = createSlice({
 
       state.query[page]![tabId] = query;
     },
-    setResult: (state, action: PayloadAction<SetResultAction>) => {
-      const { page, tabId, name, result } = action.payload;
+    setDataSet: (state, action: PayloadAction<SetDataSetAction>) => {
+      const { page, tabId, name, dataSet } = action.payload;
 
       // If the page or tab doesn't exist, create it
-      if (!state.results[page]) {
-        state.results[page] = {};
+      if (!state.dataSets[page]) {
+        state.dataSets[page] = {};
       }
-      if (!state.results[page]?.[tabId]) {
-        state.results[page]![tabId] = {};
+      if (!state.dataSets[page]?.[tabId]) {
+        state.dataSets[page]![tabId] = {};
       }
 
-      state.results[page]![tabId]![name] = result;
+      state.dataSets[page]![tabId]![name] = dataSet;
 
       // Soft-Reset the config if it exists
       const config = state.tableConfigs[page]?.[tabId]?.[name];
@@ -84,8 +84,8 @@ const dataSlice = createSlice({
       if (state.query[page]) {
         delete state.query[page]![tabId];
       }
-      if (state.results[page]) {
-        delete state.results[page]![tabId];
+      if (state.dataSets[page]) {
+        delete state.dataSets[page]![tabId];
       }
       if (state.tableConfigs[page]) {
         delete state.tableConfigs[page]![tabId];
@@ -97,14 +97,14 @@ const dataSlice = createSlice({
       const name = "queryLog";
 
       // If the page, tab or result doesn't exist, create it
-      if (!state.results[page]) {
-        state.results[page] = {};
+      if (!state.dataSets[page]) {
+        state.dataSets[page] = {};
       }
-      if (!state.results[page]?.[tabId]) {
-        state.results[page]![tabId] = {};
+      if (!state.dataSets[page]?.[tabId]) {
+        state.dataSets[page]![tabId] = {};
       }
-      if (!state.results[page]![tabId]![name]) {
-        state.results[page]![tabId]![name] = {
+      if (!state.dataSets[page]![tabId]![name]) {
+        state.dataSets[page]![tabId]![name] = {
           result: {
             data: [],
             columns: ["command", "timestamp", "executionTime", "success"],
@@ -113,14 +113,14 @@ const dataSlice = createSlice({
       }
 
       // Push the log to the result
-      const id = state.results[page]![tabId]![name]!.result?.data.length ?? 0;
+      const id = state.dataSets[page]![tabId]![name]!.result?.data.length ?? 0;
       const log: ResultObject = { ...action.payload, __id__: id };
 
-      state.results[page]![tabId]![name]!.result?.data.push(log);
+      state.dataSets[page]![tabId]![name]!.result?.data.push(log);
     },
   },
 });
 
-export const { setQuery, setResult, setTableConfig, removeTabData, pushQueryLog } =
+export const { setQuery, setDataSet, setTableConfig, removeTabData, pushQueryLog } =
   dataSlice.actions;
 export default dataSlice.reducer;

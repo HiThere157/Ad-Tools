@@ -1,12 +1,12 @@
 import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
-import { extractFirstObject, addServerToResponse } from "../Helper/postProcessors";
-import { removeDuplicates, formatAdFilter, mergeResponses } from "../Helper/utils";
+import { extractFirstObject, addServerToDataSet } from "../Helper/postProcessors";
+import { removeDuplicates, formatAdFilter, mergeDataSets } from "../Helper/utils";
 
 type SingleGroupResponse = {
-  attributes: Promise<ResultDataSet>;
-  members: Promise<ResultDataSet>;
-  memberof: Promise<ResultDataSet>;
+  attributes: Promise<DataSet>;
+  members: Promise<DataSet>;
+  memberof: Promise<DataSet>;
 };
 export function getSingleAdGroup(identity: string, server: string): SingleGroupResponse {
   const attributes = invokePSCommand({
@@ -30,13 +30,13 @@ export function getSingleAdGroup(identity: string, server: string): SingleGroupR
 
   return {
     attributes: attributes.then(extractFirstObject),
-    members: members.then((members) => addServerToResponse(members, server)),
-    memberof: memberof.then((memberof) => addServerToResponse(memberof, server)),
+    members: members.then((members) => addServerToDataSet(members, server)),
+    memberof: memberof.then((memberof) => addServerToDataSet(memberof, server)),
   };
 }
 
 type MultipleGroupsResponse = {
-  groups: Promise<ResultDataSet>;
+  groups: Promise<DataSet>;
 };
 export function getMultipleAdGroups(
   filters: QueryFilter[],
@@ -55,11 +55,11 @@ export function getMultipleAdGroups(
         -Server ${server}
         -Properties ${selectFields.join(",")}`),
         selectFields,
-      }).then((response) => addServerToResponse(response, server, true)),
+      }).then((dataSet) => addServerToDataSet(dataSet, server, true)),
     ),
   );
 
   return {
-    groups: groups.then(mergeResponses),
+    groups: groups.then(mergeDataSets),
   };
 }

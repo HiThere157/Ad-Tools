@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 const api = {
-  invokePSCommand: async (request: InvokePSCommandRequest): Promise<ResultDataSet> =>
+  invokePSCommand: async (request: InvokePSCommandRequest): Promise<DataSet> =>
     ipcRenderer.invoke("ps:invokePSCommand", request),
   getElectronEnvironment: async (): Promise<ElectronEnvironment> =>
     ipcRenderer.invoke("node:getElectronEnvironment"),

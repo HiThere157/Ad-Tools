@@ -11,18 +11,18 @@ import { getSingleWmiInfo } from "../Api/wmi";
 export default function Printers() {
   const page = "wmi";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setResult } = useTabState(page);
+  const { tabId, query, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setResult("search", null);
-    setResult(["monitors", "sysinfo", "software", "bios"], undefined);
+    setDataSet("search", null);
+    setDataSet(["monitors", "sysinfo", "software", "bios"], undefined);
 
     const { computers } = getMultipleAdComputers(filters, servers);
 
-    setResult("search", computers);
+    setDataSet("search", computers);
     computers.then(() => updateTab({ icon: "search" }));
   };
 
@@ -34,15 +34,15 @@ export default function Printers() {
     const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "WMI" });
-    if (resetSearch) setResult("search", undefined);
-    setResult(["monitors", "sysinfo", "software", "bios"], null);
+    if (resetSearch) setDataSet("search", undefined);
+    setDataSet(["monitors", "sysinfo", "software", "bios"], null);
 
     const { monitors, sysinfo, software, bios } = getSingleWmiInfo(identity, server);
 
-    setResult("monitors", monitors);
-    setResult("sysinfo", sysinfo);
-    setResult("software", software);
-    setResult("bios", bios);
+    setDataSet("monitors", monitors);
+    setDataSet("sysinfo", sysinfo);
+    setDataSet("software", software);
+    setDataSet("bios", bios);
     Promise.all([monitors, sysinfo, software, bios]).then(() => updateTab({ icon: "wmi" }));
   };
 

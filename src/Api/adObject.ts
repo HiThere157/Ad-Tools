@@ -1,10 +1,10 @@
 import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
-import { addServerToResponse } from "../Helper/postProcessors";
-import { formatAdFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
+import { addServerToDataSet } from "../Helper/postProcessors";
+import { formatAdFilter, mergeDataSets, removeDuplicates } from "../Helper/utils";
 
 type MultipleAdObjectsResponse = {
-  objects: Promise<ResultDataSet>;
+  objects: Promise<DataSet>;
 };
 export function getMultipleAdObjects(
   filters: QueryFilter[],
@@ -23,11 +23,11 @@ export function getMultipleAdObjects(
         -Server ${server}
         -Properties ${selectFields.join(",")}`),
         selectFields,
-      }).then((response) => addServerToResponse(response, server, true)),
+      }).then((dataSet) => addServerToDataSet(dataSet, server, true)),
     ),
   );
 
   return {
-    objects: objects.then(mergeResponses),
+    objects: objects.then(mergeDataSets),
   };
 }

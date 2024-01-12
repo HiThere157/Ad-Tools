@@ -1,11 +1,11 @@
 import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
-import { addServerToResponse, extractFirstObject } from "../Helper/postProcessors";
-import { formatAdFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
+import { addServerToDataSet, extractFirstObject } from "../Helper/postProcessors";
+import { formatAdFilter, mergeDataSets, removeDuplicates } from "../Helper/utils";
 
 type SingleUserResponse = {
-  attributes: Promise<ResultDataSet>;
-  memberof: Promise<ResultDataSet>;
+  attributes: Promise<DataSet>;
+  memberof: Promise<DataSet>;
 };
 export function getSingleAdUser(identity: string, server: string): SingleUserResponse {
   const attributes = invokePSCommand({
@@ -23,12 +23,12 @@ export function getSingleAdUser(identity: string, server: string): SingleUserRes
 
   return {
     attributes: attributes.then(extractFirstObject),
-    memberof: memberof.then((memberof) => addServerToResponse(memberof, server)),
+    memberof: memberof.then((memberof) => addServerToDataSet(memberof, server)),
   };
 }
 
 type MultipleUsersResponse = {
-  users: Promise<ResultDataSet>;
+  users: Promise<DataSet>;
 };
 export function getMultipleAdUsers(
   filters: QueryFilter[],
@@ -47,11 +47,11 @@ export function getMultipleAdUsers(
         -Server ${server}
         -Properties ${selectFields.join(",")}`),
         selectFields,
-      }).then((response) => addServerToResponse(response, server, true)),
+      }).then((dataSet) => addServerToDataSet(dataSet, server, true)),
     ),
   );
 
   return {
-    users: users.then(mergeResponses),
+    users: users.then(mergeDataSets),
   };
 }
