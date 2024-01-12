@@ -60,6 +60,7 @@ export default function AzureUser() {
         tabId={tabId}
         name="search"
         isSearchTable={true}
+        redirectColumn="UserPrincipalName"
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.UserPrincipalName ?? "" }],
@@ -76,6 +77,7 @@ export default function AzureUser() {
         page={page}
         tabId={tabId}
         name="memberof"
+        redirectColumn="DisplayName"
         onRedirect={(row) => {
           redirect("azureGroup", {
             filters: [{ property: "Name", value: row.DisplayName ?? "" }],
@@ -88,6 +90,7 @@ export default function AzureUser() {
         page={page}
         tabId={tabId}
         name="devices"
+        redirectColumn="DisplayName"
         onRedirect={(row) => {
           redirect("azureDevice", {
             filters: [{ property: "Name", value: row.DisplayName ?? "" }],

@@ -58,6 +58,7 @@ export default function AzureDevice() {
         tabId={tabId}
         name="search"
         isSearchTable={true}
+        redirectColumn="DisplayName"
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.DisplayName ?? "" }],

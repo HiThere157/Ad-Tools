@@ -56,6 +56,7 @@ export default function AdComputer() {
         tabId={tabId}
         name="search"
         isSearchTable={true}
+        redirectColumn="Name"
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],
@@ -73,6 +74,7 @@ export default function AdComputer() {
         page={page}
         tabId={tabId}
         name="memberof"
+        redirectColumn="Name"
         onRedirect={(row) => {
           redirect("adGroup", {
             filters: [{ property: "Name", value: row.Name ?? "" }],

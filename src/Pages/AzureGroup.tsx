@@ -59,6 +59,7 @@ export default function AzureGroup() {
         tabId={tabId}
         name="search"
         isSearchTable={true}
+        redirectColumn="DisplayName"
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.DisplayName ?? "" }],
@@ -75,6 +76,7 @@ export default function AzureGroup() {
         page={page}
         tabId={tabId}
         name="members"
+        redirectColumn="UserPrincipalName"
         onRedirect={(row) => {
           redirect("azureUser", {
             filters: [{ property: "Name", value: row.UserPrincipalName ?? "" }],

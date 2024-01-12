@@ -56,6 +56,7 @@ export default function AdGroup() {
         tabId={tabId}
         name="search"
         isSearchTable={true}
+        redirectColumn="Name"
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],
@@ -72,6 +73,7 @@ export default function AdGroup() {
         page={page}
         tabId={tabId}
         name="members"
+        redirectColumn="Name"
         onRedirect={(row) => {
           redirect("adUser", {
             filters: [{ property: "Name", value: row.Name ?? "" }],
@@ -84,6 +86,7 @@ export default function AdGroup() {
         page={page}
         tabId={tabId}
         name="memberof"
+        redirectColumn="Name"
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],

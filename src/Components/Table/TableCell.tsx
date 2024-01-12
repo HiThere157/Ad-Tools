@@ -6,12 +6,33 @@ import { BsArrowsAngleContract, BsArrowsAngleExpand } from "react-icons/bs";
 
 type TableCellProps = {
   content: string;
+  canRedirect: boolean;
+  onRedirect: (newTab: boolean) => void;
 };
-export default function TableCell({ content }: TableCellProps) {
+export default function TableCell({ content, canRedirect, onRedirect }: TableCellProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const isMultiLine = content.includes("\n");
 
-  if (!isMultiLine) return content;
+  if (!isMultiLine)
+    return (
+      <span
+        className={
+          canRedirect ? "cursor-pointer text-primaryAccent underline hover:text-primaryActive" : ""
+        }
+        onClick={(event) => canRedirect && onRedirect(event.ctrlKey || event.metaKey)}
+        onMouseUp={(e) => {
+          if (!canRedirect) return;
+
+          if (e.button === 1 || (e.button === 0 && e.ctrlKey)) {
+            onRedirect(true);
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }}
+      >
+        {content}
+      </span>
+    );
 
   return (
     <>

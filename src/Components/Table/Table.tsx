@@ -24,9 +24,18 @@ type TableProps = {
   tabId: number;
   name: string;
   isSearchTable?: boolean;
+  redirectColumn?: string;
   onRedirect?: (row: ResultObject, newTab?: boolean) => void;
 };
-export default function Table({ title, page, tabId, name, isSearchTable, onRedirect }: TableProps) {
+export default function Table({
+  title,
+  page,
+  tabId,
+  name,
+  isSearchTable,
+  redirectColumn,
+  onRedirect,
+}: TableProps) {
   const { tablePreferences } = useSelector((state: RootState) => state.preferences);
   const { results, tableConfigs } = useSelector((state: RootState) => state.data);
   const dispatch = useDispatch();
@@ -173,6 +182,7 @@ export default function Table({ title, page, tabId, name, isSearchTable, onRedir
                 allRowIds={data.map((row) => row.__id__) ?? []}
                 selected={selected}
                 setSelected={(selected) => updateKeyTableConfig({ selected })}
+                redirectColumn={redirectColumn}
                 onRedirect={onRedirect}
               />
 

@@ -28,7 +28,7 @@ export default function Zoom() {
         setTimeoutId(id);
       }
     },
-    [dispatch, timeoutId],
+    [dispatch, timeoutId, zoom],
   );
 
   // Handle zoom events

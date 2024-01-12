@@ -55,6 +55,7 @@ export default function AdReplication() {
         tabId={tabId}
         name="search"
         isSearchTable={true}
+        redirectColumn="Name"
         onRedirect={(row, newTab) => {
           const newQuery = {
             filters: [{ property: "Name", value: row.Name ?? "" }],
