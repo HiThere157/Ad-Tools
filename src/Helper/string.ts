@@ -15,3 +15,7 @@ export function resolveTimestamp(string: string) {
     return new Date(Number(timestamp)).toISOString().replace("T", " ").replace("Z", " UTC");
   });
 }
+
+export function remoteIndent(string: string) {
+  return string.replace(/\n^ +/gm, " ");
+}

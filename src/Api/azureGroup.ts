@@ -1,10 +1,10 @@
 import { invokePSCommand } from "../Helper/api";
+import { remoteIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 export async function getSingleAzureGroupId(displayName: string): Promise<string | undefined> {
   const groups = await invokePSCommand({
-    command: `Get-AzureADGroup \
-      -SearchString "${displayName}"`,
+    command: `Get-AzureADGroup -SearchString "${displayName}"`,
     selectFields: ["DisplayName", "ObjectId"],
   });
 
@@ -20,13 +20,12 @@ type SingleAzureGroupResponse = {
 };
 export function getSingleAzureGroup(objectId: string): SingleAzureGroupResponse {
   const attributes = invokePSCommand({
-    command: `Get-AzureADGroup \
-      -ObjectId "${objectId}"`,
+    command: `Get-AzureADGroup -ObjectId "${objectId}"`,
   });
   const members = invokePSCommand({
-    command: `Get-AzureADGroupMember \
-      -ObjectId "${objectId}" \
-      -All $true`,
+    command: remoteIndent(`Get-AzureADGroupMember
+      -ObjectId "${objectId}"
+      -All $true`),
     selectFields: ["UserPrincipalName", "DisplayName", "ObjectType"],
   });
 
@@ -41,9 +40,9 @@ type MultipleAzureGroupsResponse = {
 };
 export function getMultipleAzureGroups(searchString: string): MultipleAzureGroupsResponse {
   const groups = invokePSCommand({
-    command: `Get-AzureADGroup \
-    -SearchString "${searchString}" \
-    -All $true`,
+    command: remoteIndent(`Get-AzureADGroup
+    -SearchString "${searchString}"
+    -All $true`),
     selectFields: ["DisplayName", "Description"],
   });
 

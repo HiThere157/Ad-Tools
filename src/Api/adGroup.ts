@@ -1,4 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
+import { remoteIndent } from "../Helper/string";
 import { extractFirstObject, addServerToResponse } from "../Helper/postProcessors";
 import { removeDuplicates, formatAdFilter, mergeResponses } from "../Helper/utils";
 
@@ -9,21 +10,21 @@ type SingleGroupResponse = {
 };
 export function getSingleAdGroup(identity: string, server: string): SingleGroupResponse {
   const attributes = invokePSCommand({
-    command: `Get-AdGroup \
-      -Identity "${identity}" \
-      -Server ${server} \
-      -Properties *`,
+    command: remoteIndent(`Get-AdGroup
+      -Identity "${identity}"
+      -Server ${server}
+      -Properties *`),
   });
   const members = invokePSCommand({
-    command: `Get-AdGroupMember \
-      -Identity "${identity}" \
-      -Server ${server}`,
+    command: remoteIndent(`Get-AdGroupMember
+      -Identity "${identity}"
+      -Server ${server}`),
     selectFields: ["Name", "SamAccountName", "DistinguishedName", "ObjectClass"],
   });
   const memberof = invokePSCommand({
-    command: `Get-AdPrincipalGroupMembership \
-      -Identity "${identity}" \
-      -Server ${server}`,
+    command: remoteIndent(`Get-AdPrincipalGroupMembership
+      -Identity "${identity}"
+      -Server ${server}`),
     selectFields: ["Name", "GroupCategory", "DistinguishedName"],
   });
 
@@ -49,10 +50,10 @@ export function getMultipleAdGroups(
   const groups = Promise.all(
     servers.map((server) =>
       invokePSCommand({
-        command: `Get-AdGroup \
-        -Filter "${formatAdFilter(filters)}" \
-        -Server ${server} \
-        -Properties ${selectFields.join(",")}`,
+        command: remoteIndent(`Get-AdGroup
+        -Filter "${formatAdFilter(filters)}"
+        -Server ${server}
+        -Properties ${selectFields.join(",")}`),
         selectFields,
       }).then((response) => addServerToResponse(response, server, true)),
     ),

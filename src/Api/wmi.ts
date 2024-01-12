@@ -1,4 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
+import { remoteIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 type GetSingleWmiInfoResponse = {
@@ -9,18 +10,27 @@ type GetSingleWmiInfoResponse = {
 };
 export function getSingleWmiInfo(identity: string, server: string): GetSingleWmiInfoResponse {
   const monitors = invokePSCommand({
-    command: `Get-WmiObject -ClassName WmiMonitorID -Namespace root/wmi -Computername "${identity}.${server}"`,
+    command: remoteIndent(`Get-WmiObject
+      -ClassName WmiMonitorID
+      -Namespace root/wmi
+      -Computername "${identity}.${server}"`),
     selectFields: ["UserFriendlyName", "SerialNumberID", "YearOfManufacture"],
   });
   const sysinfo = invokePSCommand({
-    command: `Get-WmiObject -ClassName Win32_ComputerSystem -Computername "${identity}.${server}"`,
+    command: remoteIndent(`Get-WmiObject
+      -ClassName Win32_ComputerSystem
+      -Computername "${identity}.${server}"`),
   });
   const software = invokePSCommand({
-    command: `Get-WmiObject -ClassName Win32_Product -Computername "${identity}.${server}"`,
+    command: remoteIndent(`Get-WmiObject
+      -ClassName Win32_Product
+      -Computername "${identity}.${server}"`),
     selectFields: ["Name", "Vendor", "Version", "InstallDate"],
   });
   const bios = invokePSCommand({
-    command: `Get-WmiObject -ClassName Win32_BIOS -Computername "${identity}.${server}"`,
+    command: remoteIndent(`Get-WmiObject
+      -ClassName Win32_BIOS
+      -Computername "${identity}.${server}"`),
     selectFields: ["Name", "Manufacturer", "Version", "ReleaseDate"],
   });
 

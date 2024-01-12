@@ -1,4 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
+import { remoteIndent } from "../Helper/string";
 import { addServerToResponse, extractFirstObject } from "../Helper/postProcessors";
 import { formatAdFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
 
@@ -8,15 +9,15 @@ type SingleUserResponse = {
 };
 export function getSingleAdUser(identity: string, server: string): SingleUserResponse {
   const attributes = invokePSCommand({
-    command: `Get-AdUser \
-      -Identity "${identity}" \
-      -Server ${server} \
-      -Properties *`,
+    command: remoteIndent(`Get-AdUser
+      -Identity "${identity}"
+      -Server ${server}
+      -Properties *`),
   });
   const memberof = invokePSCommand({
-    command: `Get-AdPrincipalGroupMembership \
-      -Identity "${identity}" \
-      -Server ${server}`,
+    command: remoteIndent(`Get-AdPrincipalGroupMembership
+      -Identity "${identity}"
+      -Server ${server}`),
     selectFields: ["Name", "GroupCategory", "DistinguishedName"],
   });
 
@@ -41,10 +42,10 @@ export function getMultipleAdUsers(
   const users = Promise.all(
     servers.map((server) =>
       invokePSCommand({
-        command: `Get-AdUser \
-        -Filter "${formatAdFilter(filters)}" \
-        -Server ${server} \
-        -Properties ${selectFields.join(",")}`,
+        command: remoteIndent(`Get-AdUser
+        -Filter "${formatAdFilter(filters)}"
+        -Server ${server}
+        -Properties ${selectFields.join(",")}`),
         selectFields,
       }).then((response) => addServerToResponse(response, server, true)),
     ),

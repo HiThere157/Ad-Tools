@@ -1,4 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
+import { remoteIndent } from "../Helper/string";
 import { extractFirstObject, addServerToResponse } from "../Helper/postProcessors";
 import { removeDuplicates, formatAdFilter, mergeResponses } from "../Helper/utils";
 
@@ -13,15 +14,15 @@ export function getSingleAdComputer(identity: string, server: string): GetSingle
     selectFields: ["Name", "Type", "IPAddress"],
   });
   const attributes = invokePSCommand({
-    command: `Get-AdComputer \
-      -Identity "${identity}" \
-      -Server ${server} \
-      -Properties *`,
+    command: remoteIndent(`Get-AdComputer
+      -Identity "${identity}"
+      -Server ${server}
+      -Properties *`),
   });
   const memberof = invokePSCommand({
-    command: `Get-AdPrincipalGroupMembership \
-      (Get-AdComputer -Identity "${identity}" -Server ${server}) \
-      -Server ${server}`,
+    command: remoteIndent(`Get-AdPrincipalGroupMembership
+      (Get-AdComputer -Identity "${identity}" -Server ${server})
+      -Server ${server}`),
     selectFields: ["Name", "GroupCategory", "DistinguishedName"],
   });
 
@@ -47,10 +48,10 @@ export function getMultipleAdComputers(
   const computers = Promise.all(
     servers.map((server) =>
       invokePSCommand({
-        command: `Get-AdComputer \
-        -Filter "${formatAdFilter(filters)}" \
-        -Server ${server} \
-        -Properties ${selectFields.join(",")}`,
+        command: remoteIndent(`Get-AdComputer
+        -Filter "${formatAdFilter(filters)}"
+        -Server ${server}
+        -Properties ${selectFields.join(",")}`),
         selectFields,
       }).then((response) => addServerToResponse(response, server, true)),
     ),

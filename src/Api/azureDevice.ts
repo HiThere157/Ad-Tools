@@ -1,10 +1,10 @@
 import { invokePSCommand } from "../Helper/api";
+import { remoteIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 export async function getSingleAzureDeviceId(displayName: string): Promise<string | undefined> {
   const devices = await invokePSCommand({
-    command: `Get-AzureADDevice \
-      -SearchString "${displayName}"`,
+    command: `Get-AzureADDevice -SearchString "${displayName}"`,
     selectFields: ["DisplayName", "ObjectId"],
   });
 
@@ -19,8 +19,7 @@ type SingleAzureDeviceResponse = {
 };
 export function getSingleAzureDevice(objectId: string): SingleAzureDeviceResponse {
   const attributes = invokePSCommand({
-    command: `Get-AzureADDevice \
-      -ObjectId "${objectId}"`,
+    command: `Get-AzureADDevice -ObjectId "${objectId}"`,
   });
 
   return {
@@ -33,9 +32,9 @@ type MultipleAzureDevicesResponse = {
 };
 export function getMultipleAzureDevices(searchString: string): MultipleAzureDevicesResponse {
   const devices = invokePSCommand({
-    command: `Get-AzureADDevice \
-    -SearchString "${searchString}" \
-    -All $true`,
+    command: remoteIndent(`Get-AzureADDevice
+    -SearchString "${searchString}"
+    -All $true`),
     selectFields: [
       "DisplayName",
       "DeviceOSType",

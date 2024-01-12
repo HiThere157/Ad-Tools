@@ -1,4 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
+import { remoteIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 type SingleAzureUserResponse = {
@@ -6,8 +7,7 @@ type SingleAzureUserResponse = {
 };
 export async function getSingleAzureUser(objectId: string): Promise<SingleAzureUserResponse> {
   const attributes = await invokePSCommand({
-    command: `Get-AzureADUser \
-      -ObjectId "${objectId}"`,
+    command: `Get-AzureADUser -ObjectId "${objectId}"`,
   });
 
   return {
@@ -21,15 +21,15 @@ type SingleAzureUserDetailsResponse = {
 };
 export function getSingleAzureUserDetails(objectId: string): SingleAzureUserDetailsResponse {
   const memberof = invokePSCommand({
-    command: `Get-AzureADUserMembership \
-      -ObjectId "${objectId}" \
-      -All $true`,
+    command: remoteIndent(`Get-AzureADUserMembership
+      -ObjectId "${objectId}"
+      -All $true`),
     selectFields: ["DisplayName", "Description"],
   });
   const devices = invokePSCommand({
-    command: `Get-AzureADUserRegisteredDevice \
-      -ObjectId "${objectId}" \
-      -All $true`,
+    command: remoteIndent(`Get-AzureADUserRegisteredDevice
+      -ObjectId "${objectId}"
+      -All $true`),
     selectFields: [
       "DisplayName",
       "DeviceOSType",
@@ -50,9 +50,9 @@ type MultipleAzureUsersResponse = {
 };
 export function getMultipleAzureUsers(searchString: string): MultipleAzureUsersResponse {
   const users = invokePSCommand({
-    command: `Get-AzureADUser \
-    -SearchString "${searchString}" \
-    -All $true`,
+    command: remoteIndent(`Get-AzureADUser
+    -SearchString "${searchString}"
+    -All $true`),
     selectFields: ["UserPrincipalName", "DisplayName", "Department"],
   });
 

@@ -1,4 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
+import { remoteIndent } from "../Helper/string";
 import { addServerToResponse } from "../Helper/postProcessors";
 import { formatAdFilter, mergeResponses, removeDuplicates } from "../Helper/utils";
 
@@ -17,10 +18,10 @@ export function getMultipleAdObjects(
   const objects = Promise.all(
     servers.map((server) =>
       invokePSCommand({
-        command: `Get-AdObject \
-        -Filter "${formatAdFilter(filters)}" \
-        -Server ${server} \
-        -Properties ${selectFields.join(",")}`,
+        command: remoteIndent(`Get-AdObject
+        -Filter "${formatAdFilter(filters)}"
+        -Server ${server}
+        -Properties ${selectFields.join(",")}`),
         selectFields,
       }).then((response) => addServerToResponse(response, server, true)),
     ),
