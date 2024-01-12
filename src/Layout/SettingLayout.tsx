@@ -4,7 +4,7 @@ type SettingLayoutProps = {
 };
 export default function SettingLayout({ title, children }: SettingLayoutProps) {
   return (
-    <div className="relative w-fit p-2">
+    <div className="relative p-2">
       <div className="absolute inset-2 mt-5 rounded outline outline-1 outline-border" />
 
       <div className="relative z-10">

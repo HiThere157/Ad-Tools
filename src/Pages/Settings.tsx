@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../Redux/store";
-import { setAzureLoginUPN, setQueryDomains } from "../Redux/preferences";
+import { setAzureLoginUPN, setQueryDomains, setZoom } from "../Redux/preferences";
 import { downloadJSON, uploadJSON } from "../Helper/file";
 
 import SettingLayout from "../Layout/SettingLayout";
@@ -11,24 +11,19 @@ import Button from "../Components/Button";
 import EditList from "../Components/EditList";
 import Confirm from "../Components/Popup/Confirm";
 
-import { BsDownload, BsUpload } from "react-icons/bs";
+import { BsDashLg, BsDownload, BsPlusLg, BsUpload } from "react-icons/bs";
 
 export default function Settings() {
   const [isPersistDeleteOpen, setIsPersistDeleteOpen] = useState(false);
-  const { queryDomains, azureLoginUPN } = useSelector((state: RootState) => state.preferences);
+  const { queryDomains, azureLoginUPN, zoom } = useSelector(
+    (state: RootState) => state.preferences,
+  );
   const dispatch = useDispatch();
 
   return (
-    <div className="flex flex-wrap items-start px-4 py-2">
+    <div className="grid w-fit grid-cols-2 px-4 py-2">
       <SettingLayout title="Query Domains">
         <EditList list={queryDomains} onChange={(list) => dispatch(setQueryDomains(list))} />
-      </SettingLayout>
-
-      <SettingLayout title="Azure Ad Login">
-        <div className="flex gap-2">
-          <span>UPN:</span>
-          <Input value={azureLoginUPN} onChange={(value) => dispatch(setAzureLoginUPN(value))} />
-        </div>
       </SettingLayout>
 
       <SettingLayout title="Storage">
@@ -78,6 +73,34 @@ export default function Settings() {
               <li>Azure Login UPN</li>
             </ul>
           </div>
+        </div>
+      </SettingLayout>
+
+      <SettingLayout title="Azure Ad Login">
+        <div className="flex gap-2">
+          <span>UPN:</span>
+          <Input value={azureLoginUPN} onChange={(upn) => dispatch(setAzureLoginUPN(upn))} />
+        </div>
+      </SettingLayout>
+
+      <SettingLayout title="Zoom">
+        <div className="flex gap-2">
+          <span>Zoom:</span>
+          <Button
+            onClick={() => dispatch(setZoom(zoom - 0.1))}
+            disabled={Math.round(zoom * 100) <= 50}
+            className="p-1"
+          >
+            <BsDashLg />
+          </Button>
+          <span className="mx-2">{Math.round(zoom * 100)}%</span>
+          <Button
+            onClick={() => dispatch(setZoom(zoom + 0.1))}
+            disabled={Math.round(zoom * 100) >= 100}
+            className="p-1"
+          >
+            <BsPlusLg />
+          </Button>
         </div>
       </SettingLayout>
 
