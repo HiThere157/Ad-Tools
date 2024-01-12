@@ -1,6 +1,6 @@
 import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
-import { extractFirstObject } from "../Helper/postProcessors";
+import { extractFirstObject, resolveASCIIArray } from "../Helper/postProcessors";
 
 type GetSingleWmiInfoResponse = {
   monitors: Promise<DataSet>;
@@ -35,7 +35,9 @@ export function getSingleWmiInfo(identity: string, server: string): GetSingleWmi
   });
 
   return {
-    monitors,
+    monitors: monitors
+      .then((monitors) => resolveASCIIArray(monitors, "UserFriendlyName"))
+      .then((monitors) => resolveASCIIArray(monitors, "SerialNumberID")),
     sysinfo: sysinfo.then(extractFirstObject),
     software,
     bios: bios.then(extractFirstObject),
