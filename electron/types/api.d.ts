@@ -10,10 +10,7 @@ type DataSet =
   | null
   | undefined
   | {
-      result?: {
-        data: ResultObject[];
-        columns: string[];
-      };
+      data?: ResultObject[];
       error?: string;
       timestamp?: number;
       executionTime?: number;

@@ -1,4 +1,4 @@
-import { getMultipleAdComputers, getSingleAdComputer } from "../Api/adComputer";
+import { searchAdComputers, getAdComputer } from "../Api/adComputer";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
@@ -10,7 +10,7 @@ import Table from "../Components/Table/Table";
 export default function AdComputer() {
   const page = "adComputer";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setDataSet } = useTabState(page);
+  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
@@ -19,10 +19,10 @@ export default function AdComputer() {
     setDataSet("search", null);
     setDataSet(["dns", "attributes", "memberof"], undefined);
 
-    const { computers } = getMultipleAdComputers(filters, servers);
+    const { search } = searchAdComputers(filters, servers, columns.search);
 
-    setDataSet("search", computers);
-    computers.then(() => updateTab({ icon: "search" }));
+    setDataSet("search", search);
+    search.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = (query: Query, resetSearch?: boolean) => {
@@ -36,7 +36,12 @@ export default function AdComputer() {
     if (resetSearch) setDataSet("search", undefined);
     setDataSet(["dns", "attributes", "memberof"], null);
 
-    const { dns, attributes, memberof } = getSingleAdComputer(identity, server);
+    const { dns, attributes, memberof } = getAdComputer(
+      identity,
+      server,
+      columns.dns,
+      columns.memberof,
+    );
 
     setDataSet("dns", dns);
     setDataSet("attributes", attributes);

@@ -76,8 +76,8 @@ export const navigationLinks: NavigationLink[][] = [
       page: <WMI />,
     },
     {
-      href: "/printer",
-      text: "Printer",
+      href: "/printers",
+      text: "Printers",
       icon: <BsPrinterFill />,
       page: <Printers />,
     },

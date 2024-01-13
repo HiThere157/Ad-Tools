@@ -11,7 +11,7 @@ import TableFilter from "./TableFilter";
 import { BsPencilFill, BsPlusLg, BsSave, BsTrashFill } from "react-icons/bs";
 
 type TableFilterMenuProps = {
-  columns: string[];
+  columns: TableColumn[];
   filters: TableFilter[];
   setFilters: (filter: TableFilter[]) => void;
   savedFilters: SavedTableFilter[];

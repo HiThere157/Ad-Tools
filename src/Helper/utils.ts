@@ -18,13 +18,10 @@ export function formatAdFilter(filters: QueryFilter[]) {
 
 export function mergeDataSets(dataSets: DataSet[]): DataSet {
   const mergedData = dataSets
-    .reduce((acc, dataSet) => [...acc, ...(dataSet?.result?.data ?? [])], [] as ResultObject[])
+    .reduce((acc, dataSet) => [...acc, ...(dataSet?.data ?? [])], [] as ResultObject[])
     .map((result, index) => {
       return { ...result, __id__: index };
     });
-
-  const mergedColumns =
-    dataSets.filter((dataSet) => dataSet?.result?.columns !== undefined)[0]?.result?.columns ?? [];
 
   const mergedError = dataSets
     .map((dataSet) => dataSet?.error)
@@ -33,10 +30,7 @@ export function mergeDataSets(dataSets: DataSet[]): DataSet {
   const mergedTimestamp = Math.max(...dataSets.map((dataSet) => dataSet?.timestamp ?? 0));
 
   return {
-    result: {
-      data: mergedData,
-      columns: mergedColumns,
-    },
+    data: mergedData,
     error: mergedError.length > 0 ? mergedError.join("; ") : undefined,
     timestamp: mergedTimestamp,
     executionTime: mergedExecutionTime,

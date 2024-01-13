@@ -5,7 +5,6 @@ import { RootState } from "../../Redux/store";
 import { setTableConfig } from "../../Redux/dataSlice";
 import { setTablePreferences } from "../../Redux/preferencesSlice";
 import { defaultTableConfig, defaultTablePreferences } from "../../Config/default";
-import { friendly } from "../../Config/lookup";
 import { filterData, sortData, paginateData, colorData } from "../../Helper/array";
 import { stringify } from "../../Helper/string";
 
@@ -13,6 +12,7 @@ import TableHeader from "./TableHeader";
 import TableActions from "./TableActions";
 import TableFilterMenu from "./TableFilterMenu";
 import TableHighlightMenu from "./TableHighlightMenu";
+import TableColumnMenu from "./TableColumnMenu";
 import TableElement from "./TableElement";
 import TablePagination from "./TablePagination";
 import TableLoader from "./TableLoader";
@@ -58,13 +58,12 @@ export default function Table({
       }),
     );
 
-  const { result, error, timestamp, executionTime } = keyDataSets ?? {};
-  const { data = [], columns = [] } = result ?? {};
+  const { data = [], error, timestamp, executionTime } = keyDataSets ?? {};
   const isLoading = keyDataSets === null;
 
-  const { isFilterOpen, isHighlightOpen } = keyTableConfigs;
-  const { isCollapsed, filters, hiddenColumns, sort, selected, pageIndex } = keyTableConfigs;
-  const { pageSize, highlights, savedFilters, savedFilterName } = keyTablePreferences;
+  const { isFilterOpen, isHighlightOpen, isColumnsOpen } = keyTableConfigs;
+  const { isCollapsed, filters, sort, selected, pageIndex } = keyTableConfigs;
+  const { pageSize, highlights, savedFilters, savedFilterName, columns } = keyTablePreferences;
 
   const selectedFilter = useMemo(
     () => savedFilters?.find((filter) => filter.name === savedFilterName)?.filters ?? filters,
@@ -84,26 +83,25 @@ export default function Table({
 
   const count: ResultCount | undefined = useMemo(() => {
     // Only show count if acutal data is available
-    if (!result) return undefined;
+    if (!data) return undefined;
 
     return {
       total: data.length,
       filtered: data.length - filteredResult.length,
       selected: selected.length,
     };
-  }, [result, data, filteredResult, selected]);
+  }, [data, filteredResult, selected]);
 
   const exportAsCSV = (onlySelection: boolean) => {
     // Add the header row to the CSV
-    const csvColumns = columns.filter((column) => !hiddenColumns.includes(column));
-    let csv = csvColumns.map(friendly).join("\u{9}") + "\n";
+    let csv = columns.map(({ label }) => label).join("\u{9}") + "\n";
 
     data.forEach((entry) => {
       // Skip if not selected and onlySelection is true
       if (onlySelection && !selected.includes(entry.__id__)) return;
 
       // Add the row to the CSV
-      csv += csvColumns.map((column) => stringify(entry[column])).join("\u{9}") + "\n";
+      csv += columns.map(({ name }) => stringify(entry[name])).join("\u{9}") + "\n";
     });
 
     navigator.clipboard.writeText(csv);
@@ -141,12 +139,10 @@ export default function Table({
           <TableActions
             onFilterMenu={() => updateKeyTableConfig({ isFilterOpen: !isFilterOpen })}
             onHighlightMenu={() => updateKeyTableConfig({ isHighlightOpen: !isHighlightOpen })}
+            onColumnsMenu={() => updateKeyTableConfig({ isColumnsOpen: !isColumnsOpen })}
             onCopy={exportAsCSV}
             filters={selectedFilter}
-            columns={columns}
             highlights={highlights}
-            hiddenColumns={hiddenColumns}
-            setHiddenColumns={(hiddenColumns) => updateKeyTableConfig({ hiddenColumns })}
           />
 
           <div className="flex min-w-0 flex-grow flex-col gap-1">
@@ -173,10 +169,17 @@ export default function Table({
               />
             )}
 
+            {isColumnsOpen && (
+              <TableColumnMenu
+                columns={columns}
+                setColumns={(columns) => updateKeyTablePreferences({ columns })}
+              />
+            )}
+
             <div tabIndex={-1} className="overflow-x-auto rounded border-2 border-border">
               <TableElement
                 data={coloredResult}
-                columns={columns.filter((column) => !hiddenColumns.includes(column))}
+                columns={columns}
                 sort={sort}
                 setSort={(sort) => updateKeyTableConfig({ sort })}
                 allRowIds={data.map((row) => row.__id__) ?? []}

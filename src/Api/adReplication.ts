@@ -2,18 +2,16 @@ import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
-type SingleReplicationResponse = {
-  attributes: Promise<DataSet>;
-};
-export function getSingleAdReplication(
+export function getAdReplication(
   identity: string,
   server: string,
-): SingleReplicationResponse {
+  replicationFields: string[] = [],
+) {
   const attributes = invokePSCommand({
     command: remoteIndent(`Get-ADReplicationAttributeMetadata
     (Get-AdObject -Filter "Name -eq '${identity}'" -Server ${server}).ObjectGUID
     -Server (Get-AdDomainController -DomainName ${server} -Discover -Service PrimaryDC).HostName[0]`),
-    selectFields: ["LastOriginatingChangeTime", "AttributeName", "AttributeValue"],
+    selectFields: replicationFields,
   });
 
   return {

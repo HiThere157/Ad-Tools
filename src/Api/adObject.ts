@@ -1,33 +1,26 @@
 import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
 import { addServerToDataSet } from "../Helper/postProcessors";
-import { formatAdFilter, mergeDataSets, removeDuplicates } from "../Helper/utils";
+import { formatAdFilter, mergeDataSets } from "../Helper/utils";
 
-type MultipleAdObjectsResponse = {
-  objects: Promise<DataSet>;
-};
-export function getMultipleAdObjects(
+export function searchAdObjects(
   filters: QueryFilter[],
   servers: string[],
-): MultipleAdObjectsResponse {
-  const selectFields = removeDuplicates(
-    ["Name", "DisplayName"],
-    filters.map(({ property }) => property),
-  );
-
-  const objects = Promise.all(
+  searchFields: string[] = [],
+) {
+  const search = Promise.all(
     servers.map((server) =>
       invokePSCommand({
         command: remoteIndent(`Get-AdObject
         -Filter "${formatAdFilter(filters)}"
         -Server ${server}
-        -Properties ${selectFields.join(",")}`),
-        selectFields,
-      }).then((dataSet) => addServerToDataSet(dataSet, server, true)),
+        -Properties ${searchFields.join(",")}`),
+        selectFields: searchFields,
+      }).then((dataSet) => addServerToDataSet(dataSet, server)),
     ),
   );
 
   return {
-    objects: objects.then(mergeDataSets),
+    search: search.then(mergeDataSets),
   };
 }

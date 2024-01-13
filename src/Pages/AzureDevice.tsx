@@ -1,8 +1,4 @@
-import {
-  getMultipleAzureDevices,
-  getSingleAzureDevice,
-  getSingleAzureDeviceId,
-} from "../Api/azureDevice";
+import { searchAzureDevices, getAzureDevice, getAzureDeviceId } from "../Api/azureDevice";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue } from "../Helper/utils";
@@ -14,7 +10,7 @@ import Table from "../Components/Table/Table";
 export default function AzureDevice() {
   const page = "azureDevice";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setDataSet } = useTabState(page);
+  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const searchString = getFilterValue(query.filters, "Name");
@@ -23,10 +19,10 @@ export default function AzureDevice() {
     setDataSet("search", null);
     setDataSet("attributes", undefined);
 
-    const { devices } = getMultipleAzureDevices(searchString);
+    const { search } = searchAzureDevices(searchString, columns.search);
 
-    setDataSet("search", devices);
-    devices.then(() => updateTab({ icon: "search" }));
+    setDataSet("search", search);
+    search.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
@@ -37,10 +33,10 @@ export default function AzureDevice() {
     setDataSet("attributes", null);
 
     // We need to test if we should run a pre-query or not by checking if the object exists.
-    const objectId = await getSingleAzureDeviceId(displayName);
+    const objectId = await getAzureDeviceId(displayName);
     if (!objectId) return runSearchQuery(query);
 
-    const { attributes } = getSingleAzureDevice(objectId);
+    const { attributes } = getAzureDevice(objectId);
 
     setDataSet("attributes", attributes);
     attributes.then(() => updateTab({ icon: "computer" }));

@@ -1,4 +1,5 @@
-import { getMultipleAdComputers } from "../Api/adComputer";
+import { searchAdComputers } from "../Api/adComputer";
+import { getWmiInfo } from "../Api/wmi";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
@@ -6,12 +7,11 @@ import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
 import TabLayout from "../Layout/TabLayout";
 import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
-import { getSingleWmiInfo } from "../Api/wmi";
 
 export default function Printers() {
   const page = "wmi";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setDataSet } = useTabState(page);
+  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
@@ -20,10 +20,10 @@ export default function Printers() {
     setDataSet("search", null);
     setDataSet(["monitors", "sysinfo", "software", "bios"], undefined);
 
-    const { computers } = getMultipleAdComputers(filters, servers);
+    const { search } = searchAdComputers(filters, servers, columns.search);
 
-    setDataSet("search", computers);
-    computers.then(() => updateTab({ icon: "search" }));
+    setDataSet("search", search);
+    search.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = (query: Query, resetSearch?: boolean) => {
@@ -37,7 +37,13 @@ export default function Printers() {
     if (resetSearch) setDataSet("search", undefined);
     setDataSet(["monitors", "sysinfo", "software", "bios"], null);
 
-    const { monitors, sysinfo, software, bios } = getSingleWmiInfo(identity, server);
+    const { monitors, sysinfo, software, bios } = getWmiInfo(
+      identity,
+      server,
+      columns.monitors,
+      columns.software,
+      columns.bios,
+    );
 
     setDataSet("monitors", monitors);
     setDataSet("sysinfo", sysinfo);

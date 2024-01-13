@@ -1,38 +1,27 @@
 import { useState } from "react";
 
-import { friendly } from "../../Config/lookup";
-
 import Button from "../Button";
 import Dropdown from "../Dropdown/Dropdown";
-import MultiDropdown from "../Dropdown/MultiDropdown";
 
 import { BsFunnel, BsPaintBucket, BsLayoutThreeColumns, BsClipboard } from "react-icons/bs";
 
 type TableActionsProps = {
   onFilterMenu: () => void;
   onHighlightMenu: () => void;
+  onColumnsMenu: () => void;
   onCopy: (onlySelection: boolean) => void;
   filters: TableFilter[];
   highlights: TableHighlight[];
-  columns: string[];
-  hiddenColumns: string[];
-  setHiddenColumns: (hiddenColumns: string[]) => void;
 };
 export default function TableActions({
   onFilterMenu,
   onHighlightMenu,
+  onColumnsMenu,
   onCopy,
   filters,
   highlights,
-  columns,
-  hiddenColumns,
-  setHiddenColumns,
 }: TableActionsProps) {
   const [hasCopied, setHasCopied] = useState(false);
-
-  const invertHiddenColumns = (hiddenColumns: string[]) => {
-    return columns.filter((column) => !hiddenColumns.includes(column));
-  };
 
   return (
     <div className="flex flex-col gap-1">
@@ -56,19 +45,9 @@ export default function TableActions({
       >
         <BsPaintBucket />
       </Button>
-      <MultiDropdown
-        items={columns}
-        value={invertHiddenColumns(hiddenColumns)}
-        onChange={(hiddenColumns) => {
-          if (hiddenColumns.length === 0) return;
-          setHiddenColumns(invertHiddenColumns(hiddenColumns));
-        }}
-        replacer={friendly}
-        className={"p-1 " + (hiddenColumns.length !== 0 ? "!border-primaryAccent" : "")}
-        disabled={columns.length === 0}
-      >
+      <Button className="p-1" onClick={onColumnsMenu}>
         <BsLayoutThreeColumns />
-      </MultiDropdown>
+      </Button>
       <Dropdown
         items={["Copy All", "Copy Selection"]}
         value={""}
@@ -78,7 +57,6 @@ export default function TableActions({
           setTimeout(() => setHasCopied(false), 2000);
         }}
         className={"p-1 " + (hasCopied ? "!border-primaryAccent" : "")}
-        disabled={columns.length === 0}
       >
         <BsClipboard />
       </Dropdown>

@@ -1,8 +1,4 @@
-import {
-  getMultipleAzureGroups,
-  getSingleAzureGroup,
-  getSingleAzureGroupId,
-} from "../Api/azureGroup";
+import { searchAzureGroups, getAzureGroup, getAzureGroupId } from "../Api/azureGroup";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue } from "../Helper/utils";
@@ -14,7 +10,7 @@ import Table from "../Components/Table/Table";
 export default function AzureGroup() {
   const page = "azureGroup";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setDataSet } = useTabState(page);
+  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const searchString = getFilterValue(query.filters, "Name");
@@ -23,10 +19,10 @@ export default function AzureGroup() {
     setDataSet("search", null);
     setDataSet(["attributes", "members"], undefined);
 
-    const { groups } = getMultipleAzureGroups(searchString);
+    const { search } = searchAzureGroups(searchString, columns.search);
 
-    setDataSet("search", groups);
-    groups.then(() => updateTab({ icon: "search" }));
+    setDataSet("search", search);
+    search.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
@@ -37,10 +33,10 @@ export default function AzureGroup() {
     setDataSet(["attributes", "members"], null);
 
     // We need to test if we should run a pre-query or not by checking if the object exists.
-    const objectId = await getSingleAzureGroupId(displayName);
+    const objectId = await getAzureGroupId(displayName);
     if (!objectId) return runSearchQuery(query);
 
-    const { attributes, members } = getSingleAzureGroup(objectId);
+    const { attributes, members } = getAzureGroup(objectId, columns.members);
 
     setDataSet("attributes", attributes);
     setDataSet("members", members);

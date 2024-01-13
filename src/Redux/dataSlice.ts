@@ -105,18 +105,15 @@ const dataSlice = createSlice({
       }
       if (!state.dataSets[page]![tabId]![name]) {
         state.dataSets[page]![tabId]![name] = {
-          result: {
-            data: [],
-            columns: ["command", "timestamp", "executionTime", "success"],
-          },
+          data: [],
         };
       }
 
       // Push the log to the result
-      const id = state.dataSets[page]![tabId]![name]!.result?.data.length ?? 0;
+      const id = state.dataSets[page][tabId][name].data?.length ?? 0;
       const log: ResultObject = { ...action.payload, __id__: id };
 
-      state.dataSets[page]![tabId]![name]!.result?.data.push(log);
+      state.dataSets[page][tabId][name].data?.push(log);
     },
   },
 });

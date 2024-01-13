@@ -1,4 +1,4 @@
-import { getMultipleAdUsers, getSingleAdUser } from "../Api/adUser";
+import { searchAdUsers, getAdUser } from "../Api/adUser";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
@@ -10,7 +10,7 @@ import Table from "../Components/Table/Table";
 export default function AdUser() {
   const page = "adUser";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setDataSet } = useTabState(page);
+  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
@@ -19,10 +19,10 @@ export default function AdUser() {
     setDataSet("search", null);
     setDataSet(["attributes", "memberof"], undefined);
 
-    const { users } = getMultipleAdUsers(filters, servers);
+    const { search } = searchAdUsers(filters, servers, columns.search);
 
-    setDataSet("search", users);
-    users.then(() => updateTab({ icon: "search" }));
+    setDataSet("search", search);
+    search.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = (query: Query, resetSearch?: boolean) => {
@@ -36,7 +36,7 @@ export default function AdUser() {
     if (resetSearch) setDataSet("search", undefined);
     setDataSet(["attributes", "memberof"], null);
 
-    const { attributes, memberof } = getSingleAdUser(identity, server);
+    const { attributes, memberof } = getAdUser(identity, server, columns.memberof);
 
     setDataSet("attributes", attributes);
     setDataSet("memberof", memberof);

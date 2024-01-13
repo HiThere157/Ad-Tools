@@ -2,19 +2,19 @@ import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
 import { extractFirstObject, resolveASCIIArray } from "../Helper/postProcessors";
 
-type GetSingleWmiInfoResponse = {
-  monitors: Promise<DataSet>;
-  sysinfo: Promise<DataSet>;
-  software: Promise<DataSet>;
-  bios: Promise<DataSet>;
-};
-export function getSingleWmiInfo(identity: string, server: string): GetSingleWmiInfoResponse {
+export function getWmiInfo(
+  identity: string,
+  server: string,
+  monitorsFields: string[] = [],
+  softwareFields: string[] = [],
+  biosFields: string[] = [],
+) {
   const monitors = invokePSCommand({
     command: remoteIndent(`Get-WmiObject
       -ClassName WmiMonitorID
       -Namespace root/wmi
       -Computername "${identity}.${server}"`),
-    selectFields: ["UserFriendlyName", "SerialNumberID", "YearOfManufacture"],
+    selectFields: monitorsFields,
   });
   const sysinfo = invokePSCommand({
     command: remoteIndent(`Get-WmiObject
@@ -25,13 +25,13 @@ export function getSingleWmiInfo(identity: string, server: string): GetSingleWmi
     command: remoteIndent(`Get-WmiObject
       -ClassName Win32_Product
       -Computername "${identity}.${server}"`),
-    selectFields: ["Name", "Vendor", "Version", "InstallDate"],
+    selectFields: softwareFields,
   });
   const bios = invokePSCommand({
     command: remoteIndent(`Get-WmiObject
       -ClassName Win32_BIOS
       -Computername "${identity}.${server}"`),
-    selectFields: ["Name", "Manufacturer", "Version", "ReleaseDate"],
+    selectFields: biosFields,
   });
 
   return {

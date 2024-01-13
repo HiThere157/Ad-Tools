@@ -1,8 +1,4 @@
-import {
-  getMultipleAzureUsers,
-  getSingleAzureUser,
-  getSingleAzureUserDetails,
-} from "../Api/azureUser";
+import { searchAzureUsers, getAzureUser, getAzureUserDetails } from "../Api/azureUser";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue } from "../Helper/utils";
@@ -14,7 +10,7 @@ import Table from "../Components/Table/Table";
 export default function AzureUser() {
   const page = "azureUser";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setDataSet } = useTabState(page);
+  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = async (query: Query) => {
     const searchString = getFilterValue(query.filters, "Name");
@@ -23,10 +19,10 @@ export default function AzureUser() {
     setDataSet("search", null);
     setDataSet(["attributes", "memberof", "devices"], undefined);
 
-    const { users } = getMultipleAzureUsers(searchString);
+    const { search } = searchAzureUsers(searchString, columns.search);
 
-    setDataSet("search", users);
-    users.then(() => updateTab({ icon: "search" }));
+    setDataSet("search", search);
+    search.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = async (query: Query, resetSearch?: boolean) => {
@@ -37,10 +33,10 @@ export default function AzureUser() {
     setDataSet(["attributes", "memberof", "devices"], null);
 
     // We need to test if we should run a pre-query or not by checking if the object exists.
-    const { attributes } = await getSingleAzureUser(objectId);
+    const { attributes } = await getAzureUser(objectId);
     if (attributes?.error) return runSearchQuery(query);
 
-    const { memberof, devices } = getSingleAzureUserDetails(objectId);
+    const { memberof, devices } = getAzureUserDetails(objectId, columns.memberof, columns.devices);
 
     setDataSet("attributes", attributes);
     setDataSet("memberof", memberof);

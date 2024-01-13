@@ -1,5 +1,5 @@
-import { getMultipleAdComputers } from "../Api/adComputer";
-import { getSinglePrinters } from "../Api/printers";
+import { searchAdComputers } from "../Api/adComputer";
+import { getPrinters } from "../Api/printers";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
@@ -11,7 +11,7 @@ import Table from "../Components/Table/Table";
 export default function Printers() {
   const page = "printers";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setDataSet } = useTabState(page);
+  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
@@ -20,10 +20,10 @@ export default function Printers() {
     setDataSet("search", null);
     setDataSet("printers", undefined);
 
-    const { computers } = getMultipleAdComputers(filters, servers);
+    const { search } = searchAdComputers(filters, servers, columns.search);
 
-    setDataSet("search", computers);
-    computers.then(() => updateTab({ icon: "search" }));
+    setDataSet("search", search);
+    search.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = (query: Query, resetSearch?: boolean) => {
@@ -37,7 +37,7 @@ export default function Printers() {
     if (resetSearch) setDataSet("search", undefined);
     setDataSet("printers", null);
 
-    const { printers } = getSinglePrinters(identity, server);
+    const { printers } = getPrinters(identity, server, columns.printers);
 
     setDataSet("printers", printers);
     printers.then(() => updateTab({ icon: "printer" }));

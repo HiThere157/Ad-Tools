@@ -1,5 +1,5 @@
-import { getSingleAdReplication } from "../Api/adReplication";
-import { getMultipleAdObjects } from "../Api/adObject";
+import { getAdReplication } from "../Api/adReplication";
+import { searchAdObjects } from "../Api/adObject";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
@@ -11,7 +11,7 @@ import Table from "../Components/Table/Table";
 export default function AdReplication() {
   const page = "adReplication";
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, updateTab, setDataSet } = useTabState(page);
+  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
@@ -20,10 +20,10 @@ export default function AdReplication() {
     setDataSet("search", null);
     setDataSet("attributes", undefined);
 
-    const { objects } = getMultipleAdObjects(filters, servers);
+    const { search } = searchAdObjects(filters, servers, columns.search);
 
-    setDataSet("search", objects);
-    objects.then(() => updateTab({ icon: "search" }));
+    setDataSet("search", search);
+    search.then(() => updateTab({ icon: "search" }));
   };
 
   const runQuery = (query: Query, resetSearch?: boolean) => {
@@ -37,7 +37,7 @@ export default function AdReplication() {
     if (resetSearch) setDataSet("search", undefined);
     setDataSet("attributes", null);
 
-    const { attributes } = getSingleAdReplication(identity, server);
+    const { attributes } = getAdReplication(identity, server, columns.attributes);
 
     setDataSet("attributes", attributes);
     attributes.then(() => updateTab({ icon: "replication" }));

@@ -2,10 +2,7 @@ import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
-type SingleAzureUserResponse = {
-  attributes: DataSet;
-};
-export async function getSingleAzureUser(objectId: string): Promise<SingleAzureUserResponse> {
+export async function getAzureUser(objectId: string) {
   const attributes = await invokePSCommand({
     command: `Get-AzureADUser -ObjectId "${objectId}"`,
   });
@@ -15,28 +12,22 @@ export async function getSingleAzureUser(objectId: string): Promise<SingleAzureU
   };
 }
 
-type SingleAzureUserDetailsResponse = {
-  memberof: Promise<DataSet>;
-  devices: Promise<DataSet>;
-};
-export function getSingleAzureUserDetails(objectId: string): SingleAzureUserDetailsResponse {
+export function getAzureUserDetails(
+  objectId: string,
+  memberofFields: string[] = [],
+  devicesFields: string[] = [],
+) {
   const memberof = invokePSCommand({
     command: remoteIndent(`Get-AzureADUserMembership
       -ObjectId "${objectId}"
       -All $true`),
-    selectFields: ["DisplayName", "Description"],
+    selectFields: memberofFields,
   });
   const devices = invokePSCommand({
     command: remoteIndent(`Get-AzureADUserRegisteredDevice
       -ObjectId "${objectId}"
       -All $true`),
-    selectFields: [
-      "DisplayName",
-      "DeviceOSType",
-      "AccountEnabled",
-      "IsManaged",
-      "ApproximateLastLogonTimeStamp",
-    ],
+    selectFields: devicesFields,
   });
 
   return {
@@ -45,18 +36,15 @@ export function getSingleAzureUserDetails(objectId: string): SingleAzureUserDeta
   };
 }
 
-type MultipleAzureUsersResponse = {
-  users: Promise<DataSet>;
-};
-export function getMultipleAzureUsers(searchString: string): MultipleAzureUsersResponse {
-  const users = invokePSCommand({
+export function searchAzureUsers(searchString: string, searchFields: string[] = []) {
+  const search = invokePSCommand({
     command: remoteIndent(`Get-AzureADUser
     -SearchString "${searchString}"
     -All $true`),
-    selectFields: ["UserPrincipalName", "DisplayName", "Department"],
+    selectFields: searchFields,
   });
 
   return {
-    users,
+    search,
   };
 }

@@ -70,6 +70,7 @@ export default function Settings() {
               <li>Preferences</li>
               <li>Query Domains</li>
               <li>Filter Presets</li>
+              <li>Custom Table Columns</li>
               <li>Azure Login UPN</li>
             </ul>
           </div>

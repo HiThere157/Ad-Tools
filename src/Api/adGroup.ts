@@ -1,14 +1,14 @@
 import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
 import { extractFirstObject, addServerToDataSet } from "../Helper/postProcessors";
-import { removeDuplicates, formatAdFilter, mergeDataSets } from "../Helper/utils";
+import { formatAdFilter, mergeDataSets } from "../Helper/utils";
 
-type SingleGroupResponse = {
-  attributes: Promise<DataSet>;
-  members: Promise<DataSet>;
-  memberof: Promise<DataSet>;
-};
-export function getSingleAdGroup(identity: string, server: string): SingleGroupResponse {
+export function getAdGroup(
+  identity: string,
+  server: string,
+  membersFields: string[] = [],
+  memberofFields: string[] = [],
+) {
   const attributes = invokePSCommand({
     command: remoteIndent(`Get-AdGroup
       -Identity "${identity}"
@@ -19,13 +19,13 @@ export function getSingleAdGroup(identity: string, server: string): SingleGroupR
     command: remoteIndent(`Get-AdGroupMember
       -Identity "${identity}"
       -Server ${server}`),
-    selectFields: ["Name", "SamAccountName", "DistinguishedName", "ObjectClass"],
+    selectFields: membersFields,
   });
   const memberof = invokePSCommand({
     command: remoteIndent(`Get-AdPrincipalGroupMembership
       -Identity "${identity}"
       -Server ${server}`),
-    selectFields: ["Name", "GroupCategory", "DistinguishedName"],
+    selectFields: memberofFields,
   });
 
   return {
@@ -35,31 +35,24 @@ export function getSingleAdGroup(identity: string, server: string): SingleGroupR
   };
 }
 
-type MultipleGroupsResponse = {
-  groups: Promise<DataSet>;
-};
-export function getMultipleAdGroups(
+export function searchAdGroups(
   filters: QueryFilter[],
   servers: string[],
-): MultipleGroupsResponse {
-  const selectFields = removeDuplicates(
-    ["Name", "Description"],
-    filters.map(({ property }) => property),
-  );
-
-  const groups = Promise.all(
+  searchFields: string[] = [],
+) {
+  const search = Promise.all(
     servers.map((server) =>
       invokePSCommand({
         command: remoteIndent(`Get-AdGroup
         -Filter "${formatAdFilter(filters)}"
         -Server ${server}
-        -Properties ${selectFields.join(",")}`),
-        selectFields,
-      }).then((dataSet) => addServerToDataSet(dataSet, server, true)),
+        -Properties ${searchFields.join(",")}`),
+        selectFields: searchFields,
+      }).then((dataSet) => addServerToDataSet(dataSet, server)),
     ),
   );
 
   return {
-    groups: groups.then(mergeDataSets),
+    search: search.then(mergeDataSets),
   };
 }

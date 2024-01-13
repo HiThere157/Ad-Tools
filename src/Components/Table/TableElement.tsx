@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-import { friendly } from "../../Config/lookup";
 import { stringify } from "../../Helper/string";
 
 import Checkbox from "../Checkbox";
@@ -10,7 +9,7 @@ import { BsCaretDownFill } from "react-icons/bs";
 
 type TableElementProps = {
   data: ResultObject[];
-  columns: string[];
+  columns: TableColumn[];
   sort: SortConfig;
   setSort: (sort: SortConfig) => void;
   allRowIds: number[];
@@ -88,15 +87,15 @@ export default function TableElement({
             <Checkbox checked={mainCheckState} onChange={onAllSelect} />
           </th>
 
-          {columns.map((column, columnIndex) => (
+          {columns.map(({ name, label }, columnIndex) => (
             <th key={columnIndex} className="border-s border-border">
               <button
                 className="flex w-full items-center justify-between gap-2 rounded px-2 outline-none outline-offset-0 focus-visible:outline-borderActive"
-                onClick={() => onSort(column)}
+                onClick={() => onSort(name)}
               >
-                {friendly(column)}
+                {label}
 
-                {sort.column === column && (
+                {sort.column === name && (
                   <BsCaretDownFill className={sort.direction === "asc" ? "rotate-180" : ""} />
                 )}
               </button>
@@ -123,11 +122,11 @@ export default function TableElement({
               />
             </td>
 
-            {columns.map((column, columnIndex) => (
+            {columns.map(({ name }, columnIndex) => (
               <td key={columnIndex} className="whitespace-pre border-s border-t border-border px-2">
                 <TableCell
-                  content={stringify(row[column])}
-                  canRedirect={column === redirectColumn}
+                  content={stringify(row[name])}
+                  canRedirect={name === redirectColumn}
                   onRedirect={(newTab) => onRedirect?.(row, newTab)}
                 />
               </td>

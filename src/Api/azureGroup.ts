@@ -2,23 +2,19 @@ import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
-export async function getSingleAzureGroupId(displayName: string): Promise<string | undefined> {
+export async function getAzureGroupId(displayName: string): Promise<string | undefined> {
   const groups = await invokePSCommand({
     command: `Get-AzureADGroup -SearchString "${displayName}"`,
     selectFields: ["DisplayName", "ObjectId"],
   });
 
-  const firstDisplayName = groups?.result?.data?.[0]?.DisplayName;
-  const firstObjectId = groups?.result?.data?.[0]?.ObjectId;
+  const firstDisplayName = groups?.data?.[0]?.DisplayName;
+  const firstObjectId = groups?.data?.[0]?.ObjectId;
 
   return firstDisplayName === displayName ? firstObjectId : undefined;
 }
 
-type SingleAzureGroupResponse = {
-  attributes: Promise<DataSet>;
-  members: Promise<DataSet>;
-};
-export function getSingleAzureGroup(objectId: string): SingleAzureGroupResponse {
+export function getAzureGroup(objectId: string, membersFields: string[] = []) {
   const attributes = invokePSCommand({
     command: `Get-AzureADGroup -ObjectId "${objectId}"`,
   });
@@ -26,7 +22,7 @@ export function getSingleAzureGroup(objectId: string): SingleAzureGroupResponse 
     command: remoteIndent(`Get-AzureADGroupMember
       -ObjectId "${objectId}"
       -All $true`),
-    selectFields: ["UserPrincipalName", "DisplayName", "ObjectType"],
+    selectFields: membersFields,
   });
 
   return {
@@ -35,18 +31,15 @@ export function getSingleAzureGroup(objectId: string): SingleAzureGroupResponse 
   };
 }
 
-type MultipleAzureGroupsResponse = {
-  groups: Promise<DataSet>;
-};
-export function getMultipleAzureGroups(searchString: string): MultipleAzureGroupsResponse {
-  const groups = invokePSCommand({
+export function searchAzureGroups(searchString: string, searchFields: string[] = []) {
+  const search = invokePSCommand({
     command: remoteIndent(`Get-AzureADGroup
     -SearchString "${searchString}"
     -All $true`),
-    selectFields: ["DisplayName", "Description"],
+    selectFields: searchFields,
   });
 
   return {
-    groups,
+    search,
   };
 }

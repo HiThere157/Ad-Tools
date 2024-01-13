@@ -1,13 +1,9 @@
 import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
 import { addServerToDataSet, extractFirstObject } from "../Helper/postProcessors";
-import { formatAdFilter, mergeDataSets, removeDuplicates } from "../Helper/utils";
+import { formatAdFilter, mergeDataSets } from "../Helper/utils";
 
-type SingleUserResponse = {
-  attributes: Promise<DataSet>;
-  memberof: Promise<DataSet>;
-};
-export function getSingleAdUser(identity: string, server: string): SingleUserResponse {
+export function getAdUser(identity: string, server: string, memberofFields: string[] = []) {
   const attributes = invokePSCommand({
     command: remoteIndent(`Get-AdUser
       -Identity "${identity}"
@@ -18,7 +14,7 @@ export function getSingleAdUser(identity: string, server: string): SingleUserRes
     command: remoteIndent(`Get-AdPrincipalGroupMembership
       -Identity "${identity}"
       -Server ${server}`),
-    selectFields: ["Name", "GroupCategory", "DistinguishedName"],
+    selectFields: memberofFields,
   });
 
   return {
@@ -27,31 +23,24 @@ export function getSingleAdUser(identity: string, server: string): SingleUserRes
   };
 }
 
-type MultipleUsersResponse = {
-  users: Promise<DataSet>;
-};
-export function getMultipleAdUsers(
+export function searchAdUsers(
   filters: QueryFilter[],
   servers: string[],
-): MultipleUsersResponse {
-  const selectFields = removeDuplicates(
-    ["Name", "DisplayName"],
-    filters.map(({ property }) => property),
-  );
-
-  const users = Promise.all(
+  searchFields: string[] = [],
+) {
+  const search = Promise.all(
     servers.map((server) =>
       invokePSCommand({
         command: remoteIndent(`Get-AdUser
         -Filter "${formatAdFilter(filters)}"
         -Server ${server}
-        -Properties ${selectFields.join(",")}`),
-        selectFields,
-      }).then((dataSet) => addServerToDataSet(dataSet, server, true)),
+        -Properties ${searchFields.join(",")}`),
+        selectFields: searchFields,
+      }).then((dataSet) => addServerToDataSet(dataSet, server)),
     ),
   );
 
   return {
-    users: users.then(mergeDataSets),
+    search: search.then(mergeDataSets),
   };
 }

@@ -1,17 +1,17 @@
 import { invokePSCommand } from "../Helper/api";
 import { remoteIndent } from "../Helper/string";
 import { extractFirstObject, addServerToDataSet } from "../Helper/postProcessors";
-import { removeDuplicates, formatAdFilter, mergeDataSets } from "../Helper/utils";
+import { formatAdFilter, mergeDataSets } from "../Helper/utils";
 
-type GetSingleComputerResponse = {
-  dns: Promise<DataSet>;
-  attributes: Promise<DataSet>;
-  memberof: Promise<DataSet>;
-};
-export function getSingleAdComputer(identity: string, server: string): GetSingleComputerResponse {
+export function getAdComputer(
+  identity: string,
+  server: string,
+  dnsFields: string[] = [],
+  memberofFields: string[] = [],
+) {
   const dns = invokePSCommand({
     command: `Resolve-DnsName -Name "${identity}.${server}"`,
-    selectFields: ["Name", "Type", "IPAddress"],
+    selectFields: dnsFields,
   });
   const attributes = invokePSCommand({
     command: remoteIndent(`Get-AdComputer
@@ -23,7 +23,7 @@ export function getSingleAdComputer(identity: string, server: string): GetSingle
     command: remoteIndent(`Get-AdPrincipalGroupMembership
       (Get-AdComputer -Identity "${identity}" -Server ${server})
       -Server ${server}`),
-    selectFields: ["Name", "GroupCategory", "DistinguishedName"],
+    selectFields: memberofFields,
   });
 
   return {
@@ -33,31 +33,24 @@ export function getSingleAdComputer(identity: string, server: string): GetSingle
   };
 }
 
-type MultipleComputersResponse = {
-  computers: Promise<DataSet>;
-};
-export function getMultipleAdComputers(
+export function searchAdComputers(
   filters: QueryFilter[],
   servers: string[],
-): MultipleComputersResponse {
-  const selectFields = removeDuplicates(
-    ["Name", "DisplayName"],
-    filters.map(({ property }) => property),
-  );
-
-  const computers = Promise.all(
+  searchFields: string[] = [],
+) {
+  const search = Promise.all(
     servers.map((server) =>
       invokePSCommand({
         command: remoteIndent(`Get-AdComputer
         -Filter "${formatAdFilter(filters)}"
         -Server ${server}
-        -Properties ${selectFields.join(",")}`),
-        selectFields,
-      }).then((dataSet) => addServerToDataSet(dataSet, server, true)),
+        -Properties ${searchFields.join(",")}`),
+        selectFields: searchFields,
+      }).then((dataSet) => addServerToDataSet(dataSet, server)),
     ),
   );
 
   return {
-    computers: computers.then(mergeDataSets),
+    search: search.then(mergeDataSets),
   };
 }

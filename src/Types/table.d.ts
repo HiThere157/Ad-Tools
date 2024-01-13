@@ -1,9 +1,9 @@
 type TableConfig = {
   isFilterOpen: boolean;
   isHighlightOpen: boolean;
+  isColumnsOpen: boolean;
   isCollapsed: boolean;
   filters: TableFilter[];
-  hiddenColumns: string[];
   sort: SortConfig;
   selected: number[];
   pageIndex: number;
@@ -14,6 +14,7 @@ type TablePreferences = {
   highlights: TableHighlight[];
   savedFilters: SavedTableFilter[];
   savedFilterName?: string;
+  columns: TableColumn[];
 };
 
 type SortConfig = {
@@ -37,6 +38,11 @@ type TableHighlight = {
   color: string;
   type: "fg" | "bg";
   strings: string[];
+};
+
+type TableColumn = {
+  name: string;
+  label: string;
 };
 
 type SavedTableFilter = {

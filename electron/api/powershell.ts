@@ -27,10 +27,7 @@ export async function invokePSCommand(
     const endTimestamp = Date.now();
 
     return {
-      result: {
-        data,
-        columns: selectFields ?? Object.keys(data[0] ?? {}),
-      },
+      data,
       timestamp: endTimestamp,
       executionTime: endTimestamp - startTimestamp,
     };

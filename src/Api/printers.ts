@@ -1,12 +1,9 @@
 import { invokePSCommand } from "../Helper/api";
 
-type GetSinglePrintersResponse = {
-  printers: Promise<DataSet>;
-};
-export function getSinglePrinters(identity: string, server: string): GetSinglePrintersResponse {
+export function getPrinters(identity: string, server: string, printerFields: string[] = []) {
   const printers = invokePSCommand({
     command: `Get-Printer -Computername "${identity}.${server}"`,
-    selectFields: ["Name", "Location", "Status", "Comment", "JobCount", "DriverName"],
+    selectFields: printerFields,
   });
 
   return {

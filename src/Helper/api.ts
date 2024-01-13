@@ -10,21 +10,18 @@ export async function invokePSCommand(request: InvokePSCommandRequest): Promise<
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
-          result: {
-            columns: ["Age", "Name", "Location"],
-            data: [
-              { __id__: 1, Age: 20, Name: "John", Location: "USA" },
-              { __id__: 2, Age: 30, Name: "Jane", Location: "UK" },
-              { __id__: 3, Age: 40, Name: "Joe", Location: "Canada" },
-              {
-                __id__: 4,
-                Age: 50,
-                Name: "Jilllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll",
-                Location: "Australia",
-              },
-              { __id__: 5, Age: 60, Name: "Jack", Location: "New Zealand" },
-            ],
-          },
+          data: [
+            { __id__: 1, Age: 20, Name: "John", Location: "USA" },
+            { __id__: 2, Age: 30, Name: "Jane", Location: "UK" },
+            { __id__: 3, Age: 40, Name: "Joe", Location: "Canada" },
+            {
+              __id__: 4,
+              Age: 50,
+              Name: "Jilllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll",
+              Location: "Australia",
+            },
+            { __id__: 5, Age: 60, Name: "Jack", Location: "New Zealand" },
+          ],
           timestamp: Date.now(),
           executionTime: 1337,
         });
@@ -69,7 +66,7 @@ export async function loginAzure(upn: string): Promise<AzureEnvironment> {
   });
 
   return {
-    executingAzureUser: env?.result?.data?.[0]?.Account?.Id ?? "",
+    executingAzureUser: env?.data?.[0]?.Account?.Id ?? "",
   };
 }
 
@@ -106,7 +103,7 @@ export async function getAzureEnvironment(): Promise<AzureEnvironment> {
   });
 
   return {
-    executingAzureUser: env?.result?.data?.[0]?.Account?.Id ?? "",
+    executingAzureUser: env?.data?.[0]?.Account?.Id ?? "",
   };
 }
 
@@ -123,7 +120,7 @@ export async function getPowershellEnvironment(): Promise<PowershellEnvironment>
   }
 
   const formatVersion = (env: DataSet, module: string) => {
-    const version = env?.result?.data?.find((m) => m.Name === module)?.Version;
+    const version = env?.data?.find((m) => m.Name === module)?.Version;
     if (!version) return "";
 
     const { Major: major, Minor: minor, Build: build } = version;
@@ -154,5 +151,5 @@ export async function getDnsSuffixList(): Promise<string[]> {
     command: "Get-DnsClientGlobalSetting",
   });
 
-  return dns?.result?.data?.[0]?.SuffixSearchList ?? [];
+  return dns?.data?.[0]?.SuffixSearchList ?? [];
 }
