@@ -22,7 +22,7 @@ export default function AppVersion({ app, currentVersion, downloadStatus }: AppV
         <div className="mx-1.5 flex items-center gap-1.5 text-sm text-grey">
           {currentVersion && <span>{currentVersion}</span>}
 
-          {updateVersion && (
+          {updateVersion && status !== "upToDate" && (
             <>
               <BsForwardFill />
               <span>{updateVersion}</span>
@@ -32,7 +32,7 @@ export default function AppVersion({ app, currentVersion, downloadStatus }: AppV
       </div>
 
       {downloadStatus === null && <PulseLoader color="#208cf0" speedMultiplier={0.7} size={7} />}
-      {status === "pending" && <ClipLoader color="#208cf0" speedMultiplier={0.5} size={7} />}
+      {status === "pending" && <ClipLoader color="#208cf0" speedMultiplier={0.5} size={16} />}
       {status === "complete" && <BsCloudArrowDown className="text-xl text-green" />}
       {status === "error" && <BsExclamationOctagon className="text-xl text-red" />}
       {status === "upToDate" && <BsCheckCircle className="text-xl text-green" />}
