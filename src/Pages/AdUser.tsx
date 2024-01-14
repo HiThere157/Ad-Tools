@@ -11,7 +11,16 @@ import Table from "../Components/Table/Table";
 export default function AdUser() {
   const page = Pages.AdUser;
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
+  const {
+    query,
+    dataSets,
+    tableStates,
+    tableColumns,
+    updateTab,
+    setQuery,
+    setDataSet,
+    setTableState,
+  } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
@@ -20,7 +29,7 @@ export default function AdUser() {
     setDataSet(AdUserTables.Search, null);
     setDataSet([AdUserTables.Attributes, AdUserTables.Memberof], undefined);
 
-    const { search } = searchAdUsers(filters, servers, columns[AdUserTables.Search]);
+    const { search } = searchAdUsers(filters, servers, tableColumns[AdUserTables.Search]);
 
     setDataSet(AdUserTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
@@ -37,7 +46,11 @@ export default function AdUser() {
     if (resetSearch) setDataSet(AdUserTables.Search, undefined);
     setDataSet([AdUserTables.Attributes, AdUserTables.Memberof], null);
 
-    const { attributes, memberof } = getAdUser(identity, server, columns.memberof);
+    const { attributes, memberof } = getAdUser(
+      identity,
+      server,
+      tableColumns[AdUserTables.Memberof],
+    );
 
     setDataSet(AdUserTables.Attributes, attributes);
     setDataSet(AdUserTables.Memberof, memberof);
@@ -48,13 +61,13 @@ export default function AdUser() {
 
   return (
     <TabLayout page={page}>
-      <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+      <AdQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="User Search Results"
-        page={page}
-        tabId={tabId}
-        name={AdUserTables.Search}
+        dataSet={dataSets[AdUserTables.Search]}
+        tableState={tableStates[AdUserTables.Search]}
+        setTableState={(tableState) => setTableState(AdUserTables.Search, tableState)}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -67,13 +80,17 @@ export default function AdUser() {
           runQuery(newQuery);
         }}
       />
-
-      <Table title="Attributes" page={page} tabId={tabId} name={AdUserTables.Attributes} />
+      <Table
+        title="Attributes"
+        dataSet={dataSets[AdUserTables.Attributes]}
+        tableState={tableStates[AdUserTables.Attributes]}
+        setTableState={(tableState) => setTableState(AdUserTables.Attributes, tableState)}
+      />
       <Table
         title="Group Memberships"
-        page={page}
-        tabId={tabId}
-        name={AdUserTables.Memberof}
+        dataSet={dataSets[AdUserTables.Memberof]}
+        tableState={tableStates[AdUserTables.Memberof]}
+        setTableState={(tableState) => setTableState(AdUserTables.Memberof, tableState)}
         redirectColumn="Name"
         onRedirect={(row) => {
           redirect(Pages.AdGroup, {

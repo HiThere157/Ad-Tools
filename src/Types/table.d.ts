@@ -1,3 +1,8 @@
+type TableState = {
+  config: TableConfig;
+  preferences: TablePreferences;
+};
+
 type TableConfig = {
   isFilterOpen: boolean;
   isHighlightOpen: boolean;

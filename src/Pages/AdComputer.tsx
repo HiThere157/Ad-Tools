@@ -11,7 +11,16 @@ import Table from "../Components/Table/Table";
 export default function AdComputer() {
   const page = Pages.AdComputer;
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
+  const {
+    query,
+    dataSets,
+    tableStates,
+    tableColumns,
+    updateTab,
+    setQuery,
+    setDataSet,
+    setTableState,
+  } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
@@ -23,7 +32,7 @@ export default function AdComputer() {
       undefined,
     );
 
-    const { search } = searchAdComputers(filters, servers, columns[AdComputerTables.Search]);
+    const { search } = searchAdComputers(filters, servers, tableColumns[AdComputerTables.Search]);
 
     setDataSet(AdComputerTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
@@ -46,8 +55,8 @@ export default function AdComputer() {
     const { dns, attributes, memberof } = getAdComputer(
       identity,
       server,
-      columns[AdComputerTables.Dns],
-      columns[AdComputerTables.Memberof],
+      tableColumns[AdComputerTables.Dns],
+      tableColumns[AdComputerTables.Memberof],
     );
 
     setDataSet(AdComputerTables.Dns, dns);
@@ -60,13 +69,13 @@ export default function AdComputer() {
 
   return (
     <TabLayout page={page}>
-      <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+      <AdQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="Computer Search Results"
-        page={page}
-        tabId={tabId}
-        name={AdComputerTables.Search}
+        dataSet={dataSets[AdComputerTables.Search]}
+        tableState={tableStates[AdComputerTables.Search]}
+        setTableState={(tableState) => setTableState(AdComputerTables.Search, tableState)}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -79,13 +88,23 @@ export default function AdComputer() {
           runQuery(newQuery);
         }}
       />
-      <Table title="DNS" page={page} tabId={tabId} name={AdComputerTables.Dns} />
-      <Table title="Attributes" page={page} tabId={tabId} name={AdComputerTables.Attributes} />
+      <Table
+        title="DNS"
+        dataSet={dataSets[AdComputerTables.Dns]}
+        tableState={tableStates[AdComputerTables.Dns]}
+        setTableState={(tableState) => setTableState(AdComputerTables.Dns, tableState)}
+      />
+      <Table
+        title="Attributes"
+        dataSet={dataSets[AdComputerTables.Attributes]}
+        tableState={tableStates[AdComputerTables.Attributes]}
+        setTableState={(tableState) => setTableState(AdComputerTables.Attributes, tableState)}
+      />
       <Table
         title="Group Memberships"
-        page={page}
-        tabId={tabId}
-        name={AdComputerTables.Memberof}
+        dataSet={dataSets[AdComputerTables.Memberof]}
+        tableState={tableStates[AdComputerTables.Memberof]}
+        setTableState={(tableState) => setTableState(AdComputerTables.Memberof, tableState)}
         redirectColumn="Name"
         onRedirect={(row) => {
           redirect(Pages.AdGroup, {

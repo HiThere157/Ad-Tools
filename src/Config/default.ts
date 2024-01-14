@@ -249,6 +249,14 @@ export const defaultGlobalTablePreferences: PartialRecord<
     },
   },
   [Pages.Printers]: {
+    [PrintersTables.Search]: {
+      ...defaultTablePreferences,
+      columns: [
+        { name: "Name", label: "Name" },
+        { name: "DisplayName", label: "Display Name" },
+        { name: "_Server", label: "Server" },
+      ],
+    },
     [PrintersTables.Printers]: {
       ...defaultTablePreferences,
       columns: [

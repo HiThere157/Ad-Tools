@@ -11,7 +11,16 @@ import Table from "../Components/Table/Table";
 export default function AdGroup() {
   const page = Pages.AdGroup;
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
+  const {
+    query,
+    dataSets,
+    tableStates,
+    tableColumns,
+    updateTab,
+    setQuery,
+    setDataSet,
+    setTableState,
+  } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
@@ -23,7 +32,7 @@ export default function AdGroup() {
       undefined,
     );
 
-    const { search } = searchAdGroups(filters, servers, columns[AdGroupTables.Search]);
+    const { search } = searchAdGroups(filters, servers, tableColumns[AdGroupTables.Search]);
 
     setDataSet(AdGroupTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
@@ -43,8 +52,8 @@ export default function AdGroup() {
     const { attributes, members, memberof } = getAdGroup(
       identity,
       server,
-      columns[AdGroupTables.Members],
-      columns[AdGroupTables.Memberof],
+      tableColumns[AdGroupTables.Members],
+      tableColumns[AdGroupTables.Memberof],
     );
 
     setDataSet(AdGroupTables.Attributes, attributes);
@@ -57,13 +66,13 @@ export default function AdGroup() {
 
   return (
     <TabLayout page={page}>
-      <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+      <AdQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="Group Search Results"
-        page={page}
-        tabId={tabId}
-        name={AdGroupTables.Search}
+        dataSet={dataSets[AdGroupTables.Search]}
+        tableState={tableStates[AdGroupTables.Search]}
+        setTableState={(tableState) => setTableState(AdGroupTables.Search, tableState)}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -76,12 +85,17 @@ export default function AdGroup() {
           runQuery(newQuery);
         }}
       />
-      <Table title="Attributes" page={page} tabId={tabId} name={AdGroupTables.Attributes} />
+      <Table
+        title="Attributes"
+        dataSet={dataSets[AdGroupTables.Attributes]}
+        tableState={tableStates[AdGroupTables.Attributes]}
+        setTableState={(tableState) => setTableState(AdGroupTables.Attributes, tableState)}
+      />
       <Table
         title="Members"
-        page={page}
-        tabId={tabId}
-        name={AdGroupTables.Members}
+        dataSet={dataSets[AdGroupTables.Members]}
+        tableState={tableStates[AdGroupTables.Members]}
+        setTableState={(tableState) => setTableState(AdGroupTables.Members, tableState)}
         redirectColumn="Name"
         onRedirect={(row) => {
           redirect(Pages.AdUser, {
@@ -92,9 +106,9 @@ export default function AdGroup() {
       />
       <Table
         title="Group Memberships"
-        page={page}
-        tabId={tabId}
-        name={AdGroupTables.Memberof}
+        dataSet={dataSets[AdGroupTables.Memberof]}
+        tableState={tableStates[AdGroupTables.Memberof]}
+        setTableState={(tableState) => setTableState(AdGroupTables.Memberof, tableState)}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
           const newQuery = {

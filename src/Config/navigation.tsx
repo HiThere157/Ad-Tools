@@ -1,3 +1,5 @@
+import { Pages } from "./const";
+
 import Home from "../Pages/Home";
 import AdUser from "../Pages/AdUser";
 import AdGroup from "../Pages/AdGroup";
@@ -44,25 +46,25 @@ export const navigationLinks: NavigationLink[][] = [
       isHidden: true,
     },
     {
-      href: "/adUser",
+      href: `/${Pages.AdUser}`,
       text: "User",
       icon: <BsPersonLinesFill />,
       page: <AdUser />,
     },
     {
-      href: "/adGroup",
+      href: `/${Pages.AdGroup}`,
       text: "Group",
       icon: <BsPeopleFill />,
       page: <AdGroup />,
     },
     {
-      href: "/adComputer",
+      href: `/${Pages.AdComputer}`,
       text: "Computer",
       icon: <BsDisplay />,
       page: <AdComputer />,
     },
     {
-      href: "/adReplication",
+      href: `/${Pages.AdReplication}`,
       text: "Replication",
       icon: <BsDiagram3Fill />,
       page: <AdReplication />,
@@ -70,13 +72,13 @@ export const navigationLinks: NavigationLink[][] = [
   ],
   [
     {
-      href: "/wmi",
+      href: `/${Pages.Wmi}`,
       text: "WMI",
       icon: <BsCpu />,
       page: <WMI />,
     },
     {
-      href: "/printers",
+      href: `/${Pages.Printers}`,
       text: "Printers",
       icon: <BsPrinterFill />,
       page: <Printers />,
@@ -84,19 +86,19 @@ export const navigationLinks: NavigationLink[][] = [
   ],
   [
     {
-      href: "/azureUser",
+      href: `/${Pages.AzureUser}`,
       text: "Azure User",
       icon: <BsPersonLinesFill />,
       page: <AzureUser />,
     },
     {
-      href: "/azureGroup",
+      href: `/${Pages.AzureGroup}`,
       text: "Azure Group",
       icon: <BsPeopleFill />,
       page: <AzureGroup />,
     },
     {
-      href: "/azureDevice",
+      href: `/${Pages.AzureDevice}`,
       text: "Azure Device",
       icon: <BsLaptop />,
       page: <AzureDevice />,
@@ -104,7 +106,7 @@ export const navigationLinks: NavigationLink[][] = [
   ],
   [
     {
-      href: "/history",
+      href: `/${Pages.History}`,
       text: "History",
       icon: <BsClockHistory />,
       page: <History />,

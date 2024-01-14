@@ -1,9 +1,5 @@
 import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "../../Redux/store";
-import { setTableConfig } from "../../Redux/dataSlice";
-import { setTablePreferences } from "../../Redux/preferencesSlice";
 import { defaultTableConfig, defaultTablePreferences } from "../../Config/default";
 import { filterData, sortData, paginateData, colorData } from "../../Helper/array";
 import { stringify } from "../../Helper/string";
@@ -20,50 +16,35 @@ import TableError from "./TableError";
 
 type TableProps = {
   title: string;
-  page: string;
-  tabId: number;
-  name: string;
+  dataSet?: DataSet;
+  tableState?: TableState;
+  setTableState: (tableState: TableState) => void;
   isSearchTable?: boolean;
   redirectColumn?: string;
   onRedirect?: (row: ResultObject, newTab?: boolean) => void;
 };
 export default function Table({
   title,
-  page,
-  tabId,
-  name,
+  dataSet,
+  tableState,
+  setTableState,
   isSearchTable,
   redirectColumn,
   onRedirect,
 }: TableProps) {
-  const { tablePreferences } = useSelector((state: RootState) => state.preferences);
-  const { dataSets, tableConfigs } = useSelector((state: RootState) => state.data);
-  const dispatch = useDispatch();
+  const { data = [], error, timestamp, executionTime } = dataSet ?? {};
+  const isLoading = dataSet === null;
 
-  const keyDataSets = dataSets[page]?.[tabId]?.[name];
-  const keyTableConfigs = tableConfigs[page]?.[tabId]?.[name] ?? defaultTableConfig;
-  const keyTablePreferences = tablePreferences[page]?.[name] ?? defaultTablePreferences;
+  const { config = defaultTableConfig, preferences = defaultTablePreferences } = tableState ?? {};
+  const { isFilterOpen, isHighlightOpen, isColumnsOpen } = config;
+  const { isCollapsed, filters, sort, selected, pageIndex } = config;
+  const { pageSize, highlights, savedFilters, savedFilterName, columns } = preferences;
 
-  // Update the table config with a partial config
-  const updateKeyTableConfig = (config: Partial<TableConfig>) =>
-    dispatch(setTableConfig({ page, tabId, name, config: { ...keyTableConfigs, ...config } }));
+  const updateTableConfig = (partialConfig: Partial<TableConfig>) =>
+    setTableState({ preferences, config: { ...config, ...partialConfig } });
 
-  // Update the table preferences with a partial preferences
-  const updateKeyTablePreferences = (persistentConfig: Partial<TablePreferences>) =>
-    dispatch(
-      setTablePreferences({
-        page,
-        name,
-        preferences: { ...keyTablePreferences, ...persistentConfig },
-      }),
-    );
-
-  const { data = [], error, timestamp, executionTime } = keyDataSets ?? {};
-  const isLoading = keyDataSets === null;
-
-  const { isFilterOpen, isHighlightOpen, isColumnsOpen } = keyTableConfigs;
-  const { isCollapsed, filters, sort, selected, pageIndex } = keyTableConfigs;
-  const { pageSize, highlights, savedFilters, savedFilterName, columns } = keyTablePreferences;
+  const updateTablePreferences = (partialPreferences: Partial<TablePreferences>) =>
+    setTableState({ config, preferences: { ...preferences, ...partialPreferences } });
 
   const selectedFilter = useMemo(
     () => savedFilters?.find((filter) => filter.name === savedFilterName)?.filters ?? filters,
@@ -107,7 +88,7 @@ export default function Table({
     navigator.clipboard.writeText(csv);
   };
 
-  if (isSearchTable && keyDataSets === undefined) return null;
+  if (isSearchTable && dataSet === undefined) return null;
 
   return (
     <section className="relative mb-7 w-fit min-w-[35rem] max-w-full">
@@ -120,7 +101,7 @@ export default function Table({
           title={title}
           count={count}
           isCollapsed={isCollapsed}
-          setIsCollapsed={(isCollapsed) => updateKeyTableConfig({ isCollapsed })}
+          setIsCollapsed={(isCollapsed) => updateTableConfig({ isCollapsed })}
         />
 
         {count && count.total > 10 && !isCollapsed && (
@@ -128,8 +109,8 @@ export default function Table({
             count={count.total - count.filtered}
             pageIndex={pageIndex}
             pageSize={pageSize}
-            setPageIndex={(pageIndex) => updateKeyTableConfig({ pageIndex })}
-            setPageSize={(pageSize) => updateKeyTablePreferences({ pageSize })}
+            setPageIndex={(pageIndex) => updateTableConfig({ pageIndex })}
+            setPageSize={(pageSize) => updateTablePreferences({ pageSize })}
           />
         )}
       </div>
@@ -137,9 +118,9 @@ export default function Table({
       {!isCollapsed && (
         <div className="flex gap-1">
           <TableActions
-            onFilterMenu={() => updateKeyTableConfig({ isFilterOpen: !isFilterOpen })}
-            onHighlightMenu={() => updateKeyTableConfig({ isHighlightOpen: !isHighlightOpen })}
-            onColumnsMenu={() => updateKeyTableConfig({ isColumnsOpen: !isColumnsOpen })}
+            onFilterMenu={() => updateTableConfig({ isFilterOpen: !isFilterOpen })}
+            onHighlightMenu={() => updateTableConfig({ isHighlightOpen: !isHighlightOpen })}
+            onColumnsMenu={() => updateTableConfig({ isColumnsOpen: !isColumnsOpen })}
             onCopy={exportAsCSV}
             filters={selectedFilter}
             highlights={highlights}
@@ -150,14 +131,14 @@ export default function Table({
               <TableFilterMenu
                 columns={columns}
                 filters={selectedFilter}
-                setFilters={(filters) => updateKeyTableConfig({ filters, pageIndex: 0 })}
+                setFilters={(filters) => updateTableConfig({ filters, pageIndex: 0 })}
                 savedFilters={savedFilters}
                 setSavedFilters={(savedFilters, savedFilterName) =>
-                  updateKeyTablePreferences({ savedFilters, savedFilterName })
+                  updateTablePreferences({ savedFilters, savedFilterName })
                 }
                 savedFilterName={savedFilterName}
                 setSavedFilterName={(savedFilterName) =>
-                  updateKeyTablePreferences({ savedFilterName })
+                  updateTablePreferences({ savedFilterName })
                 }
               />
             )}
@@ -165,14 +146,14 @@ export default function Table({
             {isHighlightOpen && (
               <TableHighlightMenu
                 highlights={highlights}
-                setHighlights={(highlights) => updateKeyTablePreferences({ highlights })}
+                setHighlights={(highlights) => updateTablePreferences({ highlights })}
               />
             )}
 
             {isColumnsOpen && (
               <TableColumnMenu
                 columns={columns}
-                setColumns={(columns) => updateKeyTablePreferences({ columns })}
+                setColumns={(columns) => updateTablePreferences({ columns })}
               />
             )}
 
@@ -181,10 +162,10 @@ export default function Table({
                 data={coloredResult}
                 columns={columns}
                 sort={sort}
-                setSort={(sort) => updateKeyTableConfig({ sort })}
+                setSort={(sort) => updateTableConfig({ sort })}
                 allRowIds={data.map((row) => row.__id__) ?? []}
                 selected={selected}
-                setSelected={(selected) => updateKeyTableConfig({ selected })}
+                setSelected={(selected) => updateTableConfig({ selected })}
                 redirectColumn={redirectColumn}
                 onRedirect={onRedirect}
               />
@@ -210,8 +191,8 @@ export default function Table({
                   count={count.total - count.filtered}
                   pageIndex={pageIndex}
                   pageSize={pageSize}
-                  setPageIndex={(pageIndex) => updateKeyTableConfig({ pageIndex })}
-                  setPageSize={(pageSize) => updateKeyTablePreferences({ pageSize })}
+                  setPageIndex={(pageIndex) => updateTableConfig({ pageIndex })}
+                  setPageSize={(pageSize) => updateTablePreferences({ pageSize })}
                 />
               )}
             </div>

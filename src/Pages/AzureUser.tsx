@@ -11,7 +11,16 @@ import Table from "../Components/Table/Table";
 export default function AzureUser() {
   const page = Pages.AzureUser;
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
+  const {
+    query,
+    dataSets,
+    tableStates,
+    tableColumns,
+    updateTab,
+    setQuery,
+    setDataSet,
+    setTableState,
+  } = useTabState(page);
 
   const runSearchQuery = async (query: Query) => {
     const searchString = getFilterValue(query.filters, "Name");
@@ -23,7 +32,7 @@ export default function AzureUser() {
       undefined,
     );
 
-    const { search } = searchAzureUsers(searchString, columns[AzureUserTables.Search]);
+    const { search } = searchAzureUsers(searchString, tableColumns[AzureUserTables.Search]);
 
     setDataSet(AzureUserTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
@@ -45,8 +54,8 @@ export default function AzureUser() {
 
     const { memberof, devices } = getAzureUserDetails(
       objectId,
-      columns[AzureUserTables.Memberof],
-      columns[AzureUserTables.Devices],
+      tableColumns[AzureUserTables.Memberof],
+      tableColumns[AzureUserTables.Devices],
     );
 
     setDataSet(AzureUserTables.Attributes, attributes);
@@ -59,13 +68,13 @@ export default function AzureUser() {
 
   return (
     <TabLayout page={page}>
-      <AzureQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+      <AzureQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="User Search Results"
-        page={page}
-        tabId={tabId}
-        name={AzureUserTables.Search}
+        dataSet={dataSets[AzureUserTables.Search]}
+        tableState={tableStates[AzureUserTables.Search]}
+        setTableState={(tableState) => setTableState(AzureUserTables.Search, tableState)}
         isSearchTable={true}
         redirectColumn="UserPrincipalName"
         onRedirect={(row, newTab) => {
@@ -78,12 +87,17 @@ export default function AzureUser() {
           runQuery(newQuery);
         }}
       />
-      <Table title="Attributes" page={page} tabId={tabId} name={AzureUserTables.Attributes} />
+      <Table
+        title="Attributes"
+        dataSet={dataSets[AzureUserTables.Attributes]}
+        tableState={tableStates[AzureUserTables.Attributes]}
+        setTableState={(tableState) => setTableState(AzureUserTables.Attributes, tableState)}
+      />
       <Table
         title="Group Memberships"
-        page={page}
-        tabId={tabId}
-        name={AzureUserTables.Memberof}
+        dataSet={dataSets[AzureUserTables.Memberof]}
+        tableState={tableStates[AzureUserTables.Memberof]}
+        setTableState={(tableState) => setTableState(AzureUserTables.Memberof, tableState)}
         redirectColumn="DisplayName"
         onRedirect={(row) => {
           redirect(Pages.AzureGroup, {
@@ -94,9 +108,9 @@ export default function AzureUser() {
       />
       <Table
         title="Devices"
-        page={page}
-        tabId={tabId}
-        name={AzureUserTables.Devices}
+        dataSet={dataSets[AzureUserTables.Devices]}
+        tableState={tableStates[AzureUserTables.Devices]}
+        setTableState={(tableState) => setTableState(AzureUserTables.Devices, tableState)}
         redirectColumn="DisplayName"
         onRedirect={(row) => {
           redirect(Pages.AzureDevice, {

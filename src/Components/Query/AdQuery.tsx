@@ -1,8 +1,7 @@
-import { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
-import { setQuery } from "../../Redux/dataSlice";
 import { defaultQuery, defaultQueryFilter } from "../../Config/default";
 
 import Button from "../Button";
@@ -15,25 +14,18 @@ import { BsPlusLg } from "react-icons/bs";
 import { getFilterValue } from "../../Helper/utils";
 
 type AdQueryProps = {
-  page: string;
-  tabId: number;
+  query: Query;
+  setQuery: (query: Query) => void;
   onSubmit: () => void;
 };
-export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
-  const { query } = useSelector((state: RootState) => state.data);
+export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
   const { queryDomains } = useSelector((state: RootState) => state.preferences);
-  const dispatch = useDispatch();
 
-  const tabQuery = query[page]?.[tabId] ?? defaultQuery;
-  const { isAdvanced, filters, servers } = tabQuery;
+  const { isAdvanced, filters, servers } = query;
 
-  // Update the query with a partial query
-  const updateTabQuery = useCallback(
-    (query: Partial<Query>) => {
-      dispatch(setQuery({ page, tabId, query: { ...tabQuery, ...query } }));
-    },
-    [dispatch, page, tabId, tabQuery],
-  );
+  const updateQuery = (partialQuery: Partial<Query>) => {
+    setQuery({ ...query, ...partialQuery });
+  };
 
   // We only want to submit if the query is somewhat valid
   const beforeSubmit = () => {
@@ -50,15 +42,15 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
 
   // If there are no filters, set the default filter
   useEffect(() => {
-    if (filters.length === 0) updateTabQuery({ filters: [defaultQueryFilter] });
+    if (filters.length === 0) updateQuery({ filters: [defaultQueryFilter] });
   });
 
   // Set default server for ad queries if there are queryDomains and the query is the default query
   useEffect(() => {
-    if (tabId !== 0 && tabQuery === defaultQuery && queryDomains.length > 0) {
-      updateTabQuery({ servers: [queryDomains[0]] });
+    if (query === defaultQuery && queryDomains.length > 0) {
+      updateQuery({ servers: [queryDomains[0]] });
     }
-  }, [queryDomains, tabQuery, tabId, updateTabQuery]);
+  }, [queryDomains, query, updateQuery]);
 
   return (
     <div className={"m-1.5 mb-4 flex gap-1 " + (isAdvanced ? "flex-col" : "")}>
@@ -75,10 +67,10 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
                   setFilter={(filter) => {
                     const newFilters = [...filters];
                     newFilters[filterIndex] = filter;
-                    updateTabQuery({ filters: newFilters });
+                    updateQuery({ filters: newFilters });
                   }}
                   onRemoveFilter={() =>
-                    updateTabQuery({ filters: filters.filter((_, i) => i !== filterIndex) })
+                    updateQuery({ filters: filters.filter((_, i) => i !== filterIndex) })
                   }
                   onSubmit={beforeSubmit}
                 />
@@ -87,7 +79,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
 
             <Button
               className="p-1"
-              onClick={() => updateTabQuery({ filters: [...filters, defaultQueryFilter] })}
+              onClick={() => updateQuery({ filters: [...filters, defaultQueryFilter] })}
             >
               <BsPlusLg />
             </Button>
@@ -100,7 +92,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
           <Input
             value={getFilterValue(filters, "Name")}
             onChange={(name) => {
-              updateTabQuery({ filters: [{ property: "Name", value: name }] });
+              updateQuery({ filters: [{ property: "Name", value: name }] });
             }}
             autoFocus={true}
             onEnter={beforeSubmit}
@@ -119,7 +111,7 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
           <MultiDropdown
             items={queryDomains}
             value={servers}
-            onChange={(servers) => updateTabQuery({ servers })}
+            onChange={(servers) => updateQuery({ servers })}
           />
         </div>
 
@@ -134,13 +126,13 @@ export default function AdQuery({ page, tabId, onSubmit }: AdQueryProps) {
                 // If no name filter exists, add one
                 if (!isAdvanced) {
                   const nameFilter = filters.find(({ property }) => property === "Name");
-                  updateTabQuery({
+                  updateQuery({
                     isAdvanced,
                     filters: nameFilter ? [nameFilter] : [{ property: "Name", value: "" }],
                     servers,
                   });
                 } else {
-                  updateTabQuery({ isAdvanced });
+                  updateQuery({ isAdvanced });
                 }
               }}
             />

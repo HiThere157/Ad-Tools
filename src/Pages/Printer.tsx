@@ -12,7 +12,16 @@ import Table from "../Components/Table/Table";
 export default function Printers() {
   const page = Pages.Printers;
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
+  const {
+    query,
+    dataSets,
+    tableStates,
+    tableColumns,
+    updateTab,
+    setQuery,
+    setDataSet,
+    setTableState,
+  } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
@@ -21,7 +30,7 @@ export default function Printers() {
     setDataSet(PrintersTables.Search, null);
     setDataSet(PrintersTables.Printers, undefined);
 
-    const { search } = searchAdComputers(filters, servers, columns[PrintersTables.Search]);
+    const { search } = searchAdComputers(filters, servers, tableColumns[PrintersTables.Search]);
 
     setDataSet(PrintersTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
@@ -38,7 +47,7 @@ export default function Printers() {
     if (resetSearch) setDataSet(PrintersTables.Search, undefined);
     setDataSet(PrintersTables.Printers, null);
 
-    const { printers } = getPrinters(identity, server, columns.printers);
+    const { printers } = getPrinters(identity, server, tableColumns[PrintersTables.Printers]);
 
     setDataSet(PrintersTables.Printers, printers);
     printers.then(() => updateTab({ icon: "printer" }));
@@ -48,13 +57,13 @@ export default function Printers() {
 
   return (
     <TabLayout page={page}>
-      <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+      <AdQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="Computer Search Results"
-        page={page}
-        tabId={tabId}
-        name={PrintersTables.Search}
+        dataSet={dataSets[PrintersTables.Search]}
+        tableState={tableStates[PrintersTables.Search]}
+        setTableState={(state) => setTableState(PrintersTables.Search, state)}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -67,7 +76,12 @@ export default function Printers() {
           runQuery(newQuery);
         }}
       />
-      <Table title="Printers" page={page} tabId={tabId} name={PrintersTables.Printers} />
+      <Table
+        title="Printers"
+        dataSet={dataSets[PrintersTables.Printers]}
+        tableState={tableStates[PrintersTables.Printers]}
+        setTableState={(state) => setTableState(PrintersTables.Printers, state)}
+      />
     </TabLayout>
   );
 }

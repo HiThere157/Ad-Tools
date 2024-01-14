@@ -11,7 +11,16 @@ import Table from "../Components/Table/Table";
 export default function AzureDevice() {
   const page = Pages.AzureDevice;
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
+  const {
+    query,
+    dataSets,
+    tableStates,
+    tableColumns,
+    updateTab,
+    setQuery,
+    setDataSet,
+    setTableState,
+  } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const searchString = getFilterValue(query.filters, "Name");
@@ -20,7 +29,7 @@ export default function AzureDevice() {
     setDataSet(AzureDeviceTables.Search, null);
     setDataSet(AzureDeviceTables.Attributes, undefined);
 
-    const { search } = searchAzureDevices(searchString, columns[AzureDeviceTables.Search]);
+    const { search } = searchAzureDevices(searchString, tableColumns[AzureDeviceTables.Search]);
 
     setDataSet(AzureDeviceTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
@@ -47,13 +56,13 @@ export default function AzureDevice() {
 
   return (
     <TabLayout page={page}>
-      <AzureQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+      <AzureQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="Device Search Results"
-        page={page}
-        tabId={tabId}
-        name={AzureDeviceTables.Search}
+        dataSet={dataSets[AzureDeviceTables.Search]}
+        tableState={tableStates[AzureDeviceTables.Search]}
+        setTableState={(state) => setTableState(AzureDeviceTables.Search, state)}
         isSearchTable={true}
         redirectColumn="DisplayName"
         onRedirect={(row, newTab) => {
@@ -66,7 +75,12 @@ export default function AzureDevice() {
           runQuery(newQuery);
         }}
       />
-      <Table title="Attributes" page={page} tabId={tabId} name={AzureDeviceTables.Attributes} />
+      <Table
+        title="Attributes"
+        dataSet={dataSets[AzureDeviceTables.Attributes]}
+        tableState={tableStates[AzureDeviceTables.Attributes]}
+        setTableState={(state) => setTableState(AzureDeviceTables.Attributes, state)}
+      />
     </TabLayout>
   );
 }

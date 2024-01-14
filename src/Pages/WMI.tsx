@@ -12,7 +12,16 @@ import Table from "../Components/Table/Table";
 export default function Printers() {
   const page = Pages.Wmi;
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
+  const {
+    query,
+    dataSets,
+    tableStates,
+    tableColumns,
+    updateTab,
+    setQuery,
+    setDataSet,
+    setTableState,
+  } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const { filters, servers } = query;
@@ -24,7 +33,7 @@ export default function Printers() {
       undefined,
     );
 
-    const { search } = searchAdComputers(filters, servers, columns[WmiTables.Search]);
+    const { search } = searchAdComputers(filters, servers, tableColumns[WmiTables.Search]);
 
     setDataSet(WmiTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
@@ -44,9 +53,9 @@ export default function Printers() {
     const { monitors, sysinfo, software, bios } = getWmiInfo(
       identity,
       server,
-      columns[WmiTables.Monitors],
-      columns[WmiTables.Software],
-      columns[WmiTables.Bios],
+      tableColumns[WmiTables.Monitors],
+      tableColumns[WmiTables.Software],
+      tableColumns[WmiTables.Bios],
     );
 
     setDataSet(WmiTables.Monitors, monitors);
@@ -60,13 +69,13 @@ export default function Printers() {
 
   return (
     <TabLayout page={page}>
-      <AdQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+      <AdQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="Computer Search Results"
-        page={page}
-        tabId={tabId}
-        name={WmiTables.Search}
+        dataSet={dataSets[WmiTables.Search]}
+        tableState={tableStates[WmiTables.Search]}
+        setTableState={(tableState) => setTableState(WmiTables.Search, tableState)}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -79,10 +88,30 @@ export default function Printers() {
           runQuery(newQuery);
         }}
       />
-      <Table title="Monitors" page={page} tabId={tabId} name={WmiTables.Monitors} />
-      <Table title="Sysinfo" page={page} tabId={tabId} name={WmiTables.Sysinfo} />
-      <Table title="Software" page={page} tabId={tabId} name={WmiTables.Software} />
-      <Table title="BIOS" page={page} tabId={tabId} name={WmiTables.Bios} />
+      <Table
+        title="Monitors"
+        dataSet={dataSets[WmiTables.Monitors]}
+        tableState={tableStates[WmiTables.Monitors]}
+        setTableState={(tableState) => setTableState(WmiTables.Monitors, tableState)}
+      />
+      <Table
+        title="Sysinfo"
+        dataSet={dataSets[WmiTables.Sysinfo]}
+        tableState={tableStates[WmiTables.Sysinfo]}
+        setTableState={(tableState) => setTableState(WmiTables.Sysinfo, tableState)}
+      />
+      <Table
+        title="Software"
+        dataSet={dataSets[WmiTables.Software]}
+        tableState={tableStates[WmiTables.Software]}
+        setTableState={(tableState) => setTableState(WmiTables.Software, tableState)}
+      />
+      <Table
+        title="BIOS"
+        dataSet={dataSets[WmiTables.Bios]}
+        tableState={tableStates[WmiTables.Bios]}
+        setTableState={(tableState) => setTableState(WmiTables.Bios, tableState)}
+      />
     </TabLayout>
   );
 }

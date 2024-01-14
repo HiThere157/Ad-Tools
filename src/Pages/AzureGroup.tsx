@@ -11,7 +11,16 @@ import Table from "../Components/Table/Table";
 export default function AzureGroup() {
   const page = Pages.AzureGroup;
   const { redirect, useOnRedirect } = useRedirect();
-  const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
+  const {
+    query,
+    dataSets,
+    tableStates,
+    tableColumns,
+    updateTab,
+    setQuery,
+    setDataSet,
+    setTableState,
+  } = useTabState(page);
 
   const runSearchQuery = (query: Query) => {
     const searchString = getFilterValue(query.filters, "Name");
@@ -20,7 +29,7 @@ export default function AzureGroup() {
     setDataSet(AzureGroupTables.Search, null);
     setDataSet([AzureGroupTables.Attributes, AzureGroupTables.Members], undefined);
 
-    const { search } = searchAzureGroups(searchString, columns[AzureGroupTables.Search]);
+    const { search } = searchAzureGroups(searchString, tableColumns[AzureGroupTables.Search]);
 
     setDataSet(AzureGroupTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
@@ -37,7 +46,7 @@ export default function AzureGroup() {
     const objectId = await getAzureGroupId(displayName);
     if (!objectId) return runSearchQuery(query);
 
-    const { attributes, members } = getAzureGroup(objectId, columns[AzureGroupTables.Members]);
+    const { attributes, members } = getAzureGroup(objectId, tableColumns[AzureGroupTables.Members]);
 
     setDataSet(AzureGroupTables.Attributes, attributes);
     setDataSet(AzureGroupTables.Members, members);
@@ -48,13 +57,13 @@ export default function AzureGroup() {
 
   return (
     <TabLayout page={page}>
-      <AzureQuery page={page} tabId={tabId} onSubmit={() => runQuery(query, true)} />
+      <AzureQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table
         title="Group Search Results"
-        page={page}
-        tabId={tabId}
-        name={AzureGroupTables.Search}
+        dataSet={dataSets[AzureGroupTables.Search]}
+        tableState={tableStates[AzureGroupTables.Search]}
+        setTableState={(state) => setTableState(AzureGroupTables.Search, state)}
         isSearchTable={true}
         redirectColumn="DisplayName"
         onRedirect={(row, newTab) => {
@@ -67,12 +76,17 @@ export default function AzureGroup() {
           runQuery(newQuery);
         }}
       />
-      <Table title="Attributes" page={page} tabId={tabId} name={AzureGroupTables.Attributes} />
+      <Table
+        title="Attributes"
+        dataSet={dataSets[AzureGroupTables.Attributes]}
+        tableState={tableStates[AzureGroupTables.Attributes]}
+        setTableState={(state) => setTableState(AzureGroupTables.Attributes, state)}
+      />
       <Table
         title="Members"
-        page={page}
-        tabId={tabId}
-        name={AzureGroupTables.Members}
+        dataSet={dataSets[AzureGroupTables.Members]}
+        tableState={tableStates[AzureGroupTables.Members]}
+        setTableState={(state) => setTableState(AzureGroupTables.Members, state)}
         redirectColumn="UserPrincipalName"
         onRedirect={(row) => {
           redirect(Pages.AzureUser, {
