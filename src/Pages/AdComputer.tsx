@@ -1,3 +1,4 @@
+import { AdComputerTables, Pages } from "../Config/const";
 import { searchAdComputers, getAdComputer } from "../Api/adComputer";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
@@ -8,7 +9,7 @@ import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 
 export default function AdComputer() {
-  const page = "adComputer";
+  const page = Pages.AdComputer;
   const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
@@ -16,12 +17,15 @@ export default function AdComputer() {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setDataSet("search", null);
-    setDataSet(["dns", "attributes", "memberof"], undefined);
+    setDataSet(AdComputerTables.Search, null);
+    setDataSet(
+      [AdComputerTables.Dns, AdComputerTables.Attributes, AdComputerTables.Memberof],
+      undefined,
+    );
 
-    const { search } = searchAdComputers(filters, servers, columns.search);
+    const { search } = searchAdComputers(filters, servers, columns[AdComputerTables.Search]);
 
-    setDataSet("search", search);
+    setDataSet(AdComputerTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
   };
 
@@ -33,19 +37,22 @@ export default function AdComputer() {
     const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "User" });
-    if (resetSearch) setDataSet("search", undefined);
-    setDataSet(["dns", "attributes", "memberof"], null);
+    if (resetSearch) setDataSet(AdComputerTables.Search, undefined);
+    setDataSet(
+      [AdComputerTables.Dns, AdComputerTables.Attributes, AdComputerTables.Memberof],
+      null,
+    );
 
     const { dns, attributes, memberof } = getAdComputer(
       identity,
       server,
-      columns.dns,
-      columns.memberof,
+      columns[AdComputerTables.Dns],
+      columns[AdComputerTables.Memberof],
     );
 
-    setDataSet("dns", dns);
-    setDataSet("attributes", attributes);
-    setDataSet("memberof", memberof);
+    setDataSet(AdComputerTables.Dns, dns);
+    setDataSet(AdComputerTables.Attributes, attributes);
+    setDataSet(AdComputerTables.Memberof, memberof);
     Promise.all([dns, attributes, memberof]).then(() => updateTab({ icon: "computer" }));
   };
 
@@ -59,7 +66,7 @@ export default function AdComputer() {
         title="Computer Search Results"
         page={page}
         tabId={tabId}
-        name="search"
+        name={AdComputerTables.Search}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -72,16 +79,16 @@ export default function AdComputer() {
           runQuery(newQuery);
         }}
       />
-      <Table title="DNS" page={page} tabId={tabId} name="dns" />
-      <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
+      <Table title="DNS" page={page} tabId={tabId} name={AdComputerTables.Dns} />
+      <Table title="Attributes" page={page} tabId={tabId} name={AdComputerTables.Attributes} />
       <Table
         title="Group Memberships"
         page={page}
         tabId={tabId}
-        name="memberof"
+        name={AdComputerTables.Memberof}
         redirectColumn="Name"
         onRedirect={(row) => {
-          redirect("adGroup", {
+          redirect(Pages.AdGroup, {
             filters: [{ property: "Name", value: row.Name ?? "" }],
             servers: [row._Server],
           });

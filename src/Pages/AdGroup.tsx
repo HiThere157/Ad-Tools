@@ -1,3 +1,4 @@
+import { AdGroupTables, Pages } from "../Config/const";
 import { searchAdGroups, getAdGroup } from "../Api/adGroup";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
@@ -8,7 +9,7 @@ import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 
 export default function AdGroup() {
-  const page = "adGroup";
+  const page = Pages.AdGroup;
   const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
@@ -16,12 +17,15 @@ export default function AdGroup() {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setDataSet("search", null);
-    setDataSet(["attributes", "members", "memberof"], undefined);
+    setDataSet(AdGroupTables.Search, null);
+    setDataSet(
+      [AdGroupTables.Attributes, AdGroupTables.Members, AdGroupTables.Memberof],
+      undefined,
+    );
 
-    const { search } = searchAdGroups(filters, servers, columns.search);
+    const { search } = searchAdGroups(filters, servers, columns[AdGroupTables.Search]);
 
-    setDataSet("search", search);
+    setDataSet(AdGroupTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
   };
 
@@ -33,19 +37,19 @@ export default function AdGroup() {
     const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "Group" });
-    if (resetSearch) setDataSet("search", undefined);
-    setDataSet(["attributes", "members", "memberof"], null);
+    if (resetSearch) setDataSet(AdGroupTables.Search, undefined);
+    setDataSet([AdGroupTables.Attributes, AdGroupTables.Members, AdGroupTables.Memberof], null);
 
     const { attributes, members, memberof } = getAdGroup(
       identity,
       server,
-      columns.members,
-      columns.memberof,
+      columns[AdGroupTables.Members],
+      columns[AdGroupTables.Memberof],
     );
 
-    setDataSet("attributes", attributes);
-    setDataSet("members", members);
-    setDataSet("memberof", memberof);
+    setDataSet(AdGroupTables.Attributes, attributes);
+    setDataSet(AdGroupTables.Members, members);
+    setDataSet(AdGroupTables.Memberof, memberof);
     Promise.all([attributes, members, memberof]).then(() => updateTab({ icon: "group" }));
   };
 
@@ -59,7 +63,7 @@ export default function AdGroup() {
         title="Group Search Results"
         page={page}
         tabId={tabId}
-        name="search"
+        name={AdGroupTables.Search}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -72,15 +76,15 @@ export default function AdGroup() {
           runQuery(newQuery);
         }}
       />
-      <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
+      <Table title="Attributes" page={page} tabId={tabId} name={AdGroupTables.Attributes} />
       <Table
         title="Members"
         page={page}
         tabId={tabId}
-        name="members"
+        name={AdGroupTables.Members}
         redirectColumn="Name"
         onRedirect={(row) => {
-          redirect("adUser", {
+          redirect(Pages.AdUser, {
             filters: [{ property: "Name", value: row.Name ?? "" }],
             servers: [row._Server],
           });
@@ -90,7 +94,7 @@ export default function AdGroup() {
         title="Group Memberships"
         page={page}
         tabId={tabId}
-        name="memberof"
+        name={AdGroupTables.Memberof}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
           const newQuery = {
@@ -98,11 +102,8 @@ export default function AdGroup() {
             servers: [row._Server],
           };
 
-          if (newTab) {
-            redirect(page, newQuery);
-          } else {
-            runQuery(newQuery);
-          }
+          if (newTab) return redirect(page, newQuery);
+          runQuery(newQuery);
         }}
       />
     </TabLayout>

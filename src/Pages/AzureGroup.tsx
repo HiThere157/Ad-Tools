@@ -1,3 +1,4 @@
+import { AzureGroupTables, Pages } from "../Config/const";
 import { searchAzureGroups, getAzureGroup, getAzureGroupId } from "../Api/azureGroup";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
@@ -8,7 +9,7 @@ import AzureQuery from "../Components/Query/AzureQuery";
 import Table from "../Components/Table/Table";
 
 export default function AzureGroup() {
-  const page = "azureGroup";
+  const page = Pages.AzureGroup;
   const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
@@ -16,12 +17,12 @@ export default function AzureGroup() {
     const searchString = getFilterValue(query.filters, "Name");
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setDataSet("search", null);
-    setDataSet(["attributes", "members"], undefined);
+    setDataSet(AzureGroupTables.Search, null);
+    setDataSet([AzureGroupTables.Attributes, AzureGroupTables.Members], undefined);
 
-    const { search } = searchAzureGroups(searchString, columns.search);
+    const { search } = searchAzureGroups(searchString, columns[AzureGroupTables.Search]);
 
-    setDataSet("search", search);
+    setDataSet(AzureGroupTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
   };
 
@@ -29,17 +30,17 @@ export default function AzureGroup() {
     const displayName = getFilterValue(query.filters, "Name");
 
     updateTab({ icon: "loading", title: displayName || "Azure Group" });
-    if (resetSearch) setDataSet("search", undefined);
-    setDataSet(["attributes", "members"], null);
+    if (resetSearch) setDataSet(AzureGroupTables.Search, undefined);
+    setDataSet([AzureGroupTables.Attributes, AzureGroupTables.Members], null);
 
     // We need to test if we should run a pre-query or not by checking if the object exists.
     const objectId = await getAzureGroupId(displayName);
     if (!objectId) return runSearchQuery(query);
 
-    const { attributes, members } = getAzureGroup(objectId, columns.members);
+    const { attributes, members } = getAzureGroup(objectId, columns[AzureGroupTables.Members]);
 
-    setDataSet("attributes", attributes);
-    setDataSet("members", members);
+    setDataSet(AzureGroupTables.Attributes, attributes);
+    setDataSet(AzureGroupTables.Members, members);
     Promise.all([attributes, members]).then(() => updateTab({ icon: "group" }));
   };
 
@@ -53,7 +54,7 @@ export default function AzureGroup() {
         title="Group Search Results"
         page={page}
         tabId={tabId}
-        name="search"
+        name={AzureGroupTables.Search}
         isSearchTable={true}
         redirectColumn="DisplayName"
         onRedirect={(row, newTab) => {
@@ -66,15 +67,15 @@ export default function AzureGroup() {
           runQuery(newQuery);
         }}
       />
-      <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
+      <Table title="Attributes" page={page} tabId={tabId} name={AzureGroupTables.Attributes} />
       <Table
         title="Members"
         page={page}
         tabId={tabId}
-        name="members"
+        name={AzureGroupTables.Members}
         redirectColumn="UserPrincipalName"
         onRedirect={(row) => {
-          redirect("azureUser", {
+          redirect(Pages.AzureUser, {
             filters: [{ property: "Name", value: row.UserPrincipalName ?? "" }],
             servers: [],
           });

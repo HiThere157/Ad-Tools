@@ -28,8 +28,8 @@ type RemoveTabAction = {
 const tabsSlice = createSlice({
   name: "tabs",
   initialState: {
-    activeTab: {} as PageStorage<number>,
-    tabs: {} as PageStorage<Tab[]>,
+    activeTab: {} as PartialRecord<string, number>,
+    tabs: {} as PartialRecord<string, Tab[]>,
   },
   reducers: {
     setActiveTab: (state, action: PayloadAction<SetActiveTabAction>) => {

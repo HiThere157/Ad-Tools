@@ -1,3 +1,4 @@
+import { Pages, WmiTables } from "../Config/const";
 import { searchAdComputers } from "../Api/adComputer";
 import { getWmiInfo } from "../Api/wmi";
 import { useRedirect } from "../Hooks/useRedirect";
@@ -9,7 +10,7 @@ import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 
 export default function Printers() {
-  const page = "wmi";
+  const page = Pages.Wmi;
   const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
@@ -17,12 +18,15 @@ export default function Printers() {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setDataSet("search", null);
-    setDataSet(["monitors", "sysinfo", "software", "bios"], undefined);
+    setDataSet(WmiTables.Search, null);
+    setDataSet(
+      [WmiTables.Monitors, WmiTables.Sysinfo, WmiTables.Software, WmiTables.Bios],
+      undefined,
+    );
 
-    const { search } = searchAdComputers(filters, servers, columns.search);
+    const { search } = searchAdComputers(filters, servers, columns[WmiTables.Search]);
 
-    setDataSet("search", search);
+    setDataSet(WmiTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
   };
 
@@ -34,21 +38,21 @@ export default function Printers() {
     const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "WMI" });
-    if (resetSearch) setDataSet("search", undefined);
-    setDataSet(["monitors", "sysinfo", "software", "bios"], null);
+    if (resetSearch) setDataSet(WmiTables.Search, undefined);
+    setDataSet([WmiTables.Monitors, WmiTables.Sysinfo, WmiTables.Software, WmiTables.Bios], null);
 
     const { monitors, sysinfo, software, bios } = getWmiInfo(
       identity,
       server,
-      columns.monitors,
-      columns.software,
-      columns.bios,
+      columns[WmiTables.Monitors],
+      columns[WmiTables.Software],
+      columns[WmiTables.Bios],
     );
 
-    setDataSet("monitors", monitors);
-    setDataSet("sysinfo", sysinfo);
-    setDataSet("software", software);
-    setDataSet("bios", bios);
+    setDataSet(WmiTables.Monitors, monitors);
+    setDataSet(WmiTables.Sysinfo, sysinfo);
+    setDataSet(WmiTables.Software, software);
+    setDataSet(WmiTables.Bios, bios);
     Promise.all([monitors, sysinfo, software, bios]).then(() => updateTab({ icon: "wmi" }));
   };
 
@@ -62,7 +66,7 @@ export default function Printers() {
         title="Computer Search Results"
         page={page}
         tabId={tabId}
-        name="search"
+        name={WmiTables.Search}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -75,10 +79,10 @@ export default function Printers() {
           runQuery(newQuery);
         }}
       />
-      <Table title="Monitors" page={page} tabId={tabId} name="monitors" />
-      <Table title="Sysinfo" page={page} tabId={tabId} name="sysinfo" />
-      <Table title="Software" page={page} tabId={tabId} name="software" />
-      <Table title="BIOS" page={page} tabId={tabId} name="bios" />
+      <Table title="Monitors" page={page} tabId={tabId} name={WmiTables.Monitors} />
+      <Table title="Sysinfo" page={page} tabId={tabId} name={WmiTables.Sysinfo} />
+      <Table title="Software" page={page} tabId={tabId} name={WmiTables.Software} />
+      <Table title="BIOS" page={page} tabId={tabId} name={WmiTables.Bios} />
     </TabLayout>
   );
 }

@@ -1,3 +1,4 @@
+import { AdReplicationTables, Pages } from "../Config/const";
 import { getAdReplication } from "../Api/adReplication";
 import { searchAdObjects } from "../Api/adObject";
 import { useRedirect } from "../Hooks/useRedirect";
@@ -9,7 +10,7 @@ import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 
 export default function AdReplication() {
-  const page = "adReplication";
+  const page = Pages.AdReplication;
   const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
@@ -17,12 +18,12 @@ export default function AdReplication() {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setDataSet("search", null);
-    setDataSet("attributes", undefined);
+    setDataSet(AdReplicationTables.Search, null);
+    setDataSet(AdReplicationTables.Attributes, undefined);
 
-    const { search } = searchAdObjects(filters, servers, columns.search);
+    const { search } = searchAdObjects(filters, servers, columns[AdReplicationTables.Search]);
 
-    setDataSet("search", search);
+    setDataSet(AdReplicationTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
   };
 
@@ -34,12 +35,12 @@ export default function AdReplication() {
     const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "User" });
-    if (resetSearch) setDataSet("search", undefined);
-    setDataSet("attributes", null);
+    if (resetSearch) setDataSet(AdReplicationTables.Search, undefined);
+    setDataSet(AdReplicationTables.Attributes, null);
 
     const { attributes } = getAdReplication(identity, server, columns.attributes);
 
-    setDataSet("attributes", attributes);
+    setDataSet(AdReplicationTables.Attributes, attributes);
     attributes.then(() => updateTab({ icon: "replication" }));
   };
 
@@ -53,7 +54,7 @@ export default function AdReplication() {
         title="Object Search Results"
         page={page}
         tabId={tabId}
-        name="search"
+        name={AdReplicationTables.Search}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -67,7 +68,12 @@ export default function AdReplication() {
         }}
       />
 
-      <Table title="Replication Attributes" page={page} tabId={tabId} name="attributes" />
+      <Table
+        title="Replication Attributes"
+        page={page}
+        tabId={tabId}
+        name={AdReplicationTables.Attributes}
+      />
     </TabLayout>
   );
 }

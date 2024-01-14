@@ -1,3 +1,4 @@
+import { Pages, PrintersTables } from "../Config/const";
 import { searchAdComputers } from "../Api/adComputer";
 import { getPrinters } from "../Api/printers";
 import { useRedirect } from "../Hooks/useRedirect";
@@ -9,7 +10,7 @@ import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 
 export default function Printers() {
-  const page = "printers";
+  const page = Pages.Printers;
   const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
@@ -17,12 +18,12 @@ export default function Printers() {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setDataSet("search", null);
-    setDataSet("printers", undefined);
+    setDataSet(PrintersTables.Search, null);
+    setDataSet(PrintersTables.Printers, undefined);
 
-    const { search } = searchAdComputers(filters, servers, columns.search);
+    const { search } = searchAdComputers(filters, servers, columns[PrintersTables.Search]);
 
-    setDataSet("search", search);
+    setDataSet(PrintersTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
   };
 
@@ -34,12 +35,12 @@ export default function Printers() {
     const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "Printers" });
-    if (resetSearch) setDataSet("search", undefined);
-    setDataSet("printers", null);
+    if (resetSearch) setDataSet(PrintersTables.Search, undefined);
+    setDataSet(PrintersTables.Printers, null);
 
     const { printers } = getPrinters(identity, server, columns.printers);
 
-    setDataSet("printers", printers);
+    setDataSet(PrintersTables.Printers, printers);
     printers.then(() => updateTab({ icon: "printer" }));
   };
 
@@ -53,7 +54,7 @@ export default function Printers() {
         title="Computer Search Results"
         page={page}
         tabId={tabId}
-        name="search"
+        name={PrintersTables.Search}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -66,7 +67,7 @@ export default function Printers() {
           runQuery(newQuery);
         }}
       />
-      <Table title="Printers" page={page} tabId={tabId} name="printers" />
+      <Table title="Printers" page={page} tabId={tabId} name={PrintersTables.Printers} />
     </TabLayout>
   );
 }

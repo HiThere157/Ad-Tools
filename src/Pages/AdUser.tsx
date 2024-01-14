@@ -1,3 +1,4 @@
+import { AdUserTables, Pages } from "../Config/const";
 import { searchAdUsers, getAdUser } from "../Api/adUser";
 import { useRedirect } from "../Hooks/useRedirect";
 import { useTabState } from "../Hooks/useTabState";
@@ -8,7 +9,7 @@ import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 
 export default function AdUser() {
-  const page = "adUser";
+  const page = Pages.AdUser;
   const { redirect, useOnRedirect } = useRedirect();
   const { tabId, query, columns, updateTab, setDataSet } = useTabState(page);
 
@@ -16,12 +17,12 @@ export default function AdUser() {
     const { filters, servers } = query;
 
     updateTab({ icon: "loading", title: "Search Results" });
-    setDataSet("search", null);
-    setDataSet(["attributes", "memberof"], undefined);
+    setDataSet(AdUserTables.Search, null);
+    setDataSet([AdUserTables.Attributes, AdUserTables.Memberof], undefined);
 
-    const { search } = searchAdUsers(filters, servers, columns.search);
+    const { search } = searchAdUsers(filters, servers, columns[AdUserTables.Search]);
 
-    setDataSet("search", search);
+    setDataSet(AdUserTables.Search, search);
     search.then(() => updateTab({ icon: "search" }));
   };
 
@@ -33,13 +34,13 @@ export default function AdUser() {
     const server = query.servers[0];
 
     updateTab({ icon: "loading", title: identity || "User" });
-    if (resetSearch) setDataSet("search", undefined);
-    setDataSet(["attributes", "memberof"], null);
+    if (resetSearch) setDataSet(AdUserTables.Search, undefined);
+    setDataSet([AdUserTables.Attributes, AdUserTables.Memberof], null);
 
     const { attributes, memberof } = getAdUser(identity, server, columns.memberof);
 
-    setDataSet("attributes", attributes);
-    setDataSet("memberof", memberof);
+    setDataSet(AdUserTables.Attributes, attributes);
+    setDataSet(AdUserTables.Memberof, memberof);
     Promise.all([attributes, memberof]).then(() => updateTab({ icon: "user" }));
   };
 
@@ -53,7 +54,7 @@ export default function AdUser() {
         title="User Search Results"
         page={page}
         tabId={tabId}
-        name="search"
+        name={AdUserTables.Search}
         isSearchTable={true}
         redirectColumn="Name"
         onRedirect={(row, newTab) => {
@@ -67,15 +68,15 @@ export default function AdUser() {
         }}
       />
 
-      <Table title="Attributes" page={page} tabId={tabId} name="attributes" />
+      <Table title="Attributes" page={page} tabId={tabId} name={AdUserTables.Attributes} />
       <Table
         title="Group Memberships"
         page={page}
         tabId={tabId}
-        name="memberof"
+        name={AdUserTables.Memberof}
         redirectColumn="Name"
         onRedirect={(row) => {
-          redirect("adGroup", {
+          redirect(Pages.AdGroup, {
             filters: [{ property: "Name", value: row.Name ?? "" }],
             servers: [row._Server],
           });

@@ -27,9 +27,12 @@ type RemoveTabDataAction = {
 const dataSlice = createSlice({
   name: "data",
   initialState: {
-    query: {} as TabStorage<Query>,
-    dataSets: {} as TabStorage<PartialRecord<string, DataSet>>,
-    tableConfigs: {} as TabStorage<PartialRecord<string, TableConfig>>,
+    query: {} as PartialRecord<string, PartialRecord<number, Query>>,
+    dataSets: {} as PartialRecord<string, PartialRecord<number, PartialRecord<string, DataSet>>>,
+    tableConfigs: {} as PartialRecord<
+      string,
+      PartialRecord<number, PartialRecord<string, TableConfig>>
+    >,
   },
   reducers: {
     setQuery: (state, action: PayloadAction<SetQueryAction>) => {

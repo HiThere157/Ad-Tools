@@ -1,3 +1,17 @@
+import {
+  AdComputerTables,
+  AdGroupTables,
+  AdReplicationTables,
+  AdUserTables,
+  AzureDeviceTables,
+  AzureGroupTables,
+  AzureUserTables,
+  HistoryTables,
+  Pages,
+  PrintersTables,
+  WmiTables,
+} from "./const";
+
 export const defaultTab: Tab = {
   id: 0,
   title: "New Tab",
@@ -58,9 +72,12 @@ export const defaultTablePreferences: TablePreferences = {
   columns: [],
 };
 
-export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, TablePreferences>> = {
-  adUser: {
-    search: {
+export const defaultGlobalTablePreferences: PartialRecord<
+  string,
+  PartialRecord<string, TablePreferences>
+> = {
+  [Pages.AdUser]: {
+    [AdUserTables.Search]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -68,7 +85,7 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "_Server", label: "Server" },
       ],
     },
-    attributes: {
+    [AdUserTables.Attributes]: {
       pageSize: -1,
       highlights: [
         {
@@ -94,7 +111,7 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "value", label: "Value" },
       ],
     },
-    memberof: {
+    [AdUserTables.Memberof]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -103,8 +120,8 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
       ],
     },
   },
-  adGroup: {
-    search: {
+  [Pages.AdGroup]: {
+    [AdGroupTables.Search]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -112,14 +129,14 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "_Server", label: "Server" },
       ],
     },
-    attributes: {
+    [AdGroupTables.Attributes]: {
       ...defaultTablePreferences,
       columns: [
         { name: "key", label: "Key" },
         { name: "value", label: "Value" },
       ],
     },
-    members: {
+    [AdGroupTables.Members]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -128,7 +145,7 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "ObjectClass", label: "Object Class" },
       ],
     },
-    memberof: {
+    [AdGroupTables.Memberof]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -137,8 +154,8 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
       ],
     },
   },
-  adComputer: {
-    search: {
+  [Pages.AdComputer]: {
+    [AdComputerTables.Search]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -146,7 +163,7 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "_Server", label: "Server" },
       ],
     },
-    dns: {
+    [AdComputerTables.Dns]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -154,14 +171,14 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "IPAddress", label: "IP Address" },
       ],
     },
-    attributes: {
+    [AdComputerTables.Attributes]: {
       ...defaultTablePreferences,
       columns: [
         { name: "key", label: "Key" },
         { name: "value", label: "Value" },
       ],
     },
-    memberof: {
+    [AdComputerTables.Memberof]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -170,8 +187,8 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
       ],
     },
   },
-  adReplication: {
-    search: {
+  [Pages.AdReplication]: {
+    [AdReplicationTables.Search]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -179,7 +196,7 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "_Server", label: "Server" },
       ],
     },
-    attributes: {
+    [AdReplicationTables.Attributes]: {
       ...defaultTablePreferences,
       columns: [
         { name: "LastOriginatingChangeTime", label: "Timestamp" },
@@ -188,8 +205,8 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
       ],
     },
   },
-  wmi: {
-    search: {
+  [Pages.Wmi]: {
+    [WmiTables.Search]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -197,7 +214,7 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "_Server", label: "Server" },
       ],
     },
-    monitors: {
+    [WmiTables.Monitors]: {
       ...defaultTablePreferences,
       columns: [
         { name: "UserFriendlyName", label: "User Friendly Name" },
@@ -205,14 +222,14 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "YearOfManufacture", label: "Year of Manufacture" },
       ],
     },
-    sysinfo: {
+    [WmiTables.Sysinfo]: {
       ...defaultTablePreferences,
       columns: [
         { name: "key", label: "Key" },
         { name: "value", label: "Value" },
       ],
     },
-    software: {
+    [WmiTables.Software]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -221,7 +238,7 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "InstallDate", label: "Install Date" },
       ],
     },
-    bios: {
+    [WmiTables.Bios]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -231,8 +248,8 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
       ],
     },
   },
-  printers: {
-    printers: {
+  [Pages.Printers]: {
+    [PrintersTables.Printers]: {
       ...defaultTablePreferences,
       columns: [
         { name: "Name", label: "Name" },
@@ -244,8 +261,8 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
       ],
     },
   },
-  azureUser: {
-    search: {
+  [Pages.AzureUser]: {
+    [AzureUserTables.Search]: {
       ...defaultTablePreferences,
       columns: [
         { name: "DisplayName", label: "Display Name" },
@@ -253,21 +270,21 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "Department", label: "Department" },
       ],
     },
-    attributes: {
+    [AzureUserTables.Attributes]: {
       ...defaultTablePreferences,
       columns: [
         { name: "key", label: "Key" },
         { name: "value", label: "Value" },
       ],
     },
-    memberof: {
+    [AzureUserTables.Memberof]: {
       ...defaultTablePreferences,
       columns: [
         { name: "DisplayName", label: "Display Name" },
         { name: "Description", label: "Description" },
       ],
     },
-    devices: {
+    [AzureUserTables.Devices]: {
       ...defaultTablePreferences,
       columns: [
         { name: "DisplayName", label: "Display Name" },
@@ -278,22 +295,22 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
       ],
     },
   },
-  azureGroup: {
-    search: {
+  [Pages.AzureGroup]: {
+    [AzureGroupTables.Search]: {
       ...defaultTablePreferences,
       columns: [
         { name: "DisplayName", label: "Display Name" },
         { name: "Description", label: "Description" },
       ],
     },
-    attributes: {
+    [AzureGroupTables.Attributes]: {
       ...defaultTablePreferences,
       columns: [
         { name: "key", label: "Key" },
         { name: "value", label: "Value" },
       ],
     },
-    members: {
+    [AzureGroupTables.Members]: {
       ...defaultTablePreferences,
       columns: [
         { name: "UserPrincipalName", label: "User Principal Name" },
@@ -302,8 +319,8 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
       ],
     },
   },
-  azureDevice: {
-    search: {
+  [Pages.AzureDevice]: {
+    [AzureDeviceTables.Search]: {
       ...defaultTablePreferences,
       columns: [
         { name: "DisplayName", label: "Display Name" },
@@ -313,7 +330,7 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
         { name: "ApproximateLastLogonTimeStamp", label: "Last Logon" },
       ],
     },
-    attributes: {
+    [AzureDeviceTables.Attributes]: {
       ...defaultTablePreferences,
       columns: [
         { name: "key", label: "Key" },
@@ -321,8 +338,8 @@ export const defaultGlobalTablePreferences: PageStorage<PartialRecord<string, Ta
       ],
     },
   },
-  history: {
-    queryLog: {
+  [Pages.History]: {
+    [HistoryTables.QueryLog]: {
       ...defaultTablePreferences,
       columns: [
         { name: "command", label: "Command" },
