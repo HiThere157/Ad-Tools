@@ -23,7 +23,6 @@ export const defaultQueryFilter: QueryFilter = {
 };
 
 export const defaultQuery: Query = {
-  isAdvanced: false,
   filters: [
     {
       property: "Name",

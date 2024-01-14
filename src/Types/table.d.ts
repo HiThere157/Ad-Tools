@@ -46,6 +46,7 @@ type TableHighlight = {
 };
 
 type TableColumn = {
+  isHidden?: boolean;
   name: string;
   label: string;
 };

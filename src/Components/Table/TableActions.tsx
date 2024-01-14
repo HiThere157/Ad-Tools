@@ -6,17 +6,23 @@ import Dropdown from "../Dropdown/Dropdown";
 import { BsFunnel, BsPaintBucket, BsLayoutThreeColumns, BsClipboard } from "react-icons/bs";
 
 type TableActionsProps = {
-  onFilterMenu: () => void;
-  onHighlightMenu: () => void;
-  onColumnsMenu: () => void;
+  isFilterOpen: boolean;
+  isHighlightOpen: boolean;
+  isColumnsOpen: boolean;
+  setFilterOpen: (isFilterOpen: boolean) => void;
+  setHighlightOpen: (isHighlightOpen: boolean) => void;
+  setColumnsOpen: (isColumnsOpen: boolean) => void;
   onCopy: (onlySelection: boolean) => void;
   filters: TableFilter[];
   highlights: TableHighlight[];
 };
 export default function TableActions({
-  onFilterMenu,
-  onHighlightMenu,
-  onColumnsMenu,
+  isFilterOpen,
+  isHighlightOpen,
+  isColumnsOpen,
+  setFilterOpen,
+  setHighlightOpen,
+  setColumnsOpen,
   onCopy,
   filters,
   highlights,
@@ -28,9 +34,10 @@ export default function TableActions({
       <Button
         className={
           "p-1 " +
-          (filters.some((filter) => filter.value.length !== 0) ? "!border-primaryAccent" : "")
+          (filters.some((filter) => filter.value.length !== 0) ? "!border-primaryAccent " : " ") +
+          (isFilterOpen ? "text-primaryAccent" : "")
         }
-        onClick={onFilterMenu}
+        onClick={() => setFilterOpen(!isFilterOpen)}
       >
         <BsFunnel />
       </Button>
@@ -38,14 +45,18 @@ export default function TableActions({
         className={
           "p-1 " +
           (highlights.some((highlight) => highlight.strings.length !== 0)
-            ? "!border-primaryAccent"
-            : "")
+            ? "!border-primaryAccent "
+            : " ") +
+          (isHighlightOpen ? "text-primaryAccent" : "")
         }
-        onClick={onHighlightMenu}
+        onClick={() => setHighlightOpen(!isHighlightOpen)}
       >
         <BsPaintBucket />
       </Button>
-      <Button className="p-1" onClick={onColumnsMenu}>
+      <Button
+        className={"p-1 " + (isColumnsOpen ? "text-primaryAccent" : "")}
+        onClick={() => setColumnsOpen(!isColumnsOpen)}
+      >
         <BsLayoutThreeColumns />
       </Button>
       <Dropdown

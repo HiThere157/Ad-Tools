@@ -87,20 +87,22 @@ export default function TableElement({
             <Checkbox checked={mainCheckState} onChange={onAllSelect} />
           </th>
 
-          {columns.map(({ name, label }, columnIndex) => (
-            <th key={columnIndex} className="border-s border-border">
-              <button
-                className="flex w-full items-center justify-between gap-2 rounded px-2 outline-none outline-offset-0 focus-visible:outline-borderActive"
-                onClick={() => onSort(name)}
-              >
-                {label}
+          {columns
+            .filter(({ isHidden }) => !isHidden)
+            .map(({ name, label }, columnIndex) => (
+              <th key={columnIndex} className="border-s border-border">
+                <button
+                  className="flex w-full items-center justify-between gap-2 rounded px-2 outline-none outline-offset-0 focus-visible:outline-borderActive"
+                  onClick={() => onSort(name)}
+                >
+                  {label}
 
-                {sort.column === name && (
-                  <BsCaretDownFill className={sort.direction === "asc" ? "rotate-180" : ""} />
-                )}
-              </button>
-            </th>
-          ))}
+                  {sort.column === name && (
+                    <BsCaretDownFill className={sort.direction === "asc" ? "rotate-180" : ""} />
+                  )}
+                </button>
+              </th>
+            ))}
         </tr>
       </thead>
 
@@ -122,15 +124,20 @@ export default function TableElement({
               />
             </td>
 
-            {columns.map(({ name }, columnIndex) => (
-              <td key={columnIndex} className="whitespace-pre border-s border-t border-border px-2">
-                <TableCell
-                  content={stringify(row[name])}
-                  canRedirect={name === redirectColumn}
-                  onRedirect={(newTab) => onRedirect?.(row, newTab)}
-                />
-              </td>
-            ))}
+            {columns
+              .filter(({ isHidden }) => !isHidden)
+              .map(({ name }, columnIndex) => (
+                <td
+                  key={columnIndex}
+                  className="whitespace-pre border-s border-t border-border px-2"
+                >
+                  <TableCell
+                    content={stringify(row[name])}
+                    canRedirect={name === redirectColumn}
+                    onRedirect={(newTab) => onRedirect?.(row, newTab)}
+                  />
+                </td>
+              ))}
           </tr>
         ))}
       </tbody>

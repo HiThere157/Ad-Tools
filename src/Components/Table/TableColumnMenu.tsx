@@ -15,7 +15,7 @@ export default function TableColumnMenu({ columns, setColumns }: TableColumnMenu
       <h3 className="me-2 ms-4 mt-2 text-lg font-bold">Columns:</h3>
 
       <div className="flex items-start gap-1 p-2">
-        <div className="grid flex-grow grid-cols-[1fr_1fr_auto] items-start gap-1">
+        <div className="grid flex-grow grid-cols-[auto_1fr_1fr_auto] items-start gap-1">
           {columns.map((column, columnIndex) => (
             <TableColumn
               key={columnIndex}

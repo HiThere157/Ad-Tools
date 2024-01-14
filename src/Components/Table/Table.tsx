@@ -75,14 +75,15 @@ export default function Table({
 
   const exportAsCSV = (onlySelection: boolean) => {
     // Add the header row to the CSV
-    let csv = columns.map(({ label }) => label).join("\u{9}") + "\n";
+    const csvColumns = columns.filter(({ isHidden }) => !isHidden);
+    let csv = csvColumns.map(({ label }) => label).join("\u{9}") + "\n";
 
     data.forEach((entry) => {
       // Skip if not selected and onlySelection is true
       if (onlySelection && !selected.includes(entry.__id__)) return;
 
       // Add the row to the CSV
-      csv += columns.map(({ name }) => stringify(entry[name])).join("\u{9}") + "\n";
+      csv += csvColumns.map(({ name }) => stringify(entry[name])).join("\u{9}") + "\n";
     });
 
     navigator.clipboard.writeText(csv);
@@ -118,9 +119,12 @@ export default function Table({
       {!isCollapsed && (
         <div className="flex gap-1">
           <TableActions
-            onFilterMenu={() => updateTableConfig({ isFilterOpen: !isFilterOpen })}
-            onHighlightMenu={() => updateTableConfig({ isHighlightOpen: !isHighlightOpen })}
-            onColumnsMenu={() => updateTableConfig({ isColumnsOpen: !isColumnsOpen })}
+            isFilterOpen={isFilterOpen}
+            isHighlightOpen={isHighlightOpen}
+            isColumnsOpen={isColumnsOpen}
+            setFilterOpen={(isFilterOpen) => updateTableConfig({ isFilterOpen })}
+            setHighlightOpen={(isHighlightOpen) => updateTableConfig({ isHighlightOpen })}
+            setColumnsOpen={(isColumnsOpen) => updateTableConfig({ isColumnsOpen })}
             onCopy={exportAsCSV}
             filters={selectedFilter}
             highlights={highlights}
