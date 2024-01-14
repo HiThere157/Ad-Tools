@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
@@ -23,9 +23,12 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
 
   const { isAdvanced, filters, servers } = query;
 
-  const updateQuery = (partialQuery: Partial<Query>) => {
-    setQuery({ ...query, ...partialQuery });
-  };
+  const updateQuery = useCallback(
+    (partialQuery: Partial<Query>) => {
+      setQuery({ ...query, ...partialQuery });
+    },
+    [query, setQuery],
+  );
 
   // We only want to submit if the query is somewhat valid
   const beforeSubmit = () => {
