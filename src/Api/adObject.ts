@@ -1,5 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
-import { remoteIndent } from "../Helper/string";
+import { removeIndent } from "../Helper/string";
 import { addServerToDataSet } from "../Helper/postProcessors";
 import { formatAdFilter, mergeDataSets } from "../Helper/utils";
 
@@ -11,7 +11,7 @@ export function searchAdObjects(
   const search = Promise.all(
     servers.map((server) =>
       invokePSCommand({
-        command: remoteIndent(`Get-AdObject
+        command: removeIndent(`Get-AdObject
         -Filter "${formatAdFilter(filters)}"
         -Server ${server}
         -Properties ${searchFields.join(",")}`),

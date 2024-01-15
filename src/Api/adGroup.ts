@@ -1,5 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
-import { remoteIndent } from "../Helper/string";
+import { removeIndent } from "../Helper/string";
 import { extractFirstObject, addServerToDataSet } from "../Helper/postProcessors";
 import { formatAdFilter, mergeDataSets } from "../Helper/utils";
 
@@ -10,19 +10,19 @@ export function getAdGroup(
   memberofFields: string[] = [],
 ) {
   const attributes = invokePSCommand({
-    command: remoteIndent(`Get-AdGroup
+    command: removeIndent(`Get-AdGroup
       -Identity "${identity}"
       -Server ${server}
       -Properties *`),
   });
   const members = invokePSCommand({
-    command: remoteIndent(`Get-AdGroupMember
+    command: removeIndent(`Get-AdGroupMember
       -Identity "${identity}"
       -Server ${server}`),
     selectFields: membersFields,
   });
   const memberof = invokePSCommand({
-    command: remoteIndent(`Get-AdPrincipalGroupMembership
+    command: removeIndent(`Get-AdPrincipalGroupMembership
       -Identity "${identity}"
       -Server ${server}`),
     selectFields: memberofFields,
@@ -43,7 +43,7 @@ export function searchAdGroups(
   const search = Promise.all(
     servers.map((server) =>
       invokePSCommand({
-        command: remoteIndent(`Get-AdGroup
+        command: removeIndent(`Get-AdGroup
         -Filter "${formatAdFilter(filters)}"
         -Server ${server}
         -Properties ${searchFields.join(",")}`),

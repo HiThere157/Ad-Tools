@@ -1,5 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
-import { remoteIndent } from "../Helper/string";
+import { removeIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 export async function getAzureDeviceId(displayName: string): Promise<string | undefined> {
@@ -26,7 +26,7 @@ export function getAzureDevice(objectId: string) {
 
 export function searchAzureDevices(searchString: string, searchFields: string[] = []) {
   const search = invokePSCommand({
-    command: remoteIndent(`Get-AzureADDevice
+    command: removeIndent(`Get-AzureADDevice
     -SearchString "${searchString}"
     -All $true`),
     selectFields: searchFields,

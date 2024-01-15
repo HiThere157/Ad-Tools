@@ -240,10 +240,8 @@ export const defaultGlobalTablePreferences: PartialRecord<
     [WmiTables.Bios]: {
       ...defaultTablePreferences,
       columns: [
-        { name: "Name", label: "Name" },
-        { name: "Manufacturer", label: "Manufacturer" },
-        { name: "Version", label: "Version" },
-        { name: "ReleaseDate", label: "Release Date" },
+        { name: "key", label: "Key" },
+        { name: "value", label: "Value" },
       ],
     },
   },

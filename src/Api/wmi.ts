@@ -1,5 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
-import { remoteIndent } from "../Helper/string";
+import { removeIndent } from "../Helper/string";
 import { extractFirstObject, resolveASCIIArray } from "../Helper/postProcessors";
 
 export function getWmiInfo(
@@ -10,25 +10,25 @@ export function getWmiInfo(
   biosFields: string[] = [],
 ) {
   const monitors = invokePSCommand({
-    command: remoteIndent(`Get-WmiObject
+    command: removeIndent(`Get-WmiObject
       -ClassName WmiMonitorID
       -Namespace root/wmi
       -Computername "${identity}.${server}"`),
     selectFields: monitorsFields,
   });
   const sysinfo = invokePSCommand({
-    command: remoteIndent(`Get-WmiObject
+    command: removeIndent(`Get-WmiObject
       -ClassName Win32_ComputerSystem
       -Computername "${identity}.${server}"`),
   });
   const software = invokePSCommand({
-    command: remoteIndent(`Get-WmiObject
+    command: removeIndent(`Get-WmiObject
       -ClassName Win32_Product
       -Computername "${identity}.${server}"`),
     selectFields: softwareFields,
   });
   const bios = invokePSCommand({
-    command: remoteIndent(`Get-WmiObject
+    command: removeIndent(`Get-WmiObject
       -ClassName Win32_BIOS
       -Computername "${identity}.${server}"`),
     selectFields: biosFields,

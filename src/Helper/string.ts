@@ -16,6 +16,6 @@ export function resolveTimestamp(string: string) {
   });
 }
 
-export function remoteIndent(string: string) {
+export function removeIndent(string: string) {
   return string.replace(/\n^ +/gm, " ");
 }

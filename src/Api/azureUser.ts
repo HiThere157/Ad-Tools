@@ -1,5 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
-import { remoteIndent } from "../Helper/string";
+import { removeIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 export async function getAzureUser(objectId: string) {
@@ -18,13 +18,13 @@ export function getAzureUserDetails(
   devicesFields: string[] = [],
 ) {
   const memberof = invokePSCommand({
-    command: remoteIndent(`Get-AzureADUserMembership
+    command: removeIndent(`Get-AzureADUserMembership
       -ObjectId "${objectId}"
       -All $true`),
     selectFields: memberofFields,
   });
   const devices = invokePSCommand({
-    command: remoteIndent(`Get-AzureADUserRegisteredDevice
+    command: removeIndent(`Get-AzureADUserRegisteredDevice
       -ObjectId "${objectId}"
       -All $true`),
     selectFields: devicesFields,
@@ -38,7 +38,7 @@ export function getAzureUserDetails(
 
 export function searchAzureUsers(searchString: string, searchFields: string[] = []) {
   const search = invokePSCommand({
-    command: remoteIndent(`Get-AzureADUser
+    command: removeIndent(`Get-AzureADUser
     -SearchString "${searchString}"
     -All $true`),
     selectFields: searchFields,

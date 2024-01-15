@@ -1,5 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
-import { remoteIndent } from "../Helper/string";
+import { removeIndent } from "../Helper/string";
 import { extractFirstObject, addServerToDataSet } from "../Helper/postProcessors";
 import { formatAdFilter, mergeDataSets } from "../Helper/utils";
 
@@ -14,13 +14,13 @@ export function getAdComputer(
     selectFields: dnsFields,
   });
   const attributes = invokePSCommand({
-    command: remoteIndent(`Get-AdComputer
+    command: removeIndent(`Get-AdComputer
       -Identity "${identity}"
       -Server ${server}
       -Properties *`),
   });
   const memberof = invokePSCommand({
-    command: remoteIndent(`Get-AdPrincipalGroupMembership
+    command: removeIndent(`Get-AdPrincipalGroupMembership
       (Get-AdComputer -Identity "${identity}" -Server ${server})
       -Server ${server}`),
     selectFields: memberofFields,
@@ -41,7 +41,7 @@ export function searchAdComputers(
   const search = Promise.all(
     servers.map((server) =>
       invokePSCommand({
-        command: remoteIndent(`Get-AdComputer
+        command: removeIndent(`Get-AdComputer
         -Filter "${formatAdFilter(filters)}"
         -Server ${server}
         -Properties ${searchFields.join(",")}`),

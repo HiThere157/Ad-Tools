@@ -1,5 +1,5 @@
 import { invokePSCommand } from "../Helper/api";
-import { remoteIndent } from "../Helper/string";
+import { removeIndent } from "../Helper/string";
 import { extractFirstObject } from "../Helper/postProcessors";
 
 export async function getAzureGroupId(displayName: string): Promise<string | undefined> {
@@ -19,7 +19,7 @@ export function getAzureGroup(objectId: string, membersFields: string[] = []) {
     command: `Get-AzureADGroup -ObjectId "${objectId}"`,
   });
   const members = invokePSCommand({
-    command: remoteIndent(`Get-AzureADGroupMember
+    command: removeIndent(`Get-AzureADGroupMember
       -ObjectId "${objectId}"
       -All $true`),
     selectFields: membersFields,
@@ -33,7 +33,7 @@ export function getAzureGroup(objectId: string, membersFields: string[] = []) {
 
 export function searchAzureGroups(searchString: string, searchFields: string[] = []) {
   const search = invokePSCommand({
-    command: remoteIndent(`Get-AzureADGroup
+    command: removeIndent(`Get-AzureADGroup
     -SearchString "${searchString}"
     -All $true`),
     selectFields: searchFields,
