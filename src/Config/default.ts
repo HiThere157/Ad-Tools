@@ -89,7 +89,7 @@ export const defaultGlobalTablePreferences: PartialRecord<
       highlights: [
         {
           color: "#ff0000",
-          type: "fg",
+          type: "bg",
           strings: ["Enabled,false", "isDeleted,true", "LockedOut,true", "PasswordExpired,true"],
         },
       ],
