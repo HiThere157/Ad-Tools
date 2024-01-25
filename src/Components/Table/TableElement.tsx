@@ -43,17 +43,17 @@ export default function TableElement({
 
   const onSort = (column: string) => {
     if (sort.column === column) {
-      // Column is already sorted, so we reverse the direction
-      setSort({
-        column,
-        direction: sort.direction === "asc" ? "desc" : "asc",
-      });
+      // Column is already sorted, so we cycle through the direction
+      if (sort.direction === "asc") {
+        setSort({ column, direction: "desc" });
+      }
+
+      if (sort.direction === "desc") {
+        setSort({ column: "__id__", direction: "asc" });
+      }
     } else {
       // Column is not sorted, so we sort it ascending
-      setSort({
-        column,
-        direction: "asc",
-      });
+      setSort({ column, direction: "asc" });
     }
   };
 
