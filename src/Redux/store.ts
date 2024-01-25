@@ -16,11 +16,12 @@ import preferencesReducer from "./preferencesSlice";
 import tabsReducer from "./tabsSlice";
 import dataReducer from "./dataSlice";
 import environmentReducer from "./environmentSlice";
+import tetrisReducer from "./tetrisSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["preferences"],
+  whitelist: ["preferences", "tetris"],
   migrate: createMigrate(migrations),
 };
 const reducer = persistCombineReducers(persistConfig, {
@@ -28,6 +29,7 @@ const reducer = persistCombineReducers(persistConfig, {
   tabs: tabsReducer,
   data: dataReducer,
   environment: environmentReducer,
+  tetris: tetrisReducer,
 });
 
 const store = configureStore({
