@@ -38,9 +38,11 @@ export function resolveASCIIArray(dataSet: DataSet, key: string): DataSet {
   return {
     ...dataSet,
     data: data.map((row) => {
+      const charCodes = row[key]?.filter((char: number) => char !== 0);
+
       return {
         ...row,
-        [key]: String.fromCharCode(...row[key].filter((char: number) => char !== 0)),
+        [key]: charCodes ? String.fromCharCode(...charCodes) : "null",
       };
     }),
   };
