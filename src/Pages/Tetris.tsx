@@ -57,7 +57,7 @@ export default function Tetris() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="relative flex items-start justify-center gap-2 p-2">

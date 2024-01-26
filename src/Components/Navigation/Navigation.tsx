@@ -16,7 +16,7 @@ export default function Navigation() {
 
   // Filter out hidden links and groups with no visible links
   const visibleLinks = navigationLinks
-    .map((group) => group.filter((link) => !link.isHidden || (link.isEasterEgg && counter >= 25)))
+    .map((group) => group.filter((link) => !link.isHidden || (link.isEasterEgg && counter >= 10)))
     .filter((group) => group.length > 0);
 
   return (

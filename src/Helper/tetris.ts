@@ -36,7 +36,7 @@ export function overlayPiece(board: TetrisCell[][], piece: TetrisPositionedPiece
     );
   }
 
-  let overlayedBoard = deepCopy(newBoard);
+  const overlayedBoard = deepCopy(newBoard);
   let isClipping = false;
   rotatedShape.forEach((row, y) => {
     row.forEach((cell, x) => {
