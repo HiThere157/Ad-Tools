@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
+import { pushToast } from "../../Redux/dataSlice";
 import { setPowershellEnvironment, setUpdateDownloadStatus } from "../../Redux/environmentSlice";
 import { electronWindow, getPowershellEnvironment } from "../../Helper/api";
 import { useClickAway } from "../../Hooks/useClickAway";
@@ -32,12 +33,50 @@ export default function Updater() {
     electronWindow.electronAPI?.checkForUpdates();
     const powershellEnvironment = await getPowershellEnvironment();
 
+    if (powershellEnvironment.adVersion === "") {
+      dispatch(
+        pushToast({
+          message: "ActiveDirectory PowerShell module not found, some features may not work",
+          type: "error",
+        }),
+      );
+    }
+
+    if (powershellEnvironment.azureAdVersion === "") {
+      dispatch(
+        pushToast({
+          message: "AzureAD PowerShell module not found, some features may not work",
+          type: "error",
+        }),
+      );
+    }
+
     dispatch(setPowershellEnvironment(powershellEnvironment));
   };
 
   useEffect(() => {
     electronWindow.electronAPI?.onDownloadStatusUpdate((status) => {
       dispatch(setUpdateDownloadStatus(status));
+
+      switch (status?.status) {
+        case "complete":
+          dispatch(
+            pushToast({
+              message: "new Update downloaded. Restart the app to apply the update.",
+              time: 7,
+              type: "info",
+            }),
+          );
+          break;
+        case "error":
+          dispatch(
+            pushToast({
+              message: "error while downloading update. Retry later",
+              type: "error",
+            }),
+          );
+          break;
+      }
     });
 
     return () => {

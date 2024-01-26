@@ -33,6 +33,7 @@ const dataSlice = createSlice({
       string,
       PartialRecord<number, PartialRecord<string, TableConfig>>
     >,
+    toasts: [] as Toast[],
   },
   reducers: {
     setQuery: (state, action: PayloadAction<SetQueryAction>) => {
@@ -118,9 +119,22 @@ const dataSlice = createSlice({
 
       state.dataSets[page][tabId][name].data?.push(log);
     },
+    pushToast: (state, action: PayloadAction<Toast>) => {
+      state.toasts.push(action.payload);
+    },
+    setToasts: (state, action: PayloadAction<Toast[]>) => {
+      state.toasts = action.payload;
+    },
   },
 });
 
-export const { setQuery, setDataSet, setTableConfig, removeTabData, pushQueryLog } =
-  dataSlice.actions;
+export const {
+  setQuery,
+  setDataSet,
+  setTableConfig,
+  removeTabData,
+  pushQueryLog,
+  pushToast,
+  setToasts,
+} = dataSlice.actions;
 export default dataSlice.reducer;

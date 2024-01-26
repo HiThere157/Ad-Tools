@@ -20,6 +20,7 @@ import Header from "../Components/Header/Header";
 import Navigation from "../Components/Navigation/Navigation";
 import Zoom from "../Components/Zoom";
 import ScrollToTop from "../Components/ScrollToTop";
+import ToastLayout from "./ToastLayout";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
       <Zoom />
       <ScrollToTop scrollRef={scrollRef} />
+      <ToastLayout />
     </main>
   );
 }
