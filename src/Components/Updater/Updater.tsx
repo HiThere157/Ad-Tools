@@ -33,24 +33,6 @@ export default function Updater() {
     electronWindow.electronAPI?.checkForUpdates();
     const powershellEnvironment = await getPowershellEnvironment();
 
-    if (powershellEnvironment.adVersion === "") {
-      dispatch(
-        pushToast({
-          message: "ActiveDirectory PowerShell module not found, some features may not work",
-          type: "error",
-        }),
-      );
-    }
-
-    if (powershellEnvironment.azureAdVersion === "") {
-      dispatch(
-        pushToast({
-          message: "AzureAD PowerShell module not found, some features may not work",
-          type: "error",
-        }),
-      );
-    }
-
     dispatch(setPowershellEnvironment(powershellEnvironment));
   };
 
@@ -62,7 +44,7 @@ export default function Updater() {
         case "complete":
           dispatch(
             pushToast({
-              message: "new Update downloaded. Restart the app to apply the update.",
+              message: "New Update downloaded. Restart the app to apply the update.",
               time: 7,
               type: "info",
             }),
@@ -70,10 +52,7 @@ export default function Updater() {
           break;
         case "error":
           dispatch(
-            pushToast({
-              message: "error while downloading update. Retry later",
-              type: "error",
-            }),
+            pushToast({ message: "Error while downloading update. Retry later.", type: "error" }),
           );
           break;
       }

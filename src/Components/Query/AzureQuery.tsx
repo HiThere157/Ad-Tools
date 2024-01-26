@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../Redux/store";
+import { pushToast } from "../../Redux/dataSlice";
 import { getFilterValue } from "../../Helper/utils";
 
 import Button from "../Button";
@@ -16,6 +17,7 @@ type AzureQueryProps = {
 export default function AzureQuery({ query, setQuery, onSubmit }: AzureQueryProps) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const { executingAzureUser } = useSelector((state: RootState) => state.environment.azure);
+  const dispatch = useDispatch();
 
   const { filters } = query;
 
@@ -52,7 +54,11 @@ export default function AzureQuery({ query, setQuery, onSubmit }: AzureQueryProp
         isOpen={isLoginOpen}
         onExit={(status) => {
           setIsLoginOpen(false);
-          if (status) onSubmit();
+          if (status) {
+            onSubmit();
+
+            dispatch(pushToast({ message: "Logged in successfully.", time: 7, type: "info" }));
+          }
         }}
       />
     </div>

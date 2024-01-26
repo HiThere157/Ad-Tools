@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import { defaultTableFilter } from "../../Config/default";
+import { pushToast } from "../../Redux/dataSlice";
 
 import Button from "../Button";
 import Dropdown from "../Dropdown/Dropdown";
@@ -31,6 +33,7 @@ export default function TableFilterMenu({
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isRenameOpen, setIsRenameOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const setCurrentFilters = (filters: TableFilter[]) => {
     if (savedFilterName) {
@@ -122,6 +125,10 @@ export default function TableFilterMenu({
 
           setSavedFilters([...savedFilters, { name: uniqueName, filters }], uniqueName);
           setFilters([]);
+
+          dispatch(
+            pushToast({ message: `Saved Filter "${uniqueName}" created.`, time: 7, type: "info" }),
+          );
         }}
       />
 
@@ -142,6 +149,10 @@ export default function TableFilterMenu({
 
           newSavedFilters[index] = { name: uniqueName, filters };
           setSavedFilters(newSavedFilters, uniqueName);
+
+          dispatch(
+            pushToast({ message: `Saved Filter "${uniqueName}" renamed.`, time: 7, type: "info" }),
+          );
         }}
       />
 
@@ -154,6 +165,14 @@ export default function TableFilterMenu({
 
           if (selection) {
             setSavedFilters(savedFilters.filter((filter) => filter.name !== savedFilterName));
+
+            dispatch(
+              pushToast({
+                message: `Saved Filter "${savedFilterName}" deleted.`,
+                time: 7,
+                type: "info",
+              }),
+            );
           }
         }}
       />

@@ -120,6 +120,8 @@ const dataSlice = createSlice({
       state.dataSets[page][tabId][name].data?.push(log);
     },
     pushToast: (state, action: PayloadAction<Toast>) => {
+      if (state.toasts.some(({ message }) => message === action.payload.message)) return;
+
       state.toasts.push(action.payload);
     },
     setToasts: (state, action: PayloadAction<Toast[]>) => {

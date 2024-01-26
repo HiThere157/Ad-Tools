@@ -12,7 +12,7 @@ export default function ToastLayout() {
     <div className="absolute bottom-5 right-8 z-50 flex flex-col-reverse items-end gap-2">
       {toasts.map((toast, toastIndex) => (
         <Toast
-          key={toastIndex}
+          key={toast.message}
           toast={toast}
           onDismiss={() => dispatch(setToasts(toasts.filter((_, i) => i !== toastIndex)))}
         />
