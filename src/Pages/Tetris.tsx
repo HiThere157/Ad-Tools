@@ -1,6 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
+import { Pages } from "../Config/const";
 import { RootState } from "../Redux/store";
 import { drop, move, toggleHold, togglePause } from "../Redux/tetrisSlice";
 import { useInterval } from "../Hooks/useInterval";
@@ -18,6 +20,7 @@ export default function Tetris() {
     (state: RootState) => state.tetris,
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const speed = useMemo(() => 1000 - score / 15, [score]);
 
@@ -52,12 +55,17 @@ export default function Tetris() {
         case "h":
           dispatch(toggleHold());
           break;
+        case "q":
+          navigate(`/${Pages.AdUser}`);
+          break;
       }
+
+      e.preventDefault();
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   return (
     <div className="relative flex items-start justify-center gap-2 p-2">

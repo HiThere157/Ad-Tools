@@ -7,6 +7,7 @@ import { getFilterValue } from "../Helper/utils";
 import TabLayout from "../Layout/TabLayout";
 import AzureQuery from "../Components/Query/AzureQuery";
 import Table from "../Components/Table/Table";
+import MissingModules from "../Components/Popup/MissingModules";
 
 export default function AzureDevice() {
   const page = Pages.AzureDevice;
@@ -56,6 +57,7 @@ export default function AzureDevice() {
 
   return (
     <TabLayout page={page}>
+      <MissingModules type="azureAd" />
       <AzureQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table

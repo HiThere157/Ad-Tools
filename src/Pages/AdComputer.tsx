@@ -7,6 +7,7 @@ import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
 import TabLayout from "../Layout/TabLayout";
 import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
+import MissingModules from "../Components/Popup/MissingModules";
 
 export default function AdComputer() {
   const page = Pages.AdComputer;
@@ -69,6 +70,7 @@ export default function AdComputer() {
 
   return (
     <TabLayout page={page}>
+      <MissingModules type="ad" />
       <AdQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table

@@ -25,6 +25,7 @@ export default function Input({
         "border-border bg-dark hover:border-borderAccent hover:bg-secondaryAccent focus:border-borderActive focus:bg-secondaryAccent",
         className,
       )}
+      spellCheck={false}
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}

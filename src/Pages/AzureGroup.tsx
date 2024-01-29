@@ -7,6 +7,7 @@ import { getFilterValue } from "../Helper/utils";
 import TabLayout from "../Layout/TabLayout";
 import AzureQuery from "../Components/Query/AzureQuery";
 import Table from "../Components/Table/Table";
+import MissingModules from "../Components/Popup/MissingModules";
 
 export default function AzureGroup() {
   const page = Pages.AzureGroup;
@@ -57,6 +58,7 @@ export default function AzureGroup() {
 
   return (
     <TabLayout page={page}>
+      <MissingModules type="azureAd" />
       <AzureQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
 
       <Table

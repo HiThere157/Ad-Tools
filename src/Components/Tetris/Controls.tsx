@@ -34,6 +34,9 @@ export default function Controls() {
 
         <kbd>Space</kbd>
         <span>Drop</span>
+
+        <kbd>Q</kbd>
+        <span>Quit</span>
       </div>
     </div>
   );

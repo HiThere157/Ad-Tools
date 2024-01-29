@@ -16,7 +16,7 @@ export default function AppVersion({ app, currentVersion, downloadStatus }: AppV
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex">
+      <div className="flex items-baseline">
         <span>{app}</span>
 
         <div className="mx-1.5 flex items-center gap-1.5 text-sm text-grey">
