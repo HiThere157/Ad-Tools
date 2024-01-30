@@ -3,7 +3,6 @@ import {
   BsPersonFill,
   BsDisplay,
   BsDiagram3Fill,
-  BsPrinterFill,
   BsCpu,
   BsSearch,
   BsX,
@@ -24,7 +23,6 @@ export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
     group: <BsPeopleFill className="flex-shrink-0 text-primaryAccent" />,
     computer: <BsDisplay className="flex-shrink-0 text-primaryAccent" />,
     replication: <BsDiagram3Fill className="flex-shrink-0 text-primaryAccent" />,
-    printer: <BsPrinterFill className="flex-shrink-0 text-primaryAccent" />,
     wmi: <BsCpu className="flex-shrink-0 text-primaryAccent" />,
     search: <BsSearch className="flex-shrink-0 text-primaryAccent" />,
     loading: (

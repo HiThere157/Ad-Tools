@@ -4,7 +4,6 @@ export enum Pages {
   AdComputer = "adComputer",
   AdReplication = "adReplication",
   Wmi = "wmi",
-  Printers = "printers",
   AzureUser = "azureUser",
   AzureGroup = "azureGroup",
   AzureDevice = "azureDevice",
@@ -29,6 +28,7 @@ export enum AdComputerTables {
   Dns = "dns",
   Attributes = "attributes",
   Memberof = "memberof",
+  Printers = "printers",
 }
 
 export enum AdReplicationTables {
@@ -42,11 +42,6 @@ export enum WmiTables {
   Sysinfo = "sysinfo",
   Software = "software",
   Bios = "bios",
-}
-
-export enum PrintersTables {
-  Search = "search",
-  Printers = "printers",
 }
 
 export enum AzureUserTables {

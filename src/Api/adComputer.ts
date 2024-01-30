@@ -8,6 +8,7 @@ export function getAdComputer(
   server: string,
   dnsFields: string[] = [],
   memberofFields: string[] = [],
+  printerFields: string[] = [],
 ) {
   const dns = invokePSCommand({
     command: `Resolve-DnsName -Name "${identity}.${server}"`,
@@ -25,11 +26,16 @@ export function getAdComputer(
       -Server ${server}`),
     selectFields: memberofFields,
   });
+  const printers = invokePSCommand({
+    command: `Get-Printer -Computername "${identity}.${server}"`,
+    selectFields: printerFields,
+  });
 
   return {
     dns,
     attributes: attributes.then(extractFirstObject),
     memberof: memberof.then((memberof) => addServerToDataSet(memberof, server)),
+    printers,
   };
 }
 

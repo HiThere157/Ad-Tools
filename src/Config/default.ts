@@ -8,7 +8,6 @@ import {
   AzureUserTables,
   HistoryTables,
   Pages,
-  PrintersTables,
   WmiTables,
 } from "./const";
 
@@ -185,6 +184,17 @@ export const defaultGlobalTablePreferences: PartialRecord<
         { name: "DistinguishedName", label: "Distinguished Name" },
       ],
     },
+    [AdComputerTables.Printers]: {
+      ...defaultTablePreferences,
+      columns: [
+        { name: "Name", label: "Name" },
+        { name: "Location", label: "Location" },
+        { name: "Status", label: "Status" },
+        { name: "Comment", label: "Comment" },
+        { name: "JobCount", label: "Job Count" },
+        { name: "DriverName", label: "Driver Name" },
+      ],
+    },
   },
   [Pages.AdReplication]: {
     [AdReplicationTables.Search]: {
@@ -242,27 +252,6 @@ export const defaultGlobalTablePreferences: PartialRecord<
       columns: [
         { name: "key", label: "Key" },
         { name: "value", label: "Value" },
-      ],
-    },
-  },
-  [Pages.Printers]: {
-    [PrintersTables.Search]: {
-      ...defaultTablePreferences,
-      columns: [
-        { name: "Name", label: "Name" },
-        { name: "DisplayName", label: "Display Name" },
-        { name: "_Server", label: "Server" },
-      ],
-    },
-    [PrintersTables.Printers]: {
-      ...defaultTablePreferences,
-      columns: [
-        { name: "Name", label: "Name" },
-        { name: "Location", label: "Location" },
-        { name: "Status", label: "Status" },
-        { name: "Comment", label: "Comment" },
-        { name: "JobCount", label: "Job Count" },
-        { name: "DriverName", label: "Driver Name" },
       ],
     },
   },

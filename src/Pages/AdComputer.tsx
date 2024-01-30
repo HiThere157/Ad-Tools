@@ -29,7 +29,12 @@ export default function AdComputer() {
     updateTab({ icon: "loading", title: "Search Results" });
     setDataSet(AdComputerTables.Search, null);
     setDataSet(
-      [AdComputerTables.Dns, AdComputerTables.Attributes, AdComputerTables.Memberof],
+      [
+        AdComputerTables.Dns,
+        AdComputerTables.Attributes,
+        AdComputerTables.Memberof,
+        AdComputerTables.Printers,
+      ],
       undefined,
     );
 
@@ -49,20 +54,27 @@ export default function AdComputer() {
     updateTab({ icon: "loading", title: identity || "User" });
     if (resetSearch) setDataSet(AdComputerTables.Search, undefined);
     setDataSet(
-      [AdComputerTables.Dns, AdComputerTables.Attributes, AdComputerTables.Memberof],
+      [
+        AdComputerTables.Dns,
+        AdComputerTables.Attributes,
+        AdComputerTables.Memberof,
+        AdComputerTables.Printers,
+      ],
       null,
     );
 
-    const { dns, attributes, memberof } = getAdComputer(
+    const { dns, attributes, memberof, printers } = getAdComputer(
       identity,
       server,
       tableColumns[AdComputerTables.Dns],
       tableColumns[AdComputerTables.Memberof],
+      tableColumns[AdComputerTables.Printers],
     );
 
     setDataSet(AdComputerTables.Dns, dns);
     setDataSet(AdComputerTables.Attributes, attributes);
     setDataSet(AdComputerTables.Memberof, memberof);
+    setDataSet(AdComputerTables.Printers, printers);
     Promise.all([dns, attributes, memberof]).then(() => updateTab({ icon: "computer" }));
   };
 
@@ -114,6 +126,12 @@ export default function AdComputer() {
             servers: [row._Server],
           });
         }}
+      />
+      <Table
+        title="Printers"
+        dataSet={dataSets[AdComputerTables.Printers]}
+        tableState={tableStates[AdComputerTables.Printers]}
+        setTableState={(tableState) => setTableState(AdComputerTables.Printers, tableState)}
       />
     </TabLayout>
   );

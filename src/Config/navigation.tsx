@@ -5,7 +5,6 @@ import AdUser from "../Pages/AdUser";
 import AdGroup from "../Pages/AdGroup";
 import AdComputer from "../Pages/AdComputer";
 import AdReplication from "../Pages/AdReplication";
-import Printers from "../Pages/Printer";
 import WMI from "../Pages/WMI";
 import AzureUser from "../Pages/AzureUser";
 import AzureGroup from "../Pages/AzureGroup";
@@ -29,7 +28,6 @@ import {
   BsLaptop,
   BsPeopleFill,
   BsPersonLinesFill,
-  BsPrinterFill,
   BsJoystick,
   BsSearch,
   BsTable,
@@ -69,19 +67,11 @@ export const navigationLinks: NavigationLink[][] = [
       icon: <BsDiagram3Fill />,
       page: <AdReplication />,
     },
-  ],
-  [
     {
       href: `/${Pages.Wmi}`,
       text: "WMI",
       icon: <BsCpu />,
       page: <WMI />,
-    },
-    {
-      href: `/${Pages.Printers}`,
-      text: "Printers",
-      icon: <BsPrinterFill />,
-      page: <Printers />,
     },
   ],
   [
