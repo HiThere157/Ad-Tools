@@ -36,17 +36,16 @@ export default function MissingModules({ type }: MissingModulesProps) {
 
   return (
     <Popup isOpen={isOpen} title="Missing Modules" onCancel={() => setIsOpen(false)}>
-      <div className="mx-16 my-3">
-        {type === "ad" && <ModuleVersion module="ActiveDirectory" version={adVersion} />}
-        {type === "azureAd" && <ModuleVersion module="AzureAD" version={azureAdVersion} />}
-      </div>
-
-      <div className="mx-1 mt-1 flex items-center justify-center gap-2">
+      <div className="mx-1 flex items-center justify-center gap-2">
         <BsExclamationOctagon className="flex-shrink-0 text-2xl text-red" />
         <span className="w-96 text-red">
-          A required PowerShell module is missing. Please install the module and restart the
-          application.
+          A required PowerShell module is missing. Please install the module and refresh:
         </span>
+      </div>
+
+      <div className="mx-16 my-4">
+        {type === "ad" && <ModuleVersion module="ActiveDirectory" version={adVersion} />}
+        {type === "azureAd" && <ModuleVersion module="AzureAD" version={azureAdVersion} />}
       </div>
 
       <div className="mt-3 flex justify-end gap-2">
