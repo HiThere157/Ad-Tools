@@ -7,7 +7,6 @@ export function getWmiInfo(
   server: string,
   monitorsFields: string[] = [],
   softwareFields: string[] = [],
-  biosFields: string[] = [],
 ) {
   const monitors = invokePSCommand({
     command: removeIndent(`Get-WmiObject
@@ -31,7 +30,6 @@ export function getWmiInfo(
     command: removeIndent(`Get-WmiObject
       -ClassName Win32_BIOS
       -Computername "${identity}.${server}"`),
-    selectFields: biosFields,
   });
 
   return {
