@@ -4,12 +4,14 @@ import Input from "../Input/Input";
 import { BsTrashFill } from "react-icons/bs";
 
 type QueryFilterProps = {
+  isLocked: boolean;
   filter: QueryFilter;
   setFilter: (filter: QueryFilter) => void;
   onRemoveFilter: () => void;
   onSubmit: () => void;
 };
 export default function QueryFilter({
+  isLocked,
   filter,
   setFilter,
   onRemoveFilter,
@@ -21,6 +23,7 @@ export default function QueryFilter({
     <>
       <Input
         value={property}
+        disabled={isLocked}
         onChange={(property) => setFilter({ ...filter, property })}
         onEnter={onSubmit}
       />
@@ -29,11 +32,12 @@ export default function QueryFilter({
 
       <Input
         value={value ?? ""}
+        disabled={isLocked}
         onChange={(value) => setFilter({ ...filter, value })}
         onEnter={onSubmit}
       />
 
-      <Button className="p-1 text-red" onClick={onRemoveFilter}>
+      <Button className="p-1 text-red" disabled={isLocked} onClick={onRemoveFilter}>
         <BsTrashFill />
       </Button>
     </>

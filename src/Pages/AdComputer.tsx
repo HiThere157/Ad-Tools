@@ -14,6 +14,7 @@ export default function AdComputer() {
   const { redirect, useOnRedirect } = useRedirect();
   const {
     query,
+    isLocked,
     dataSets,
     tableStates,
     tableColumns,
@@ -83,7 +84,12 @@ export default function AdComputer() {
   return (
     <TabLayout page={page}>
       <MissingModules type="ad" />
-      <AdQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
+      <AdQuery
+        query={query}
+        isLocked={isLocked}
+        setQuery={setQuery}
+        onSubmit={() => runQuery(query, true)}
+      />
 
       <Table
         title="Computer Search Results"

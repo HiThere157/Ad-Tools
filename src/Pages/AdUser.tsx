@@ -14,6 +14,7 @@ export default function AdUser() {
   const { redirect, useOnRedirect } = useRedirect();
   const {
     query,
+    isLocked,
     dataSets,
     tableStates,
     tableColumns,
@@ -63,7 +64,12 @@ export default function AdUser() {
   return (
     <TabLayout page={page}>
       <MissingModules type="ad" />
-      <AdQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
+      <AdQuery
+        query={query}
+        isLocked={isLocked}
+        setQuery={setQuery}
+        onSubmit={() => runQuery(query, true)}
+      />
 
       <Table
         title="User Search Results"

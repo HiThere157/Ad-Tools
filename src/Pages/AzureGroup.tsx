@@ -14,6 +14,7 @@ export default function AzureGroup() {
   const { redirect, useOnRedirect } = useRedirect();
   const {
     query,
+    isLocked,
     dataSets,
     tableStates,
     tableColumns,
@@ -59,7 +60,12 @@ export default function AzureGroup() {
   return (
     <TabLayout page={page}>
       <MissingModules type="azureAd" />
-      <AzureQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
+      <AzureQuery
+        query={query}
+        isLocked={isLocked}
+        setQuery={setQuery}
+        onSubmit={() => runQuery(query, true)}
+      />
 
       <Table
         title="Group Search Results"

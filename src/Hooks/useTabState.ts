@@ -18,6 +18,8 @@ export function useTabState(page: string) {
   const tabTableConfigs = tableConfigs[page]?.[tabId] ?? {};
   const pageTablePreferences = tablePreferences[page] ?? {};
 
+  const tabIsLocked = Object.values(tabDataSets).some((dataSet) => dataSet === null);
+
   const pageTableColumns: PartialRecord<string, string[]> = Object.fromEntries(
     Object.entries(pageTablePreferences).map(([name, tablePreference]) => {
       const columns = tablePreference?.columns
@@ -52,6 +54,7 @@ export function useTabState(page: string) {
 
   return {
     query: tabQuery,
+    isLocked: tabIsLocked,
     dataSets: tabDataSets,
     tableStates: tabTableState,
     tableColumns: pageTableColumns,

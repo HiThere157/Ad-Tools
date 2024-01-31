@@ -15,10 +15,11 @@ import { getFilterValue } from "../../Helper/utils";
 
 type AdQueryProps = {
   query: Query;
+  isLocked: boolean;
   setQuery: (query: Query) => void;
   onSubmit: () => void;
 };
-export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
+export default function AdQuery({ query, isLocked, setQuery, onSubmit }: AdQueryProps) {
   const { queryDomains } = useSelector((state: RootState) => state.preferences);
 
   const { isAdvanced, filters, servers } = query;
@@ -66,6 +67,7 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
               {filters.map((filter, filterIndex) => (
                 <QueryFilter
                   key={filterIndex}
+                  isLocked={isLocked}
                   filter={filter}
                   setFilter={(filter) => {
                     const newFilters = [...filters];
@@ -82,6 +84,7 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
 
             <Button
               className="p-1"
+              disabled={isLocked}
               onClick={() => updateQuery({ filters: [...filters, defaultQueryFilter] })}
             >
               <BsPlusLg />
@@ -97,6 +100,7 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
             onChange={(name) => {
               updateQuery({ filters: [{ property: "Name", value: name }] });
             }}
+            disabled={isLocked}
             autoFocus={true}
             onEnter={beforeSubmit}
           />
@@ -114,12 +118,15 @@ export default function AdQuery({ query, setQuery, onSubmit }: AdQueryProps) {
           <MultiDropdown
             items={queryDomains}
             value={servers}
+            disabled={isLocked}
             onChange={(servers) => updateQuery({ servers })}
           />
         </div>
 
         <div className="flex items-center gap-1.5">
-          <Button onClick={beforeSubmit}>Run</Button>
+          <Button disabled={isLocked} onClick={beforeSubmit}>
+            Run
+          </Button>
 
           <label className="flex items-center gap-1">
             <Checkbox

@@ -14,6 +14,7 @@ export default function AzureUser() {
   const { redirect, useOnRedirect } = useRedirect();
   const {
     query,
+    isLocked,
     dataSets,
     tableStates,
     tableColumns,
@@ -70,7 +71,12 @@ export default function AzureUser() {
   return (
     <TabLayout page={page}>
       <MissingModules type="azureAd" />
-      <AzureQuery query={query} setQuery={setQuery} onSubmit={() => runQuery(query, true)} />
+      <AzureQuery
+        query={query}
+        isLocked={isLocked}
+        setQuery={setQuery}
+        onSubmit={() => runQuery(query, true)}
+      />
 
       <Table
         title="User Search Results"

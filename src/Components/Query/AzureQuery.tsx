@@ -11,10 +11,11 @@ import AzureLogin from "../Popup/AzureLogin";
 
 type AzureQueryProps = {
   query: Query;
+  isLocked: boolean;
   setQuery: (query: Query) => void;
   onSubmit: () => void;
 };
-export default function AzureQuery({ query, setQuery, onSubmit }: AzureQueryProps) {
+export default function AzureQuery({ query, isLocked, setQuery, onSubmit }: AzureQueryProps) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const { executingAzureUser } = useSelector((state: RootState) => state.environment.azure);
   const dispatch = useDispatch();
@@ -43,12 +44,15 @@ export default function AzureQuery({ query, setQuery, onSubmit }: AzureQueryProp
           onChange={(name) => {
             updateQuery({ filters: [{ property: "Name", value: name }] });
           }}
+          disabled={isLocked}
           autoFocus={true}
           onEnter={beforeSubmit}
         />
       </div>
 
-      <Button onClick={beforeSubmit}>Run</Button>
+      <Button disabled={isLocked} onClick={beforeSubmit}>
+        Run
+      </Button>
 
       <AzureLogin
         isOpen={isLoginOpen}
