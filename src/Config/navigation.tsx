@@ -12,7 +12,6 @@ import AzureDevice from "../Pages/AzureDevice";
 import Settings from "../Pages/Settings";
 import Tetris from "../Pages/Tetris";
 import QueryHelp from "../Components/Help/QueryHelp";
-import AzureQueryHelp from "../Components/Help/AzureQueryHelp";
 import TableHelp from "../Components/Help/TableHelp";
 import SettingsHelp from "../Components/Help/SettingsHelp";
 import History from "../Pages/History";
@@ -126,12 +125,6 @@ export const helpNavigationLinks: NavigationLink[] = [
     text: "Queries",
     icon: <BsSearch />,
     page: <QueryHelp />,
-  },
-  {
-    href: "#help/azureQuery",
-    text: "Azure Queries",
-    icon: <BsSearch />,
-    page: <AzureQueryHelp />,
   },
   {
     href: "#help/table",
