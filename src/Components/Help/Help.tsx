@@ -12,7 +12,7 @@ export default function Help() {
   const [activeTab, setActiveTab] = useState<string>("#help/query");
 
   return (
-    <div className="winbar-no-drag">
+    <div className="winbar-no-drag select-text">
       <HeaderButton onClick={() => setIsOpen(!isOpen)}>
         <BsLifePreserver />
       </HeaderButton>

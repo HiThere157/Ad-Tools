@@ -64,7 +64,7 @@ export default function Updater() {
   }, [dispatch]);
 
   return (
-    <div ref={ref} className="winbar-no-drag relative">
+    <div ref={ref} className="winbar-no-drag relative select-text">
       <HeaderButton className="relative" onClick={() => setIsOpen(!isOpen)}>
         <BsDownload />
 
