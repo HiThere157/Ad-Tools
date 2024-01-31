@@ -64,18 +64,16 @@ export default function AdComputer() {
       null,
     );
 
-    const { dns, attributes, memberof, printers } = getAdComputer(
+    const { dns, attributes, memberof } = getAdComputer(
       identity,
       server,
       tableColumns[AdComputerTables.Dns],
       tableColumns[AdComputerTables.Memberof],
-      tableColumns[AdComputerTables.Printers],
     );
 
     setDataSet(AdComputerTables.Dns, dns);
     setDataSet(AdComputerTables.Attributes, attributes);
     setDataSet(AdComputerTables.Memberof, memberof);
-    setDataSet(AdComputerTables.Printers, printers);
     Promise.all([dns, attributes, memberof]).then(() => updateTab({ icon: "computer" }));
   };
 
@@ -132,12 +130,6 @@ export default function AdComputer() {
             servers: [row._Server],
           });
         }}
-      />
-      <Table
-        title="Printers"
-        dataSet={dataSets[AdComputerTables.Printers]}
-        tableState={tableStates[AdComputerTables.Printers]}
-        setTableState={(tableState) => setTableState(AdComputerTables.Printers, tableState)}
       />
     </TabLayout>
   );

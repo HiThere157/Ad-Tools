@@ -20,7 +20,7 @@ import tetrisReducer from "./tetrisSlice";
 
 const persistConfig = {
   key: "root",
-  version: 0,
+  version: -1,
   storage,
   whitelist: ["preferences", "tetris"],
   migrate: createMigrate(migrations),
