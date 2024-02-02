@@ -12,7 +12,9 @@ type TableColumnMenuProps = {
   setColumns: (columns: TableColumn[]) => void;
 };
 export default function TableColumnMenu({ allColumns, columns, setColumns }: TableColumnMenuProps) {
-  const availableColumns = allColumns.filter((column) => !columns.some((c) => c.name === column));
+  const availableColumns = allColumns.filter(
+    (column) => !columns.some((c) => c.name === column) && !column.startsWith("__"),
+  );
 
   return (
     <div className="rounded border-2 border-border p-2">
