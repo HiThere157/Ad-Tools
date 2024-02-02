@@ -55,8 +55,8 @@ export default function TableFilterMenu({
   };
 
   return (
-    <div className="rounded border-2 border-border">
-      <div className="me-2 ms-4 mt-2 flex items-center justify-between gap-1">
+    <div className="rounded border-2 border-border p-2">
+      <div className="ms-2 flex items-center justify-between gap-1">
         <h3 className="text-lg font-bold">Filters:</h3>
 
         <div className="flex-grow" />
@@ -90,7 +90,7 @@ export default function TableFilterMenu({
         )}
       </div>
 
-      <div className="flex items-start gap-1 p-2">
+      <div className="flex items-start gap-1 pt-2">
         <div className="grid flex-grow grid-cols-[auto_auto_1fr_auto] items-start gap-1">
           {filters.map((filter, filterIndex) => (
             <TableFilter

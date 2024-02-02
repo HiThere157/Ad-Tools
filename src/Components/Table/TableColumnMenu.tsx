@@ -7,20 +7,18 @@ import TableAvailableColumn from "./TableAvailableColumn";
 import { BsPlusLg } from "react-icons/bs";
 
 type TableColumnMenuProps = {
-  availableColumns: string[];
+  allColumns: string[];
   columns: TableColumn[];
   setColumns: (columns: TableColumn[]) => void;
 };
-export default function TableColumnMenu({
-  availableColumns,
-  columns,
-  setColumns,
-}: TableColumnMenuProps) {
-  return (
-    <div className="rounded border-2 border-border">
-      <h3 className="ms-4 mt-2 text-lg font-bold">Columns:</h3>
+export default function TableColumnMenu({ allColumns, columns, setColumns }: TableColumnMenuProps) {
+  const availableColumns = allColumns.filter((column) => !columns.some((c) => c.name === column));
 
-      <div className="flex items-start gap-1 p-2">
+  return (
+    <div className="rounded border-2 border-border p-2">
+      <h3 className="ms-2 text-lg font-bold">Columns:</h3>
+
+      <div className="flex items-start gap-1 pt-2">
         <div className="grid flex-grow grid-cols-[auto_1fr_1fr_auto] items-start gap-1">
           {columns.map((column, columnIndex) => (
             <TableColumn
@@ -41,17 +39,17 @@ export default function TableColumnMenu({
         </Button>
       </div>
 
-      <div className="flex gap-1">
-        {availableColumns
-          .filter((column) => !columns.some((c) => c.name === column))
-          .map((column, columnIndex) => (
+      {availableColumns.length !== 0 && (
+        <div className="flex flex-wrap gap-1 pt-2">
+          {availableColumns.map((column, columnIndex) => (
             <TableAvailableColumn
               key={columnIndex}
               columnName={column}
               onAdd={() => setColumns([...columns, { ...defaultTableColumn, name: column }])}
             />
           ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
