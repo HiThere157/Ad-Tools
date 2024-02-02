@@ -156,6 +156,7 @@ export default function Table({
 
             {isColumnsOpen && (
               <TableColumnMenu
+                availableColumns={data.length > 0 ? Object.keys(data[0]) : []}
                 columns={columns}
                 setColumns={(columns) => updateTablePreferences({ columns })}
               />

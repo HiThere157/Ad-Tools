@@ -12,7 +12,7 @@ type TableHighlightMenuProps = {
 export default function TableHighlightMenu({ highlights, setHighlights }: TableHighlightMenuProps) {
   return (
     <div className="rounded border-2 border-border">
-      <h3 className="me-2 ms-4 mt-2 text-lg font-bold">Highlights:</h3>
+      <h3 className="ms-4 mt-2 text-lg font-bold">Highlights:</h3>
 
       <div className="flex items-start gap-1 p-2">
         <div className="grid flex-grow grid-cols-[auto_auto_1fr_auto] items-start gap-1">
