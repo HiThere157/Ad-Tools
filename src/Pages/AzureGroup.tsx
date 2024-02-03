@@ -97,7 +97,14 @@ export default function AzureGroup() {
         setTableState={(state) => setTableState(AzureGroupTables.Members, state)}
         redirectColumn="UserPrincipalName"
         onRedirect={(row) => {
-          redirect(Pages.AzureUser, {
+          if (!["Group", "User", "Device"].includes(row.ObjectType)) return;
+          const targetLookup = {
+            Group: Pages.AzureGroup,
+            User: Pages.AzureUser,
+            Device: Pages.AzureDevice,
+          };
+
+          redirect(targetLookup[row.ObjectType as keyof typeof targetLookup], {
             filters: [{ property: "Name", value: row.UserPrincipalName ?? "" }],
             servers: [],
           });

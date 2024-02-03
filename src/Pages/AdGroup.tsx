@@ -106,7 +106,14 @@ export default function AdGroup() {
         setTableState={(tableState) => setTableState(AdGroupTables.Members, tableState)}
         redirectColumn="Name"
         onRedirect={(row) => {
-          redirect(Pages.AdUser, {
+          if (!["group", "user", "computer"].includes(row.ObjectClass)) return;
+          const targetLookup = {
+            group: Pages.AdGroup,
+            user: Pages.AdUser,
+            computer: Pages.AdComputer,
+          };
+
+          redirect(targetLookup[row.ObjectClass as keyof typeof targetLookup], {
             filters: [{ property: "Name", value: row.Name ?? "" }],
             servers: [row._Server],
           });
