@@ -33,7 +33,7 @@ export default function Release({ release, installed }: ReleaseProps) {
           target="_blank"
           rel="no referrer"
         >
-          <h2 className="text-2xl font-bold">
+          <h2>
             {repository}: {name}
           </h2>
           <ReleaseChip prerelease={prerelease} latest={latest} installed={installed} />

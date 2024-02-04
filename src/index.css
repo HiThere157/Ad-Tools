@@ -19,6 +19,16 @@ ul {
   line-height: 0.75rem;
 }
 
+h1 {
+  @apply text-4xl font-bold;
+}
+h2 {
+  @apply text-2xl font-bold;
+}
+h3 {
+  @apply text-lg font-bold;
+}
+
 input[type="color"]::-webkit-color-swatch-wrapper {
   padding: 0;
 }

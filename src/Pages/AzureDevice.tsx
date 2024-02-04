@@ -73,9 +73,9 @@ export default function AzureDevice() {
         setTableState={(state) => setTableState(AzureDeviceTables.Search, state)}
         isSearchTable={true}
         redirectColumn="DisplayName"
-        onRedirect={(row, newTab) => {
+        onRedirect={({ DisplayName }, newTab) => {
           const newQuery = {
-            filters: [{ property: "Name", value: row.DisplayName ?? "" }],
+            filters: [{ property: "Name", value: DisplayName ?? "" }],
             servers: [],
           };
 

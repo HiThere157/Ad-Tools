@@ -25,9 +25,7 @@ export default function TableHeader({
           className="rounded px-1 outline-none outline-offset-0 focus-visible:outline-borderActive"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          <h2 className="text-2xl font-bold" style={{ scrollMarginTop: "60px" }}>
-            {title}
-          </h2>
+          <h2 style={{ scrollMarginTop: "60px" }}>{title}</h2>
         </button>
 
         {count && (

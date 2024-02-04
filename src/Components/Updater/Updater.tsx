@@ -76,7 +76,7 @@ export default function Updater() {
       {isOpen && (
         <div className="absolute right-0 top-9 z-40 w-60 rounded border-2 border-border bg-dark drop-shadow-custom">
           <div className="flex items-center justify-between border-b border-border bg-light p-2">
-            <h3 className="text-lg font-bold">Update Manager</h3>
+            <h3>Update Manager</h3>
 
             <Button className="bg-dark p-0.5 text-xl" onClick={refresh}>
               <BsArrowRepeat />

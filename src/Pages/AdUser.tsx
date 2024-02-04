@@ -78,10 +78,10 @@ export default function AdUser() {
         setTableState={(tableState) => setTableState(AdUserTables.Search, tableState)}
         isSearchTable={true}
         redirectColumn="Name"
-        onRedirect={(row, newTab) => {
+        onRedirect={({ Name, _Server }, newTab) => {
           const newQuery = {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server],
+            filters: [{ property: "Name", value: Name ?? "" }],
+            servers: [_Server],
           };
 
           if (newTab) return redirect(page, newQuery);
@@ -100,10 +100,10 @@ export default function AdUser() {
         tableState={tableStates[AdUserTables.Memberof]}
         setTableState={(tableState) => setTableState(AdUserTables.Memberof, tableState)}
         redirectColumn="Name"
-        onRedirect={(row) => {
+        onRedirect={({ Name, _Server }) => {
           redirect(Pages.AdGroup, {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server],
+            filters: [{ property: "Name", value: Name ?? "" }],
+            servers: [_Server],
           });
         }}
       />

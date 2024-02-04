@@ -18,7 +18,7 @@ export default function TableColumnMenu({ allColumns, columns, setColumns }: Tab
 
   return (
     <div className="rounded border-2 border-border p-2">
-      <h3 className="ms-2 text-lg font-bold">Columns:</h3>
+      <h3 className="ms-2">Columns:</h3>
 
       <div className="flex items-start gap-1 pt-2">
         <div className="grid flex-grow grid-cols-[auto_1fr_1fr_auto] items-start gap-1">

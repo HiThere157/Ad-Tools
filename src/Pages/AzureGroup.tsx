@@ -74,9 +74,9 @@ export default function AzureGroup() {
         setTableState={(state) => setTableState(AzureGroupTables.Search, state)}
         isSearchTable={true}
         redirectColumn="DisplayName"
-        onRedirect={(row, newTab) => {
+        onRedirect={({ DisplayName }, newTab) => {
           const newQuery = {
-            filters: [{ property: "Name", value: row.DisplayName ?? "" }],
+            filters: [{ property: "Name", value: DisplayName ?? "" }],
             servers: [],
           };
 
@@ -96,16 +96,16 @@ export default function AzureGroup() {
         tableState={tableStates[AzureGroupTables.Members]}
         setTableState={(state) => setTableState(AzureGroupTables.Members, state)}
         redirectColumn="UserPrincipalName"
-        onRedirect={(row) => {
-          if (!["Group", "User", "Device"].includes(row.ObjectType)) return;
+        onRedirect={({ UserPrincipalName, ObjectType }) => {
+          if (!["Group", "User", "Device"].includes(ObjectType)) return;
           const targetLookup = {
             Group: Pages.AzureGroup,
             User: Pages.AzureUser,
             Device: Pages.AzureDevice,
           };
 
-          redirect(targetLookup[row.ObjectType as keyof typeof targetLookup], {
-            filters: [{ property: "Name", value: row.UserPrincipalName ?? "" }],
+          redirect(targetLookup[ObjectType as keyof typeof targetLookup], {
+            filters: [{ property: "Name", value: UserPrincipalName ?? "" }],
             servers: [],
           });
         }}

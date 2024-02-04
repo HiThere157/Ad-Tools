@@ -83,10 +83,10 @@ export default function AdGroup() {
         setTableState={(tableState) => setTableState(AdGroupTables.Search, tableState)}
         isSearchTable={true}
         redirectColumn="Name"
-        onRedirect={(row, newTab) => {
+        onRedirect={({ Name, _Server }, newTab) => {
           const newQuery = {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server],
+            filters: [{ property: "Name", value: Name ?? "" }],
+            servers: [_Server],
           };
 
           if (newTab) return redirect(page, newQuery);
@@ -105,17 +105,17 @@ export default function AdGroup() {
         tableState={tableStates[AdGroupTables.Members]}
         setTableState={(tableState) => setTableState(AdGroupTables.Members, tableState)}
         redirectColumn="Name"
-        onRedirect={(row) => {
-          if (!["group", "user", "computer"].includes(row.ObjectClass)) return;
+        onRedirect={({ Name, ObjectClass, _Server }) => {
+          if (!["group", "user", "computer"].includes(ObjectClass)) return;
           const targetLookup = {
             group: Pages.AdGroup,
             user: Pages.AdUser,
             computer: Pages.AdComputer,
           };
 
-          redirect(targetLookup[row.ObjectClass as keyof typeof targetLookup], {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server],
+          redirect(targetLookup[ObjectClass as keyof typeof targetLookup], {
+            filters: [{ property: "Name", value: Name ?? "" }],
+            servers: [_Server],
           });
         }}
       />
@@ -125,10 +125,10 @@ export default function AdGroup() {
         tableState={tableStates[AdGroupTables.Memberof]}
         setTableState={(tableState) => setTableState(AdGroupTables.Memberof, tableState)}
         redirectColumn="Name"
-        onRedirect={(row, newTab) => {
+        onRedirect={({ Name, _Server }, newTab) => {
           const newQuery = {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server],
+            filters: [{ property: "Name", value: Name ?? "" }],
+            servers: [_Server],
           };
 
           if (newTab) return redirect(page, newQuery);

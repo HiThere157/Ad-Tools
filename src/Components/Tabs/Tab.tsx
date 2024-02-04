@@ -18,13 +18,14 @@ type TabProps = {
 export default function Tab({ tab, isActive, onChange, onRemove }: TabProps) {
   const { id, icon, title } = tab;
 
+  const iconClasses = "flex-shrink-0 text-primaryAccent";
   const icons: Record<Required<Tab>["icon"], JSX.Element> = {
-    user: <BsPersonFill className="flex-shrink-0 text-primaryAccent" />,
-    group: <BsPeopleFill className="flex-shrink-0 text-primaryAccent" />,
-    computer: <BsDisplay className="flex-shrink-0 text-primaryAccent" />,
-    replication: <BsDiagram3Fill className="flex-shrink-0 text-primaryAccent" />,
-    wmi: <BsCpu className="flex-shrink-0 text-primaryAccent" />,
-    search: <BsSearch className="flex-shrink-0 text-primaryAccent" />,
+    user: <BsPersonFill className={iconClasses} />,
+    group: <BsPeopleFill className={iconClasses} />,
+    computer: <BsDisplay className={iconClasses} />,
+    replication: <BsDiagram3Fill className={iconClasses} />,
+    wmi: <BsCpu className={iconClasses} />,
+    search: <BsSearch className={iconClasses} />,
     loading: (
       <ClipLoader className="flex-shrink-0" color="#208cf0" speedMultiplier={0.7} size={16} />
     ),

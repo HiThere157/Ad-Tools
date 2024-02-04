@@ -78,10 +78,10 @@ export default function AdReplication() {
         setTableState={(state) => setTableState(AdReplicationTables.Search, state)}
         isSearchTable={true}
         redirectColumn="Name"
-        onRedirect={(row, newTab) => {
+        onRedirect={({ Name, _Server }, newTab) => {
           const newQuery = {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server],
+            filters: [{ property: "Name", value: Name ?? "" }],
+            servers: [_Server],
           };
 
           if (newTab) return redirect(page, newQuery);

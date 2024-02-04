@@ -25,7 +25,7 @@ export default function Popup({ isOpen, title, onCancel, className, children }: 
         )}
       >
         <div className="flex items-center justify-between gap-5 border-b border-border bg-light p-2">
-          <h3 className="text-lg font-bold">{title}</h3>
+          <h3>{title}</h3>
 
           <Button className="bg-dark p-0.5 text-xl" onClick={onCancel}>
             <BsX />

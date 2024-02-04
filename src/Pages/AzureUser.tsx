@@ -85,9 +85,9 @@ export default function AzureUser() {
         setTableState={(tableState) => setTableState(AzureUserTables.Search, tableState)}
         isSearchTable={true}
         redirectColumn="UserPrincipalName"
-        onRedirect={(row, newTab) => {
+        onRedirect={({ UserPrincipalName }, newTab) => {
           const newQuery = {
-            filters: [{ property: "Name", value: row.UserPrincipalName ?? "" }],
+            filters: [{ property: "Name", value: UserPrincipalName ?? "" }],
             servers: [],
           };
 
@@ -107,9 +107,9 @@ export default function AzureUser() {
         tableState={tableStates[AzureUserTables.Memberof]}
         setTableState={(tableState) => setTableState(AzureUserTables.Memberof, tableState)}
         redirectColumn="DisplayName"
-        onRedirect={(row) => {
+        onRedirect={({ DisplayName }) => {
           redirect(Pages.AzureGroup, {
-            filters: [{ property: "Name", value: row.DisplayName ?? "" }],
+            filters: [{ property: "Name", value: DisplayName ?? "" }],
             servers: [],
           });
         }}
@@ -120,9 +120,9 @@ export default function AzureUser() {
         tableState={tableStates[AzureUserTables.Devices]}
         setTableState={(tableState) => setTableState(AzureUserTables.Devices, tableState)}
         redirectColumn="DisplayName"
-        onRedirect={(row) => {
+        onRedirect={({ DisplayName }) => {
           redirect(Pages.AzureDevice, {
-            filters: [{ property: "Name", value: row.DisplayName ?? "" }],
+            filters: [{ property: "Name", value: DisplayName ?? "" }],
             servers: [],
           });
         }}

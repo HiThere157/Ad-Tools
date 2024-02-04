@@ -57,7 +57,7 @@ export default function TableFilterMenu({
   return (
     <div className="rounded border-2 border-border p-2">
       <div className="ms-2 flex items-center justify-between gap-1">
-        <h3 className="text-lg font-bold">Filters:</h3>
+        <h3>Filters:</h3>
 
         <div className="flex-grow" />
 

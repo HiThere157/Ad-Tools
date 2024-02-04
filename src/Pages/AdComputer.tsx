@@ -96,10 +96,10 @@ export default function AdComputer() {
         setTableState={(tableState) => setTableState(AdComputerTables.Search, tableState)}
         isSearchTable={true}
         redirectColumn="Name"
-        onRedirect={(row, newTab) => {
+        onRedirect={({ Name, _Server }, newTab) => {
           const newQuery = {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server],
+            filters: [{ property: "Name", value: Name ?? "" }],
+            servers: [_Server],
           };
 
           if (newTab) return redirect(page, newQuery);
@@ -124,10 +124,10 @@ export default function AdComputer() {
         tableState={tableStates[AdComputerTables.Memberof]}
         setTableState={(tableState) => setTableState(AdComputerTables.Memberof, tableState)}
         redirectColumn="Name"
-        onRedirect={(row) => {
+        onRedirect={({ Name, _Server }) => {
           redirect(Pages.AdGroup, {
-            filters: [{ property: "Name", value: row.Name ?? "" }],
-            servers: [row._Server],
+            filters: [{ property: "Name", value: Name ?? "" }],
+            servers: [_Server],
           });
         }}
       />
