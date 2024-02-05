@@ -5,7 +5,6 @@ import { useTabState } from "../Hooks/useTabState";
 import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
 
 import TabLayout from "../Layout/TabLayout";
-import ResultLabel from "../Components/ResultLabel";
 import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
 import MissingModules from "../Components/Popup/MissingModules";
@@ -65,14 +64,12 @@ export default function AdUser() {
   return (
     <TabLayout page={page}>
       <MissingModules type="ad" />
-
       <AdQuery
         query={query}
         isLocked={isLocked}
         setQuery={setQuery}
         onSubmit={() => runQuery(query, true)}
       />
-      <ResultLabel icon="user" attributes={dataSets[AdUserTables.Attributes]} />
 
       <Table
         title="User Search Results"
