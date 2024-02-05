@@ -56,7 +56,7 @@ export default function Tetris() {
           dispatch(toggleHold());
           break;
         case "q":
-          dispatch(togglePause());
+          dispatch(togglePause(true));
           navigate(`/${Pages.AdUser}`);
           break;
       }

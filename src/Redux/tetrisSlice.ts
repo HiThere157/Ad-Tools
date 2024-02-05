@@ -89,8 +89,11 @@ const tetrisSlice = createSlice({
 
       state.currentPiece = newPiece;
     },
-    togglePause(state) {
+    togglePause(state, action: PayloadAction<boolean | undefined>) {
       state.isPaused = !state.isPaused;
+
+      const override = action.payload;
+      if (override !== undefined) state.isPaused = override;
     },
     toggleHold(state) {
       if (state.heldPiece.isLocked) return;
