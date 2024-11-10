@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "electron-devtools-installer": "^3.2.0",
-    "electron-updater": "^6.1.7",
+    "electron-updater": "^6.3.0",
     "node-powershell": "^5.0.1"
   }
 }
