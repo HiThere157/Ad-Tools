@@ -124,7 +124,6 @@ export default function TableFilterMenu({
           const uniqueName = sameNameCount === 0 ? value : `${value} (${sameNameCount})`;
 
           setSavedFilters([...savedFilters, { name: uniqueName, filters }], uniqueName);
-          setFilters([]);
 
           dispatch(
             pushToast({ message: `Saved Filter "${uniqueName}" created.`, time: 7, type: "info" }),
