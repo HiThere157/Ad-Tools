@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "../../Redux/store";
-import { setPowershellEnvironment } from "../../Redux/environmentSlice";
-import { getPowershellEnvironment } from "../../Helper/api";
+import { RootState } from "../../../Redux/store";
+import { setPowershellEnvironment } from "../../../Redux/environmentSlice";
+import { getPowershellEnvironment } from "../../../Helper/api";
 
-import Popup from "./Popup";
-import Button from "../Button";
-import ModuleVersion from "../Updater/ModuleVersion";
+import Popup from "../Popup";
+import Button from "../../Button";
+import ModuleVersion from "../../Updater/ModuleVersion";
 
 import { BsExclamationOctagon } from "react-icons/bs";
 

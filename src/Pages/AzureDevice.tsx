@@ -7,7 +7,7 @@ import { getFilterValue } from "../Helper/utils";
 import TabLayout from "../Layout/TabLayout";
 import AzureQuery from "../Components/Query/AzureQuery";
 import Table from "../Components/Table/Table";
-import MissingModules from "../Components/Popup/MissingModules";
+import MissingModules from "../Components/Popup/General/MissingModules";
 
 export default function AzureDevice() {
   const page = Pages.AzureDevice;

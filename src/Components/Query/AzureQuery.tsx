@@ -7,7 +7,7 @@ import { getFilterValue } from "../../Helper/utils";
 
 import Button from "../Button";
 import Input from "../Input/Input";
-import AzureLogin from "../Popup/AzureLogin";
+import AzureLogin from "../Popup/General/AzureLogin";
 
 type AzureQueryProps = {
   query: Query;

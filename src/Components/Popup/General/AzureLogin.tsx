@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "../../Redux/store";
-import { setAzureEnvironment } from "../../Redux/environmentSlice";
-import { setAzureLoginUPN } from "../../Redux/preferencesSlice";
-import { loginAzure } from "../../Helper/api";
+import { RootState } from "../../../Redux/store";
+import { setAzureEnvironment } from "../../../Redux/environmentSlice";
+import { setAzureLoginUPN } from "../../../Redux/preferencesSlice";
+import { loginAzure } from "../../../Helper/api";
 
-import Prompt from "./Prompt";
+import Prompt from "../Prompt";
 
 type AzureLoginProps = {
   isOpen: boolean;

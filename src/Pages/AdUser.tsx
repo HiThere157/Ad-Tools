@@ -7,7 +7,7 @@ import { getFilterValue, shouldSearchQuery } from "../Helper/utils";
 import TabLayout from "../Layout/TabLayout";
 import AdQuery from "../Components/Query/AdQuery";
 import Table from "../Components/Table/Table";
-import MissingModules from "../Components/Popup/MissingModules";
+import MissingModules from "../Components/Popup/General/MissingModules";
 
 export default function AdUser() {
   const page = Pages.AdUser;
